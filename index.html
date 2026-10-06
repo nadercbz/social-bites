@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social Bites</title>
+<meta name="description" content="Social Bites macht Food Content, Openings und Branding für Gastro und Marken aus Berlin. Social Media trifft echtes Offline-Marketing.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Social Bites. Content, den keiner wegscrollt">
+<meta property="og:description" content="Food Content, Openings und Branding aus Berlin. Online gesehen. Offline gegessen.">
+<!-- Beim Livegang durch die absolute URL ersetzen, sonst zeigen Messenger kein Vorschaubild -->
+<meta property="og:image" content="https://nadercbz.github.io/social-bites/og.jpg">
+<meta property="og:url" content="https://nadercbz.github.io/social-bites/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Social Bites","description":"Food Content, Openings und Branding für Gastro und Marken. Social Media trifft echtes Offline-Marketing.","areaServed":"Berlin","address":{"@type":"PostalAddress","addressLocality":"Berlin","addressCountry":"DE"}}</script>
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3;
+    --paper-2:#EDE4D0;
+    --card:#FFFDF8;
+    --ink:#1E1B1A;
+    --mute:#6B6357;
+    --line:rgba(30,27,26,.14);
+    --accent:#F04A0A;
+    --accent-ink:#B83806;
+    --accent-tint:#FFE2D0;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,3vw,40px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --dots:radial-gradient(rgba(30,27,26,.15) 1px,transparent 1.3px);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{background:var(--paper);scroll-behavior:smooth;scroll-padding-top:128px;-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--grain),var(--paper);color:var(--ink);
+    font-family:var(--display);font-weight:500;font-size:17px;line-height:1.35;letter-spacing:-.01em;
+    -webkit-font-smoothing:antialiased;overflow-x:clip;
+  }
+  img,video{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.02em;text-transform:uppercase;}
+  .hot{color:var(--accent-ink);}
+  .skip{position:fixed;left:12px;top:-60px;z-index:100;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:6px;font-weight:600;}
+  .skip:focus{top:12px;}
+
+  /* Buttons: der Punkt wächst beim Hover zur Füllung */
+  .btn{
+    position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;
+    background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;
+    padding:10px 14px;font:600 15px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;
+    transition:color .3s ease,border-color .3s ease;
+  }
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv .dot{background:var(--paper);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--paper);}
+  .pill{
+    font-family:var(--mono);font-weight:500;font-size:clamp(10px,1vw,13px);letter-spacing:.06em;line-height:1;
+    border:1.5px solid var(--ink);border-radius:999px;padding:5px 9px;text-transform:uppercase;white-space:nowrap;
+  }
+
+  /* Header */
+  .site-head{
+    position:fixed;inset:0 0 auto 0;z-index:60;
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    padding:10px var(--gutter);
+    transition:transform .45s var(--ease),background-color .3s ease,box-shadow .3s ease;
+  }
+  .site-head.is-stuck{background:rgba(246,240,227,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line);}
+  .site-head.is-hidden{transform:translateY(-110%);}
+  .brand{justify-self:start;}
+  .brand img{height:100px;width:auto;transition:height .35s var(--ease);}
+  .nav{display:flex;gap:24px;font-weight:600;font-size:16px;}
+  .nav a{position:relative;padding:6px 0;}
+  .nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);}
+  .nav a:hover::after,.nav a[aria-current="true"]::after{transform:scaleX(1);}
+  .head-actions{justify-self:end;display:flex;align-items:center;gap:8px;}
+  .portal-link{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:15px;padding:9px 12px;border-radius:999px;border:1.5px solid transparent;transition:border-color .25s ease;}
+  .portal-link:hover,.portal-link:focus-visible{border-color:var(--ink);}
+  .portal-link svg{color:var(--accent-ink);}
+  .menu-btn{display:none;position:relative;width:42px;height:42px;border-radius:6px;border:1px solid var(--line);background:var(--paper-2);cursor:pointer;}
+  .menu-btn span{position:absolute;left:11px;right:11px;height:2px;background:var(--ink);transition:transform .35s var(--ease),top .35s var(--ease);}
+  .menu-btn span:first-child{top:16px;}
+  .menu-btn span:last-child{top:24px;}
+  .menu-open .menu-btn span:first-child{top:20px;transform:rotate(45deg);}
+  .menu-open .menu-btn span:last-child{top:20px;transform:rotate(-45deg);}
+  .progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;}
+  @supports (animation-timeline:scroll()){
+    .progress{animation:grow linear both;animation-timeline:scroll(root);}
+  }
+  @keyframes grow{to{transform:scaleX(1);}}
+
+  /* Handy-Menü */
+  .mnav{
+    position:fixed;inset:0;z-index:55;background:var(--accent);color:var(--ink);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:130px var(--gutter) 28px;
+    clip-path:inset(0 0 100% 0);visibility:hidden;transition:clip-path .55s var(--ease),visibility 0s .55s;
+  }
+  .mnav::before{content:"";position:absolute;inset:0;background-image:var(--dots);background-size:7px 7px;pointer-events:none;}
+  .menu-open .mnav{clip-path:inset(0);visibility:visible;transition:clip-path .55s var(--ease),visibility 0s;}
+  .menu-open body{overflow:hidden;}
+  .menu-open .site-head{background:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:none;}
+  .mnav a{
+    position:relative;display:flex;align-items:baseline;gap:14px;padding:8px 0;border-bottom:1.5px solid rgba(30,27,26,.22);
+    font-weight:800;font-size:clamp(40px,12vw,76px);letter-spacing:-.05em;line-height:1.05;
+  }
+  .mnav a small{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.04em;}
+  .mnav p{position:relative;margin:22px 0 0;font-size:12px;}
+
+  /* Hero */
+  .hero{padding:clamp(150px,19vw,200px) var(--gutter) 0;display:flex;flex-direction:column;}
+  .hero-h{
+    margin:0 auto;text-align:center;font-weight:800;
+    font-size:clamp(46px,10.4vw,156px);line-height:.95;letter-spacing:-.05em;
+    display:flex;flex-direction:column;align-items:center;gap:.04em;
+  }
+  .hero-h .row{display:flex;align-items:center;justify-content:center;gap:.18em;flex-wrap:wrap;}
+  .pills{display:grid;grid-template-columns:auto auto;gap:6px;align-self:center;}
+  .pills .pill:first-child{grid-column:1 / -1;justify-self:start;background:var(--accent);border-color:var(--accent);}
+  .tile{
+    position:relative;display:inline-block;width:1.45em;height:.78em;border-radius:.07em;overflow:hidden;background:var(--ink);
+    transform:rotate(-2deg);box-shadow:0 .04em 0 var(--ink);transition:transform .5s var(--ease);
+  }
+  .tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero-foot{margin-top:clamp(40px,7vw,90px);text-align:center;}
+  .hero-sub{font-size:clamp(15px,1.3vw,18px);font-weight:600;margin:0 auto;max-width:44ch;}
+  .trust{margin-top:28px;border-top:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:16px 0 20px;overflow:hidden;}
+  .trust-label{display:flex;align-items:center;gap:12px;flex:none;padding-right:20px;border-right:1px solid var(--line);}
+  .trust-label img{height:38px;width:auto;transform:rotate(-10deg);}
+  .trust-label span{font-size:11px;line-height:1.15;}
+  .marquee{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  .marquee-track{display:flex;gap:56px;width:max-content;align-items:center;}
+  .js .marquee-track{animation:slide 44s linear infinite;}
+  .client{font-size:22px;white-space:nowrap;opacity:.84;}
+  .c1{font-weight:900;letter-spacing:-.04em;text-transform:uppercase;}
+  .c2{font-weight:700;letter-spacing:-.04em;text-transform:lowercase;}
+  .c3{font-family:var(--mono);font-weight:500;letter-spacing:.12em;font-size:17px;text-transform:uppercase;}
+  .c4{font-weight:500;letter-spacing:-.02em;}
+  .c5{font-weight:800;letter-spacing:.08em;font-size:18px;text-transform:uppercase;}
+  @keyframes slide{to{transform:translateX(-50%);}}
+  @keyframes rise{from{opacity:0;transform:translateY(.3em);}to{opacity:1;transform:none;}}
+  .is-off .marquee-track,.is-off .win-row{animation-play-state:paused;}
+
+  /* Abschnittsköpfe */
+  section{position:relative;}
+  .sec-pill{display:flex;justify-content:center;margin-bottom:22px;}
+  .big-h{margin:0;text-align:center;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(42px,8vw,118px);text-wrap:balance;}
+  .big-h sup{font-family:var(--mono);font-weight:500;font-size:.2em;letter-spacing:0;vertical-align:top;position:relative;top:.35em;margin-left:.1em;}
+  .lede{text-align:center;color:var(--mute);font-weight:600;max-width:46ch;margin:22px auto 0;font-size:clamp(15px,1.25vw,18px);text-wrap:balance;}
+
+  /* Projekte */
+  .projects{padding:clamp(80px,10vw,140px) var(--gutter) 40px;}
+  .project{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);margin-top:clamp(60px,8vw,110px);}
+  .p-info{position:sticky;top:110px;align-self:start;display:flex;flex-direction:column;gap:14px;}
+  .p-kicker{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);}
+  .p-kicker i{width:9px;height:9px;background:var(--accent);display:inline-block;flex:none;}
+  .p-name{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(40px,5.4vw,80px);}
+  .p-desc{margin:0;color:var(--mute);font-weight:600;max-width:36ch;font-size:clamp(15px,1.25vw,18px);}
+  .p-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .p-chips .pill{border-color:var(--mute);}
+  .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:22px;max-width:420px;}
+  .stat b{display:block;color:var(--accent);font-weight:800;letter-spacing:-.045em;font-size:clamp(34px,3.4vw,52px);line-height:1;}
+  .stat span{display:block;font-weight:600;font-size:14px;margin-top:6px;max-width:16ch;}
+  .p-media{display:flex;flex-direction:column;gap:clamp(16px,2vw,24px);}
+  .panel{
+    position:relative;border-radius:14px;overflow:clip;
+    padding:clamp(18px,3vw,44px);display:flex;justify-content:center;align-items:center;gap:clamp(10px,2vw,22px);
+    min-height:clamp(340px,44vw,620px);
+  }
+  .panel::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:var(--dots);background-size:7px 7px;}
+  .panel.tint{background:var(--accent-tint);}
+  .panel.sand{background:var(--paper-2);}
+  .panel.fire{background:var(--accent);}
+  .panel.dark{background:var(--ink);}
+  .panel.dark::before{background-image:radial-gradient(rgba(246,240,227,.13) 1px,transparent 1.3px);}
+  .panel.stack{flex-direction:column;}
+  .phone{
+    position:relative;z-index:1;flex:0 1 auto;width:clamp(110px,15vw,220px);aspect-ratio:9/16;
+    border-radius:14px;overflow:hidden;background:var(--ink);border:3px solid var(--ink);
+    box-shadow:0 18px 40px -18px rgba(30,27,26,.6);
+  }
+  .phone:nth-child(2){transform:translateY(-18px) rotate(1.5deg);}
+  .phone:nth-child(3){transform:rotate(-1.5deg);}
+  .phone.solo{width:clamp(160px,21vw,300px);transform:rotate(-1.5deg);}
+  .panel.dark .phone{border-color:#3B3532;}
+  .phone video,.wide video{width:100%;height:100%;object-fit:cover;}
+  .ref{display:block;padding:0;font:inherit;color:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;}
+  .ref video{transition:transform .7s var(--ease);}
+  .ref:hover video,.ref:focus-visible video{transform:scale(1.05);}
+  .play{
+    position:absolute;right:10px;top:10px;white-space:nowrap;transform-origin:100% 0;
+    background:var(--accent);color:var(--ink);font-size:11px;border-radius:999px;padding:7px 11px;
+    box-shadow:0 8px 18px -8px rgba(30,27,26,.7);transition:transform .35s var(--ease);
+  }
+  .ref:hover .play,.ref:focus-visible .play{transform:scale(1.12);}
+  .p-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:8px;}
+  .p-link{
+    align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding-bottom:2px;
+    font-weight:700;font-size:16px;border-bottom:2px solid var(--accent);transition:gap .3s var(--ease),color .2s ease;
+  }
+  .p-link:hover{gap:14px;color:var(--accent-ink);}
+  .wide{position:relative;z-index:1;width:min(100%,520px);aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:3px solid var(--ink);background:var(--ink);}
+  .cap{position:absolute;z-index:2;left:14px;bottom:12px;font-size:11px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 10px;}
+
+  /* Ab Tablet quer: links klebt der Text und wechselt, rechts laufen die Clips */
+  @media (min-width:901px){
+    .js .pj{
+      display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:repeat(9,auto);
+      column-gap:clamp(24px,4vw,64px);row-gap:clamp(48px,7vw,96px);margin-top:clamp(60px,8vw,110px);
+    }
+    .js .project{display:contents;}
+    .js .p-info{
+      grid-column:1;grid-row:1 / -1;top:clamp(120px,17vh,150px);
+      opacity:0;visibility:hidden;transform:translateY(30px);
+      transition:opacity .3s ease,transform .5s var(--ease),visibility 0s .3s;
+    }
+    .js .p-info.is-past{transform:translateY(-30px);}
+    .js .p-info.is-active{opacity:1;visibility:visible;transform:none;transition:opacity .45s ease .14s,transform .65s var(--ease) .14s,visibility 0s;}
+    .js .p-media{grid-column:2;transition:filter .5s ease,opacity .5s ease;}
+    .js .p-media:not(.is-active){filter:grayscale(1);opacity:.42;}
+  }
+
+  /* Prinzip-Block mit Bissspur */
+  .manifest-wrap{padding:clamp(40px,6vw,80px) var(--gutter) 30px;}
+  .manifest{
+    position:relative;border-radius:18px;background:var(--accent);color:var(--ink);overflow:clip;
+    padding:clamp(44px,7vw,100px) clamp(20px,5vw,76px) clamp(44px,6vw,84px);
+    -webkit-mask-image:radial-gradient(circle at calc(100% - 34px) 4px,transparent 56px,#000 57px),radial-gradient(circle at calc(100% - 120px) -8px,transparent 40px,#000 41px),radial-gradient(circle at calc(100% + 6px) 94px,transparent 46px,#000 47px);
+    -webkit-mask-composite:source-in;
+    mask-image:radial-gradient(circle at calc(100% - 34px) 4px,transparent 56px,#000 57px),radial-gradient(circle at calc(100% - 120px) -8px,transparent 40px,#000 41px),radial-gradient(circle at calc(100% + 6px) 94px,transparent 46px,#000 47px);
+    mask-composite:intersect;
+  }
+  .manifest::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(30,27,26,.17) 1.2px,transparent 1.6px);background-size:6px 6px;}
+  .manifest > *{position:relative;}
+  .manifest h2{margin:20px 0 0;font-weight:800;letter-spacing:-.055em;line-height:.9;font-size:clamp(34px,8.6vw,128px);}
+  .manifest h2 span{display:block;}
+  .manifest p{margin:clamp(22px,3vw,34px) 0 0;max-width:42ch;font-weight:600;font-size:clamp(16px,1.45vw,21px);line-height:1.3;}
+  .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;}
+  .manifest .mouth{
+    position:absolute;right:clamp(18px,6vw,96px);bottom:clamp(-46px,-3vw,-22px);
+    height:clamp(150px,25vw,350px);width:auto;transform:rotate(13deg);
+    filter:drop-shadow(0 10px 0 rgba(30,27,26,.22));
+  }
+
+  /* Lineal */
+  .ruler{padding:26px var(--gutter) 0;}
+  .ruler-track{
+    position:relative;height:92px;border-bottom:1px solid var(--line);border-right:1px solid var(--ink);
+    background:
+      repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px calc(100% / 15)) left bottom / 100% 44px no-repeat,
+      repeating-linear-gradient(90deg,var(--mute) 0 1px,transparent 1px calc(100% / 60)) left bottom / 100% 16px no-repeat;
+  }
+  .seg{position:absolute;top:6px;height:22px;border:1.5px solid var(--ink);border-bottom:none;border-radius:6px 6px 0 0;display:flex;justify-content:center;}
+  .seg > span{position:relative;top:-9px;background:var(--paper);padding:0 6px;font-size:11px;white-space:nowrap;}
+  .seg .short{display:none;}
+  .playhead{position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--accent);}
+  .playhead::before{content:"";position:absolute;top:-4px;left:-5px;width:12px;height:12px;border-radius:50%;background:var(--accent);}
+  .js .playhead{animation:play 15s linear infinite;}
+  @keyframes play{to{left:100%;}}
+  .ruler-labs{position:relative;display:grid;grid-template-columns:repeat(15,1fr);margin-top:8px;font-size:11px;color:var(--accent-ink);}
+  .ruler-labs span{justify-self:start;transform:translateX(-50%);}
+  .ruler-labs span:last-child{position:absolute;right:0;top:0;transform:translateX(50%);}
+  .ruler-note{margin:18px 0 0;text-align:center;font-size:11px;color:var(--mute);}
+
+  /* Leistungen */
+  .services{padding:clamp(80px,10vw,140px) var(--gutter) 60px;}
+  .svc-list{list-style:none;margin:clamp(30px,5vw,60px) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(40px,6vw,80px);}
+  .svc{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;}
+  .svc h3{
+    margin:0;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(44px,9.4vw,140px);
+    display:flex;align-items:center;justify-content:center;gap:.16em;flex-wrap:wrap;
+  }
+  .svc:nth-child(odd) h3{color:var(--accent);}
+  .svc .nw{white-space:nowrap;display:inline-flex;align-items:flex-start;}
+  .svc h3 sup{font-family:var(--mono);font-weight:500;font-size:.14em;letter-spacing:0;margin-top:.4em;color:var(--accent-ink);}
+  .svc:nth-child(odd) .tile{background:var(--accent);box-shadow:0 .04em 0 var(--accent-ink);transform:rotate(2deg);}
+  .svc:hover .tile{transform:rotate(0) scale(1.12);}
+  .svc p{margin:0;max-width:52ch;color:var(--mute);font-weight:600;font-size:clamp(15px,1.25vw,18px);}
+
+  /* Reel-Fenster */
+  .reels{padding:30px 0 clamp(80px,10vw,130px);overflow:hidden;}
+  .reels .big-h{padding:0 var(--gutter);}
+  .win-rows{margin-top:clamp(30px,5vw,60px);display:flex;flex-direction:column;gap:18px;overflow-x:auto;scrollbar-width:none;}
+  .js .win-rows{overflow:visible;}
+  .win-row{display:flex;gap:18px;width:max-content;padding-left:18px;}
+  .js .win-row{animation:slide 64s linear infinite;padding-left:0;}
+  .js .win-row.rev{animation-direction:reverse;}
+  .win-rows:hover .win-row{animation-play-state:paused;}
+  .win{width:260px;flex:none;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 10px 30px -20px rgba(30,27,26,.5);}
+  .win-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;font-size:11px;border-bottom:1px solid var(--line);}
+  .win-bar i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;}
+  .win-bar i:first-child{background:var(--accent);}
+  .win-bar b{margin-left:6px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:none;}
+  .win-body{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px;}
+  .win-body video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;background:var(--ink);}
+  .win-body{position:relative;}
+  .win[data-play]{cursor:pointer;}
+  .win[data-play]:hover{border-color:var(--accent);}
+  .win-play{position:absolute;left:18px;top:18px;background:var(--accent);color:var(--ink);font-size:10px;border-radius:999px;padding:5px 9px;}
+  .win-scrub{width:5px;height:64px;border-radius:3px;background:var(--line);position:relative;}
+  .win-scrub::after{content:"";position:absolute;left:0;right:0;top:20%;height:30%;border-radius:3px;background:var(--ink);}
+
+  /* Ablauf */
+  .process{background:var(--grain),var(--paper-2);padding:clamp(80px,10vw,130px) 0 clamp(60px,8vw,100px);}
+  .process .big-h{text-align:left;padding:0 var(--gutter);display:flex;flex-wrap:wrap;align-items:center;gap:.16em;}
+  .process .big-h img{height:.86em;width:auto;transform:rotate(-8deg);}
+  .cards{
+    display:grid;grid-auto-flow:column;grid-auto-columns:minmax(280px,380px);gap:16px;
+    overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);
+    padding:clamp(30px,5vw,56px) var(--gutter) 10px;scrollbar-width:none;
+  }
+  .cards::-webkit-scrollbar,.win-rows::-webkit-scrollbar{display:none;}
+  .card{
+    scroll-snap-align:start;background:var(--card);border-radius:12px;padding:22px;min-height:440px;
+    display:flex;flex-direction:column;justify-content:space-between;gap:20px;border:1px solid var(--line);
+  }
+  .card .step{font-size:11px;color:var(--mute);display:flex;justify-content:space-between;}
+  .card .step b{font-weight:500;color:var(--accent-ink);}
+  .card h3{margin:12px 0 10px;font-weight:800;font-size:30px;letter-spacing:-.04em;line-height:1;}
+  .card p{margin:0;font-weight:600;font-size:16.5px;line-height:1.35;}
+  .card-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;}
+  .tag{font-size:11px;border-radius:999px;padding:5px 9px;border:1.5px solid var(--ink);}
+  .tag.off{background:var(--accent);border-color:var(--accent);}
+  .tag.both{background:var(--ink);color:var(--paper);}
+  .card video{width:96px;aspect-ratio:9/16;object-fit:cover;border-radius:6px;background:var(--ink);}
+  .car-nav{display:flex;gap:8px;padding:16px var(--gutter) 0;}
+  .car-nav button{width:42px;height:42px;border-radius:6px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:18px;display:grid;place-items:center;transition:background-color .2s ease,color .2s ease,opacity .2s ease;}
+  .car-nav button:hover:not(:disabled){background:var(--accent);}
+  .car-nav button:disabled{opacity:.35;cursor:default;}
+
+  /* Kontakt und Abschluss */
+  .contact{padding:clamp(80px,10vw,140px) var(--gutter) 40px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:end;}
+  .contact h2{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(44px,7.4vw,112px);text-wrap:balance;}
+  .contact h2 .btn{font-size:clamp(15px,1.4vw,19px);vertical-align:middle;padding:8px 16px 8px 8px;margin-left:.15em;}
+  .contact h2 .btn video{width:34px;height:34px;border-radius:4px;object-fit:cover;}
+  .mail small{display:block;font-size:13px;color:var(--mute);margin:26px 0 4px;}
+  .mail a{font-weight:700;font-size:clamp(20px,2vw,26px);border-bottom:2px solid var(--accent);}
+  .mail .mail-soon{font-weight:700;font-size:clamp(18px,1.8vw,22px);}
+  .copy{margin-left:10px;font-size:11px;background:none;border:1.5px solid var(--ink);border-radius:999px;padding:5px 9px;cursor:pointer;vertical-align:middle;transition:background-color .2s ease;}
+  .copy:hover{background:var(--accent);border-color:var(--accent);}
+  .foot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;font-weight:600;}
+  .foot-grid h3{margin:0 0 12px;font-size:11px;color:var(--mute);font-weight:500;}
+  .foot-grid ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:17px;}
+  .foot-grid a:hover{color:var(--accent-ink);}
+  .soon{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin-left:6px;}
+  .clock{font-variant-numeric:tabular-nums;color:var(--mute);font-size:14px;margin-top:6px;}
+  .foot-bar{margin:50px var(--gutter) 0;padding:16px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mute);}
+  .foot-bar a:hover{color:var(--ink);}
+  .foot-logo{padding:30px var(--gutter) 44px;}
+  .foot-logo img{width:100%;max-width:720px;height:auto;margin:0 auto;}
+
+  /* Player für die Referenzvideos */
+  html:has(.player[open]){overflow:hidden;}
+  .player{padding:0;margin:0;border:0;background:transparent;color:var(--paper);width:100%;height:100%;max-width:none;max-height:none;}
+  .player[open]{display:grid;place-items:center;}
+  .player::backdrop{background:rgba(20,17,16,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+  .player-box{display:flex;flex-direction:column;gap:12px;width:min(92vw,calc((100vh - 170px) * 9 / 16));width:min(92vw,calc((100dvh - 170px) * 9 / 16));min-width:min(92vw,260px);}
+  .player-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+  .player-meta{display:block;font-size:11px;color:var(--accent);margin-bottom:6px;}
+  .player-head h2{margin:0;font-weight:800;letter-spacing:-.045em;font-size:clamp(26px,3vw,40px);line-height:1;}
+  .player-x{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);font-size:24px;line-height:1;cursor:pointer;transition:transform .3s var(--ease);}
+  .player-x:hover{transform:rotate(90deg);}
+  .player video{width:100%;aspect-ratio:9/16;border-radius:14px;background:#000;border:3px solid #3B3532;object-fit:cover;}
+  .player .p-link{color:var(--paper);}
+  .player .p-link:hover{color:var(--accent);}
+  .player[open] .player-box{animation:pop .45s var(--ease) both;}
+  @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
+
+  @media (max-width:900px){
+    .nav{display:none;}
+    .menu-btn{display:block;}
+    .site-head{grid-template-columns:1fr auto;}
+    .project{grid-template-columns:1fr;}
+    .p-info{position:static;}
+    .contact{grid-template-columns:1fr;}
+  }
+  @media (max-width:640px){
+    .portal-link{display:none;}
+    .manifest{padding-bottom:150px;-webkit-mask-image:radial-gradient(circle at calc(100% - 22px) 2px,transparent 38px,#000 39px),radial-gradient(circle at calc(100% - 80px) -6px,transparent 27px,#000 28px),radial-gradient(circle at calc(100% + 4px) 62px,transparent 31px,#000 32px);mask-image:radial-gradient(circle at calc(100% - 22px) 2px,transparent 38px,#000 39px),radial-gradient(circle at calc(100% - 80px) -6px,transparent 27px,#000 28px),radial-gradient(circle at calc(100% + 4px) 62px,transparent 31px,#000 32px);}
+    .ruler-labs span:not(:nth-child(3n+1)){visibility:hidden;}
+    .seg .long{display:none;}
+    .seg .short{display:inline;}
+    .manifest .mouth{height:150px;right:22px;bottom:-30px;}
+  }
+  @media (max-width:520px){
+    .brand img{height:84px;}
+    .btn{padding:9px 12px;font-size:14px;}
+    .trust{flex-direction:column;align-items:stretch;}
+    .trust-label{border-right:none;padding-right:0;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+    .phone:nth-child(3){display:none;}
+    .panel{min-height:320px;}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .hero-h .row{animation:rise .85s var(--ease) both;}
+    .hero-h .row:nth-child(2){animation-delay:.08s;}
+    .hero-h .row:nth-child(3){animation-delay:.16s;}
+    .hero-foot{animation:rise .85s var(--ease) .3s both;}
+    @supports (animation-timeline:view()){
+      .phone,.wide{animation:drift linear both;animation-timeline:view();}
+      .phone:nth-child(1){--d:22px;}
+      .phone:nth-child(2){--d:-30px;}
+      .phone:nth-child(3){--d:14px;}
+      .wide:nth-child(1){--d:-14px;}
+      .wide:nth-child(2){--d:14px;}
+    }
+  }
+  @keyframes drift{from{translate:0 var(--d,0px);}to{translate:0 calc(var(--d,0px) * -1);}}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .js .marquee-track,.js .win-row,.js .playhead{animation:none;}
+    .js .win-rows{overflow-x:auto;}
+    *,*::before,*::after{transition-duration:.01ms !important;}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#arbeiten">Zum Inhalt springen</a>
+
+<header class="site-head">
+  <a class="brand" href="#top" aria-label="Social Bites Startseite"><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806" decoding="async"></a>
+  <nav class="nav" aria-label="Hauptnavigation">
+    <a href="#arbeiten">Arbeiten</a>
+    <a href="#leistungen">Leistungen</a>
+    <a href="#reels">Reels</a>
+    <a href="#ablauf">So läuft's</a>
+  </nav>
+  <div class="head-actions">
+    <a class="portal-link" href="portal.html"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Kundenportal</span></a>
+    <a class="btn" href="#kontakt"><span>Projekt starten</span><i class="dot"></i></a>
+    <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Menü" inert>
+  <a href="#arbeiten"><small>01</small>Arbeiten</a>
+  <a href="#leistungen"><small>02</small>Leistungen</a>
+  <a href="#reels"><small>03</small>Reels</a>
+  <a href="#ablauf"><small>04</small>So läuft's</a>
+  <a href="#kontakt"><small>05</small>Kontakt</a>
+  <a href="portal.html"><small>06</small>Kundenportal</a>
+  <p class="mono">Social Bites · Berlin</p>
+</nav>
+
+<main id="top">
+  <section class="hero">
+    <h1 class="hero-h">
+      <span class="row">Wir machen
+        <span class="pills" aria-hidden="true"><span class="pill">Viral</span><span class="pill">Food</span><span class="pill">Openings</span></span>
+      </span>
+      <span class="row">Content <span class="tile"><video data-src="media/tile_zalando.mp4" poster="media/tile_zalando.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> den</span>
+      <span class="row">keiner wegscrollt</span>
+    </h1>
+    <div class="hero-foot">
+      <p class="hero-sub">Social Media trifft echtes Offline-Marketing. Für Gastro und Marken aus Berlin.<br><span class="hot">Über 5 Millionen Views auf TikTok und Instagram.</span></p>
+      <div class="trust">
+        <div class="trust-label">
+          <img src="mouth.webp" alt="" width="200" height="383" decoding="async">
+          <span class="mono">Projekte<br>mit</span>
+        </div>
+        <div class="marquee" role="img" aria-label="Projekte mit Zalando und Nike, Burger King, Aldi Nord, Wolt, Mmaah, ESN, The Pizzary, Spreequell und Crazy Canes">
+          <div class="marquee-track" data-loop aria-hidden="true">
+            <span class="client c2">Zalando × Nike</span><span class="client c1">Burger King</span><span class="client c3">Aldi Nord</span><span class="client c4">Wolt</span><span class="client c4">Mmaah</span><span class="client c1">ESN</span><span class="client c2">The Pizzary</span><span class="client c5">Spreequell</span><span class="client c3">Crazy Canes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="arbeiten">
+    <div class="sec-pill"><span class="pill">Unser • Reel</span></div>
+    <h2 class="big-h">Ausgewählte Projekte<sup>(09)</sup></h2>
+    <p class="lede">Views sind nett. Was zählt: wer vorbeikommt, wer bestellt, wer wiederkommt.</p>
+
+    <div class="pj">
+      <article class="project">
+        <div class="p-info is-active">
+          <div class="p-kicker mono"><i></i>01 / 09 · TikTok · Fashion</div>
+          <h3 class="p-name">Zalando × Nike</h3>
+          <p class="p-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p>
+          <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span></div>
+          <div class="stats"><div class="stat"><b>67.400</b><span>Views auf TikTok</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="zalando_nike"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media is-active">
+          <div class="panel dark">
+            <button class="phone solo ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button>
+            <span class="cap mono">Zalando × Nike · TikTok</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>02 / 09 · TikTok · Food</div>
+          <h3 class="p-name">Burger King</h3>
+          <p class="p-desc">Ein Trend, eine Crew, ein Restaurant. Tanz-Video mitten im Burger King, gedreht für den TikTok-Kanal von Burger King Deutschland.</p>
+          <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Food Content</span></div>
+          <div class="stats"><div class="stat"><b>4,7 Mio</b><span>Views auf TikTok</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="burgerking"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.tiktok.com/@burgerkingde/video/7212568313107434758" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel fire">
+            <button class="phone solo ref" type="button" data-play="burgerking" aria-label="Burger King: Video mit Ton abspielen (0:27)"><video data-src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button>
+            <span class="cap mono">Burger King · TikTok</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>03 / 09 · Instagram · Gamescom</div>
+          <h3 class="p-name">Aldi Nord</h3>
+          <p class="p-desc">POV: Du musst vor der Gamescom noch schnell zu Aldi. Freier Fall über die Karte bis zum GG Market.</p>
+          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Gamescom</span></div>
+          <div class="stats"><div class="stat"><b>26.800</b><span>Views auf Instagram</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="aldi"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel tint">
+            <button class="phone solo ref" type="button" data-play="aldi" aria-label="Aldi Nord: Video mit Ton abspielen (0:05)"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:05</span></button>
+            <span class="cap mono">Aldi Nord · Instagram</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>04 / 09 · Instagram · Reel</div>
+          <h3 class="p-name">Wolt</h3>
+          <p class="p-desc">Tulpen von Blume 2000, per Wolt nach Hause geliefert. Reel mit Untertiteln Wort für Wort.</p>
+          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
+          <div class="stats"><div class="stat"><b>10.100</b><span>Views auf Instagram</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="wolt"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CsJYMBOoYdo/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel sand">
+            <button class="phone solo ref" type="button" data-play="wolt" aria-label="Wolt: Video mit Ton abspielen (0:43)"><video data-src="media/ref_wolt_loop.mp4" poster="media/ref_wolt.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:43</span></button>
+            <span class="cap mono">Wolt · Reel</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>05 / 09 · Food-Franchise · Instagram</div>
+          <h3 class="p-name">Mmaah</h3>
+          <p class="p-desc">Food-Challenge bei Mmaah KBBQ: Schaffst du beide, zahlst du nix. Ein Reel, das Hunger macht und zum Mitmachen einlädt.</p>
+          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Food-Challenge</span></div>
+          <div class="stats"><div class="stat"><b>76.100</b><span>Views auf Instagram</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="mmaah"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CwBDHYYsfEn/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel sand">
+            <button class="phone solo ref" type="button" data-play="mmaah" aria-label="Mmaah: Video mit Ton abspielen (0:36)"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:36</span></button>
+            <span class="cap mono">KBBQ Challenge · Reel</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>06 / 09 · Instagram · Reel</div>
+          <h3 class="p-name">ESN</h3>
+          <p class="p-desc">Mit ESN bei der Mr. Olympia. Athleten, Backstage und die riesigen Billboards, geschnitten als Reel für Instagram.</p>
+          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
+          <div class="stats"><div class="stat"><b>200.000</b><span>Views auf Instagram</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="esn"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CmPNFWbs6o-/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel dark">
+            <button class="phone solo ref" type="button" data-play="esn" aria-label="ESN: Video mit Ton abspielen (0:52)"><video data-src="media/ref_esn_loop.mp4" poster="media/ref_esn.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:52</span></button>
+            <span class="cap mono">ESN · Reel</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>07 / 09 · Gastro · Berlin</div>
+          <h3 class="p-name">The Pizzary</h3>
+          <p class="p-desc">Neueröffnung von null auf Schlange vor der Tür. Umbau als Serie, Food-Reels jeden Tag, und am Opening 500 Pizzen gratis. Online angekündigt, offline eingelöst.</p>
+          <div class="p-chips"><span class="pill">Opening-Event</span><span class="pill">Reels</span><span class="pill">Dreh &amp; Schnitt</span></div>
+          <div class="stats"><div class="stat"><b>500</b><span>Gratis-Pizzen zur Neueröffnung</span></div><div class="stat"><b>28.08.</b><span>Opening-Tag, wochenlang angeteasert</span></div></div>
+          
+        </div>
+        <div class="p-media">
+          <div class="panel tint">
+            <div class="phone"><video data-src="media/store.mp4" poster="media/store.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <div class="phone"><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <div class="phone"><video data-src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <span class="cap mono">Umbau · Opening · Food</span>
+          </div>
+          <div class="panel sand">
+            <div class="phone"><video data-src="media/pizza_best.mp4" poster="media/pizza_best.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <div class="phone"><video data-src="media/asmr.mp4" poster="media/asmr.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <div class="phone"><video data-src="media/menu.mp4" poster="media/menu.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <span class="cap mono">Daily Reels</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>08 / 09 · Instagram · Reel</div>
+          <h3 class="p-name">Spreequell</h3>
+          <p class="p-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p>
+          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span></div>
+          <div class="stats"><div class="stat"><b>173.000</b><span>Views auf Instagram</span></div></div>
+          <div class="p-actions"><button class="btn" type="button" data-play="spreequell"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+        </div>
+        <div class="p-media">
+          <div class="panel tint">
+            <button class="phone solo ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button>
+            <span class="cap mono">Spreequell · Reel</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="p-info">
+          <div class="p-kicker mono"><i></i>09 / 09 · Chicken-Konzept · Pitch</div>
+          <h3 class="p-name">Crazy Canes</h3>
+          <p class="p-desc">Pitch-Content, der schmeckt, bevor es den Laden gibt. Sauce, Crunch und ein Maskottchen mit eigener Story.</p>
+          <div class="p-chips"><span class="pill">Konzept</span><span class="pill">Food-Clips</span><span class="pill">Maskottchen</span></div>
+          <div class="stats"><div class="stat"><b>4</b><span>Food-Clips für den Pitch</span></div><div class="stat"><b>1</b><span>Maskottchen mit eigener Story</span></div></div>
+          
+        </div>
+        <div class="p-media">
+          <div class="panel fire">
+            <div class="phone"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <div class="phone"><video data-src="media/sauce.mp4" poster="media/sauce.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+            <span class="cap mono">Sauce · Crunch</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="manifest-wrap">
+    <section class="manifest" aria-labelledby="prinzip">
+      <span class="pill">Unser • Prinzip</span>
+      <h2 id="prinzip"><span>Online gesehen.</span><span>Offline gegessen.</span></h2>
+      <p>Reichweite ist erst der Anfang. Wir drehen Content, der Hunger macht, und planen die Aktion vor Ort gleich mit. So werden aus Views Gäste.</p>
+      <div class="cta-row">
+        <a class="btn inv" href="#reels"><span>Reels ansehen</span><i class="dot"></i></a>
+        <a class="btn inv" href="#leistungen"><span>Leistungen ansehen</span><i class="dot"></i></a>
+      </div>
+      <img class="mouth" src="mouth.webp" alt="" width="200" height="383" loading="lazy" decoding="async">
+    </section>
+  </div>
+
+  <div class="ruler" aria-hidden="true">
+    <div class="ruler-track">
+      <div class="seg mono" style="left:0;width:20%"><span>Hook</span></div>
+      <div class="seg mono" style="left:20%;width:60%"><span>Story</span></div>
+      <div class="seg mono" style="left:80%;width:20%"><span><span class="long">Call to Action</span><span class="short">CTA</span></span></div>
+      <div class="playhead"></div>
+    </div>
+    <div class="ruler-labs mono"><span>0S</span><span>1S</span><span>2S</span><span>3S</span><span>4S</span><span>5S</span><span>6S</span><span>7S</span><span>8S</span><span>9S</span><span>10S</span><span>11S</span><span>12S</span><span>13S</span><span>14S</span><span>15S</span></div>
+    <p class="ruler-note mono">15 Sekunden. Drei Sekunden entscheiden.</p>
+  </div>
+
+  <section class="services" id="leistungen">
+    <div class="sec-pill"><span class="pill">Unsere • Leistungen</span></div>
+    <ol class="svc-list">
+      <li class="svc">
+        <h3>Food <span class="tile"><video data-src="media/pizza_best.mp4" poster="media/pizza_best.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">Content<sup>(01)</sup></span></h3>
+        <p>Virale Reels für TikTok und Instagram, Karussells, Grafiken, Fotos. Wir drehen vor Ort, führen Regie, bringen die Talente mit, schneiden, posten und antworten auf Kommentare.</p>
+      </li>
+      <li class="svc">
+        <h3>Konzept <span class="tile"><video data-src="media/crispy.mp4" poster="media/crispy.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">&amp; Story<sup>(02)</sup></span></h3>
+        <p>Skripte, Storys, Shotlists und der komplette Marketingplan. Online und offline zusammen gedacht, damit beide Welten voneinander profitieren. Manchmal entsteht dabei gleich ein neues Gericht.</p>
+      </li>
+      <li class="svc">
+        <h3>Openings <span class="tile"><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">&amp; Events<sup>(03)</sup></span></h3>
+        <p>Neueröffnungen, die vorher online laufen und am Tag X die Schlange vor die Tür holen. Dazu Events zwischendurch und Influencer aus unserem Netzwerk, für Reichweite außerhalb deines Kanals.</p>
+      </li>
+      <li class="svc">
+        <h3>Branding <span class="tile"><video data-src="media/store.mp4" poster="media/store.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">&amp; Laden<sup>(04)</sup></span></h3>
+        <p>Logo, Farben, Schrift, Menuboard, Fensterbeklebung, Werbeanlage. Bis zu Order-Terminals und digitalen TV-Menuboards, die über die Cloud laufen. Alles, was man braucht, um einen Laden aufzumachen.</p>
+      </li>
+      <li class="svc">
+        <h3>Film <span class="tile"><video data-src="media/wings.mp4" poster="media/wings.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">Produktion<sup>(05)</sup></span></h3>
+        <p>Kommerzielle Filme auf cinematischem Level. Von der Director's Interpretation über Produktion und Organisation bis zum fertigen Film.</p>
+      </li>
+      <li class="svc">
+        <h3>KI <span class="tile"><video data-src="media/perlmutt.mp4" poster="media/perlmutt.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">Automation<sup>(06)</sup></span></h3>
+        <p>Workflows, Research und Automationen, die Unternehmern Zeit zurückgeben. Eingerichtet für deinen Anwendungsfall, nicht von der Stange.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="reels" id="reels">
+    <div class="sec-pill"><span class="pill">Aus dem • Schnitt</span></div>
+    <h2 class="big-h">Frisch aus der Küche</h2>
+    <div class="win-rows" aria-hidden="true">
+      <div class="win-row" data-loop>
+        <div class="win" data-play="burgerking"><div class="win-bar mono"><i></i><i></i><i></i><b>BurgerKing_TikTok.mp4</b></div><div class="win-body"><video data-src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:27</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_Spiral.mp4</b></div><div class="win-body"><video data-src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="spreequell"><div class="win-bar mono"><i></i><i></i><i></i><b>Spreequell_Reel.mp4</b></div><div class="win-body"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:25</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>CrazyCanes_Tender_Crunch.mp4</b></div><div class="win-body"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="zalando_nike"><div class="win-bar mono"><i></i><i></i><i></i><b>Zalando_Nike_TikTok.mp4</b></div><div class="win-body"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:50</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_500_Free_Pizza.mp4</b></div><div class="win-body"><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="mmaah"><div class="win-bar mono"><i></i><i></i><i></i><b>Mmaah_KBBQ_Challenge.mp4</b></div><div class="win-body"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:36</span><span class="win-scrub"></span></div></div>
+      </div>
+      <div class="win-row rev" data-loop>
+        <div class="win" data-play="esn"><div class="win-bar mono"><i></i><i></i><i></i><b>ESN_Olympia.mp4</b></div><div class="win-body"><video data-src="media/ref_esn_loop.mp4" poster="media/ref_esn.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:52</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_Pizza_Best.mp4</b></div><div class="win-body"><video data-src="media/pizza_best.mp4" poster="media/pizza_best.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="wolt"><div class="win-bar mono"><i></i><i></i><i></i><b>Wolt_Blume2000.mp4</b></div><div class="win-body"><video data-src="media/ref_wolt_loop.mp4" poster="media/ref_wolt.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:43</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>CrazyCanes_Sauce.mp4</b></div><div class="win-body"><video data-src="media/sauce.mp4" poster="media/sauce.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="aldi"><div class="win-bar mono"><i></i><i></i><i></i><b>AldiNord_Gamescom.mp4</b></div><div class="win-body"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:05</span><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_POV_ASMR.mp4</b></div><div class="win-body"><video data-src="media/asmr.mp4" poster="media/asmr.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>Mmaah_Crispy_Love_01.mp4</b></div><div class="win-body"><video data-src="media/crispy.mp4" poster="media/crispy.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="ablauf">
+    <h2 class="big-h">So beißen wir uns <img src="mouth.webp" alt="" width="200" height="383" loading="lazy" decoding="async"> rein</h2>
+    <div class="cards" id="cards" tabindex="0" role="group" aria-label="Ablauf in fünf Schritten">
+      <article class="card">
+        <div><div class="step mono"><b>Schritt 01</b><span>Briefing</span></div>
+        <h3>Wir hören zu.</h3>
+        <p>Was soll passieren? Mehr Gäste, ein Opening, ein neues Gericht, ein Kanal, der endlich läuft. Erst das Ziel, dann der Content.</p></div>
+        <div class="card-foot"><span class="tag both mono">Online + Offline</span><video data-src="media/menu.mp4" poster="media/menu.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+      </article>
+      <article class="card">
+        <div><div class="step mono"><b>Schritt 02</b><span>Konzept</span></div>
+        <h3>Moodboard, Story, Plan.</h3>
+        <p>Wir bauen die Geschichte, schreiben die Skripte und legen fest, wie Social Media und echte Aktion vor Ort zusammenspielen.</p></div>
+        <div class="card-foot"><span class="tag both mono">Online + Offline</span><video data-src="media/crispy.mp4" poster="media/crispy.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+      </article>
+      <article class="card">
+        <div><div class="step mono"><b>Schritt 03</b><span>Dreh</span></div>
+        <h3>Shotlist steht, Kamera läuft.</h3>
+        <p>Komplette Shotlist für den Tag. Wir drehen bei dir vor Ort, führen Regie und organisieren die Talente vor der Kamera.</p></div>
+        <div class="card-foot"><span class="tag mono">Online</span><video data-src="media/asmr.mp4" poster="media/asmr.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+      </article>
+      <article class="card">
+        <div><div class="step mono"><b>Schritt 04</b><span>Schnitt</span></div>
+        <h3>Schnitt, Posting, Community.</h3>
+        <p>Editing mit Hook in den ersten drei Sekunden. Auf Wunsch posten wir für dich und kümmern uns um Kommentare und Nachrichten.</p></div>
+        <div class="card-foot"><span class="tag mono">Online</span><video data-src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+      </article>
+      <article class="card">
+        <div><div class="step mono"><b>Schritt 05</b><span>Vor Ort</span></div>
+        <h3>Aus Views werden Gäste.</h3>
+        <p>Opening, Event, Influencer-Abend. Der Moment, in dem Leute vom Handy aufschauen und bei dir vor der Tür stehen.</p></div>
+        <div class="card-foot"><span class="tag off mono">Offline</span><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+      </article>
+    </div>
+    <div class="car-nav">
+      <button type="button" id="prev" aria-label="Vorheriger Schritt">&#8592;</button>
+      <button type="button" id="next" aria-label="Nächster Schritt">&#8594;</button>
+    </div>
+  </section>
+
+  <section class="contact" id="kontakt">
+    <div>
+      <h2>Content, den Leute sehen wollen <a class="btn" href="portal.html"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span>Kundenportal ansehen</span><i class="dot"></i></a></h2>
+      <div class="mail"><small>Lieber per Mail?</small><span class="mail-soon">Unsere Adresse kommt mit der eigenen Domain.</span></div>
+    </div>
+    <div class="foot-grid">
+      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
+      <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
+      <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-bar mono">
+    <span>Website Version 2.0</span>
+    <a href="#top">Nach oben &#8593;</a>
+    <span>&copy; 2026 Social Bites. Alle Rechte vorbehalten.</span>
+  </div>
+  <div class="foot-logo"><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806" loading="lazy" decoding="async"></div>
+</footer>
+
+<dialog class="player" id="player" aria-labelledby="player-title">
+  <div class="player-box">
+    <div class="player-head">
+      <div><span class="player-meta mono" id="player-meta"></span><h2 id="player-title">Video</h2></div>
+      <button class="player-x" id="player-x" type="button" aria-label="Video schließen">&#215;</button>
+    </div>
+    <video id="player-video" controls playsinline preload="none"></video>
+    <a class="p-link" id="player-link" href="#" target="_blank" rel="noopener"><span id="player-link-text">Original ansehen</span><span aria-hidden="true">&#8599;</span></a>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  var d = document, root = d.documentElement;
+  root.lang = 'de';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var saveData = !!(navigator.connection && navigator.connection.saveData);
+  var hasIO = 'IntersectionObserver' in window;
+  var canPlay = hasIO && !reduce && !saveData;
+  function each(sel, fn, ctx){ [].slice.call((ctx || d).querySelectorAll(sel)).forEach(fn); }
+  function play(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+
+  // Laufbänder: Inhalt einmal doppeln, damit die Schleife nahtlos ist
+  if (!reduce) each('[data-loop]', function(row){
+    [].slice.call(row.children).forEach(function(k){ row.appendChild(k.cloneNode(true)); });
+  });
+
+  // Clips erst laden, wenn sie in Sichtweite kommen, und außerhalb pausieren
+  var live = [];
+  if (canPlay) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var v = e.target, i = live.indexOf(v);
+        if (e.isIntersecting) {
+          if (!v.getAttribute('src')) v.src = v.dataset.src;
+          if (i < 0) live.push(v);
+          if (!d.hidden) play(v);
+        } else {
+          if (i >= 0) live.splice(i, 1);
+          v.pause();
+        }
+      });
+    }, {rootMargin: '160px 0px'});
+    each('video[data-src]', function(v){ io.observe(v); });
+  }
+
+  d.addEventListener('visibilitychange', function(){
+    live.forEach(function(v){ if (d.hidden) v.pause(); else play(v); });
+  });
+
+  if (hasIO) {
+    // Projekte: aktiver Clip-Block bestimmt, welcher Text links steht
+    var infos = [].slice.call(d.querySelectorAll('.pj .p-info')), medias = [].slice.call(d.querySelectorAll('.pj .p-media'));
+    var ioP = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var k = medias.indexOf(e.target);
+        infos.forEach(function(el, i){ el.classList.toggle('is-active', i === k); el.classList.toggle('is-past', i < k); });
+        medias.forEach(function(el, i){ el.classList.toggle('is-active', i === k); });
+      });
+    }, {rootMargin: '-50% 0px -50% 0px'});
+    medias.forEach(function(m){ ioP.observe(m); });
+
+    // Navigation: aktuellen Abschnitt markieren
+    var links = [].slice.call(d.querySelectorAll('.nav a')), byId = {};
+    links.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
+    var ioS = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var a = byId[e.target.id];
+        if (e.isIntersecting) { links.forEach(function(l){ l.removeAttribute('aria-current'); }); a.setAttribute('aria-current', 'true'); }
+        else a.removeAttribute('aria-current');
+      });
+    }, {rootMargin: '-45% 0px -50% 0px'});
+    Object.keys(byId).forEach(function(id){ var s = d.getElementById(id); if (s) ioS.observe(s); });
+
+    // Laufbänder außerhalb des Bildschirms anhalten
+    var ioM = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ e.target.classList.toggle('is-off', !e.isIntersecting); });
+    });
+    each('.marquee,.win-rows', function(el){ ioM.observe(el); });
+  }
+
+  // Header: beim Runterscrollen weg, beim Hochscrollen wieder da
+  var head = d.querySelector('.site-head'), lastY = window.scrollY, ticking = false;
+  function onScroll(){
+    var y = window.scrollY;
+    head.classList.toggle('is-stuck', y > 40);
+    if (!root.classList.contains('menu-open')) {
+      if (y > lastY + 4 && y > 320) head.classList.add('is-hidden');
+      else if (y < lastY - 4 || y <= 320) head.classList.remove('is-hidden');
+    }
+    lastY = y; ticking = false;
+  }
+  window.addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, {passive: true});
+  onScroll();
+
+  // Handy-Menü
+  var btn = d.querySelector('.menu-btn'), mnav = d.getElementById('mnav'), main = d.querySelector('main');
+  function setMenu(open){
+    root.classList.toggle('menu-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    mnav.inert = !open; main.inert = open;
+    if (open) head.classList.remove('is-hidden');
+  }
+  btn.addEventListener('click', function(){ setMenu(!root.classList.contains('menu-open')); });
+  mnav.addEventListener('click', function(e){ if (e.target.closest('a')) setMenu(false); });
+  d.addEventListener('keydown', function(e){ if (e.key === 'Escape' && root.classList.contains('menu-open')) { setMenu(false); btn.focus(); } });
+  matchMedia('(min-width: 901px)').addEventListener('change', function(e){ if (e.matches) setMenu(false); });
+
+  // Ablauf-Karten
+  var cards = d.getElementById('cards'), prev = d.getElementById('prev'), next = d.getElementById('next');
+  function step(dir){ cards.scrollBy({left: dir * (cards.querySelector('.card').offsetWidth + 16), behavior: reduce ? 'auto' : 'smooth'}); }
+  function ends(){ prev.disabled = cards.scrollLeft <= 2; next.disabled = cards.scrollLeft >= cards.scrollWidth - cards.clientWidth - 2; }
+  prev.addEventListener('click', function(){ step(-1); });
+  next.addEventListener('click', function(){ step(1); });
+  cards.addEventListener('scroll', ends, {passive: true});
+  window.addEventListener('resize', ends);
+  ends();
+
+  // Referenzvideos mit Ton im Player
+  var REFS = {
+    burgerking:{t:'Burger King',p:'TikTok',d:'0:27',v:'4,7 Mio',u:'https://www.tiktok.com/@burgerkingde/video/7212568313107434758'},
+    esn:{t:'ESN',p:'Instagram',d:'0:52',v:'200.000',u:'https://www.instagram.com/reel/CmPNFWbs6o-/'},
+    spreequell:{t:'Spreequell',p:'Instagram',d:'0:25',v:'173.000',u:'https://www.instagram.com/reel/CwVHT8jNNu4/'},
+    mmaah:{t:'Mmaah',p:'Instagram',d:'0:36',v:'76.100',u:'https://www.instagram.com/reel/CwBDHYYsfEn/'},
+    zalando_nike:{t:'Zalando × Nike',p:'TikTok',d:'0:50',v:'67.400',u:'https://www.tiktok.com/@aleynakuzh/video/7560384846766411030'},
+    aldi:{t:'Aldi Nord',p:'Instagram',d:'0:05',v:'26.800',u:'https://www.instagram.com/p/ChfHx-UlQm7/'},
+    wolt:{t:'Wolt',p:'Instagram',d:'0:43',v:'10.100',u:'https://www.instagram.com/reel/CsJYMBOoYdo/'}
+  };
+  var dlg = d.getElementById('player'), pv = d.getElementById('player-video');
+  function openRef(k){
+    var r = REFS[k]; if (!r) return;
+    if (typeof dlg.showModal !== 'function') { window.open(r.u, '_blank', 'noopener'); return; }
+    d.getElementById('player-title').textContent = r.t;
+    d.getElementById('player-meta').textContent = r.p + ' · ' + r.d + ' · ' + r.v + ' Views';
+    d.getElementById('player-link').href = r.u;
+    d.getElementById('player-link-text').textContent = 'Original auf ' + r.p;
+    pv.poster = 'media/ref_' + k + '.webp';
+    pv.src = 'media/ref_' + k + '.mp4';
+    live.forEach(function(v){ v.pause(); });
+    dlg.showModal();
+    play(pv);
+  }
+  d.addEventListener('click', function(e){
+    var t = e.target.closest('[data-play]');
+    if (t) { e.preventDefault(); openRef(t.dataset.play); }
+  });
+  // Sofort stoppen: das close-Ereignis kommt teils verzögert, dann liefe der Ton weiter
+  function stopPlayer(){ pv.pause(); if (pv.getAttribute('src')) { pv.removeAttribute('src'); pv.load(); } }
+  function closePlayer(){ stopPlayer(); if (dlg.open) dlg.close(); }
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) closePlayer(); });
+  d.getElementById('player-x').addEventListener('click', closePlayer);
+  dlg.addEventListener('cancel', stopPlayer);
+  dlg.addEventListener('close', function(){
+    stopPlayer();
+    if (!d.hidden) live.forEach(play);
+  });
+
+  // Mail kopieren
+  var copy = d.getElementById('copy');
+  if (copy) {
+  copy.hidden = false;
+  copy.addEventListener('click', function(){
+    var mail = copy.dataset.mail;
+    function done(){ copy.textContent = 'Kopiert'; setTimeout(function(){ copy.textContent = 'Kopieren'; }, 1800); }
+    function legacy(){
+      var t = d.createElement('textarea'); t.value = mail; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+      d.body.appendChild(t); t.select();
+      try { if (d.execCommand('copy')) done(); } catch (err) {}
+      d.body.removeChild(t);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(mail).then(done, legacy);
+    else legacy();
+  });
+  }
+
+  // Berlin-Uhr
+  var clock = d.getElementById('clock');
+  var fmt = new Intl.DateTimeFormat('de-DE', {timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', weekday: 'long', day: 'numeric', month: 'long'});
+  function tick(){
+    var p = {}; fmt.formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    clock.textContent = p.hour + ':' + p.minute + ' Uhr, ' + p.weekday + ', ' + p.day + '. ' + p.month;
+  }
+  tick(); setInterval(tick, 15000);
+})();
+</script>
+</body>
+</html>
