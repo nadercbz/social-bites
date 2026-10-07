@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Leistungen</title>
+<meta name="description" content="Leistungsübersicht von Social Bites: eigene Leistungen, Partnernetzwerk und was im Ausbau ist.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: ein A4-Blatt auf Papier-Grund, druckbar. CI Social Bites. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper-2);color:var(--ink);font-family:var(--display);font-weight:500;-webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(20px,5vw,56px) 16px;padding-block:clamp(20px,5vw,56px);}
+  img{max-width:100%;height:auto;display:block;}
+  .sheet{width:100%;max-width:794px;background:var(--card);box-shadow:0 30px 70px -30px rgba(30,27,26,.35),0 2px 6px rgba(30,27,26,.08);padding:clamp(28px,7vw,68px) clamp(22px,7vw,64px) clamp(36px,6vw,56px);}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;}
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;border-bottom:1.5px solid var(--ink);padding-bottom:22px;margin-bottom:26px;}
+  header .eyebrow{color:var(--accent-ink);margin:0 0 12px;}
+  header h1{margin:0 0 10px;font-weight:800;font-size:clamp(40px,7vw,64px);line-height:.9;letter-spacing:-.055em;}
+  header .sub{margin:0 0 14px;font-size:16.5px;line-height:1.45;max-width:44ch;color:#3a3532;}
+  header img{width:clamp(76px,13vw,112px);}
+  .meta{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);}
+  .intro{margin:0 0 34px;font-size:16px;line-height:1.6;max-width:62ch;}
+  section{margin-bottom:38px;}
+  .sh{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:18px;}
+  .sh .tag{color:var(--accent-ink);}
+  .sh h2{margin:0;font-weight:800;font-size:22px;letter-spacing:-.035em;}
+  .note{margin:-8px 0 18px;font-size:14px;color:var(--mute);max-width:60ch;}
+  .cats{display:flex;flex-direction:column;gap:22px;}
+  .cat{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 16px;break-inside:avoid;page-break-inside:avoid;}
+  .cat .idx{font-family:var(--mono);font-size:12.5px;color:var(--accent-ink);padding-top:4px;}
+  .cat h3{grid-column:2;margin:0 0 6px;font-weight:800;font-size:19px;letter-spacing:-.03em;}
+  ul{margin:0;padding:0;list-style:none;}
+  .cat ul{grid-column:2;max-width:58ch;}
+  li{position:relative;padding-left:16px;font-size:15px;line-height:1.5;}
+  li + li{margin-top:4px;}
+  li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--accent);}
+  .partner{border-left:3px solid var(--accent);padding-left:18px;display:grid;gap:6px;max-width:60ch;}
+  .partner li::before{background:var(--ink);}
+  .ausbau{background:var(--accent-tint);border:1px dashed rgba(184,56,6,.45);border-radius:10px;padding:20px 22px;}
+  .ausbau .note{margin-top:0;color:#6b3a1f;}
+  .ausbau ul{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;}
+  .ausbau li::before{background:transparent;border:1.5px solid var(--accent-ink);width:7px;height:7px;top:.55em;}
+  .flows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .flow{border:1.5px solid var(--ink);border-radius:10px;padding:14px;display:grid;gap:6px;}
+  .flow b{font-weight:800;font-size:17px;letter-spacing:-.03em;}
+  .flow span{font-size:13.5px;color:var(--mute);line-height:1.4;}
+  .flow.or{background:var(--accent);border-color:var(--accent);}
+  .flow.or span{color:var(--ink);}
+  footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--mute);}
+  @media (max-width:560px){
+    header{grid-template-columns:minmax(0,1fr);}
+    header img{order:-1;}
+    .cat{grid-template-columns:minmax(0,1fr);}
+    .cat h3,.cat ul{grid-column:1;}
+    .ausbau ul,.flows{grid-template-columns:minmax(0,1fr);}
+  }
+  @media print{
+    @page{size:A4;margin:14mm 14mm;}
+    body{padding:0;background:#fff;display:block;}
+    .sheet{box-shadow:none;max-width:none;width:auto;padding:0;}
+  }
+</style>
+</head>
+<body>
+<article class="sheet">
+  <header>
+    <div>
+      <p class="mono eyebrow">Leistungen · Stand 07.10.2026</p>
+      <h1>Was wir machen.</h1>
+      <p class="sub">Content, Konzept und Ausstattung für Gastro und Marken, die online und vor Ort gleichzeitig wirken sollen.</p>
+      <div class="meta mono"><span>Social Bites</span><span>Berlin</span><span>Online gesehen. Offline gegessen.</span></div>
+    </div>
+    <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  </header>
+
+  <p class="intro">Social Bites bündelt alles, was eine Gastro- oder Food-Marke braucht: von der ersten Content-Idee über die komplette Markenausstattung bis zum Opening vor Ort. Die Übersicht trennt eigene Leistungen von dem, was wir über unser Partnernetzwerk organisieren.</p>
+
+  <section>
+    <div class="sh"><span class="mono tag">A</span><h2>Eigene Leistungen</h2></div>
+    <div class="cats">
+      <div class="cat"><span class="idx">01</span><h3>Content-Produktion für Social Media</h3><ul>
+        <li>Virale Kurzvideos für TikTok und Instagram</li>
+        <li>Grafiken, Illustrationen und Karussell-Posts</li>
+        <li>Fotos und Videos, auch mit Drohne</li>
+        <li>Dreh vor Ort inklusive Regie und Shotlist</li>
+        <li>Talents und Creator vor der Kamera</li>
+        <li>Schnitt, Editing, Posting und Community</li></ul></div>
+      <div class="cat"><span class="idx">02</span><h3>Konzept, Strategie und Events</h3><ul>
+        <li>Konzepte, Skripte und Storytelling</li>
+        <li>Marketingplan, der Social Media mit echtem Offline-Marketing verbindet</li>
+        <li>Mitentwicklung neuer Produkte, meist ein neues Gericht</li>
+        <li>Opening-Events und wiederkehrende Events</li>
+        <li>Guerilla, Gamification und Gimmicks für den Laden</li></ul></div>
+      <div class="cat"><span class="idx">03</span><h3>Corporate Identity und Ausstattung</h3><ul>
+        <li>Logo, Farbwelt, Schrift und Stil</li>
+        <li>Menüboards, Druck, Verpackung und Werbeanlagen</li>
+        <li>Anbringung digital oder Print, zum Beispiel Fensterbeklebung</li>
+        <li>Order-Terminals und digitale TV-Menüboards über Cloud-Software</li></ul></div>
+      <div class="cat"><span class="idx">04</span><h3>Influencer-Marketing und Netzwerk</h3><ul>
+        <li>Food Influencer und UGC Creator aus dem eigenen Netzwerk</li>
+        <li>Reichweite außerhalb des eigenen Kanals</li>
+        <li>Talents für Dreh und Events</li></ul></div>
+      <div class="cat"><span class="idx">05</span><h3>Video- und Filmproduktion</h3><ul>
+        <li>Werbefilme, Musikvideos und Eventfilme</li>
+        <li>Director's Interpretation für größere Produktionen</li>
+        <li>Produktion und Organisation bis zum fertigen Film</li></ul></div>
+      <div class="cat"><span class="idx">06</span><h3>Ads, Web und KI</h3><ul>
+        <li>Meta und TikTok Ads</li>
+        <li>SEO und GEO, damit man euch auch in KI-Suchen findet</li>
+        <li>Websites und App-Entwicklung</li>
+        <li>KI-Automation: Abläufe prüfen, einrichten, betreuen</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh"><span class="mono tag">B</span><h2>Über unser Partnernetzwerk</h2></div>
+    <p class="note">Nicht selbst erbracht, sondern über Partner organisiert und von uns begleitet.</p>
+    <ul class="partner">
+      <li>3D-Visualisierungen für neue Standorte</li>
+      <li>Präsentationen inklusive Content für die Flächenakquise</li>
+      <li>Makler und Kontakte zur Flächensuche</li>
+      <li>Günstiger, zuverlässiger Stromanbieter für den laufenden Betrieb</li>
+    </ul>
+  </section>
+
+  <section class="ausbau">
+    <div class="sh" style="border-color:rgba(184,56,6,.3)"><span class="mono tag">C</span><h2>Im Ausbau</h2></div>
+    <p class="note">Bauen wir gerade auf. Auf Anfrage schon möglich.</p>
+    <ul>
+      <li>Bewertungsmanagement und Kundensupport</li>
+      <li>Food-Konzeption und Angebotsentwicklung</li>
+      <li>WhatsApp- und E-Mail-Marketing</li>
+      <li>Treueprogramme und Kundenbindung</li>
+      <li>Liefergeschäft optimieren</li>
+      <li>Direktbestellungen aufbauen</li>
+      <li>Catering- und Firmenkunden</li>
+      <li>Lokale Kooperationen</li>
+      <li>PR und Pressearbeit</li>
+      <li>Reporting und Analyse</li>
+      <li>Standortanalyse</li>
+    </ul>
+  </section>
+
+  <section style="margin-top:38px">
+    <div class="sh"><span class="mono tag">D</span><h2>So arbeiten wir</h2></div>
+    <div class="flows">
+      <div class="flow or"><b>Bites Opening</b><span>Neuer Laden mit Content und Opening-Event. 10 Wochen vorher bis 4 Wochen danach.</span></div>
+      <div class="flow"><b>Bites for Gastro</b><span>Monatliche Betreuung für bestehende Läden, die mehr Gäste wollen.</span></div>
+      <div class="flow"><b>Bites for Brands</b><span>Kampagnen für Ketten und Marken, mit Einkauf und Freigabestufen.</span></div>
+    </div>
+  </section>
+
+  <footer class="mono"><span>Social Bites · Berlin</span><span>Preise im Angebot</span></footer>
+</article>
+</body>
+</html>

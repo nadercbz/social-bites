@@ -1,0 +1,1482 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: Startseite mit drei Kundentypen als große Karten. Im Ablauf links die Schrittschiene, rechts die Schrittkarte. Eine CI, ein Look (Creme). */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3;
+    --paper-2:#EDE4D0;
+    --card:#FFFDF8;
+    --ink:#1E1B1A;
+    --mute:#6B6357;
+    --line:rgba(30,27,26,.14);
+    --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A;
+    --accent-ink:#B83806;
+    --accent-tint:#FFE2D0;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,3vw,40px);
+    --head:84px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --dots:radial-gradient(rgba(30,27,26,.15) 1px,transparent 1.3px);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--grain),var(--paper);color:var(--ink);
+    font-family:var(--display);font-weight:500;font-size:17px;line-height:1.4;letter-spacing:-.01em;
+    -webkit-font-smoothing:antialiased;overflow-x:clip;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  button,input,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:12px;line-height:1.3;}
+  .hot{color:var(--accent);}
+  .wrap{max-width:1360px;margin-inline:auto;padding-inline:var(--gutter);}
+  .skip{position:fixed;left:12px;top:-60px;z-index:100;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:6px;font-weight:600;text-decoration:none;}
+  .skip:focus{top:12px;}
+
+  /* Buttons wie auf der Website: der Punkt wächst zur Füllung */
+  .btn{
+    position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;
+    background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;
+    padding:10px 14px;font:600 15px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;text-decoration:none;
+    transition:color .3s ease,border-color .3s ease;white-space:nowrap;
+  }
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv .dot{background:var(--accent);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
+  .btn[disabled]{opacity:.4;cursor:default;}
+  .btn[disabled] .dot{transform:none;}
+  .btn.armed{border-color:var(--accent-ink);color:var(--accent-ink);}
+  .pill{
+    display:inline-block;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;line-height:1;
+    border:1.5px solid var(--ink);border-radius:999px;padding:6px 10px;text-transform:uppercase;white-space:nowrap;
+  }
+
+  /* Kopf */
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(246,240,227,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+  .top .wrap{display:flex;align-items:center;gap:14px;min-height:var(--head);padding-block:8px;}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;}
+  .brand img{height:64px;width:auto;}
+  .embedded .brand{display:none;}
+  .embedded .top nav a.ext{display:none;}
+  .brand .mono{color:var(--mute);border-left:1px solid var(--line-2);padding-left:14px;}
+  .top nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+  .top nav a{font-weight:600;font-size:15px;text-decoration:none;padding:8px 12px;border-radius:999px;border:1.5px solid transparent;}
+  .top nav a:hover{border-color:var(--line-2);}
+  .top nav a[aria-current="page"]{border-color:var(--ink);}
+  .top nav a.ext::after{content:" ↗";color:var(--accent-ink);}
+
+  /* Startseite */
+  .hero{padding-block:clamp(36px,6vw,88px) clamp(24px,3.5vw,44px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;}
+  .hero h1{margin:0;font-weight:800;font-size:clamp(46px,8.4vw,124px);line-height:.88;letter-spacing:-.055em;text-wrap:balance;max-width:12ch;}
+  .hero .lead{margin:22px 0 0;font-size:clamp(18px,1.55vw,22px);line-height:1.4;max-width:58ch;color:var(--mute);}
+  .hero .lead b{color:var(--ink);font-weight:650;}
+  .hero-mouth{width:clamp(70px,9vw,128px);transform:rotate(-8deg);margin-bottom:6px;}
+  .kicker{display:flex;align-items:center;gap:12px;margin:0 0 18px;}
+  .kicker::after{content:"";flex:1;height:1px;background:var(--line-2);}
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);}
+  .fcard{
+    position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;gap:16px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(20px,2vw,28px);
+    text-decoration:none;color:var(--ink);transition:border-color .3s ease;min-width:0;
+  }
+  .fcard > *{position:relative;z-index:1;}
+  .fcard > .dot{position:absolute;z-index:0;left:clamp(20px,2vw,28px);bottom:clamp(27px,2.4vw,35px);width:10px;height:10px;border-radius:50%;background:var(--accent);transition:transform .75s var(--ease);}
+  .fcard:hover > .dot,.fcard:focus-visible > .dot{transform:scale(150);}
+  .fcard:hover,.fcard:focus-visible{border-color:var(--accent);}
+  .fcard h3{margin:0;font-weight:800;font-size:clamp(32px,3.3vw,48px);line-height:.95;letter-spacing:-.045em;}
+  .fcard .line{margin:0;font-size:17px;line-height:1.4;}
+  .facts{margin:0;display:grid;gap:0;border-top:1px solid var(--line);}
+  .facts div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .facts dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding-top:2px;}
+  .facts dd{margin:0;font-size:15px;font-weight:600;}
+  .fcard:hover .facts dt{color:var(--ink);}
+  .fcard:hover .facts,.fcard:hover .facts div{border-color:rgba(30,27,26,.25);}
+  .mini{display:flex;gap:4px;flex-wrap:wrap;}
+  .mini i{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--ink);display:block;}
+  .mini i.half{background:linear-gradient(135deg,var(--accent) 50%,transparent 50%);}
+  .mini i.on{background:var(--ink);}
+  .run{margin:0;color:var(--accent-ink);}
+  .fcard:hover .run{color:var(--ink);}
+  .go{margin-top:auto;padding-left:22px;font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;}
+  .go b{transition:transform .4s var(--ease);}
+  .fcard:hover .go b{transform:translateX(6px);}
+
+  .band{
+    margin-top:clamp(12px,1.4vw,20px);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:clamp(16px,3vw,48px);align-items:center;
+    background:var(--ink);color:var(--paper);border-radius:14px;padding:clamp(22px,2.6vw,34px);text-decoration:none;
+    position:relative;isolation:isolate;overflow:hidden;
+  }
+  .band > *{position:relative;z-index:1;}
+  .band > .dot{position:absolute;z-index:0;right:46px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--accent);transition:transform .75s var(--ease);}
+  .band:hover > .dot,.band:focus-visible > .dot{transform:scale(170);}
+  .band:hover,.band:focus-visible{color:var(--ink);}
+  .band h3{margin:0;font-weight:800;font-size:clamp(30px,3.2vw,46px);line-height:.95;letter-spacing:-.045em;}
+  .band p{margin:0;font-size:16px;line-height:1.45;opacity:.85;}
+  .band .go{margin:0;padding:0 34px 0 0;}
+
+  .rules{padding-block:clamp(44px,6vw,80px);}
+  .rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1.5px solid var(--ink);}
+  .rule{padding:18px 18px 22px 0;border-bottom:1px solid var(--line);min-width:0;}
+  .rule:not(:nth-child(4n+1)){padding-left:18px;border-left:1px solid var(--line);}
+  .rule h4{margin:0 0 6px;font-size:19px;font-weight:800;letter-spacing:-.03em;display:flex;gap:9px;align-items:baseline;}
+  .rule h4::before{content:"";width:9px;height:9px;background:var(--accent);flex:none;transform:translateY(-1px);}
+  .rule p{margin:0;font-size:15px;line-height:1.45;color:var(--mute);}
+  .foot{padding-block:28px 48px;border-top:1px solid var(--line);display:flex;gap:10px 24px;flex-wrap:wrap;align-items:center;color:var(--mute);font-size:14px;}
+  .foot a{font-weight:600;color:var(--ink);}
+
+  /* Ablauf */
+  .fhead{padding-block:clamp(22px,3vw,40px) 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:end;}
+  .back{display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:15px;text-decoration:none;color:var(--mute);margin-bottom:16px;}
+  .back:hover{color:var(--ink);}
+  .fhead h1{margin:10px 0 0;font-weight:800;font-size:clamp(42px,6.4vw,92px);line-height:.88;letter-spacing:-.055em;}
+  .fhead .fline{margin:12px 0 0;max-width:62ch;color:var(--mute);font-size:18px;}
+  .meter{min-width:220px;display:grid;gap:8px;justify-items:end;}
+  .bar{display:block;width:220px;max-width:100%;height:10px;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;background:var(--card);}
+  .bar i{display:block;height:100%;background:var(--accent);transition:width .5s var(--ease);}
+
+  .setup{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) auto;gap:12px 16px;align-items:end;padding:16px;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;}
+  .fld{display:grid;gap:6px;min-width:0;}
+  .fld label{color:var(--mute);}
+  .fld input{width:100%;background:var(--card);border:1.5px solid var(--ink);border-radius:8px;padding:10px 12px;font-size:18px;font-weight:650;letter-spacing:-.02em;min-height:46px;}
+  .fld input::placeholder{color:#9C9283;font-weight:500;}
+  .fld input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .fld small{color:var(--mute);font-size:13px;line-height:1.35;}
+  .sbtns{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:22px;}
+
+  .tabs{display:flex;gap:4px;margin-top:22px;border-bottom:1.5px solid var(--ink);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{appearance:none;background:none;border:0;padding:12px 14px 11px;font-weight:700;font-size:16px;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-1.5px;white-space:nowrap;color:var(--mute);}
+  .tab[aria-selected="true"]{border-color:var(--accent);color:var(--ink);}
+  .tab .n{font-family:var(--mono);font-size:12px;font-weight:500;margin-left:6px;}
+
+  .flowgrid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:clamp(16px,2.4vw,36px);padding-block:24px 64px;align-items:start;}
+  .rail{position:sticky;top:calc(var(--head) + 20px);display:grid;gap:4px;max-height:calc(100vh - var(--head) - 40px);overflow-y:auto;padding-right:4px;scrollbar-width:thin;}
+  .rph{padding:14px 0 6px;color:var(--mute);}
+  .rph:first-child{padding-top:0;}
+  .ri{
+    appearance:none;display:grid;grid-template-columns:34px minmax(0,1fr);grid-template-areas:"n t" "n w" "n p";column-gap:10px;row-gap:2px;
+    text-align:left;background:transparent;border:1px solid transparent;border-radius:10px;padding:9px 10px;cursor:pointer;width:100%;
+    transition:background-color .25s ease,border-color .25s ease;
+  }
+  .ri:hover{background:rgba(255,253,248,.7);border-color:var(--line);}
+  .ri.on{background:var(--card);border-color:var(--ink);}
+  .rn{grid-area:n;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500;align-self:start;margin-top:1px;}
+  .ri.on .rn{background:var(--ink);color:var(--paper);}
+  .ri.done .rn{background:var(--accent);border-color:var(--accent);color:var(--ink);font-size:15px;}
+  .rt{grid-area:t;font-weight:700;font-size:15.5px;line-height:1.2;letter-spacing:-.02em;}
+  .rt em{font-style:normal;color:var(--accent-ink);}
+  .rw{grid-area:w;color:var(--mute);font-size:11px;}
+  .rp{grid-area:p;height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:5px;}
+  .rp i{display:block;height:100%;background:var(--accent);}
+
+  .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,3vw,44px);min-width:0;}
+  .step.enter{animation:enter .45s var(--ease);}
+  @keyframes enter{from{opacity:.001;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .shead .sk{margin:0;color:var(--accent-ink);}
+  .shead h2{margin:10px 0 0;font-weight:800;font-size:clamp(36px,4.6vw,66px);line-height:.92;letter-spacing:-.05em;text-wrap:balance;}
+  .goal{margin:16px 0 0;font-size:clamp(18px,1.5vw,21px);line-height:1.4;max-width:60ch;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .m{display:inline-flex;align-items:baseline;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-weight:650;font-size:15px;}
+  .m .mono{color:var(--mute);font-size:11px;}
+  .m small{color:var(--mute);font-weight:500;font-size:13px;}
+  .sgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,3vw,44px);margin-top:clamp(24px,3vw,40px);}
+  .col{display:grid;gap:clamp(20px,2.4vw,32px);align-content:start;min-width:0;}
+  .blk h4{margin:0 0 12px;display:flex;align-items:center;gap:10px;color:var(--ink);}
+  .blk h4::after{content:"";flex:1;height:1px;background:var(--line-2);}
+  .blk > p{margin:0;font-size:15.5px;line-height:1.45;}
+
+  .chks{display:grid;gap:2px;}
+  .chk{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;align-items:start;padding:9px 8px;margin-inline:-8px;border-radius:8px;cursor:pointer;font-size:16.5px;line-height:1.4;}
+  .chk:hover{background:var(--paper);}
+  .chk input{position:absolute;opacity:0;width:1px;height:1px;margin:0;}
+  .box{width:24px;height:24px;border:1.75px solid var(--ink);border-radius:6px;background:var(--card);margin-top:-1px;transition:background-color .2s ease,border-color .2s ease;}
+  .chk input:checked + .box{background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%231E1B1A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat;border-color:var(--accent);}
+  .chk input:focus-visible + .box{outline:2px solid var(--accent-ink);outline-offset:2px;}
+  .chk input:checked ~ .txt{color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(184,56,6,.55);text-decoration-thickness:1.5px;}
+
+  .kn{font-weight:750;color:var(--accent-ink);}
+  .ph{font-family:var(--mono);font-size:.82em;letter-spacing:.02em;border:1px dashed var(--line-2);border-radius:4px;padding:0 4px;color:var(--mute);white-space:nowrap;}
+
+  .terms{display:grid;gap:8px;}
+  .term{display:grid;grid-template-columns:104px minmax(0,1fr) auto;grid-template-areas:"d t c" "d t k";gap:4px 12px;align-items:start;padding:11px 12px;border:1px solid var(--line);border-left:4px solid var(--ink);border-radius:8px;background:var(--paper);}
+  .term.tk{border-left-color:var(--accent);}
+  .term.tf{border-left-color:var(--accent-ink);border-left-style:double;border-left-width:5px;}
+  .term.ti{border-left-color:var(--mute);}
+  .term.past{opacity:.55;}
+  .term.next{background:var(--accent-tint);border-color:var(--accent);}
+  .td{grid-area:d;display:grid;gap:2px;}
+  .td b{font-weight:750;font-size:15px;letter-spacing:-.01em;font-variant-numeric:tabular-nums;}
+  .td span{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.03em;}
+  .tt{grid-area:t;font-size:15.5px;line-height:1.38;font-weight:600;min-width:0;}
+  .tc{grid-area:c;justify-self:end;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;border:1.25px solid var(--ink);white-space:nowrap;}
+  .tk .tc{background:var(--accent);border-color:var(--accent);}
+  .tf .tc{background:var(--ink);color:var(--paper);}
+  .tcal{grid-area:k;justify-self:end;font-weight:700;font-size:13.5px;color:var(--accent-ink);text-decoration:none;white-space:nowrap;padding:2px 0;}
+  .tcal:hover{text-decoration:underline;text-underline-offset:3px;}
+  .tstep{display:block;margin-top:4px;background:none;border:0;padding:0;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--mute);cursor:pointer;text-align:left;text-transform:uppercase;}
+  .tstep:hover{color:var(--accent-ink);text-decoration:underline;}
+  .nexttag{display:inline-block;margin-left:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);}
+  .hint{margin:10px 0 0;font-size:14px;color:var(--mute);line-height:1.4;}
+
+  .paths{display:grid;gap:12px;}
+  .path{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:baseline;font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;line-height:1.5;}
+  .path a{font-weight:500;color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px;}
+  .path i{font-style:normal;color:var(--accent-ink);}
+  .path .kn{font-family:var(--display);font-size:14px;}
+  .pw{margin:3px 0 0;font-size:15px;line-height:1.4;}
+  .pitem{padding-left:12px;border-left:2px solid var(--line-2);}
+
+  .warn{background:var(--accent-tint);border-radius:10px;padding:16px 18px;}
+  .warn h4{color:var(--accent-ink);}
+  .warn h4::after{background:rgba(184,56,6,.35);}
+  .gets{margin:0;padding:0;list-style:none;display:grid;gap:7px;}
+  .gets li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:10px;font-size:15.5px;line-height:1.4;}
+  .gets li::before{content:"";width:8px;height:8px;background:var(--ink);margin-top:7px;}
+
+  .ptab{width:100%;border-collapse:collapse;font-size:14.5px;}
+  .ptab th,.ptab td{text-align:left;vertical-align:top;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);}
+  .ptab th{font-weight:700;width:42%;}
+  .ptab td{color:var(--ink);}
+  .pcap{margin:8px 0 0;font-size:13px;color:var(--mute);}
+  .ex{margin-top:12px;background:var(--paper);border:1px dashed var(--line-2);border-radius:8px;padding:10px 12px;font-size:14.5px;line-height:1.45;}
+  .ex b{font-weight:750;}
+
+  .form{margin-top:clamp(28px,3.4vw,48px);padding-top:clamp(22px,2.6vw,32px);border-top:1.5px solid var(--ink);}
+  .fhd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:end;margin-bottom:18px;}
+  .fhd h4{grid-column:1/-1;margin:0;}
+  .fhd p{margin:0;font-size:15px;color:var(--mute);max-width:62ch;}
+  .fbtns{display:flex;gap:8px;flex-wrap:wrap;}
+  .fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+  fieldset{margin:0;border:1px solid var(--line);border-radius:10px;padding:14px 14px 16px;display:grid;gap:5px;align-content:start;background:var(--paper);min-width:0;}
+  legend{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:0 6px;margin-left:-6px;color:var(--accent-ink);}
+  fieldset label{font-size:13.5px;font-weight:650;margin-top:7px;line-height:1.3;}
+  fieldset label:first-of-type{margin-top:0;}
+  fieldset input,fieldset textarea{width:100%;background:var(--card);border:1px solid var(--line-2);border-radius:6px;padding:8px 9px;font-size:15px;font-weight:500;line-height:1.35;resize:vertical;}
+  fieldset input:focus,fieldset textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+
+  .snav{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:clamp(28px,3.4vw,48px) calc(clamp(20px,3vw,44px) * -1) calc(clamp(20px,3vw,44px) * -1);padding:14px clamp(20px,3vw,44px) calc(14px + env(safe-area-inset-bottom,0px));background:rgba(255,253,248,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);border-radius:0 0 16px 16px;}
+  .snav .sx{color:var(--mute);}
+  .snav .nt{max-width:28ch;overflow:hidden;text-overflow:ellipsis;}
+
+  /* Alle Termine */
+  .alld{padding-block:24px 64px;}
+  .alld-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:end;margin-bottom:18px;}
+  .alld-head h2{margin:0;font-weight:800;font-size:clamp(30px,3.4vw,46px);letter-spacing:-.045em;line-height:.95;}
+  .alld-head p{margin:8px 0 0;color:var(--mute);max-width:64ch;font-size:16px;}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;}
+  .legend i{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--ink);}
+  .legend .lk i{background:var(--accent);border-color:var(--accent);}
+  .legend .lf i{background:var(--ink);}
+  .month{margin:20px 0 8px;color:var(--accent-ink);}
+  .alld .terms{max-width:980px;}
+  .alld .term{grid-template-columns:120px minmax(0,1fr) auto;background:var(--card);}
+
+  /* Ablage */
+  .ab-hero{padding-block:clamp(28px,4.4vw,64px) 8px;}
+  .ab-hero h1{margin:12px 0 0;font-weight:800;font-size:clamp(44px,7vw,104px);line-height:.88;letter-spacing:-.055em;max-width:13ch;}
+  .ab-hero p{margin:18px 0 0;font-size:clamp(18px,1.5vw,21px);color:var(--mute);max-width:60ch;}
+  .ab-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,2.4vw,32px);padding-block:clamp(24px,3vw,40px);align-items:start;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,2.4vw,30px);min-width:0;}
+  .panel h2{margin:0 0 4px;font-weight:800;font-size:clamp(24px,2.3vw,32px);letter-spacing:-.04em;line-height:1;}
+  .panel > p{margin:6px 0 18px;color:var(--mute);font-size:15px;}
+  .tree,.tree ul{list-style:none;margin:0;padding:0;}
+  .tree{font-family:var(--mono);font-size:13px;line-height:1.35;}
+  .tree ul{margin-left:9px;padding-left:16px;border-left:1.5px solid var(--line-2);}
+  .tree li{position:relative;padding:5px 0;}
+  .tree ul > li::before{content:"";position:absolute;left:-16px;top:14px;width:12px;border-top:1.5px solid var(--line-2);}
+  .tree .tf{font-weight:500;color:var(--ink);}
+  .tree a.tf{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px;}
+  .tree small{display:block;font-family:var(--display);font-size:13.5px;color:var(--mute);letter-spacing:0;margin-top:1px;}
+  .tree .new > .tf{color:var(--accent-ink);font-weight:500;}
+  .tag{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--ink);border-radius:999px;padding:2px 7px;margin-left:8px;white-space:nowrap;}
+  .tag.ink{background:var(--ink);color:var(--paper);}
+  .wtab{width:100%;border-collapse:collapse;font-size:14.5px;}
+  .wtab th,.wtab td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);}
+  .wtab thead th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:500;border-bottom:1.5px solid var(--ink);}
+  .wtab tbody th{font-weight:700;width:30%;}
+  .wtab td:last-child{color:var(--mute);white-space:nowrap;}
+  .scroll{overflow-x:auto;}
+  .names{display:grid;gap:10px;}
+  .name{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:15px;}
+  .name code{font-family:var(--mono);font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:3px 6px;word-break:break-all;}
+  .phases{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0 4px;}
+  .phases i{font-style:normal;color:var(--accent-ink);}
+  .phases .pill.win{background:var(--accent);border-color:var(--accent);}
+  .ostabs{display:grid;gap:0;margin-top:8px;}
+  .ostab{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;}
+  .ostab b{font-weight:750;}
+  .safe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .safe div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;}
+  .safe h3{margin:0 0 4px;font-size:16px;font-weight:800;letter-spacing:-.02em;}
+  .safe p{margin:0;font-size:14.5px;color:var(--mute);line-height:1.45;}
+
+  dialog.copy{border:1.5px solid var(--ink);border-radius:14px;padding:22px;background:var(--card);color:var(--ink);width:min(640px,calc(100vw - 32px));}
+  dialog.copy::backdrop{background:rgba(30,27,26,.45);}
+  dialog.copy h3{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:-.03em;}
+  dialog.copy p{margin:0 0 12px;color:var(--mute);font-size:15px;}
+  dialog.copy textarea{width:100%;height:260px;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--paper);}
+  dialog.copy .row{display:flex;justify-content:flex-end;margin-top:12px;}
+
+  @media (max-width:1180px){
+    .fgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .sgrid{grid-template-columns:minmax(0,1fr);}
+    .rgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .rule:not(:nth-child(4n+1)){padding-left:0;border-left:0;}
+    .rule:nth-child(2n){padding-left:18px;border-left:1px solid var(--line);}
+    .ab-grid{grid-template-columns:minmax(0,1fr);}
+  }
+  @media (max-width:980px){
+    .cards{grid-template-columns:minmax(0,1fr);}
+    .band{grid-template-columns:minmax(0,1fr);}
+    .band .go{padding:0 0 0 22px;}
+    .band > .dot{right:auto;left:clamp(22px,2.6vw,34px);top:auto;bottom:clamp(27px,3vw,39px);margin:0;}
+    .flowgrid{grid-template-columns:minmax(0,1fr);gap:16px;padding-top:16px;}
+    .rail{position:static;display:flex;gap:8px;overflow-x:auto;max-height:none;padding:2px 2px 10px;scroll-snap-type:x proximity;}
+    .rph{display:none;}
+    .ri{flex:0 0 210px;scroll-snap-align:start;background:rgba(255,253,248,.6);border-color:var(--line);}
+    .setup{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+    .sbtns{grid-column:1/-1;padding-bottom:0;}
+    .fhead{grid-template-columns:minmax(0,1fr);}
+    .meter{justify-items:start;}
+  }
+  @media (max-width:640px){
+    :root{--head:70px;}
+    .brand img{height:50px;}
+    .brand .mono{display:none;}
+    .top nav a{padding:7px 9px;font-size:14px;}
+    .top nav a.ext{display:none;}
+    .hero{grid-template-columns:minmax(0,1fr);}
+    .hero-mouth{display:none;}
+    .setup{grid-template-columns:minmax(0,1fr);}
+    .sbtns .btn{padding:9px 11px;font-size:14px;gap:8px;}
+    .fgrid{grid-template-columns:minmax(0,1fr);}
+    .rgrid{grid-template-columns:minmax(0,1fr);}
+    .rule:nth-child(2n){padding-left:0;border-left:0;}
+    .term,.alld .term{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"d c" "t t" "k k";}
+    .tcal{justify-self:start;}
+    .snav .nt{display:none;}
+    .name,.ostab{grid-template-columns:minmax(0,1fr);gap:4px;}
+    .safe{grid-template-columns:minmax(0,1fr);}
+    .facts div{grid-template-columns:84px minmax(0,1fr);}
+    .alld-head{grid-template-columns:minmax(0,1fr);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start" aria-label="Social Bites Playbook, zur Auswahl">
+      <img src="media/logo_sb.webp" alt="Social Bites" width="360" height="322">
+      <span class="mono">Playbook<br>Auftrag bis Abschluss</span>
+    </a>
+    <nav aria-label="Bereiche">
+      <a href="#start" data-nav="start">Abläufe</a>
+      <a href="#ablage" data-nav="ablage">Ablage</a>
+      <a class="ext" href="https://docs.google.com/spreadsheets/d/1_FqTqrjCY3Z9Tf0bUV6QOTejolP4MtBb5fELHgE6JIw" target="_blank" rel="noopener">OS</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Startseite -->
+<section id="v-start">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Vom Ja bis zur fertigen <span class="hot">Produktion.</span></h1>
+        <p class="lead">Wähle, wer vor dir sitzt. Dann gehst du Schritt für Schritt durch alles, was passiert: <b>Treffen, Angebot, Termine, Dreh, Schnitt, Betreuung, Rechnung und Ablage.</b> Jeder Schritt sagt dir, wer ihn macht, wann er dran ist und wo die Datei hinkommt.</p>
+      </div>
+      <img class="hero-mouth" src="media/mouth_sm.webp" alt="" width="63" height="120">
+    </div>
+
+    <p class="kicker mono">Wer sitzt vor dir?</p>
+    <div class="cards" id="cards"></div>
+
+    <a class="band" href="#ablage">
+      <span class="dot" aria-hidden="true"></span>
+      <h3>Ablage und Daten</h3>
+      <p>Kundendaten, Angebote, Rechnungen, Rohmaterial, Passwörter, Termine. Wo was liegt, wie es heißt und welcher Tab im OS wann dran ist.</p>
+      <span class="go">Wo liegt was <b aria-hidden="true">→</b></span>
+    </a>
+  </div>
+
+  <div class="wrap rules">
+    <p class="kicker mono">Spielregeln, gelten in jedem Ablauf</p>
+    <div class="rgrid">
+      <div class="rule"><h4>Wer bringt, der führt.</h4><p>Wer den Kunden reinholt, ist der Lead und begleitet ihn von der Anfrage bis zur Rechnung. Gilt, bis die Rollen im OS geklärt sind.</p></div>
+      <div class="rule"><h4>Schriftlich zählt.</h4><p>Zusagen, Freigaben und Änderungen nur in der WhatsApp-Gruppe oder per Mail. Was nur mündlich gesagt wurde, gibt es nicht.</p></div>
+      <div class="rule"><h4>Erst Geld, dann Dreh.</h4><p>Ohne Auftragsbestätigung und erste Rechnung kein Drehtag. Bei Marken gilt: ohne Bestellnummer keine Leistung.</p></div>
+      <div class="rule"><h4>Jede Datei ein Platz.</h4><p>Verträge und Rechnungen liegen nie in dem Ordner, den der Kunde sieht. Alles andere im Kundenordner.</p></div>
+      <div class="rule"><h4>Passwörter in den Tresor.</h4><p>Zugänge nur im Passwort-Manager. Nie im Sheet, im Drive oder im Chat. Wo es geht, Partnerzugang statt Login.</p></div>
+      <div class="rule"><h4>Sofort eintragen.</h4><p>Jeder Termin noch am selben Tag in den Kalender, jede Aufgabe ins OS. Kein Zettel, kein Kopf.</p></div>
+      <div class="rule"><h4>Online plus offline.</h4><p>Jedes Projekt bekommt mindestens eine Aktion, die Leute vom Handy in den Laden holt. Das ist unser Unterschied.</p></div>
+      <div class="rule"><h4>Nur echte Zahlen.</h4><p>Keine geschätzten Views und keine erfundenen Zitate in Reports, Pitches oder auf der Website.</p></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="foot">
+      <span>Social Bites, Berlin</span>
+      <a href="https://docs.google.com/spreadsheets/d/1_FqTqrjCY3Z9Tf0bUV6QOTejolP4MtBb5fELHgE6JIw" target="_blank" rel="noopener">Social Bites OS öffnen ↗</a>
+      <a href="https://drive.google.com/drive/folders/1A06bZGZa-nnHcozUo0pJSz_o5yq7EnvY" target="_blank" rel="noopener">Drive-Ordner Social Bites ↗</a>
+      <span>Haken und Notizen speichert diese Seite nur in deinem Browser.</span>
+    </div>
+  </div>
+</section>
+
+<!-- Ablauf -->
+<section id="v-flow" hidden>
+  <div class="wrap">
+    <div class="fhead">
+      <div>
+        <a class="back" href="#start">← Alle Abläufe</a><br>
+        <span class="pill" id="fTag"></span>
+        <h1 id="fName"></h1>
+        <p class="fline" id="fLine"></p>
+      </div>
+      <div class="meter" id="meter"></div>
+    </div>
+
+    <div class="setup">
+      <div class="fld">
+        <label class="mono" for="inK">Kunde</label>
+        <input id="inK" type="text" placeholder="Name des Ladens oder der Marke" autocomplete="off">
+        <small>Füllt Ordner, Dateinamen und Kalender automatisch aus.</small>
+      </div>
+      <div class="fld">
+        <label class="mono" for="inD" id="lblD">Datum</label>
+        <input id="inD" type="date">
+        <small id="dHint"></small>
+      </div>
+      <div class="sbtns">
+        <button class="btn" type="button" data-act="copydates"><span class="dot"></span><span>Termine kopieren</span></button>
+        <button class="btn" type="button" data-act="reset" data-label="Neuer Kunde"><span class="dot"></span><span>Neuer Kunde</span></button>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Ansicht">
+      <button class="tab" role="tab" id="tab-steps" aria-controls="flowgrid" aria-selected="true" data-tab="steps">Schritt für Schritt</button>
+      <button class="tab" role="tab" id="tab-dates" aria-controls="alldates" aria-selected="false" data-tab="dates">Alle Termine <span class="n" id="nDates"></span></button>
+    </div>
+
+    <div class="flowgrid" id="flowgrid" role="tabpanel" aria-labelledby="tab-steps">
+      <nav class="rail" id="rail" aria-label="Schritte"></nav>
+      <article class="step" id="step" aria-live="polite"></article>
+    </div>
+
+    <div class="alld" id="alldates" role="tabpanel" aria-labelledby="tab-dates" hidden></div>
+  </div>
+</section>
+
+<!-- Ablage -->
+<section id="v-ablage" hidden>
+  <div class="wrap">
+    <div class="ab-hero">
+      <span class="pill">Ablage und Daten</span>
+      <h1>Jede Datei hat einen Platz.</h1>
+      <p>Der Drive-Ordner Social Bites gibt die Struktur vor. Pro Kunde kommen zwei Ordner dazu: einer für die Arbeit, den der Kunde sehen darf, und einer für Geld und Verträge, den er nie sieht.</p>
+    </div>
+
+    <div class="ab-grid">
+      <div class="panel">
+        <h2>Drive: Social Bites</h2>
+        <p>Unterstrichene Ordner gibt es schon und öffnen sich im Drive. Orange Einträge legst du pro Kunde neu an.</p>
+        <ul class="tree">
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1mGbPIH-tGAipvoLPRd5h1RTnK0rYCYaD" target="_blank" rel="noopener">00_Firma &amp; Organisation</a></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1Z2E8xBHh-OW659gdZRyIEqyGhdVQasIa" target="_blank" rel="noopener">01_Kunden, Uploads &amp; Briefings</a>
+            <ul>
+              <li class="new"><span class="tf">Kundenname</span><em class="tag">pro Kunde</em><small>Arbeitsordner. Darf in Teilen mit dem Kunden geteilt werden.</small>
+                <ul>
+                  <li><span class="tf">00_Vom Kunden</span><em class="tag ink">mit Kunde geteilt</em><small>Logo, Menü, Fotos, alles, was der Kunde hochlädt</small></li>
+                  <li><span class="tf">01_Briefing</span><small>Aufnahmebogen, Gesprächsnotizen, Raumfotos</small></li>
+                  <li><span class="tf">02_Konzept</span><small>Moodboard, Skripte, Shotlist, Callsheets, Content-Plan</small></li>
+                  <li><span class="tf">03_Rohmaterial</span><small>je Drehtag ein Ordner, zusätzlich auf Festplatte</small></li>
+                  <li><span class="tf">04_Schnitt</span><small>Versionen v1, v2 und Projektdateien</small></li>
+                  <li><span class="tf">05_Final</span><small>freigegebene Exporte und Posting-Plan</small></li>
+                  <li><span class="tf">06_Event</span><small>nur bei Openings und Events: Run of Show, Gäste, Creator</small></li>
+                  <li><span class="tf">07_Reporting</span><small>Insights-Screenshots, Monats- und Abschlussreports</small></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/191m0aibn_PtBBszhzOegDLXxZ5eaAvoq" target="_blank" rel="noopener">02_Social Bites Marketing</a><small>BTS und Posts für unsere eigenen Kanäle, nur mit Freigabe des Kunden</small></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1exIjN_Fs3srsp5yf3oVvFBBEz0E69jta" target="_blank" rel="noopener">03_Strategie &amp; Growth</a></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1zasElHlwjOsZTfIXWkk0oXJqwKB6ps6Z" target="_blank" rel="noopener">04_Dokumente, Admin &amp; Verträge</a>
+            <ul>
+              <li class="new"><span class="tf">Kunden / Kundenname</span><em class="tag">pro Kunde</em><small>Geld und Verträge. Nie mit dem Kunden teilen.</small>
+                <ul>
+                  <li><span class="tf">Kundenblatt</span><small>Google Doc mit Stammdaten: Firma, Rechnungsadresse, USt-IdNr., Ansprechpartner</small></li>
+                  <li><span class="tf">01_Angebote &amp; Verträge</span><small>Angebote, Auftragsbestätigung, Vertrag, NDA, Bestellnummer</small></li>
+                  <li><span class="tf">02_Rechnungen</span><small>Rechnungen und Teilrechnungen als PDF</small></li>
+                  <li><span class="tf">03_Releases &amp; Genehmigungen</span><small>Model-Releases, Drehgenehmigungen, Sondernutzung</small></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1OXxRAiXlNHDcA9TssmZCpkkUBMKI5blI" target="_blank" rel="noopener">06_Social Bites Branding &amp; Asset-Bibliothek</a><small>unser Logo, Vorlagen, Schriften</small></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1tqdUHgV_KJkYmEsrhmvQkVpPOFFLJU4z" target="_blank" rel="noopener">07_Ads, SEO &amp; Social Media</a></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1HAWdsqy7e3BvEGn5dKRT8x8eZcfB-EZb" target="_blank" rel="noopener">08_Sales</a><small>Angebotsvorlage, Preislisten, Hot Leads</small></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1-uu6nRDpHqGlDpVGA1lHx28tyyJA09Ef" target="_blank" rel="noopener">09_HR &amp; Team</a></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1pkqXd5xEQcBpZz-OXnWzeJLe-JfiCp-E" target="_blank" rel="noopener">12_Onboarding / Pitches</a><small>Pitch-Decks, Treatments, dieses Playbook</small></li>
+          <li><a class="tf" href="https://drive.google.com/drive/folders/1CrsDZRxvFrC93GpILEP5kt3AwHMyKzve" target="_blank" rel="noopener">99_Archiv</a><small>Kundenordner nach 12 Monaten ohne neuen Auftrag</small></li>
+          <li><a class="tf" href="https://docs.google.com/spreadsheets/d/1_FqTqrjCY3Z9Tf0bUV6QOTejolP4MtBb5fELHgE6JIw" target="_blank" rel="noopener">Social Bites OS</a><small>Google Sheet: Pipeline, Aufgaben, Netzwerk, Leistungen, Portfolio</small></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>Was liegt wo</h2>
+        <p>Wenn du nicht weißt, wohin damit: hier nachsehen.</p>
+        <div class="scroll">
+          <table class="wtab">
+            <thead><tr><th scope="col">Was</th><th scope="col">Wo</th><th scope="col">Wann</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Kundendaten</th><td>04 › Kunden › Kunde › Kundenblatt. Kurzfassung im OS, Tab Pipeline</td><td>bei Zusage</td></tr>
+              <tr><th scope="row">Gesprächsnotizen</th><td>01 › Kunde › 01_Briefing</td><td>am selben Tag</td></tr>
+              <tr><th scope="row">Angebote, Verträge, NDA</th><td>04 › Kunden › Kunde › 01_Angebote &amp; Verträge</td><td>beim Versand</td></tr>
+              <tr><th scope="row">Rechnungen</th><td>04 › Kunden › Kunde › 02_Rechnungen</td><td>beim Versand</td></tr>
+              <tr><th scope="row">Releases, Genehmigungen</th><td>04 › Kunden › Kunde › 03_Releases &amp; Genehmigungen</td><td>am Drehtag</td></tr>
+              <tr><th scope="row">Uploads vom Kunden</th><td>01 › Kunde › 00_Vom Kunden</td><td>laufend</td></tr>
+              <tr><th scope="row">Rohmaterial</th><td>01 › Kunde › 03_Rohmaterial plus Festplatte</td><td>am Drehtag</td></tr>
+              <tr><th scope="row">Fertige Videos</th><td>01 › Kunde › 05_Final</td><td>nach Freigabe</td></tr>
+              <tr><th scope="row">Reports</th><td>01 › Kunde › 07_Reporting</td><td>monatlich</td></tr>
+              <tr><th scope="row">Pitch-Decks</th><td>12_Onboarding / Pitches</td><td>vor dem Pitch</td></tr>
+              <tr><th scope="row">Termine</th><td>Gemeinsamer Google Kalender „Social Bites“</td><td>sofort</td></tr>
+              <tr><th scope="row">Pipeline, Aufgaben, Talents</th><td>Social Bites OS</td><td>sofort</td></tr>
+              <tr><th scope="row">Passwörter, Zugänge</th><td>Passwort-Manager mit geteiltem Tresor</td><td>nie woanders</td></tr>
+              <tr><th scope="row">Referenzen mit Views</th><td>OS, Tab Portfolio</td><td>nach Abschluss</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>So heißen Dateien</h2>
+        <p>Gleiche Namen, damit jeder alles in Sekunden findet. Datum immer als Jahr, Monat, Tag.</p>
+        <div class="names">
+          <div class="name"><b>Drehtag</b><span><code>2026-10-12_Drehtag-1</code></span></div>
+          <div class="name"><b>Video</b><span><code>Kunde_Reel-03_Countdown_v2.mp4</code>, freigegeben mit <code>_final</code></span></div>
+          <div class="name"><b>Angebot</b><span><code>Angebot_NR_Kunde_2026-10.pdf</code></span></div>
+          <div class="name"><b>Teilrechnung</b><span><code>Teilrechnung_1_NR_Kunde_2026-10.pdf</code>, wie bei The Pizzary</span></div>
+          <div class="name"><b>Rechnung</b><span><code>Rechnung_NR_Kunde_2026-10.pdf</code></span></div>
+          <div class="name"><b>Report</b><span><code>Report_Kunde_2026-10.pdf</code></span></div>
+          <div class="name"><b>Kalender</b><span><code>SB · Kunde · Drehtag 1</code>. Mit Kunde in Mandarine, Intern in Grafit, Fristen in Tomate.</span></div>
+          <div class="name"><b>Gruppe</b><span><code>Social Bites × Kunde</code></span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Social Bites OS: welcher Tab wann</h2>
+        <p>Die Pipeline wandert mit jedem Ablauf mit. Diese Phasen gibt es im Sheet:</p>
+        <div class="phases"><span class="pill">Erstkontakt</span><i>›</i><span class="pill">Gespräch</span><i>›</i><span class="pill">Angebot raus</span><i>›</i><span class="pill">Verhandlung</span><i>›</i><span class="pill win">Gewonnen</span><span class="pill">Verloren</span></div>
+        <div class="ostabs">
+          <div class="ostab"><b>Pipeline</b><span>Neue Zeile beim Erstkontakt. Phase, Wert in Euro und Nächster Schritt mit Fällig am bei jedem Schritt pflegen.</span></div>
+          <div class="ostab"><b>Aufgaben</b><span>Nach der Zusage alle Schritte des Ablaufs mit Fällig am eintragen. Überfälliges wird rot.</span></div>
+          <div class="ostab"><b>Netzwerk</b><span>Creator, Talents, Fotografen anfragen und Status auf Angefragt oder Zugesagt setzen.</span></div>
+          <div class="ostab"><b>Leistungen</b><span>Preisideen fürs Angebot. Die Zahlen in diesem Playbook kommen von dort.</span></div>
+          <div class="ostab"><b>Portfolio</b><span>Nach Abschluss: Projekt mit echten Views und Link eintragen.</span></div>
+          <div class="ostab"><b>Meetings</b><span>Montags ab 14 Uhr. Kurz festhalten, was beim Kunden gut lief und was nicht.</span></div>
+          <div class="ostab"><b>Rollen &amp; Regeln</b><span>Noch offen: wer Rechnungen stellt und wie Einnahmen geteilt werden. Vor dem ersten Auftrag klären.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:64px">
+      <h2>Datenschutz und Sicherheit</h2>
+      <p>Kurz, aber nicht verhandelbar.</p>
+      <div class="safe">
+        <div><h3>Zugänge</h3><p>Instagram, TikTok und Google-Profil über Partnerzugang oder Manager-Rolle. Wenn doch ein Passwort nötig ist, nur im Passwort-Manager mit geteiltem Tresor.</p></div>
+        <div><h3>Gäste und Leads</h3><p>Gästelisten, Gewinnspiel-Leads und Newsletter nur mit Einwilligung. Nach dem Event nicht länger aufheben als nötig.</p></div>
+        <div><h3>Menschen vor der Kamera</h3><p>Jeder, der erkennbar im Bild ist, unterschreibt ein Release. Gäste ohne Zustimmung nicht erkennbar zeigen.</p></div>
+        <div><h3>Rechnungen aufbewahren</h3><p>Rechnungen und Belege mindestens 8 Jahre aufheben. Im Zweifel den Steuerberater fragen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<dialog class="copy" id="copyDlg" aria-labelledby="copyH">
+  <h3 id="copyH">Text zum Kopieren</h3>
+  <p>Dein Browser erlaubt hier kein automatisches Kopieren. Der Text ist markiert, kopiere ihn mit Cmd+C oder Strg+C.</p>
+  <textarea id="copyTa" readonly></textarea>
+  <div class="row"><button class="btn inv" type="button" id="copyClose"><span class="dot"></span><span>Schließen</span></button></div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+document.documentElement.lang="de";
+try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
+
+var SHEET="https://docs.google.com/spreadsheets/d/1_FqTqrjCY3Z9Tf0bUV6QOTejolP4MtBb5fELHgE6JIw";
+var DRIVE=function(id){return "https://drive.google.com/drive/folders/"+id;};
+var ROOTS={
+  C:{segs:["01_Kunden, Uploads & Briefings","{K}"],id:"1Z2E8xBHh-OW659gdZRyIEqyGhdVQasIa"},
+  A:{segs:["04_Dokumente, Admin & Verträge","Kunden","{K}"],id:"1zasElHlwjOsZTfIXWkk0oXJqwKB6ps6Z"},
+  P:{segs:["12_Onboarding / Pitches"],id:"1pkqXd5xEQcBpZz-OXnWzeJLe-JfiCp-E"},
+  M:{segs:["02_Social Bites Marketing"],id:"191m0aibn_PtBBszhzOegDLXxZ5eaAvoq"},
+  OS:{segs:["Social Bites OS"],url:SHEET}
+};
+
+/* Preisideen: wörtlich aus dem OS, Tab Leistungen */
+var PRICE={
+  content:["Social Media Content","90 bis 130 € pro Content, pauschal 3.000 bis 5.000 € bei großen Kunden"],
+  foto:["Fotos, Videos und Drohne","Fotos 800 bis 1.300 €, Events 1.200 bis 2.000 €, Drohne offen"],
+  event:["Openings, Events und Referenzvideos","5.000 bis 30.000 € je nach Größe, DJ 100 € pro Stunde"],
+  infl:["Influencer Marketing","50 € Consulting pro kostenlosem Influencer, dazu monatlich 150 € Pauschale plus Influencer-Kosten"],
+  brand:["Restaurant-Branding vor Ort","ab 1.500 bis 4.000 € und mehr"],
+  druck:["Druck, Werbung, Verpackung, Anbringen","Preis pro m², nach Anfrage"],
+  ads:["Meta und TikTok Ads","2.500 € Einrichtung plus monatlich 500 oder 600 €, Ad-Budget extra"],
+  pr:["PR und Pressearbeit","1.000 bis 2.000 €"],
+  d3:["3D Visuals","2.000 € für 5 Ansichten, über Vitaliy"],
+  bew:["Bewertungsmanagement","400 bis 1.000 €"],
+  treue:["Treueprogramme","1.000 bis 3.000 €"],
+  liefer:["Liefergeschäft optimieren","800 bis 2.500 €"],
+  direkt:["Direktbestellungen aufbauen","ab 1.500 €"],
+  report:["Reporting und Analyse","ab 800 €"]
+};
+
+/* Aufnahmebögen fürs Treffen: [id, Frage, lang] */
+var FORMS={
+  opening:[
+    {t:"Kunde und Ansprechpartner",f:[["o_firma","Name des Ladens, Firma"],["o_inhaber","Inhaber, wer unterschreibt?"],["o_kontakt","Ansprechpartner im Alltag: Name, Telefon, Mail",1],["o_freigabe","Wer gibt Content frei, wie schnell?"]]},
+    {t:"Konzept und Produkt",f:[["o_konzept","Küche und Konzept in einem Satz",1],["o_signature","Signature-Gericht, Bestseller"],["o_preis","Preisniveau und Zielgruppe"],["o_zeiten","Öffnungszeiten, Sitzplätze"],["o_liefer","Lieferung über Wolt, Lieferando, Uber Eats?"]]},
+    {t:"Marke und Laden",f:[["o_ci","Logo, Farben, Schrift schon da?"],["o_aussen","Menüboard, Fensterfolie, Schild, Werbeanlage: was fehlt?",1],["o_bau","Stand der Bauphase, wann ist die Küche fertig?",1]]},
+    {t:"Standort",f:[["o_adresse","Adresse"],["o_umfeld","Umfeld: Unis, Büros, Gyms, Laufwege, Nachbarn",1],["o_draussen","Event draußen geplant? Gehweg, Musik, Schlange"]]},
+    {t:"Opening",f:[["o_datum","Wunschdatum und Uhrzeit"],["o_pre","Pre-Opening für Creator und Presse am Vortag?"],["o_gratis","Gratis-Aktion: wie viele Portionen pro Stunde schafft die Küche?",1],["o_budget","Budget fürs Event: DJ, Deko, Merch, Essen"]]},
+    {t:"Social und Ziele",f:[["o_kanaele","Kanäle und Follower heute, Google-Profil angelegt?",1],["o_ziel","Woran messen wir Erfolg? Gäste, Views, Bewertungen, Leads",1],["o_notiz","Sonstiges, Bauchgefühl",1]]}
+  ],
+  gastro:[
+    {t:"Kunde und Ansprechpartner",f:[["g_firma","Name des Ladens, Firma"],["g_inhaber","Inhaber, wer unterschreibt?"],["g_kontakt","Ansprechpartner im Alltag: Name, Telefon, Mail",1],["g_freigabe","Wer gibt Content frei, wie schnell?"]]},
+    {t:"Ist-Stand",f:[["g_kanaele","Kanäle, Follower, wer postet bisher und wie oft?",1],["g_google","Google: Schnitt und Anzahl Bewertungen, wird geantwortet?"],["g_liefer","Lieferplattformen und ihr Anteil am Umsatz"]]},
+    {t:"Problem und Ziel",f:[["g_luecke","Wann fehlen Gäste? Mittag, Abend, Wochentage",1],["g_ziel","Was soll in 3 Monaten anders sein?",1],["g_marge","Bestseller und Gerichte mit guter Marge"]]},
+    {t:"Laden und Dreh",f:[["g_zeigen","Was darf gezeigt werden? Küche, Team, Gäste"],["g_drehzeit","Beste Drehzeit: vor Öffnung, ruhige Stunden"],["g_team","Wer aus dem Team will vor die Kamera?"]]},
+    {t:"Umfeld",f:[["g_wett","Wettbewerb in der Straße",1],["g_zielgruppe","Zielgruppe und Umfeld",1]]},
+    {t:"Budget und Rahmen",f:[["g_budget","Budget pro Monat und Laufzeit"],["g_extra","Offen für Ads, Influencer, Aktionen im Laden?"],["g_notiz","Sonstiges, Bauchgefühl",1]]}
+  ],
+  brands:[
+    {t:"Ansprechpartner und Struktur",f:[["b_marke","Marke und Unternehmen"],["b_rolle","Wer brieft uns? Rolle, Abteilung"],["b_agentur","Beteiligte Agenturen: Lead, Media, PR",1],["b_freigabe","Wer entscheidet, wie viele Freigabestufen?",1]]},
+    {t:"Kampagne",f:[["b_ziel","Ziel und KPI",1],["b_anlass","Produkt oder Anlass: Launch, Aktion, Saison"],["b_zeit","Zeitraum und Launch-Datum"],["b_markt","Märkte, Regionen, Filialen"]]},
+    {t:"Deliverables",f:[["b_formate","Anzahl, Formate, Längen, Versionen, Cutdowns",1],["b_kanal","Kanäle: Marken-Account, Creator, Paid"],["b_talent","Creator oder Talents gewünscht? Vorgaben?"]]},
+    {t:"Marke und Recht",f:[["b_guide","Brand Guidelines, Do's and Don'ts",1],["b_legal","Claims, Allergene, Disclaimer, Legal-Freigabe",1],["b_rechte","Nutzungsrechte: Medien, Gebiet, Dauer, Paid Usage",1]]},
+    {t:"Einkauf und Geld",f:[["b_budget","Budgetrahmen"],["b_einkauf","Einkauf: Lieferantenanmeldung, Bestellnummer, Zahlungsziel",1],["b_rechnung","Rechnungsvorgaben: Adresse, PO, Lieferantennummer",1]]},
+    {t:"Drehbedingungen",f:[["b_filiale","Drehen in der Filiale während des Betriebs?"],["b_regeln","Hygiene- und Sicherheitsregeln, Kontakt in der Filiale",1],["b_notiz","Sonstiges",1]]}
+  ]
+};
+
+/* Abläufe. w = Tage relativ zum Ankerdatum. dates: [Tage, Termin, k=mit Kunde i=intern f=Frist, Wiederholung] */
+var FLOWS={
+opening:{
+  key:"opening",name:"Bites Opening",tag:"Neuer Laden",
+  line:"Neueröffnung mit Content und Opening-Event. Von der Baustelle bis zur Schlange vor der Tür.",
+  facts:[["Schritte","12"],["Zeitraum","10 Wochen vorher bis 4 Wochen danach"],["Anker","Opening-Tag"],["Preisidee","Event laut OS 5.000 bis 30.000 €"]],
+  aLabel:"Opening-Tag",aRef:"Opening",a0:"Opening-Tag",
+  aHint:"Alle Termine rechnen rückwärts von hier. Ideal: 10 Wochen Vorlauf.",
+  steps:[
+  {id:"anfrage",ph:"Gewinnen",t:"Anfrage annehmen",w:-70,who:"Lead",
+   goal:"Klären, ob der Laden zu uns passt und ob die Zeit bis zum Opening reicht.",
+   chk:["Anfrage innerhalb von 24 Stunden beantworten, am besten per Anruf oder Sprachnachricht",
+        "Eckdaten erfragen: Konzept, Adresse, geplantes Opening-Datum, Stand der Bauphase",
+        "Budgetrahmen grob abklopfen: nur Content oder Content plus Event",
+        "Kanäle checken: Instagram, TikTok und Google-Profil schon angelegt?",
+        "OS, Tab Pipeline: neue Zeile mit Phase Erstkontakt, Temperatur und Von wem",
+        "Erstgespräch vor Ort ausmachen, gern direkt auf der Baustelle"],
+   dates:[[-67,"Erstgespräch vor Ort, 60 bis 90 Min.","k"]],
+   store:[["OS","Tab Pipeline","Neue Zeile mit Kontakt, Quelle und Temperatur"]],
+   warn:"Weniger als 6 Wochen bis zum Opening? Dann das Paket kleiner schnüren, die Teaser-Phase kürzen und das offen ansprechen.",
+   gets:["Antwort innerhalb von 24 Stunden","Einen festen Termin fürs Erstgespräch"]},
+  {id:"treffen",ph:"Gewinnen",t:"Erstgespräch vor Ort",w:-67,who:"Lead plus zweite Person",
+   goal:"Alles aufnehmen, was wir für Angebot, Konzept und Event brauchen. Danach muss niemand mehr nachfragen.",
+   chk:["Portfolio auf dem Handy bereit: Burger King, Zalando × Nike, The Pizzary",
+        "Aufnahmebogen unten komplett durchgehen",
+        "Rundgang festhalten: 10 Fotos und ein kurzes Video von Raum, Licht, Fenstern, Steckdosen, Küche",
+        "Umfeld ablaufen: Unis, Büros, Gyms, Laufwege, Nachbarn",
+        "Entscheider klären: wer unterschreibt, wer gibt Content frei",
+        "Nächsten Schritt nennen: Angebot kommt in 3 Werktagen",
+        "OS, Tab Pipeline: Phase auf Gespräch setzen"],
+   form:"opening",
+   dates:[[-64,"Angebot an den Kunden schicken","f"]],
+   store:[["C","01_Briefing","Aufnahmebogen als Google Doc, Raumfotos, Rundgang-Video"],["OS","Tab Pipeline","Phase Gespräch, Nächster Schritt: Angebot"]],
+   warn:"Gehweg, Musik oder Schlange draußen geplant? Früh beim Bezirksamt nach einer Sondernutzung fragen. Das dauert oft Wochen.",
+   gets:["Ein Gespräch, das sich nach Plan anfühlt und nicht nach Verkauf"]},
+  {id:"angebot",ph:"Gewinnen",t:"Angebot schreiben",w:-64,who:"Lead",
+   goal:"Ein Paket, das Content, Event und Offline-Aktion verbindet. Mit klaren Preisen und Zahlungsplan.",
+   chk:["Bausteine aus dem OS, Tab Leistungen, zusammenstellen (Preisideen unten)",
+        "Angebotsnummer fortlaufend vergeben, Leistungszeitraum eintragen",
+        "Zahlungsplan: 50 % bei Auftrag, 50 % nach Abschluss, Zahlungsziel 14 Tage, zzgl. 19 % MwSt.",
+        "Fremdkosten getrennt: Ad-Budget, Druck, DJ und Gratis-Essen trägt der Kunde",
+        "Nutzungsrechte nennen: wo und wie lange der Content laufen darf",
+        "Korrekturschleifen festlegen, Vorschlag: 2 pro Video",
+        "OS, Tab Pipeline: Phase Angebot raus, Wert in Euro, Fällig am ist der Nachfass-Tag"],
+   prices:["event","content","foto","infl","brand","druck","ads","pr","d3"],
+   dates:[[-59,"Nachfassen per Anruf","i"]],
+   store:[["A","01_Angebote & Verträge","Angebot_{NR}_{k}_{YM:-64}.pdf"]],
+   warn:"Wer die Rechnung stellt und wie Einnahmen geteilt werden, ist im OS unter Rollen & Regeln noch offen. Vor dem ersten Angebot klären.",
+   gets:["Angebot als PDF","Zahlungsplan auf einen Blick"]},
+  {id:"zusage",ph:"Starten",t:"Zusage und Kundenakte",w:-56,who:"Lead",
+   goal:"Vom Ja zum laufenden Projekt an einem Tag. Ordner, Gruppe, Zugänge, Termine.",
+   chk:["Auftragsbestätigung schriftlich: Unterschrift oder Mail mit klarem Ja",
+        "Teilrechnung 1 über 50 % schicken",
+        "Beide Kundenordner nach Vorlage anlegen (siehe Ablage)",
+        "Ordner 00_Vom Kunden mit dem Kunden teilen: Logo, Menü, Fotos hochladen lassen",
+        "Kundenblatt mit Stammdaten anlegen: Firma, Rechnungsadresse, USt-IdNr., Ansprechpartner",
+        "WhatsApp-Gruppe „Social Bites × {K}“ mit dem Entscheider anlegen",
+        "Zugänge: Partnerzugang in der Meta Business Suite, TikTok, Google-Profil als Manager",
+        "OS: Pipeline auf Gewonnen, alle Schritte dieses Ablaufs im Tab Aufgaben mit Fällig am",
+        "Alle Termine in den gemeinsamen Kalender (Tab Alle Termine, ein Klick pro Termin)"],
+   dates:[[-53,"Kick-off und Konzept-Workshop","k"],[-42,"Zahlungseingang Teilrechnung 1 prüfen","f"]],
+   store:[["A","","Kundenblatt mit Stammdaten"],["A","01_Angebote & Verträge","Auftragsbestätigung"],["A","02_Rechnungen","Teilrechnung_1_{NR}_{k}_{YM:-56}.pdf"],["C","","Ordner 00 bis 07 nach Vorlage"]],
+   warn:"Passwörter nie ins Sheet, in den Drive oder in den Chat. Wo es geht, Partnerzugang statt Login.",
+   gets:["Teilrechnung 1","Eigenen Upload-Ordner","WhatsApp-Gruppe mit festen Ansprechpartnern"]},
+  {id:"konzept",ph:"Starten",t:"Kick-off und Konzept",w:-53,who:"Nader & Tommy",
+   goal:"Die Geschichte bis zum Opening steht. Online und offline greifen ineinander.",
+   chk:["Moodboard: Look, Farben, Referenz-Reels",
+        "Hero-Idee für die Teaser-Phase, zum Beispiel ein Skit rund ums Warten auf die Eröffnung",
+        "Content-Serie bis zum Opening: Countdown, Bauphase, Crew vorstellen, Umfragen, Gewinnspiel-Teaser",
+        "Event-Konzept: Pre-Opening für Creator und Presse am Vortag, großes Opening am Tag selbst",
+        "Gratis-Aktion festlegen, bei The Pizzary waren es 500 Gratis-Pizzen",
+        "Offline-Hebel: Flyer mit QR, Glücksrad oder Gewinnspiel, Google-Bewertung per QR am Tisch",
+        "Signature-Gericht oder Opening-Special mit der Küche festlegen",
+        "Konzept dem Kunden zeigen, Freigabe schriftlich in der Gruppe"],
+   dates:[[-49,"Konzept-Freigabe durch den Kunden","f"],[-49,"Sondernutzung beim Bezirksamt beantragen, falls draußen gefeiert wird","i"]],
+   store:[["C","02_Konzept","Moodboard, Konzept-Deck, Content-Plan bis zum Opening"]],
+   warn:"Erst das Ziel, dann der Content. Jede Idee muss Leute vor die Tür bringen, nicht nur Views.",
+   gets:["Konzept-Deck","Content-Plan bis zum Opening"]},
+  {id:"prepro",ph:"Produzieren",t:"Pre-Production",w:[-49,-21],who:"Nader & Tommy",
+   goal:"Alles organisiert, bevor die Kamera läuft. Drehtage, Creator, Event-Logistik.",
+   chk:["Shotlist und Drehplan für Drehtag 1 (Teaser) und Drehtag 2 (Food)",
+        "Talents und Creator aus dem OS, Tab Netzwerk, anfragen und Status pflegen",
+        "Model-Releases für alle vor der Kamera vorbereiten",
+        "Equipment, Licht und Strom vor Ort checken",
+        "Essen für den Dreh mit der Küche absprechen: was, wie viel, wann",
+        "Creator-Liste und Einladungen fürs Pre-Opening: Tickets, Goodie Bags",
+        "DJ, Türsteher, Deko und Foto-Ecke buchen",
+        "Presse-Kit bauen: Story, Eckdaten, Fotos, Logo, Zitat, Kontakt",
+        "Flyer mit QR-Code gestalten und Druck bestellen",
+        "Ads vorbereiten: Kampagne Event und Kampagne Gratis-Aktion, Umkreis 3 bis 5 km"],
+   dates:[[-35,"Einladungen Pre-Opening raus","i"],[-28,"Presse-Kit an lokale Medien und Foodblogger","i"],[-21,"Flyer im Druck, Ads fertig eingerichtet","f"]],
+   store:[["C","02_Konzept","Shotlist, Drehplan, Callsheets"],["C","06_Event","Creator-Liste, Gästeliste, Dienstleister, Ablauf"],["A","03_Releases & Genehmigungen","Model-Releases, Sondernutzung"],["OS","Tab Netzwerk","Status Angefragt oder Zugesagt"]],
+   warn:"Gästelisten und Kontakte nur mit Einwilligung sammeln und nach dem Event nicht länger aufheben als nötig.",
+   gets:["Drehplan mit Zeiten","Einladungen im eigenen Look"]},
+  {id:"dreh",ph:"Produzieren",t:"Shooting",w:[-46,-14],who:"Nader & Tommy",
+   goal:"Zwei Drehtage. Erst Teaser und Menschen, dann Food, sobald die Küche läuft.",
+   chk:["Callsheet am Vortag an alle: Zeiten, Adresse, Ansprechpartner",
+        "Hook-Shots zuerst drehen, solange alle frisch sind",
+        "Food sofort nach dem Anrichten: Dampf, Käsezug, Crunch, Close-ups",
+        "Skits, Crew-Vorstellungen und Talking Heads nach Shotlist",
+        "Fotos mitnehmen: Karussell, Google-Profil, Lieferplattformen, Presse",
+        "Model-Releases vor Ort unterschreiben lassen",
+        "Backup noch am Set: zwei Kopien auf zwei Platten",
+        "BTS für unsere eigenen Kanäle, nur mit Okay vom Kunden",
+        "Abends kurze Nachricht in die Gruppe: Drehtag im Kasten"],
+   dates:[[-47,"Callsheet Drehtag 1 an alle","i"],[-46,"Drehtag 1: Teaser, Bauphase, Crew","k"],[-15,"Callsheet Drehtag 2 an alle","i"],[-14,"Drehtag 2: Food und Menü, die Küche muss laufen","k"]],
+   store:[["C","03_Rohmaterial","{D:-46}_Drehtag-1 und {D:-14}_Drehtag-2, dazu Festplatte"],["M","","Freigegebenes BTS für unsere Kanäle"]],
+   warn:"Drehtag 2 nur, wenn die Küche wirklich fertig ist. Vorher fragen, wann die erste Probeküche läuft.",
+   gets:["Kurzes Update am Abend jedes Drehtags"]},
+  {id:"schnitt",ph:"Produzieren",t:"Schnitt und Freigabe",w:[-45,-12],who:"Nader & Tommy",
+   goal:"Reels, die in den ersten drei Sekunden packen. Freigabe ohne Endlosschleifen.",
+   chk:["Hook in den ersten 3 Sekunden, Untertitel, 9:16, Cover-Bild",
+        "Sound: Trend-Audio prüfen, Lautstärke angleichen",
+        "Version 1 als Link in die Gruppe, Feedback gesammelt in einer Nachricht",
+        "Maximal 2 Korrekturschleifen, Freigabe innerhalb von 48 Stunden",
+        "Final exportieren, Dateiname mit Version",
+        "Posting-Plan mit Datum, Caption, Hashtags und Sound"],
+   dates:[[-43,"Version 1 Teaser an den Kunden","k"],[-41,"Freigabe Teaser","f"],[-12,"Version 1 Food-Reels an den Kunden","k"],[-10,"Freigabe Food-Reels","f"]],
+   store:[["C","04_Schnitt","{k}_Reel-01_Countdown_v1.mp4, v2"],["C","05_Final","Freigegebene Exporte und Posting-Plan"]],
+   warn:"In Ads nur Musik mit Werbelizenz, zum Beispiel aus der Commercial Music Library von TikTok oder der Sound Collection von Meta.",
+   gets:["Fertige Reels mit Caption","Posting-Plan"]},
+  {id:"teaser",ph:"Live",t:"Teaser-Phase und Ads",w:[-42,-1],who:"Nader & Tommy",
+   goal:"Die Stadt weiß, dass bald eröffnet wird. Am Opening steht eine Schlange.",
+   chk:["Bio, Story-Highlight ERÖFFNUNG und angepinnter Post mit Datum",
+        "Countdown starten, 3 Posts pro Woche nach Posting-Plan",
+        "Kommentare und Nachrichten täglich beantworten",
+        "Gewinnspiel posten: folgen, markieren, teilen",
+        "Ads 2 Wochen vorher live, nach einer Woche aufs bessere Motiv umschichten (The Pizzary: 400 € über 2 Wochen)",
+        "UTM-Links setzen, damit wir sehen, welche Anzeige Leute bringt",
+        "Flyer-Welle 3 bis 4 Tage vorher an Unis, Büros, Gyms und Bahnhöfen",
+        "Presse nachfassen und Zusagen fürs Opening bestätigen"],
+   dates:[[-42,"Teaser-Phase startet, Countdown live","i"],[-14,"Ads live: Event und Gratis-Aktion","i"],[-7,"Ads aufs bessere Motiv umschichten","i"],[-4,"Flyer verteilen","i"]],
+   store:[["C","05_Final","Posting-Plan, laufend aktualisiert"],["C","07_Reporting","Insights-Screenshots, jede Woche"]],
+   warn:"Werbung mit Creatorn immer als Anzeige oder Werbung kennzeichnen.",
+   gets:["Wöchentlich drei Posts","Eine Woche vorher einen ersten Zwischenstand"]},
+  {id:"opening",ph:"Live",t:"Pre-Opening und Opening",w:[-1,0],who:"Nader plus Crew",
+   goal:"Zwei Tage, die Content für Wochen liefern. Erst Creator und Presse, dann alle.",
+   chk:["Run of Show mit Uhrzeiten an Team, DJ, Türsteher und Crew",
+        "Team-Briefing: jeden Gast freundlich um eine Google-Bewertung bitten, QR an Tisch und Theke",
+        "Pre-Opening: Creator und Presse empfangen, Goodie Bags, Foto-Ecke, volles Menü",
+        "Bitte an alle Creator: ein Reel oder eine Story bis zum Opening-Morgen",
+        "Opening: Content-Crew dreht Schlange, Reaktionen, erste Bisse, Gewinne",
+        "Live-Stories auf dem Kanal des Kunden",
+        "Gratis-Aktion mitzählen, Gewinnspiel live auflösen",
+        "Abends: Rohmaterial doppelt sichern, Danke in die Gruppe"],
+   dates:[[-2,"Run of Show final und Team-Briefing","k"],[-1,"Pre-Opening für Creator und Presse","k"],[0,"Opening","k"]],
+   store:[["C","06_Event","Run of Show, Gästeliste, Creator-Liste"],["C","03_Rohmaterial","{D:0}_Opening"]],
+   warn:"Vorher mit der Küche klären, wie viele Portionen pro Stunde gehen. Danach richtet sich die Gratis-Aktion.",
+   gets:["Ein Opening mit Schlange und Content","Live-Stories am Tag selbst"]},
+  {id:"nach",ph:"Live",t:"Nachglühen",w:[1,14],who:"Nader & Tommy",
+   goal:"Den Schwung mitnehmen. Wer nicht da war, soll jetzt kommen.",
+   chk:["Aftermovie 30 bis 60 Sekunden innerhalb von 48 Stunden, als angepinnter Post",
+        "Reels der Creator teilen und kommentieren",
+        "Ads umstellen auf: Du hast es verpasst? Komm trotzdem",
+        "Bewertungen weiter pushen und auf jede Bewertung antworten",
+        "Leads aus dem Gewinnspiel mit Einwilligung in den ersten Newsletter",
+        "Danke an Creator, Presse und Partner"],
+   dates:[[2,"Aftermovie live","i"],[7,"Zwischenstand an den Kunden: Views, Gäste, Bewertungen","k"]],
+   store:[["C","05_Final","Aftermovie final"],["C","07_Reporting","Zahlen der Opening-Woche"]],
+   gets:["Aftermovie","Zwischenstand nach einer Woche"]},
+  {id:"abschluss",ph:"Abschließen",t:"Report, Rechnung, Ablage",w:[14,28],who:"Lead",
+   goal:"Sauber abschließen und den nächsten Auftrag öffnen.",
+   chk:["Report: Views, Reichweite, Gäste, Bewertungen vorher und nachher, Leads",
+        "Abschlussgespräch mit dem Kunden, Report zeigen",
+        "Teilrechnung 2 über die restlichen 50 % schicken",
+        "Zahlungseingang nach 14 Tagen prüfen",
+        "Rohmaterial auf Festplatte und im Drive sichern",
+        "Echtes Zitat vom Kunden für die Website erfragen",
+        "OS, Tab Portfolio: Projekt mit Views und Link eintragen",
+        "Folgeauftrag anbieten: Bites for Gastro als monatliche Betreuung, neue Zeile in der Pipeline",
+        "Im Montagsmeeting kurz besprechen, was gut lief und was nicht"],
+   dates:[[14,"Teilrechnung 2 raus","f"],[21,"Abschlussgespräch und Angebot Bites for Gastro","k"],[28,"Zahlungseingang Teilrechnung 2 prüfen","f"]],
+   store:[["A","02_Rechnungen","Teilrechnung_2_{NR}_{k}_{YM:14}.pdf"],["C","07_Reporting","Report_{k}_{YM:21}.pdf"],["OS","Tab Portfolio","Projekt mit echten Views und Link"]],
+   gets:["Abschlussreport","Teilrechnung 2","Angebot für die laufende Betreuung"]}
+  ]
+},
+gastro:{
+  key:"gastro",name:"Bites for Gastro",tag:"Bestehender Laden",
+  line:"Monatliche Betreuung für Läden, die mehr Gäste, mehr Reichweite und einen Kanal wollen, der endlich läuft.",
+  facts:[["Schritte","12, ab Schritt 5 jeden Monat"],["Zeitraum","3 Wochen Anlauf, dann monatlich"],["Anker","Start der Betreuung"],["Preisidee","90 bis 130 € pro Content laut OS"]],
+  aLabel:"Start der Betreuung",aRef:"Start",a0:"Start",
+  aHint:"Tag 1 der Betreuung. Gespräch und Angebot liegen davor.",
+  steps:[
+  {id:"lead",ph:"Gewinnen",t:"Lead und Kurz-Check",w:-21,who:"Lead",
+   goal:"Vor dem ersten Gespräch wissen, wo der Laden steht.",
+   chk:["15-Minuten-Check: Instagram, TikTok, Google-Bewertungen (Schnitt und Anzahl), Lieferplattformen",
+        "Drei Dinge notieren, die sofort besser gehen: Profilbild, Bio, Fotos, Antworten auf Bewertungen",
+        "Kontakt aufnehmen: vorbeigehen, essen, Inhaber ansprechen, oder über eine Empfehlung",
+        "OS, Tab Pipeline: Zeile anlegen, Phase Erstkontakt, Temperatur, Von wem",
+        "Erstgespräch im Laden vereinbaren, außerhalb der Stoßzeit"],
+   dates:[[-14,"Erstgespräch im Laden, 60 Min.","k"]],
+   store:[["OS","Tab Pipeline","Zeile mit dem Kurz-Check als Notiz"]],
+   warn:"Erst essen, dann reden. Wer das Essen kennt, verkauft ehrlicher.",
+   gets:["Drei schnelle Verbesserungen schon im ersten Gespräch"]},
+  {id:"treffen",ph:"Gewinnen",t:"Erstgespräch und Audit",w:-14,who:"Lead plus zweite Person",
+   goal:"Verstehen, wann Gäste fehlen und warum. Daraus wird das Monatspaket.",
+   chk:["Portfolio zeigen, passend zum Laden",
+        "Aufnahmebogen unten durchgehen",
+        "Kurz-Check zeigen: drei schnelle Verbesserungen als Geschenk",
+        "Ziel festhalten: mehr Mittagsgäste, Wochentage füllen, Lieferumsatz, neue Zielgruppe",
+        "Fotos vom Laden und von 3 Bestsellern machen",
+        "Budget pro Monat und Laufzeit ansprechen",
+        "OS, Tab Pipeline: Phase Gespräch"],
+   form:"gastro",
+   dates:[[-11,"Angebot an den Kunden schicken","f"]],
+   store:[["C","01_Briefing","Aufnahmebogen, Audit, Fotos"]],
+   gets:["Ein ehrliches Audit, auch wenn er nicht bucht"]},
+  {id:"angebot",ph:"Gewinnen",t:"Monatspaket anbieten",w:-11,who:"Lead",
+   goal:"Ein Paket, das jeden Monat gleich läuft und messbar ist.",
+   chk:["Bausteine aus dem OS, Tab Leistungen (Preisideen unten)",
+        "Inhalt pro Monat festlegen: Reels, Fotos, Stories, Drehtage, Influencer-Besuche",
+        "Laufzeit vorschlagen: mindestens 3 Monate, weil Reichweite Zeit braucht",
+        "Monatliche Rechnung zum Monatsanfang, Zahlungsziel 14 Tage, zzgl. 19 % MwSt.",
+        "Ad-Budget und Influencer-Kosten getrennt, die zahlt der Kunde",
+        "Korrekturschleifen und Freigabefrist festlegen",
+        "OS, Tab Pipeline: Phase Angebot raus, Wert ist Monatsbetrag mal Laufzeit"],
+   prices:["content","infl","ads","bew","treue","liefer","direkt","report"],
+   ex:"<b>Beispiel 1.500-€-Kunde</b> (offene Aufgabe im OS): 12 Contents im Monat à 125 € ergeben 1.500 € pro Monat. Rechnung nach der Preisidee aus dem OS, keine feste Preisliste.",
+   dates:[[-6,"Nachfassen per Anruf","i"]],
+   store:[["A","01_Angebote & Verträge","Angebot_{NR}_{k}_{YM:-11}.pdf"]],
+   gets:["Monatspaket als PDF mit klarer Laufzeit"]},
+  {id:"onboarding",ph:"Starten",t:"Zusage und Onboarding",w:0,who:"Lead",
+   goal:"In der ersten Woche sieht der Kunde schon, dass sich etwas bewegt.",
+   chk:["Auftragsbestätigung schriftlich",
+        "Erste Monatsrechnung schicken",
+        "Beide Kundenordner nach Vorlage anlegen, 00_Vom Kunden teilen",
+        "Kundenblatt mit Stammdaten",
+        "WhatsApp-Gruppe „Social Bites × {K}“",
+        "Zugänge: Partnerzugang in der Meta Business Suite, TikTok, Google-Profil als Manager",
+        "Profil-Check sofort umsetzen: Bio, Link, Highlights, Öffnungszeiten, Google-Profil vollständig",
+        "OS: Pipeline auf Gewonnen, Aufgaben für Monat 1, Termine in den Kalender"],
+   dates:[[0,"Kick-off im Laden, 60 Min.","k"],[14,"Zahlungseingang Monat 1 prüfen","f"]],
+   store:[["A","","Kundenblatt mit Stammdaten"],["A","02_Rechnungen","Rechnung_{NR}_{k}_{YM:0}.pdf"],["C","","Ordner 00 bis 07 nach Vorlage"]],
+   warn:"Passwörter nie ins Sheet, in den Drive oder in den Chat. Wo es geht, Partnerzugang statt Login.",
+   gets:["Aufgeräumtes Profil in Woche 1","Feste Ansprechpartner in der Gruppe"]},
+  {id:"strategie",ph:"Starten",t:"Strategie und Monatsplan",w:3,who:"Nader & Tommy",loop:true,
+   goal:"Ein Plan für den Monat, den der Kunde versteht und freigibt.",
+   chk:["Content-Säulen festlegen, zum Beispiel Food-Close-ups, Crew, Gäste-Reaktionen, Trends, Aktionen",
+        "Hook-Liste mit 10 Einstiegen schreiben",
+        "Posting-Rhythmus und Tage festlegen",
+        "Offline-Aktion des Monats: Gewinnspiel, Stempelkarte, Guerilla, Gimmick",
+        "Influencer-Besuche aus dem Tab Netzwerk einplanen",
+        "Monatsplan an den Kunden, Freigabe in der Gruppe"],
+   dates:[[5,"Freigabe Monatsplan","f"]],
+   store:[["C","02_Konzept","Monatsplan {YM:3}, Hook-Liste"]],
+   warn:"Social plus offline ist unser Unterschied. Jeder Monat bekommt mindestens eine Aktion, die Leute in den Laden holt.",
+   gets:["Monatsplan zum Freigeben"]},
+  {id:"prepro",ph:"Produzieren",t:"Drehtag vorbereiten",w:7,who:"Nader & Tommy",loop:true,
+   goal:"Ein Drehtag liefert Content für mehrere Wochen.",
+   chk:["Shotlist für alle Reels des Monats an einem Tag",
+        "Drehzeit vor Öffnung oder in ruhigen Stunden mit dem Inhaber festlegen",
+        "Gerichte und Mengen mit der Küche absprechen",
+        "Klären, wer vor die Kamera geht: Team, Talents, Creator. Releases vorbereiten",
+        "Callsheet am Vortag in die Gruppe"],
+   dates:[[9,"Callsheet in die Gruppe","i"]],
+   store:[["C","02_Konzept","Shotlist, Callsheet"]],
+   gets:["Klare Ansage, was am Drehtag gebraucht wird"]},
+  {id:"dreh",ph:"Produzieren",t:"Drehtag",w:10,who:"Nader & Tommy",loop:true,
+   goal:"In wenigen Stunden alles einsammeln, was der Monat braucht.",
+   chk:["Hook-Shots zuerst",
+        "Food direkt nach dem Anrichten",
+        "Crew und Gäste-Reaktionen, nur mit Einverständnis",
+        "Fotos für Google-Profil und Lieferplattformen gleich mitnehmen",
+        "Releases unterschreiben lassen",
+        "Backup doppelt, noch vor Ort",
+        "BTS für unsere Kanäle, nur mit Okay"],
+   dates:[[10,"Drehtag Monat 1","k"]],
+   store:[["C","03_Rohmaterial","{D:10}_Drehtag"],["A","03_Releases & Genehmigungen","Releases"]],
+   warn:"Gäste nur filmen, wenn sie zustimmen. Im Zweifel nicht erkennbar zeigen.",
+   gets:["Neue Fotos fürs Google-Profil"]},
+  {id:"schnitt",ph:"Produzieren",t:"Schnitt und Freigabe",w:12,who:"Nader & Tommy",loop:true,
+   goal:"Freigaben im Paket statt einzeln, damit es schnell geht.",
+   chk:["Hook in den ersten 3 Sekunden, Untertitel, Cover",
+        "Freigabe gesammelt pro Woche statt Video für Video",
+        "Maximal 2 Korrekturschleifen",
+        "Final exportieren, Dateiname mit Version",
+        "Posting-Plan aktualisieren"],
+   dates:[[12,"Erste Reels zur Freigabe","k"]],
+   store:[["C","04_Schnitt","Versionen v1 und v2"],["C","05_Final","Freigegebene Reels, Posting-Plan"]],
+   gets:["Reels im Wochenpaket zum Freigeben"]},
+  {id:"posting",ph:"Laufen",t:"Posting und Community",w:14,who:"Nader & Tommy",loop:true,
+   goal:"Der Kanal lebt jeden Tag, nicht nur am Posting-Tag.",
+   chk:["Posten nach Plan, Stories begleitend",
+        "Kommentare und Nachrichten innerhalb von 24 Stunden beantworten",
+        "Jede Google-Bewertung beantworten",
+        "Trends jede Woche checken, passende sofort umsetzen",
+        "Influencer-Besuch begleiten und auf Kennzeichnung als Werbung achten",
+        "Insights jeden Freitag als Screenshot sichern"],
+   dates:[[14,"Erster Post live","i"],[18,"Wochen-Check Insights, jeden Freitag","i","RRULE:FREQ=WEEKLY;BYDAY=FR"]],
+   store:[["C","07_Reporting","Insights-Screenshots, wöchentlich"]],
+   gets:["Antworten auf Kommentare, Nachrichten und Bewertungen"]},
+  {id:"report",ph:"Laufen",t:"Monatsreport und Gespräch",w:28,who:"Lead",loop:true,
+   goal:"Zeigen, was es gebracht hat, und den nächsten Monat planen.",
+   chk:["Zahlen: Reichweite, Follower, Saves und Shares, Profilaufrufe",
+        "Google-Profil: Anrufe, Routenanfragen, neue Bewertungen",
+        "Beim Kunden nachfragen: wie liefen Gäste und Umsatz?",
+        "Bestes Reel des Monats und was wir daraus lernen",
+        "Monatsgespräch, 30 Min., Plan für den nächsten Monat vorstellen"],
+   dates:[[28,"Monatsgespräch mit Report, jeden Monat","k","RRULE:FREQ=MONTHLY;COUNT=3"]],
+   store:[["C","07_Reporting","Report_{k}_{YM:28}.pdf"]],
+   gets:["Monatsreport mit echten Zahlen"]},
+  {id:"rechnung",ph:"Laufen",t:"Rechnung und Ablage",w:30,who:"Lead",loop:true,
+   goal:"Jeden Monat gleich: Rechnung raus, Geld da, Drive aufgeräumt.",
+   chk:["Monatsrechnung zum Monatsanfang schicken",
+        "Zahlungseingang nach 14 Tagen prüfen",
+        "Rohmaterial des Monats auf Festplatte sichern, Drive aufräumen",
+        "Starkes Reel ins OS, Tab Portfolio",
+        "Aufgaben für den neuen Monat im OS anlegen",
+        "Weiter mit Schritt 05 für den nächsten Monat"],
+   dates:[[30,"Rechnung Monat 2","f"],[44,"Zahlungseingang Monat 2 prüfen","f"]],
+   store:[["A","02_Rechnungen","Rechnung_{NR}_{k}_{YM:30}.pdf"]],
+   gets:["Eine Rechnung pro Monat, immer zum gleichen Zeitpunkt"]},
+  {id:"verlaengern",ph:"Ausbauen",t:"Verlängern und Upsell",w:75,who:"Lead",
+   goal:"Vor Ende der Laufzeit verlängern und den nächsten Hebel anbieten.",
+   chk:["Report über 3 Monate: vorher und nachher",
+        "Verlängerung anbieten, bei längerer Laufzeit gern mit besserem Preis",
+        "Upsell passend zum Problem: Ads, Bewertungsmanagement, Treueprogramm, Direktbestellungen, Catering, Event",
+        "Echtes Zitat für die Website erfragen",
+        "OS, Tab Pipeline: Verlängerung als neue Zeile"],
+   prices:["ads","bew","treue","direkt","event"],
+   dates:[[75,"Verlängerungsgespräch","k"],[90,"Ende der ersten Laufzeit","f"]],
+   store:[["C","07_Reporting","Report_3-Monate_{k}.pdf"],["A","01_Angebote & Verträge","Verlängerung"]],
+   gets:["Vorher-nachher-Report über 3 Monate"]}
+  ]
+},
+brands:{
+  key:"brands",name:"Bites for Brands",tag:"Kette und Marke",
+  line:"Kampagnen für Systemgastronomie wie McDonald's, KFC oder Taco Bell. Mit Einkauf, Recht und mehreren Freigabestufen.",
+  facts:[["Schritte","11"],["Zeitraum","rund 3 bis 4 Monate"],["Anker","Briefing-Termin"],["Preisidee","Content pauschal 3.000 bis 5.000 € laut OS, Rest nach Kalkulation"]],
+  aLabel:"Briefing-Termin",aRef:"Briefing",a0:"Briefing",
+  aHint:"Tag des Briefings. Abstände sind Richtwerte, Marken haben oft eigene Fristen.",
+  steps:[
+  {id:"lead",ph:"Gewinnen",t:"Kontakt und NDA",w:-7,who:"Nader",
+   goal:"Den richtigen Menschen finden und sauber in den Prozess der Marke kommen.",
+   chk:["Klären, wer anfragt: Marketing national, regional, Franchisenehmer oder Agentur",
+        "Referenzen bereitlegen: Burger King mit 4,7 Mio Views, Zalando × Nike, Aldi Nord, ESN, Wolt",
+        "NDA prüfen und unterschreiben, bevor Details kommen",
+        "Ausschreibung oder direkter Auftrag? Abgabetermin und Form klären",
+        "OS, Tab Pipeline: Zeile anlegen, Phase Erstkontakt"],
+   dates:[[-3,"NDA unterschrieben zurück","f"],[0,"Briefing-Call oder Workshop","k"]],
+   store:[["A","01_Angebote & Verträge","NDA_{k}_{YM:-3}.pdf"]],
+   warn:"Bei Ketten entscheidet oft nicht die Filiale. Franchisenehmer dürfen meist nur im Rahmen der Markenrichtlinien werben.",
+   gets:["Referenzen mit echten Zahlen"]},
+  {id:"briefing",ph:"Gewinnen",t:"Briefing aufnehmen",w:0,who:"Nader & Tommy",
+   goal:"Alles verstehen, was Marke, Recht und Einkauf verlangen, bevor wir eine Idee pitchen.",
+   chk:["Aufnahmebogen unten komplett",
+        "Brand Guidelines, Do's and Don'ts und Vorlagen anfordern",
+        "Freigabeprozess klären: wie viele Stufen, wer, wie lange",
+        "Einkauf klären: Lieferantenanmeldung, Bestellnummer, Rechnungsvorgaben",
+        "Rückfragen sammeln und gebündelt per Mail schicken",
+        "OS, Tab Pipeline: Phase Gespräch"],
+   form:"brands",
+   dates:[[2,"Rückfragen per Mail","i"]],
+   store:[["C","01_Briefing","Briefing der Marke, Aufnahmebogen, Guidelines"]],
+   gets:["Eine Mail mit allen Rückfragen statt zehn einzelnen"]},
+  {id:"pitch",ph:"Gewinnen",t:"Treatment und Kalkulation",w:[3,10],who:"Nader & Tommy",
+   goal:"Eine Idee, die zur Marke passt, und eine Kalkulation, die jeder Einkäufer versteht.",
+   chk:["Treatment: Idee, Moodboard, Skript-Ansätze, Creator-Vorschläge, Referenzen",
+        "Kalkulation nach Positionen: Kreation, Pre-Production, Drehtage, Crew, Talents, Location, Equipment, Postproduktion",
+        "Nutzungsrechte getrennt ausweisen: Medien, Gebiet, Dauer, Paid Usage",
+        "Zeitplan mit festen Freigabeterminen",
+        "Pitch präsentieren, nicht nur schicken",
+        "OS, Tab Pipeline: Phase Angebot raus, Wert eintragen"],
+   prices:["content","foto","infl","event","d3"],
+   dates:[[8,"Interner Probelauf Pitch","i"],[10,"Pitch bei der Marke","k"],[14,"Nachfassen","i"]],
+   store:[["P","","Pitch-Deck und Treatment {k}"],["A","01_Angebote & Verträge","Kalkulation_{NR}_{k}_{YM:10}.pdf"]],
+   warn:"Für Marken nach Positionen kalkulieren. Die Preisideen aus dem OS sind nur die Untergrenze für einzelne Bausteine.",
+   gets:["Treatment","Kalkulation nach Positionen","Zeitplan"]},
+  {id:"vertrag",ph:"Starten",t:"Vertrag, Einkauf, Bestellnummer",w:17,who:"Nader",
+   goal:"Erst die Bestellnummer, dann die Arbeit.",
+   chk:["Vertrag prüfen: Leistung, Nutzungsrechte, Haftung, Zahlungsziel, Storno",
+        "Lieferantenanmeldung ausfüllen: Firmendaten, USt-IdNr., Bank, Versicherungsnachweis",
+        "Bestellnummer (PO) schriftlich abwarten. Ohne PO keine Leistung",
+        "Zahlungsziel oft 30 bis 60 Tage: Anzahlung für Fremdkosten wie Talents verhandeln",
+        "Betriebshaftpflicht prüfen, die Dreharbeiten abdeckt",
+        "OS, Tab Pipeline: Phase Verhandlung, dann Gewonnen"],
+   dates:[[17,"Vertrag und Bestellnummer da","f"],[21,"Kick-off mit allen Beteiligten","k"]],
+   store:[["A","","Kundenblatt mit Lieferantennummer"],["A","01_Angebote & Verträge","Vertrag, Bestellnummer, Lieferantenanmeldung"]],
+   warn:"Rechnungen ohne Bestellnummer oder Lieferantennummer lehnen große Firmen oft automatisch ab.",
+   gets:["Unterschriebenen Vertrag","Unsere Lieferantendaten"]},
+  {id:"kickoff",ph:"Starten",t:"Kick-off und Projektplan",w:21,who:"Nader",
+   goal:"Alle wissen, wer was bis wann freigibt.",
+   chk:["Alle Beteiligten im Call: Marke, Agenturen, Filiale, Rechtsabteilung falls nötig",
+        "Projektplan mit Meilensteinen und festen Freigabeterminen",
+        "Kommunikation per Mail, wöchentlicher Status-Call, ein Ansprechpartner pro Seite",
+        "Kundenordner anlegen, Freigaben über Drive-Kommentare oder das Tool der Marke",
+        "Alle Termine in den Kalender, Aufgaben ins OS"],
+   dates:[[28,"Wöchentlicher Status-Call","k","RRULE:FREQ=WEEKLY;COUNT=8"]],
+   store:[["C","02_Konzept","Projektplan mit Freigabeterminen"],["C","","Ordner 00 bis 07 nach Vorlage"]],
+   gets:["Projektplan","Festen Status-Call jede Woche"]},
+  {id:"prepro",ph:"Produzieren",t:"Pre-Production und PPM",w:[22,31],who:"Nader & Tommy",
+   goal:"Am Drehtag gibt es keine offenen Fragen mehr.",
+   chk:["Skripte, Storyboard und Shotlist nach Brand Guidelines",
+        "Casting: Creator und Talents, Freigabe durch die Marke",
+        "Location: Filiale abstimmen (Drehen im Betrieb?), öffentlicher Raum nur mit Drehgenehmigung",
+        "Food-Styling nach Markenvorgabe: gezeigt wird das echte Produkt",
+        "Model-Releases mit den Nutzungsrechten aus dem Vertrag",
+        "Callsheet, Crew, Equipment, Versicherung",
+        "PPM (Pre-Production-Meeting): alles final freigeben lassen"],
+   dates:[[31,"PPM mit Marke und Agentur","k"]],
+   store:[["C","02_Konzept","Skripte, Storyboard, Shotlist, Callsheet, PPM-Deck"],["A","03_Releases & Genehmigungen","Releases, Drehgenehmigungen"]],
+   warn:"Werbeaussagen und Allergene prüft die Marke. Nichts versprechen, was nicht im Briefing steht.",
+   gets:["PPM-Deck mit allem, was gedreht wird"]},
+  {id:"dreh",ph:"Produzieren",t:"Drehtag",w:35,who:"Nader & Tommy plus Crew",
+   goal:"Drehen nach Plan, Freigaben direkt am Set.",
+   chk:["Marke oder Agentur am Set, Monitor für die Live-Freigabe",
+        "Hygieneregeln in der Küche, Uniformen und Logos korrekt",
+        "Freigabe-Shots direkt am Set abnicken lassen",
+        "Releases vor Ort unterschreiben",
+        "Backup doppelt, noch am Set",
+        "BTS nur nach schriftlicher Freigabe, das NDA gilt"],
+   dates:[[34,"Callsheet an alle","i"],[35,"Drehtag","k"]],
+   store:[["C","03_Rohmaterial","{D:35}_Drehtag-1, dazu Festplatte"]],
+   gets:["Freigaben schon am Set"]},
+  {id:"post",ph:"Produzieren",t:"Postproduktion und Freigabestufen",w:[42,52],who:"Nader & Tommy",
+   goal:"Jede Freigabestufe hat einen Termin. Nichts bleibt liegen.",
+   chk:["Rohschnitt an die Marke",
+        "Feedback gebündelt, eine Liste pro Runde",
+        "Feinschnitt: Color, Sound, Grafiken nach CI, Untertitel, Disclaimer",
+        "Rechtliche Freigabe durch die Marke",
+        "Mastering in allen Formaten: 9:16, 1:1, 16:9, Cutdowns 6 und 15 Sekunden",
+        "Dateinamen nach Vorgabe der Marke"],
+   dates:[[42,"Rohschnitt an die Marke","k"],[46,"Feedback Runde 1","f"],[49,"Feinschnitt an die Marke","k"],[52,"Finale Freigabe mit Legal","f"]],
+   store:[["C","04_Schnitt","Rohschnitt, Feinschnitt, Versionen"]],
+   gets:["Feste Freigaberunden mit Datum"]},
+  {id:"launch",ph:"Live",t:"Auslieferung und Launch",w:[56,60],who:"Nader",
+   goal:"Pünktlich liefern und den Launch begleiten.",
+   chk:["Masterdateien übergeben, Spezifikationen geprüft",
+        "Posting über Marken-Kanal oder Creator: als Werbung kennzeichnen",
+        "Paid Media läuft meist über die Media-Agentur der Marke, Dateien rechtzeitig liefern",
+        "Launch-Tag begleiten, Kommentare beobachten, falls beauftragt"],
+   dates:[[56,"Auslieferung Masterdateien","f"],[60,"Launch","k"]],
+   store:[["C","05_Final","Masterdateien, Übergabeprotokoll"]],
+   gets:["Alle Formate pünktlich"]},
+  {id:"report",ph:"Abschließen",t:"Report und Case",w:[67,90],who:"Nader",
+   goal:"Ergebnisse zeigen, die die nächste Kampagne verkaufen.",
+   chk:["Report nach 7 und nach 30 Tagen: Views, Reichweite, Engagement, Ziel aus dem Briefing",
+        "Learnings für die nächste Kampagne festhalten",
+        "Case-Video für unser Portfolio, nur mit Freigabe",
+        "OS, Tab Portfolio: Eintrag mit Views und Link, sobald öffentlich"],
+   dates:[[67,"Report nach 7 Tagen","k"],[90,"Report nach 30 Tagen und Abschlussgespräch","k"]],
+   store:[["C","07_Reporting","Report nach 7 und nach 30 Tagen"],["OS","Tab Portfolio","Kampagne mit echten Views"]],
+   gets:["Zwei Reports","Learnings für die nächste Kampagne"]},
+  {id:"rechnung",ph:"Abschließen",t:"Rechnung und Archiv",w:56,who:"Lead",
+   goal:"Rechnung genau nach Vorgabe, damit sie nicht im Einkauf hängen bleibt.",
+   chk:["Rechnung exakt nach Vorgabe: Bestellnummer, Lieferantennummer, Leistungszeitraum",
+        "Zahlungsziel laut Vertrag in den Kalender, danach freundlich nachfassen",
+        "Rohmaterial so lange aufheben, wie der Vertrag es verlangt",
+        "Rechnungen und Belege mindestens 8 Jahre aufbewahren, im Zweifel Steuerberater fragen",
+        "Folgeprojekt ansprechen, neue Zeile in der Pipeline",
+        "Im Montagsmeeting kurz besprechen, was gut lief und was nicht"],
+   dates:[[56,"Rechnung mit Bestellnummer raus","f"],[116,"Zahlungseingang prüfen, bei 60 Tagen Zahlungsziel","f"]],
+   store:[["A","02_Rechnungen","Rechnung_{NR}_{k}_{YM:56}.pdf"]],
+   gets:["Rechnung, die der Einkauf ohne Rückfrage durchwinkt"]}
+  ]
+}
+};
+var ORDER=["opening","gastro","brands"];
+
+/* Hilfen */
+function $(s,r){return (r||document).querySelector(s);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function pad(n){return String(n).padStart(2,"0");}
+var WD=["So","Mo","Di","Mi","Do","Fr","Sa"];
+var MO=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);}
+function fmt(d){return WD[d.getDay()]+", "+pad(d.getDate())+"."+pad(d.getMonth()+1)+"."+d.getFullYear();}
+function fmtS(d){return WD[d.getDay()]+" "+pad(d.getDate())+"."+pad(d.getMonth()+1)+".";}
+var now=new Date(), TODAY=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+function rel(o,f,short){
+  if(o===0) return f.a0;
+  var a=Math.abs(o), u=(a>=14&&a%7===0)?(a/7)+(short?" Wo.":(a===7?" Woche":" Wochen")):a+(a===1?" Tag":" Tage");
+  return o<0?u+" vor "+f.aRef:u+" nach "+f.aRef;
+}
+function arr(w){return Array.isArray(w)?w:[w];}
+
+/* Speicher, nur im eigenen Browser */
+var KEY="sb-playbook-v1", DB={};
+try{DB=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){DB={};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){}}
+function S(fk){
+  if(!DB[fk]||typeof DB[fk]!=="object") DB[fk]={};
+  var s=DB[fk];
+  if(typeof s.k!=="string") s.k="";
+  if(typeof s.d!=="string") s.d="";
+  if(typeof s.s!=="number") s.s=0;
+  if(!s.c||typeof s.c!=="object") s.c={};
+  if(!s.f||typeof s.f!=="object") s.f={};
+  return s;
+}
+function anchor(s){var m=(s.d||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+function stepDone(fk,st){var c=S(fk).c[st.id]||[],n=0;for(var i=0;i<st.chk.length;i++)if(c[i])n++;return n;}
+function flowPct(fk){var d=0,t=0;FLOWS[fk].steps.forEach(function(st){d+=stepDone(fk,st);t+=st.chk.length;});return t?d/t:0;}
+function slug(K){return K.trim().replace(/[\/\\:*?"<>|]/g,"").replace(/\s+/g,"_");}
+
+/* Platzhalter füllen: {K} Kunde, {k} Kunde im Dateinamen, {D:n} Datum, {YM:n} Monat, {NR} Nummer */
+function fill(str,fk){
+  var s=S(fk||CUR),K=s.k.trim(),A=anchor(s),h=esc(str);
+  h=h.replace(/\{K\}/g,K?'<b class="kn">'+esc(K)+'</b>':'<span class="ph">Kundenname</span>');
+  h=h.replace(/\{k\}/g,K?esc(slug(K)):'<span class="ph">Kunde</span>');
+  h=h.replace(/\{D:(-?\d+)\}/g,function(m,o){return A?iso(addDays(A,+o)):'<span class="ph">JJJJ-MM-TT</span>';});
+  h=h.replace(/\{YM:(-?\d+)\}/g,function(m,o){return A?iso(addDays(A,+o)).slice(0,7):'<span class="ph">JJJJ-MM</span>';});
+  h=h.replace(/\{NR\}/g,'<span class="ph">NR</span>');
+  return h;
+}
+function fillText(str,fk){
+  var s=S(fk||CUR),K=s.k.trim(),A=anchor(s);
+  return String(str).replace(/\{K\}/g,K||"Kunde").replace(/\{k\}/g,K?slug(K):"Kunde")
+    .replace(/\{D:(-?\d+)\}/g,function(m,o){return A?iso(addDays(A,+o)):"JJJJ-MM-TT";})
+    .replace(/\{YM:(-?\d+)\}/g,function(m,o){return A?iso(addDays(A,+o)).slice(0,7):"JJJJ-MM";})
+    .replace(/\{NR\}/g,"NR");
+}
+
+/* Startseite */
+function renderStart(){
+  $("#cards").innerHTML=ORDER.map(function(fk){
+    var f=FLOWS[fk],s=S(fk),p=flowPct(fk),started=p>0||s.k.trim();
+    var dots=f.steps.map(function(st){var d=stepDone(fk,st);return '<i class="'+(d===st.chk.length?"on":d?"half":"")+'"></i>';}).join("");
+    return '<a class="fcard" href="#'+fk+'">'+
+      '<span class="dot" aria-hidden="true"></span>'+
+      '<span><span class="pill">'+esc(f.tag)+'</span></span>'+
+      '<h3>'+esc(f.name)+'</h3>'+
+      '<p class="line">'+esc(f.line)+'</p>'+
+      '<dl class="facts">'+f.facts.map(function(x){return '<div><dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd></div>';}).join("")+'</dl>'+
+      '<div class="mini" role="img" aria-label="'+f.steps.length+' Schritte">'+dots+'</div>'+
+      (started?'<p class="run mono">Läuft'+(s.k.trim()?": "+esc(s.k.trim()):"")+" · "+Math.round(p*100)+' % erledigt</p>':"")+
+      '<span class="go">'+(started?"Weitermachen":"Ablauf öffnen")+' <b aria-hidden="true">→</b></span>'+
+    '</a>';
+  }).join("");
+}
+
+/* Ablauf */
+var CUR=null, TAB="steps";
+function openFlow(fk){
+  CUR=fk;var f=FLOWS[fk],s=S(fk);
+  if(s.s<0||s.s>=f.steps.length) s.s=0;
+  $("#fTag").textContent=f.tag;$("#fName").textContent=f.name;$("#fLine").textContent=f.line;
+  $("#inK").value=s.k;$("#inD").value=s.d;$("#lblD").textContent=f.aLabel;$("#dHint").textContent=f.aHint;
+  disarm();
+  setTab(TAB,true);
+  renderRail();renderStep(false);renderMeter();renderAll();
+}
+function renderMeter(){
+  var p=Math.round(flowPct(CUR)*100);
+  $("#meter").innerHTML='<span class="mono">'+p+' % erledigt</span><span class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p+'" aria-label="Fortschritt"><i style="width:'+p+'%"></i></span>';
+}
+function renderRail(){
+  var f=FLOWS[CUR],s=S(CUR),A=anchor(s),ph="",h="";
+  f.steps.forEach(function(st,i){
+    if(st.ph!==ph){ph=st.ph;h+='<div class="rph mono">'+esc(ph)+'</div>';}
+    var d=stepDone(CUR,st),n=st.chk.length,from=arr(st.w)[0];
+    var when=A?fmtS(addDays(A,from))+" · "+rel(from,f,true):rel(from,f,true);
+    h+='<button type="button" class="ri'+(i===s.s?" on":"")+(d===n?" done":"")+'" data-i="'+i+'"'+(i===s.s?' aria-current="step"':"")+'>'+
+      '<span class="rn">'+(d===n?"✓":pad(i+1))+'</span>'+
+      '<span class="rt">'+esc(st.t)+(st.loop?' <em title="wiederholt sich jeden Monat">↻</em>':"")+'</span>'+
+      '<span class="rw mono">'+esc(when)+'</span>'+
+      '<span class="rp"><i style="width:'+(n?Math.round(d/n*100):0)+'%"></i></span>'+
+    '</button>';
+  });
+  $("#rail").innerHTML=h;
+  railToActive();
+}
+function railToActive(){
+  var rail=$("#rail"),on=rail.querySelector(".ri.on");
+  if(!on||!window.matchMedia("(max-width: 980px)").matches) return;
+  rail.scrollLeft+=on.getBoundingClientRect().left-rail.getBoundingClientRect().left-12;
+}
+var TY={k:["Mit Kunde","tk"],i:["Intern","ti"],f:["Frist","tf"]};
+function gcal(o,t,stepT,rr){
+  var s=S(CUR),A=anchor(s);if(!A) return "";
+  var d=addDays(A,o),e=addDays(d,1),ymd=function(x){return iso(x).replace(/-/g,"");};
+  var K=s.k.trim()||"Kunde";
+  var u="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("SB · "+K+" · "+fillText(t))+
+    "&dates="+ymd(d)+"/"+ymd(e)+"&details="+encodeURIComponent(FLOWS[CUR].name+" · "+stepT+"\nAus dem Social Bites Playbook");
+  if(rr) u+="&recur="+encodeURIComponent(rr);
+  return u;
+}
+function termRow(dt,st,withStep,isNext){
+  var f=FLOWS[CUR],A=anchor(S(CUR)),o=dt[0],ty=TY[dt[2]],d=A?addDays(A,o):null,idx=f.steps.indexOf(st);
+  var cal=A?'<a class="tcal" href="'+esc(gcal(o,dt[1],st.t,dt[3]))+'" target="_blank" rel="noopener">+ Kalender'+(dt[3]?" (Serie)":"")+'</a>':"";
+  return '<div class="term '+ty[1]+(d&&d<TODAY?" past":"")+(isNext?" next":"")+'">'+
+    '<div class="td"><b>'+(d?fmtS(d):esc(rel(o,f)))+'</b>'+(d?'<span>'+esc(rel(o,f))+'</span>':"")+'</div>'+
+    '<div class="tt">'+fill(dt[1])+(isNext?'<span class="nexttag">als Nächstes</span>':"")+
+      (withStep?'<button type="button" class="tstep" data-step="'+idx+'">Schritt '+pad(idx+1)+": "+esc(st.t)+'</button>':"")+'</div>'+
+    '<span class="tc">'+ty[0]+'</span>'+cal+
+  '</div>';
+}
+function pathHTML(r,sub){
+  var R=ROOTS[r],K=S(CUR).k.trim(),segs=R.segs.slice();if(sub) segs.push(sub);
+  var out=segs.map(function(x,j){
+    if(x==="{K}") return K?'<b class="kn">'+esc(K)+'</b>':'<span class="ph">Kundenname</span>';
+    if(j===0) return '<a href="'+esc(R.url||DRIVE(R.id))+'" target="_blank" rel="noopener">'+esc(x)+'</a>';
+    return '<span>'+esc(x)+'</span>';
+  });
+  return '<div class="path">'+out.join('<i aria-hidden="true">›</i>')+'</div>';
+}
+function renderStep(anim){
+  var f=FLOWS[CUR],s=S(CUR),A=anchor(s),i=s.s,st=f.steps[i],n=f.steps.length,c=s.c[st.id]||[],ws=arr(st.w);
+  var whenTxt=ws.map(function(o){return A?fmt(addDays(A,o)):rel(o,f);}).join(" bis ");
+  var whenRel=A?ws.map(function(o){return rel(o,f);}).join(" bis "):"";
+  var h='<div class="shead">'+
+    '<p class="mono sk">Schritt '+pad(i+1)+" von "+pad(n)+" · "+esc(st.ph)+(st.loop?" · ↻ jeden Monat":"")+'</p>'+
+    '<h2>'+esc(st.t)+'</h2>'+
+    '<p class="goal">'+fill(st.goal)+'</p>'+
+    '<div class="meta">'+
+      '<span class="m"><span class="mono">Wer</span>'+esc(st.who)+'</span>'+
+      '<span class="m"><span class="mono">Wann</span>'+esc(whenTxt)+(whenRel?' <small>'+esc(whenRel)+'</small>':"")+'</span>'+
+      '<span class="m"><span class="mono">Erledigt</span><b id="sCount">'+stepDone(CUR,st)+" von "+st.chk.length+'</b></span>'+
+    '</div></div>';
+  h+='<div class="sgrid"><div class="col">';
+  h+='<section class="blk"><h4 class="mono">Checkliste</h4><div class="chks">'+st.chk.map(function(t,j){
+    var id="c-"+CUR+"-"+st.id+"-"+j;
+    return '<label class="chk" for="'+id+'"><input type="checkbox" data-i="'+j+'" id="'+id+'"'+(c[j]?" checked":"")+'><span class="box" aria-hidden="true"></span><span class="txt">'+fill(t)+'</span></label>';
+  }).join("")+'</div></section>';
+  if(st.prices){
+    h+='<section class="blk"><h4 class="mono">Preisideen aus dem OS</h4><div class="scroll"><table class="ptab"><tbody>'+
+      st.prices.map(function(k){return '<tr><th scope="row">'+esc(PRICE[k][0])+'</th><td>'+esc(PRICE[k][1])+'</td></tr>';}).join("")+
+      '</tbody></table></div><p class="pcap">Quelle: Social Bites OS, Tab Leistungen. Preisideen, keine feste Preisliste.</p>'+
+      (st.ex?'<div class="ex">'+st.ex+'</div>':"")+'</section>';
+  }
+  h+='</div><div class="col">';
+  if(st.dates){
+    h+='<section class="blk"><h4 class="mono">Termine eintragen</h4><div class="terms">'+
+      st.dates.map(function(dt){return termRow(dt,st,false,false);}).join("")+'</div>'+
+      (A?"":'<p class="hint">Oben das Datum ('+esc(f.aLabel)+') eintragen. Dann stehen hier echte Tage und jeder Termin geht mit einem Klick in den Google Kalender.</p>')+
+    '</section>';
+  }
+  h+='<section class="blk"><h4 class="mono">Ablage</h4><div class="paths">'+st.store.map(function(x){
+    return '<div class="pitem">'+pathHTML(x[0],x[1])+'<p class="pw">'+fill(x[2])+'</p></div>';
+  }).join("")+'</div></section>';
+  if(st.warn) h+='<section class="blk warn"><h4 class="mono">Achtung</h4><p>'+fill(st.warn)+'</p></section>';
+  if(st.gets) h+='<section class="blk"><h4 class="mono">Kunde bekommt</h4><ul class="gets">'+st.gets.map(function(g){return '<li>'+fill(g)+'</li>';}).join("")+'</ul></section>';
+  h+='</div></div>';
+  if(st.form) h+=formHTML(st.form);
+  h+='<nav class="snav" aria-label="Schritte blättern">'+
+    '<button type="button" class="btn" data-go="'+(i-1)+'"'+(i===0?" disabled":"")+'><span class="dot"></span><span>Zurück</span></button>'+
+    '<span class="mono sx">'+pad(i+1)+" / "+pad(n)+'</span>'+
+    (i<n-1?'<button type="button" class="btn inv" data-go="'+(i+1)+'"><span class="dot"></span><span>Weiter<span class="nt">: '+esc(f.steps[i+1].t)+'</span></span></button>'
+          :'<a class="btn inv" href="#start"><span class="dot"></span><span>Fertig, zur Auswahl</span></a>')+
+  '</nav>';
+  var el=$("#step");el.innerHTML=h;
+  if(anim){el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");}
+}
+function formHTML(key){
+  var s=S(CUR);
+  return '<section class="blk form"><div class="fhd"><h4 class="mono">Im Treffen aufnehmen</h4>'+
+    '<p>Direkt im Gespräch ausfüllen. Das bleibt nur in deinem Browser. Danach kopieren, als Google Doc in 01_Briefing legen und Kontaktdaten ins Kundenblatt übertragen.</p>'+
+    '<div class="fbtns"><button class="btn" type="button" data-act="copyform"><span class="dot"></span><span>Bogen kopieren</span></button>'+
+    '<button class="btn" type="button" data-act="clearform" data-label="Bogen leeren"><span class="dot"></span><span>Bogen leeren</span></button></div></div>'+
+    '<div class="fgrid">'+FORMS[key].map(function(g){
+      return '<fieldset><legend>'+esc(g.t)+'</legend>'+g.f.map(function(x){
+        var id="f-"+CUR+"-"+x[0],v=esc(s.f[x[0]]||"");
+        return '<label for="'+id+'">'+esc(x[1])+'</label>'+(x[2]?'<textarea id="'+id+'" data-f="'+x[0]+'" rows="2">'+v+'</textarea>':'<input id="'+id+'" data-f="'+x[0]+'" type="text" value="'+v+'">');
+      }).join("")+'</fieldset>';
+    }).join("")+'</div></section>';
+}
+function allDates(){
+  var out=[];FLOWS[CUR].steps.forEach(function(st){(st.dates||[]).forEach(function(dt){out.push({dt:dt,st:st});});});
+  out.sort(function(a,b){return a.dt[0]-b.dt[0];});return out;
+}
+function renderAll(){
+  var f=FLOWS[CUR],s=S(CUR),A=anchor(s),rows=allDates(),h="",lastM="",nextDone=false;
+  $("#nDates").textContent=rows.length;
+  h+='<div class="alld-head"><div><h2>Alle Termine von '+esc(f.name)+'</h2>'+
+     '<p>'+(A?"Gerechnet ab "+esc(f.aLabel)+" am "+fmt(A)+". Jeder Termin geht mit einem Klick in den Google Kalender, als ganztägiger Eintrag mit dem Titel SB · Kunde · Termin.":"Trag oben das Datum ein ("+esc(f.aLabel)+"), dann stehen hier echte Tage mit Kalender-Links.")+'</p></div>'+
+     '<button class="btn inv" type="button" data-act="copydates"><span class="dot"></span><span>Alle kopieren</span></button></div>';
+  h+='<div class="legend"><span class="lk"><i></i>Mit Kunde</span><span><i></i>Intern</span><span class="lf"><i></i>Frist</span></div><div class="terms">';
+  rows.forEach(function(r){
+    if(A){var d=addDays(A,r.dt[0]),m=MO[d.getMonth()]+" "+d.getFullYear();if(m!==lastM){lastM=m;h+='</div><p class="month mono">'+m+'</p><div class="terms">';}}
+    var isNext=false;if(A&&!nextDone&&addDays(A,r.dt[0])>=TODAY){isNext=true;nextDone=true;}
+    h+=termRow(r.dt,r.st,true,isNext);
+  });
+  h+='</div>';
+  $("#alldates").innerHTML=h;
+}
+function datesText(){
+  var f=FLOWS[CUR],s=S(CUR),A=anchor(s),K=s.k.trim()||"Kunde";
+  var t="Social Bites × "+K+"\n"+f.name+" · "+f.aLabel+": "+(A?fmt(A):"noch offen")+"\n\n";
+  allDates().forEach(function(r){
+    t+=(A?fmt(addDays(A,r.dt[0])):rel(r.dt[0],f))+"   "+fillText(r.dt[1])+"   ("+TY[r.dt[2]][0]+", Schritt: "+r.st.t+")\n";
+  });
+  return t;
+}
+function formText(){
+  var f=FLOWS[CUR],s=S(CUR),st=f.steps[s.s],F=FORMS[st.form];
+  var t="Aufnahmebogen · "+f.name+" · "+(s.k.trim()||"Kunde")+"\nAufgenommen: "+fmt(TODAY)+"\n";
+  F.forEach(function(g){t+="\n"+g.t.toUpperCase()+"\n";g.f.forEach(function(x){t+=x[1]+": "+((s.f[x[0]]||"").trim()||"offen")+"\n";});});
+  return t;
+}
+function go(i){
+  var f=FLOWS[CUR];if(i<0||i>=f.steps.length) return;
+  S(CUR).s=i;save();renderRail();renderStep(true);
+  try{history.replaceState(null,"","#"+CUR+"-"+(i+1));}catch(e){}
+  var top=$("#step").getBoundingClientRect().top;
+  if(top<0||top>window.innerHeight*.6){
+    var hh=$(".top").offsetHeight;
+    window.scrollTo({top:window.scrollY+top-hh-16,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+  }
+}
+function setTab(t,quiet){
+  TAB=t;var steps=t==="steps";
+  $("#flowgrid").hidden=!steps;$("#alldates").hidden=steps;
+  $("#tab-steps").setAttribute("aria-selected",steps?"true":"false");
+  $("#tab-dates").setAttribute("aria-selected",steps?"false":"true");
+  if(steps) railToActive();
+}
+
+/* Kopieren mit Ausweichweg */
+function copy(text,btn){
+  var lab=btn.querySelector("span:last-child"),old=lab.textContent;
+  function fallback(){var ta=$("#copyTa");ta.value=text;try{$("#copyDlg").showModal();}catch(e){$("#copyDlg").setAttribute("open","");}ta.focus();ta.select();}
+  try{
+    navigator.clipboard.writeText(text).then(function(){lab.textContent="Kopiert";setTimeout(function(){lab.textContent=old;},1800);},fallback);
+  }catch(e){fallback();}
+}
+$("#copyClose").addEventListener("click",function(){$("#copyDlg").close();});
+
+/* Bestätigung per zweitem Klick */
+var armed=null,armT=null;
+function disarm(){if(armed){armed.classList.remove("armed");armed.querySelector("span:last-child").textContent=armed.getAttribute("data-label");}armed=null;clearTimeout(armT);}
+function arm(btn){disarm();armed=btn;btn.classList.add("armed");btn.querySelector("span:last-child").textContent="Sicher? Nochmal klicken";armT=setTimeout(disarm,4000);}
+
+/* Ereignisse */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-i],[data-go],[data-act],[data-tab],[data-step]");if(!t) return;
+  if(t.matches(".ri")){go(+t.getAttribute("data-i"));return;}
+  if(t.hasAttribute("data-go")){go(+t.getAttribute("data-go"));return;}
+  if(t.hasAttribute("data-tab")){setTab(t.getAttribute("data-tab"));if(TAB==="dates")renderAll();return;}
+  if(t.hasAttribute("data-step")){setTab("steps");go(+t.getAttribute("data-step"));return;}
+  var a=t.getAttribute("data-act");
+  if(a==="copydates"){copy(datesText(),t);}
+  else if(a==="copyform"){copy(formText(),t);}
+  else if(a==="clearform"){
+    if(armed===t){disarm();var st=FLOWS[CUR].steps[S(CUR).s];FORMS[st.form].forEach(function(g){g.f.forEach(function(x){delete S(CUR).f[x[0]];});});save();renderStep(false);}
+    else arm(t);
+  }
+  else if(a==="reset"){
+    if(armed===t){disarm();DB[CUR]={};save();openFlow(CUR);try{history.replaceState(null,"","#"+CUR);}catch(err){}}
+    else arm(t);
+  }
+});
+$("#step").addEventListener("change",function(e){
+  var t=e.target;if(!t.matches('input[type="checkbox"][data-i]')) return;
+  var s=S(CUR),st=FLOWS[CUR].steps[s.s],c=s.c[st.id]||(s.c[st.id]=[]);
+  c[+t.getAttribute("data-i")]=t.checked;save();
+  $("#sCount").textContent=stepDone(CUR,st)+" von "+st.chk.length;
+  renderRail();renderMeter();
+});
+$("#step").addEventListener("input",function(e){
+  var t=e.target,k=t.getAttribute("data-f");if(!k) return;
+  S(CUR).f[k]=t.value;save();
+});
+function onK(){S(CUR).k=$("#inK").value;save();renderStep(false);renderAll();}
+function onD(){S(CUR).d=$("#inD").value;save();renderRail();renderStep(false);renderAll();}
+$("#inK").addEventListener("input",onK);
+$("#inD").addEventListener("input",onD);
+$("#inD").addEventListener("change",onD);
+document.addEventListener("keydown",function(e){
+  if($("#v-flow").hidden||TAB!=="steps"||e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.target.closest&&e.target.closest("input,textarea,select,[contenteditable]")) return;
+  if(e.key==="ArrowRight"){e.preventDefault();go(S(CUR).s+1);}
+  else if(e.key==="ArrowLeft"){e.preventDefault();go(S(CUR).s-1);}
+});
+
+/* Navigation über den Anker */
+function show(v){
+  ["start","flow","ablage"].forEach(function(x){$("#v-"+x).hidden=x!==v;});
+  document.querySelectorAll("[data-nav]").forEach(function(a){
+    var on=(a.getAttribute("data-nav")==="start"&&v!=="ablage")||(a.getAttribute("data-nav")==="ablage"&&v==="ablage");
+    if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
+  });
+}
+function route(){
+  var h=(location.hash||"").slice(1),m=h.match(/^(opening|gastro|brands)(?:-(\d+))?$/);
+  disarm();
+  if(m){
+    var s=S(m[1]);
+    if(m[2]){s.s=Math.min(Math.max(+m[2]-1,0),FLOWS[m[1]].steps.length-1);save();}
+    TAB="steps";show("flow");openFlow(m[1]);
+  } else if(h==="ablage"){show("ablage");}
+  else {show("start");renderStart();}
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+route();
+})();
+</script>
+</body>
+</html>

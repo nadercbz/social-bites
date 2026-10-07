@@ -330,6 +330,7 @@
   }
   @media (max-width:640px){
     .tiles,.dlgrid{grid-template-columns:minmax(0,1fr);}
+    .vk{grid-template-columns:minmax(0,1fr)!important;}
     :root{--bar:64px;}
     .bar{gap:10px;}
     .bar-logo img{height:42px;}
@@ -856,7 +857,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
   ["Ablage",[["t-dateien","Dateien im Drive"]]]
@@ -887,7 +888,7 @@ var TCUR="t-start", sheetTools=false, sheetGid=null;
 function tNav(){
   $("#tside").innerHTML=TNAV.map(function(g){
     return '<p class="side-h mono">'+esc(g[0])+'</p>'+g[1].map(function(it){return '<button class="nav-b" type="button" data-tview="'+it[0]+'"><span>'+esc(it[1])+'</span></button>';}).join("");
-  }).join("")+'<div class="side-foot"><a class="link" href="'+SHEET_URL+'" target="_blank" rel="noopener">Social Bites OS in Google öffnen ↗</a><a class="link" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener">Drive-Ordner öffnen ↗</a></div>';
+  }).join("")+'<div class="side-foot"><a class="link" href="index.html" target="_blank" rel="noopener">Website ↗</a><a class="link" href="'+SHEET_URL+'" target="_blank" rel="noopener">Social Bites OS in Google öffnen ↗</a><a class="link" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener">Drive-Ordner öffnen ↗</a></div>';
 }
 function sheetSrc(gid){return SHEET_URL+(sheetTools?"":"?rm=minimal")+"#gid="+gid;}
 function showSheet(o){
@@ -897,7 +898,8 @@ function showSheet(o){
 }
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
-  if(!os&&["t-start","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
+  if(!os&&["t-start","t-rechner","t-playbook","t-leistungen","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
@@ -908,11 +910,14 @@ function tGo(v,quiet){
     showSheet(os);
   } else if(v==="t-start") h=tStart();
   else if(v==="t-brandbook") h=head("Marke","Brand Book","Logo, Farben, Schrift, Sprache und Bildsprache. Zum Weitergeben an alle, die für uns gestalten.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="brandbook.html" title="Social Bites Brand Book"></iframe>';
+  else if(v==="t-rechner") h=head("Team","Preisrechner","Vor Ort mit dem Kunden rechnen: Bausteine reinziehen, Mengen und Preise anpassen, fertig ist die Übersicht. Für den Kunden im Präsentationsmodus zeigen.",'<div class="acts"><a class="btn sm inv" href="rechner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild für den Kunden ↗</span></a></div>')+'<iframe class="tframe" src="rechner.html" title="Social Bites Preisrechner" style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:620px"></iframe>';
+  else if(v==="t-playbook") h=head("Team","Abläufe (Playbook)","Vom Ja bis zur fertigen Produktion: Bites Opening, Bites for Gastro und Bites for Brands. Schritt für Schritt mit Checklisten, Terminen und Ablage. Haken und Notizen bleiben in deinem Browser.",'<div class="acts"><a class="btn sm" href="playbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="playbook.html" title="Social Bites Playbook"></iframe>';
+  else if(v==="t-leistungen") h=head("Team","Leistungen","Was wir machen, auf einer Seite. Ohne Preise, darf also auch an Kunden. Zum Drucken oder als PDF: in neuem Tab öffnen und drucken.",'<div class="acts"><a class="btn sm" href="leistungen.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a><button class="btn sm" type="button" data-tview="os-leistungen"><span class="dot"></span><span>Preise im OS</span></button></div>')+'<iframe class="tframe" src="leistungen.html" title="Social Bites Leistungen"></iframe>';
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -922,14 +927,18 @@ function tStart(){
     '<div class="tiles">'+
       tile("os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or")+
       tile("os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.")+
+      tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
+      tile("t-playbook","Abläufe","Playbook","Bites Opening, Gastro und Brands, Schritt für Schritt.")+
+      tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.")+
       tile("os-pipeline","Social Bites OS","Pipeline","Kunden und Partner bis zum Auftrag.")+
-      tile("os-meetings","Social Bites OS","Meetings","Montags ab 14 Uhr, Notizen und nächste Schritte.")+
-      tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.","t-ink")+
+      tile("t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.")+
       tile("t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.")+
     '</div>'+
     '<section class="card" style="margin-top:14px"><h2>Schnellzugriff</h2><div class="quick">'+
       '<a class="btn sm" href="index.html" target="_blank" rel="noopener"><span class="dot"></span><span>Website ↗</span></a>'+
-      '<a class="btn sm" href="https://nadercbz.github.io/social-bites-playbook/" target="_blank" rel="noopener"><span class="dot"></span><span>Playbook ↗</span></a>'+
+      '<a class="btn sm" href="playbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Playbook ↗</span></a>'+
+      '<a class="btn sm" href="leistungen.html" target="_blank" rel="noopener"><span class="dot"></span><span>Leistungen ↗</span></a>'+
+      '<a class="btn sm" href="rechner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Preisrechner ↗</span></a>'+
       '<a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a>'+
       '<a class="btn sm" href="'+SHEET_URL+'" target="_blank" rel="noopener"><span class="dot"></span><span>Social Bites OS in Google ↗</span></a>'+
       '<a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive-Ordner ↗</span></a>'+
@@ -942,6 +951,8 @@ function tKit(){
   return head("Marke","Brand-Kit & Logos","Logos zum Laden, Farben zum Kopieren, Schriften zum Installieren. Alles Weitere liegt im Drive unter Branding.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a></div>')+
     '<div class="dlgrid">'+dl+'</div>'+
     '<section class="card" style="margin-top:14px"><h2>Farben</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Klick kopiert den Farbcode.</p><div class="chips">'+col+'</div></section>'+
+    '<section class="card" style="margin-top:14px"><h2>Visitenkarten</h2><div style="display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:center" class="vk"><img src="brand/visitenkarte-vorderseite.jpg" alt="Vorderseite der Visitenkarte" style="border-radius:8px;box-shadow:0 8px 20px rgba(30,27,26,.18)" loading="lazy"><div><p style="margin:0 0 8px;font-size:15px">85 × 55 mm für WIRmachenDRUCK. Vorne Orange mit Logo, hinten Name, Co-Founder, Telefon und QR-Code. Mail und Website kommen dazu, sobald die Domain steht.</p><p class="muted" style="margin:0 0 12px;font-size:14px">Die Druck-PDFs enthalten eure Handynummern und liegen deshalb nicht auf dieser öffentlichen Seite, sondern im Drive unter Branding › Visitenkarten.</p><a class="btn sm" href="'+driveUrl("1P06BnIA8vzMnrqSxw1bnB87TSsqQtyfi")+'" target="_blank" rel="noopener"><span class="dot"></span><span>Druck-PDFs im Drive ↗</span></a></div></div></section>'+
+    '<section class="card" style="margin-top:14px"><h2>Logo-Entwicklung</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Die Runden vor dem finalen Logo. Favorit und Hauptlogo bleibt der Mund im O.</p><div style="display:grid;gap:12px"><img src="brand/logo-runde-3.webp" alt="Logo-Vorschläge Runde 3" style="border-radius:8px;border:1px solid var(--line)" loading="lazy"><img src="brand/logo-runde-2.webp" alt="Logo-Vorschläge Runde 2" style="border-radius:8px;border:1px solid var(--line);max-width:640px" loading="lazy"></div></section>'+
     '<section class="card" style="margin-top:14px"><h2>Schriften</h2><div class="quick"><a class="btn sm" href="https://fonts.google.com/specimen/Schibsted+Grotesk" target="_blank" rel="noopener"><span class="dot"></span><span>Schibsted Grotesk ↗</span></a><a class="btn sm" href="https://fonts.google.com/specimen/Geist+Mono" target="_blank" rel="noopener"><span class="dot"></span><span>Geist Mono ↗</span></a></div></section>'+
     '<div class="vh" style="margin:28px 0 12px"><div><p class="mono hot">Drive</p><h1 style="font-size:clamp(26px,3vw,38px)">Branding & Asset-Bibliothek</h1><p>Farben & Fonts, Logo & Wortmarke, Musik & Sound-Assets, Templates. Hochladen geht im Drive: Ordner öffnen, Datei reinziehen.</p></div><div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_BRAND)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Im Drive öffnen ↗</span></a></div></div>'+
     '<iframe class="tframe" style="height:420px;min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_BRAND+'#grid" title="Drive-Ordner Branding"></iframe>';

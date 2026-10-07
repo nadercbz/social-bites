@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Preisrechner</title>
+<meta name="description" content="Preisrechner von Social Bites: Bausteine wählen, Preis vor Ort mit dem Kunden berechnen.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: links die Baustein-Palette, rechts die Kalkulation mit Zeilen und Summen. Präsentationsmodus blendet alles Interne aus. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img{max-width:100%;height:auto;display:block;}
+  button,input,select{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:600 14.5px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;text-decoration:none;white-space:nowrap;transition:color .3s ease,border-color .3s ease;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
+  .btn.armed{border-color:var(--accent-ink);color:var(--accent-ink);}
+
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(246,240,227,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:46px;width:auto;}
+  .top .ttl{display:flex;flex-direction:column;gap:2px;}
+  .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+
+  .meta{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 12px;align-items:end;padding:14px var(--gutter);border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .f{display:grid;gap:5px;min-width:0;}
+  .f.k{grid-column:span 3;} .f.v{grid-column:span 2;} .f.s{grid-column:span 4;}
+  .f label{color:var(--mute);}
+  .f input,.f select{width:100%;min-height:42px;background:var(--card);border:1.5px solid var(--ink);border-radius:8px;padding:8px 10px;font-size:16px;font-weight:650;}
+  .f input:focus,.f select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .f .row{display:flex;gap:6px;}
+  .f .row select{flex:1;min-width:0;}
+  .chk{display:inline-flex;align-items:center;gap:8px;min-height:42px;font-weight:650;font-size:15px;cursor:pointer;}
+  .chk input{width:20px;height:20px;accent-color:#F04A0A;margin:0;}
+
+  .layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:clamp(14px,2vw,28px);padding:18px var(--gutter) 60px;align-items:start;}
+  .pal{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;scrollbar-width:thin;}
+  .pal h2{margin:0 0 4px;font-size:19px;font-weight:800;letter-spacing:-.03em;}
+  .pal > p{margin:0 0 10px;font-size:13.5px;color:var(--mute);}
+  .pal input[type=search]{width:100%;min-height:40px;border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;background:var(--paper);font-size:15px;margin-bottom:10px;}
+  .grp{margin-top:12px;}
+  .grp h3{margin:0 0 6px;color:var(--accent-ink);}
+  .grp.fremd h3{color:var(--mute);}
+  .blk{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--paper);margin-bottom:6px;cursor:grab;user-select:none;-webkit-user-select:none;transition:border-color .2s ease,transform .2s var(--ease);}
+  .blk:hover{border-color:var(--accent);}
+  .blk.dragging{opacity:.5;}
+  .blk b{font-weight:700;font-size:14.5px;line-height:1.25;letter-spacing:-.02em;}
+  .blk small{grid-column:1;font-family:var(--mono);font-size:10.5px;color:var(--mute);letter-spacing:.02em;}
+  .blk button{grid-row:1/span 2;grid-column:2;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);background:var(--card);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;}
+  .blk button:hover{background:var(--accent);border-color:var(--accent);}
+  .grp.fremd .blk{background:transparent;border-style:dashed;}
+
+  .main{min-width:0;display:grid;gap:14px;}
+  .present-h{display:none;}
+  .colbar{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:14px;}
+  .colbar .mono{color:var(--mute);}
+  .colbar label{display:inline-flex;align-items:center;gap:6px;font-weight:650;cursor:pointer;}
+  .colbar input{accent-color:#F04A0A;width:17px;height:17px;margin:0;}
+  .drop{background:var(--card);border:2px dashed var(--line-2);border-radius:14px;padding:6px;min-height:180px;transition:border-color .2s ease,background-color .2s ease;}
+  .drop.over{border-color:var(--accent);background:var(--accent-tint);}
+  .empty{display:grid;place-items:center;text-align:center;gap:8px;padding:34px 16px;color:var(--mute);}
+  .empty b{font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--ink);}
+  .tw{overflow-x:auto;}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:15px;}
+  thead th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;padding:8px 6px;border-bottom:1.5px solid var(--ink);white-space:nowrap;}
+  thead th.r,td.r{text-align:right;}
+  tbody td{padding:6px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tbody tr.flash td{animation:flash 1s ease;}
+  @keyframes flash{from{background:var(--accent-tint);}to{background:transparent;}}
+  tbody tr.fremd td{background:rgba(237,228,208,.5);}
+  tbody tr.before td{box-shadow:inset 0 3px 0 var(--accent);}
+  .grip{cursor:grab;color:var(--mute);font-size:16px;letter-spacing:-3px;padding:0 4px;user-select:none;}
+  .in{width:100%;min-width:0;border:1px solid transparent;border-radius:6px;background:transparent;padding:7px 8px;font-size:15px;font-weight:600;transition:border-color .2s ease,background-color .2s ease;}
+  .in:hover{border-color:var(--line-2);background:var(--paper);}
+  .in:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px var(--accent-tint);}
+  .in.num{text-align:right;}
+  .in.need{border-color:var(--accent-ink);background:var(--accent-tint);}
+  .c-name{min-width:220px;}
+  .c-name .in{font-weight:750;}
+  .c-name small{display:flex;flex-wrap:wrap;gap:4px 8px;padding:0 8px;font-family:var(--mono);font-size:10.5px;color:var(--mute);letter-spacing:.02em;}
+  .c-name .ftag{color:var(--accent-ink);}
+  .c-qty{width:86px;} .c-unit{width:124px;} .c-price{width:120px;} .c-bill{width:128px;} .c-disc{width:86px;} .c-note{min-width:150px;} .c-sum{width:150px;white-space:nowrap;font-weight:800;}
+  .c-sum small{display:block;font-family:var(--mono);font-weight:500;font-size:10.5px;color:var(--mute);}
+  .c-x{width:40px;}
+  .c-bill select{width:100%;border:1px solid var(--line-2);border-radius:6px;background:var(--paper);padding:7px 6px;font-size:14px;font-weight:600;}
+  .x{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:18px;line-height:1;}
+  .x:hover{background:var(--accent-ink);color:var(--paper);border-color:var(--accent-ink);}
+  .hide-qty .c-qty,.hide-unit .c-unit,.hide-disc .c-disc,.hide-note .c-note{display:none;}
+  .hide-range .c-name small .rg{display:none;}
+  .addrow{display:flex;gap:8px;flex-wrap:wrap;padding:10px 6px 6px;}
+
+  .totals{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;}
+  .sum{background:var(--ink);color:var(--paper);border-radius:14px;padding:clamp(16px,2vw,24px);display:grid;gap:6px;}
+  .sum .ln{display:flex;justify-content:space-between;gap:12px;font-size:15.5px;align-items:baseline;}
+  .sum .ln span:last-child{font-weight:700;white-space:nowrap;}
+  .sum .ln.sub{color:rgba(246,240,227,.7);font-size:14px;}
+  .sum hr{border:0;border-top:1px solid rgba(246,240,227,.2);margin:6px 0;width:100%;}
+  .sum .big{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;}
+  .sum .big span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(246,240,227,.75);}
+  .sum .big b{font-weight:800;font-size:clamp(30px,3.6vw,48px);letter-spacing:-.045em;line-height:1;}
+  .sum .big.or b{color:var(--accent);}
+  .side{display:grid;gap:14px;align-content:start;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .card h3{margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-.03em;}
+  .card .ln{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;padding:5px 0;border-bottom:1px solid var(--line);}
+  .card .ln:last-child{border-bottom:0;}
+  .card .ln span:last-child{font-weight:700;white-space:nowrap;}
+  .card.fr{background:transparent;border-style:dashed;}
+  .fine{margin:0;font-size:13px;color:var(--mute);}
+  .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:90;background:var(--ink);color:var(--paper);padding:11px 15px;border-radius:10px;font-weight:650;font-size:15px;transition:opacity .25s ease,transform .25s var(--ease);pointer-events:none;max-width:calc(100vw - 32px);}
+  .toast.on{opacity:1;transform:translate(-50%,0);}
+  dialog.copy{border:1.5px solid var(--ink);border-radius:14px;padding:20px;background:var(--card);color:var(--ink);width:min(640px,calc(100vw - 32px));}
+  dialog.copy::backdrop{background:rgba(30,27,26,.45);}
+  dialog.copy textarea{width:100%;height:280px;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--paper);}
+
+  /* Präsentationsmodus: Kundensicht ohne Interna */
+  body.present .pal,body.present .meta,body.present .colbar,body.present .addrow,body.present .c-x,body.present .grip,body.present .c-h,body.present .hide-in-present{display:none!important;}
+  body.present .layout{grid-template-columns:minmax(0,1fr);max-width:1180px;margin:0 auto;}
+  body.present .present-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:10px 0 6px;}
+  body.present .present-h h1{margin:0;font-weight:800;font-size:clamp(36px,5vw,68px);line-height:.92;letter-spacing:-.05em;}
+  body.present .present-h p{margin:8px 0 0;color:var(--mute);font-size:16px;}
+  body.present .drop{border-style:solid;border-color:var(--line);}
+  body.present .c-name small .rg{display:none;}
+  body.present .in{pointer-events:auto;}
+  body.present table{font-size:17px;}
+  body.present .c-name .in{font-size:18px;}
+
+  @media (max-width:1100px){
+    .meta{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .f.k,.f.s{grid-column:span 3;} .f.v{grid-column:span 3;}
+    .totals{grid-template-columns:minmax(0,1fr);}
+  }
+  @media (max-width:900px){
+    .layout{grid-template-columns:minmax(0,1fr);}
+    .pal{position:static;max-height:420px;}
+  }
+  @media (max-width:640px){
+    .top{position:static;}
+    .top img{height:38px;}
+    .top .acts .btn span:last-child{font-size:13.5px;}
+    .meta{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+    .f.k,.f.s,.f.v{grid-column:1/-1;}
+    .f .row{flex-wrap:wrap;}
+    .meta .wide{grid-column:1/-1;}
+    thead{display:none;}
+    table,tbody,tr,td{display:block;width:100%;}
+    tbody tr{position:relative;border:1px solid var(--line);border-radius:10px;padding:8px 8px 10px;margin:6px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 8px;}
+    tbody td{border:0;padding:0;width:auto!important;}
+    td.c-h{display:none;}
+    td.c-name{grid-column:1/-1;min-width:0;padding-right:40px;}
+    td.c-note{grid-column:1/-1;}
+    td.c-sum{grid-column:1/-1;text-align:right;font-size:17px;}
+    td.c-x{position:absolute;right:8px;top:8px;}
+    td[data-l]::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:0 8px;}
+  }
+  @media print{
+    @page{size:A4;margin:12mm;}
+    body{background:#fff;}
+    .top,.pal,.meta,.colbar,.addrow,.c-x,.c-h,.hide-in-present,.toast{display:none!important;}
+    .layout{grid-template-columns:minmax(0,1fr);padding:0;}
+    .present-h{display:flex!important;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
+    .present-h h1{margin:0;font-size:32px;font-weight:800;letter-spacing:-.04em;}
+    .drop{border:0;padding:0;}
+    .in{border:0!important;background:transparent!important;box-shadow:none!important;padding:2px 0;}
+    .c-bill select{border:0;background:transparent;-webkit-appearance:none;appearance:none;}
+    .sum{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Preisrechner</b><span class="mono">Bausteine rein, Preis raus</span></div>
+  <div class="acts">
+    <button class="btn inv" type="button" id="present"><span class="dot"></span><span>Präsentation</span></button>
+    <button class="btn" type="button" id="copy"><span class="dot"></span><span>Als Text kopieren</span></button>
+    <button class="btn" type="button" id="print"><span class="dot"></span><span>Drucken</span></button>
+  </div>
+</header>
+
+<section class="meta" aria-label="Kalkulation">
+  <div class="f wide k"><label class="mono" for="kunde">Kunde</label><input id="kunde" type="text" placeholder="Name des Ladens oder der Marke" autocomplete="off"></div>
+  <div class="f"><label class="mono" for="datum">Datum</label><input id="datum" type="date"></div>
+  <div class="f"><label class="mono" for="monate">Laufzeit in Monaten</label><input id="monate" type="number" min="1" max="60" step="1" value="3"></div>
+  <div class="f"><span class="mono">Steuer</span><label class="chk"><input id="mwst" type="checkbox" checked> zzgl. 19 % MwSt.</label></div>
+  <div class="f v"><label class="mono" for="vorlage">Vorlage laden</label><select id="vorlage"><option value="">Vorlage wählen</option><option value="opening">Bites Opening</option><option value="gastro">Bites for Gastro</option><option value="brands">Bites for Brands</option></select></div>
+  <div class="f wide s"><label class="mono" for="saved">Gespeichert</label><div class="row"><select id="saved"><option value="">Kalkulation öffnen</option></select><button class="btn" type="button" id="save"><span class="dot"></span><span>Speichern</span></button><button class="btn" type="button" id="neu" data-label="Neu"><span class="dot"></span><span>Neu</span></button></div></div>
+</section>
+
+<div class="layout">
+  <aside class="pal" aria-label="Bausteine">
+    <h2>Bausteine</h2>
+    <p>Reinziehen oder auf + tippen. Preise sind Startwerte aus dem OS und in jeder Zeile änderbar.</p>
+    <input type="search" id="q" placeholder="Baustein suchen" aria-label="Bausteine durchsuchen">
+    <div id="pal"></div>
+  </aside>
+
+  <main class="main">
+    <div class="present-h"><div><h1 id="ph">Deine Kalkulation</h1><p id="pd"></p></div><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806" style="height:74px;width:auto"></div>
+    <div class="colbar"><span class="mono">Spalten</span>
+      <label><input type="checkbox" data-col="qty" checked> Menge</label>
+      <label><input type="checkbox" data-col="unit" checked> Einheit</label>
+      <label><input type="checkbox" data-col="disc" checked> Rabatt</label>
+      <label><input type="checkbox" data-col="note"> Notiz</label>
+      <label><input type="checkbox" data-col="range" checked> Preisspanne</label>
+    </div>
+    <div class="drop" id="drop">
+      <div class="tw"><table id="tbl">
+        <thead><tr><th class="c-h"></th><th class="c-name">Baustein</th><th class="c-qty r">Menge</th><th class="c-unit">Einheit</th><th class="c-price r">Preis €</th><th class="c-bill">Abrechnung</th><th class="c-disc r">Rabatt %</th><th class="c-note">Notiz</th><th class="c-sum r">Summe</th><th class="c-x"></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table></div>
+      <div class="empty" id="empty"><b>Noch leer.</b><span>Bausteine von links hier reinziehen, auf + tippen oder oben eine Vorlage laden.</span></div>
+      <div class="addrow"><button class="btn" type="button" id="custom"><span class="dot"></span><span>Eigener Baustein</span></button></div>
+    </div>
+    <div class="totals">
+      <section class="sum" aria-label="Summe" id="sum"></section>
+      <div class="side">
+        <section class="card" id="plan"></section>
+        <section class="card fr" id="fremd"></section>
+      </div>
+    </div>
+    <p class="fine">Unverbindliche Kalkulation. Das verbindliche Angebot kommt schriftlich. Fremdkosten wie Ad-Budget oder Druck zahlt ihr direkt an den Anbieter.</p>
+  </main>
+</div>
+
+<dialog class="copy" id="dlg" aria-labelledby="dlgH"><h3 id="dlgH" style="margin:0 0 6px">Text zum Kopieren</h3><p style="margin:0 0 10px;color:var(--mute)">Kopieren hier mit Cmd+C oder Strg+C.</p><textarea id="dlgTa" readonly></textarea><p style="margin:10px 0 0;text-align:right"><button class="btn inv" type="button" id="dlgX"><span class="dot"></span><span>Schließen</span></button></p></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s);};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function num(v){var n=parseFloat(String(v==null?"":v).replace(/\./g,"").replace(",","."));return isFinite(n)?n:0;}
+function numIn(v){var s=String(v==null?"":v).trim();if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s))return num(s);return parseFloat(s.replace(",","."))||0;}
+function eur(n){return n.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";}
+function plain(n){return String(Math.round(n*100)/100).replace(".",",");}
+function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){el.classList.remove("on");},2200);}
+
+/* Bausteine mit Startpreisen aus dem Social Bites OS, Tab Leistungen. key, Kategorie, Name, Einheit, Preis, Abrechnung, Spanne */
+var CATS=[["content","Content & Produktion"],["event","Events & Influencer"],["brand","Branding & Design"],["mkt","Marketing & Ads"],["tech","Web, Apps & KI"],["gastro","Gastro-Beratung"],["fremd","Fremdkosten, zahlt der Kunde direkt"]];
+var CATN={};CATS.forEach(function(c){CATN[c[0]]=c[1];});
+var B=[
+ ["reel","content","Reel oder Content-Piece","Stück",110,"once","90 bis 130 € pro Content"],
+ ["contentpausch","content","Content-Pauschale große Kunden","Pauschal",4000,"once","3.000 bis 5.000 €"],
+ ["foto","content","Foto-Shooting","Shooting",1000,"once","800 bis 1.300 €"],
+ ["eventfoto","content","Event-Fotos und Video","Event",1500,"once","1.200 bis 2.000 €"],
+ ["drohne","content","Drohnen-Aufnahmen","Einsatz",0,"once","Preis offen, bitte eintragen"],
+ ["opening","event","Opening oder Event","Pauschal",5000,"once","5.000 bis 30.000 € je nach Größe"],
+ ["dj","event","DJ","Stunde",100,"once","100 € pro Stunde"],
+ ["inflcons","event","Influencer-Consulting","Influencer",50,"once","50 € pro kostenlosem Influencer"],
+ ["inflpausch","event","Influencer-Betreuung","Monat",150,"month","150 € monatlich"],
+ ["offline","event","Offline-Aktion: Guerilla, Gamification","Pauschal",0,"once","nach Anfrage"],
+ ["branding","brand","Restaurant-Branding vor Ort","Pauschal",2500,"once","1.500 bis 4.000 € und mehr"],
+ ["grafik","brand","Grafiken und Illustrationen","Pauschal",500,"once","ab 500 €"],
+ ["druck","brand","Druck, Werbeanlage, Anbringen","m²",0,"once","Preis pro m², nach Anfrage"],
+ ["d3","brand","3D Visuals, 5 Ansichten","Paket",2000,"once","2.000 €"],
+ ["adsset","mkt","Meta und TikTok Ads einrichten","Pauschal",2500,"once","2.500 €"],
+ ["adsbetr","mkt","Ads-Betreuung","Monat",550,"month","500 bis 600 € monatlich"],
+ ["seo","mkt","SEO und GEO","Pauschal",1500,"once","1.500 €"],
+ ["pr","mkt","PR und Pressearbeit","Pauschal",1500,"once","1.000 bis 2.000 €"],
+ ["koop","mkt","Lokale Kooperationen","Pauschal",1500,"once","1.000 bis 2.000 €"],
+ ["report","mkt","Reporting und Analyse","Pauschal",800,"once","ab 800 €"],
+ ["web","tech","Website","Pauschal",1500,"once","ab 1.500 €"],
+ ["app","tech","App-Entwicklung","Pauschal",20000,"once","ab 20.000 €"],
+ ["kiset","tech","KI-Automation einrichten","Pauschal",1200,"once","1.000 bis 1.400 €"],
+ ["kiwart","tech","KI-Wartung pro Automation","Monat",450,"month","400 bis 500 € monatlich"],
+ ["kipflege","tech","KI-Pflege","Monat",99,"month","99 € monatlich"],
+ ["bewert","gastro","Bewertungsmanagement","Pauschal",600,"once","400 bis 1.000 €"],
+ ["treue","gastro","Treueprogramm","Pauschal",1500,"once","1.000 bis 3.000 €"],
+ ["liefer","gastro","Liefergeschäft optimieren","Pauschal",1200,"once","800 bis 2.500 €"],
+ ["direkt","gastro","Direktbestellungen aufbauen","Pauschal",1500,"once","ab 1.500 €"],
+ ["catering","gastro","Catering- und Firmenkunden","Pauschal",1500,"once","1.000 bis 2.000 €"],
+ ["standort","gastro","Standortanalyse","Pauschal",1200,"once","ab 1.200 €"],
+ ["f_ads","fremd","Ad-Budget an Meta oder TikTok","Pauschal",400,"once","Beispiel The Pizzary: 400 € über 2 Wochen"],
+ ["f_druck","fremd","Druckkosten","Pauschal",0,"once","laut Angebot der Druckerei"],
+ ["f_essen","fremd","Gratis-Essen am Opening","Pauschal",0,"once","Wareneinsatz der Küche"],
+ ["f_infl","fremd","Influencer-Honorare","Influencer",0,"once","je nach Creator"]
+];
+var BK={};B.forEach(function(b){BK[b[0]]=b;});
+var PRESETS={
+  opening:{months:1,rows:[["opening",1],["reel",12],["foto",1],["eventfoto",1],["inflcons",10],["dj",4],["adsset",1],["f_ads",1],["f_essen",1]]},
+  gastro:{months:3,rows:[["reel",12,125,"month"],["inflpausch",1]]},
+  brands:{months:1,rows:[["contentpausch",1],["eventfoto",1],["inflcons",10],["report",1]]}
+};
+
+/* Zustand, nur in diesem Browser */
+var CUR="sb-rechner-cur",SAVED="sb-rechner-saved";
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function blank(){return {kunde:"",datum:today(),monate:3,mwst:true,cols:{qty:true,unit:true,disc:true,note:false,range:true},rows:[]};}
+function load(k,def){try{var v=JSON.parse(localStorage.getItem(k));return v||def;}catch(e){return def;}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var S=load(CUR,null)||blank();if(!S.cols)S.cols=blank().cols;if(!Array.isArray(S.rows))S.rows=[];
+var uid=Date.now();
+function save(){store(CUR,S);}
+function mkRow(key,qty,price,bill){
+  var b=BK[key];
+  if(!b)return {id:++uid,key:"custom",cat:"custom",name:"Eigener Baustein",unit:"Pauschal",qty:1,price:0,bill:"once",disc:0,note:"",range:"",fremd:false};
+  return {id:++uid,key:key,cat:b[1],name:b[2],unit:b[3],qty:qty!=null?qty:1,price:price!=null?price:b[4],bill:bill||b[5],disc:0,note:"",range:b[6],fremd:b[1]==="fremd"};
+}
+
+/* Palette */
+function renderPal(){
+  var q=$("#q").value.trim().toLowerCase();
+  $("#pal").innerHTML=CATS.map(function(c){
+    var list=B.filter(function(b){return b[1]===c[0]&&(!q||(b[2]+" "+c[1]).toLowerCase().indexOf(q)>-1);});
+    if(!list.length)return "";
+    return '<div class="grp'+(c[0]==="fremd"?" fremd":"")+'"><h3 class="mono">'+esc(c[1])+'</h3>'+list.map(function(b){
+      return '<div class="blk" draggable="true" data-key="'+b[0]+'"><b>'+esc(b[2])+'</b><small>'+esc(b[6])+(b[5]==="month"?" · monatlich":"")+'</small><button type="button" data-add="'+b[0]+'" aria-label="'+esc(b[2])+' hinzufügen">+</button></div>';
+    }).join("")+'</div>';
+  }).join("")||'<p class="fine">Nichts gefunden.</p>';
+}
+
+/* Zeilen */
+function rowSum(r){return numIn(r.qty)*numIn(r.price)*(1-Math.min(100,Math.max(0,numIn(r.disc)))/100);}
+function renderRows(flashId){
+  var tb=$("#rows");
+  tb.innerHTML=S.rows.map(function(r,i){
+    var s=rowSum(r),need=numIn(r.price)===0;
+    return '<tr data-i="'+i+'" class="'+(r.fremd?"fremd ":"")+(r.id===flashId?"flash":"")+'">'+
+      '<td class="c-h"><span class="grip" draggable="true" title="Ziehen zum Sortieren" aria-hidden="true">⋮⋮</span></td>'+
+      '<td class="c-name"><input class="in" data-f="name" value="'+esc(r.name)+'" aria-label="Baustein"><small>'+(r.fremd?'<span class="ftag">Fremdkosten</span>':"")+'<span class="rg">'+esc(r.range||"")+'</span></small></td>'+
+      '<td class="c-qty r" data-l="Menge"><input class="in num" data-f="qty" inputmode="decimal" value="'+esc(plain(numIn(r.qty)))+'" aria-label="Menge"></td>'+
+      '<td class="c-unit" data-l="Einheit"><input class="in" data-f="unit" value="'+esc(r.unit)+'" aria-label="Einheit"></td>'+
+      '<td class="c-price r" data-l="Preis €"><input class="in num'+(need?" need":"")+'" data-f="price" inputmode="decimal" value="'+esc(plain(numIn(r.price)))+'" aria-label="Preis in Euro"></td>'+
+      '<td class="c-bill" data-l="Abrechnung"><select data-f="bill" aria-label="Abrechnung"><option value="once"'+(r.bill==="once"?" selected":"")+'>einmalig</option><option value="month"'+(r.bill==="month"?" selected":"")+'>monatlich</option></select></td>'+
+      '<td class="c-disc r" data-l="Rabatt %"><input class="in num" data-f="disc" inputmode="decimal" value="'+esc(plain(numIn(r.disc)))+'" aria-label="Rabatt in Prozent"></td>'+
+      '<td class="c-note" data-l="Notiz"><input class="in" data-f="note" value="'+esc(r.note)+'" placeholder="Notiz" aria-label="Notiz"></td>'+
+      '<td class="c-sum r" data-sum="'+i+'">'+eur(s)+(r.bill==="month"?'<small>pro Monat</small>':"")+'</td>'+
+      '<td class="c-x"><button class="x" type="button" data-del="'+i+'" aria-label="Zeile entfernen">×</button></td></tr>';
+  }).join("");
+  $("#empty").hidden=S.rows.length>0;
+  $("#tbl").hidden=S.rows.length===0;
+  renderTotals();
+}
+function applyCols(){
+  var d=$("#drop");["qty","unit","disc","note","range"].forEach(function(c){d.classList.toggle("hide-"+c,!S.cols[c]);});
+  document.querySelectorAll("[data-col]").forEach(function(cb){cb.checked=!!S.cols[cb.getAttribute("data-col")];});
+}
+function calc(){
+  var m=Math.max(1,Math.round(numIn(S.monate)||1)),t={once:0,month:0,fOnce:0,fMonth:0,m:m};
+  S.rows.forEach(function(r){var s=rowSum(r);if(r.fremd){if(r.bill==="month")t.fMonth+=s;else t.fOnce+=s;}else{if(r.bill==="month")t.month+=s;else t.once+=s;}});
+  t.net=t.once+t.month*m;t.tax=S.mwst?t.net*0.19:0;t.gross=t.net+t.tax;
+  t.onceG=t.once*(S.mwst?1.19:1);t.monthG=t.month*(S.mwst?1.19:1);
+  return t;
+}
+function renderTotals(){
+  var t=calc(),hasM=t.month>0;
+  $("#sum").innerHTML=
+    '<div class="ln"><span>Einmalig netto</span><span>'+eur(t.once)+'</span></div>'+
+    (hasM?'<div class="ln"><span>Monatlich netto</span><span>'+eur(t.month)+'</span></div><div class="ln sub"><span>× Laufzeit '+t.m+(t.m===1?" Monat":" Monate")+'</span><span>'+eur(t.month*t.m)+'</span></div>':"")+
+    '<hr><div class="big"><span>Auftragswert netto</span><b>'+eur(t.net)+'</b></div>'+
+    (S.mwst?'<div class="ln sub"><span>zzgl. 19 % MwSt.</span><span>'+eur(t.tax)+'</span></div>':'<div class="ln sub"><span>ohne MwSt.</span><span></span></div>')+
+    '<div class="big or"><span>Gesamt'+(S.mwst?" brutto":"")+'</span><b>'+eur(t.gross)+'</b></div>';
+  var plan='<h3>Zahlungsplan</h3>';
+  if(t.once>0)plan+='<div class="ln"><span>50 % bei Auftrag</span><span>'+eur(t.onceG/2)+'</span></div><div class="ln"><span>50 % nach Abschluss</span><span>'+eur(t.onceG/2)+'</span></div>';
+  if(hasM)plan+='<div class="ln"><span>Monatlich zum Monatsanfang</span><span>'+eur(t.monthG)+'</span></div>';
+  if(!t.once&&!hasM)plan+='<p class="fine">Erscheint, sobald Bausteine drin sind.</p>';
+  plan+='<p class="fine" style="margin-top:8px">Zahlungsziel 14 Tage'+(S.mwst?", Beträge brutto":"")+'.</p>';
+  $("#plan").innerHTML=plan;
+  var fr='<h3>Fremdkosten</h3>';
+  if(t.fOnce||t.fMonth){
+    if(t.fOnce)fr+='<div class="ln"><span>Einmalig</span><span>'+eur(t.fOnce)+'</span></div>';
+    if(t.fMonth)fr+='<div class="ln"><span>Monatlich</span><span>'+eur(t.fMonth)+'</span></div>';
+    fr+='<p class="fine" style="margin-top:8px">Zahlt ihr direkt an Meta, Druckerei, Creator. Nicht im Auftragswert.</p>';
+  } else fr+='<p class="fine">Keine. Ad-Budget, Druck oder Gratis-Essen links unter Fremdkosten hinzufügen.</p>';
+  $("#fremd").innerHTML=fr;
+  var k=S.kunde.trim();
+  $("#ph").textContent=k?"Kalkulation für "+k:"Deine Kalkulation";
+  var d=S.datum?S.datum.split("-").reverse().join("."):"";
+  $("#pd").textContent="Social Bites · "+d+(hasM?" · Laufzeit "+t.m+(t.m===1?" Monat":" Monate"):"");
+}
+function updateRowSum(i){var r=S.rows[i],c=document.querySelector('[data-sum="'+i+'"]');if(c)c.innerHTML=eur(rowSum(r))+(r.bill==="month"?'<small>pro Monat</small>':"");renderTotals();}
+function addRow(key,at,qty,price,bill){var r=mkRow(key,qty,price,bill);if(at==null||at>S.rows.length)S.rows.push(r);else S.rows.splice(at,0,r);save();renderRows(r.id);return r;}
+
+/* Felder oben */
+function syncMeta(){$("#kunde").value=S.kunde;$("#datum").value=S.datum||"";$("#monate").value=S.monate;$("#mwst").checked=!!S.mwst;}
+$("#kunde").addEventListener("input",function(){S.kunde=this.value;save();renderTotals();});
+$("#datum").addEventListener("input",function(){S.datum=this.value;save();renderTotals();});
+$("#monate").addEventListener("input",function(){S.monate=this.value;save();renderTotals();});
+$("#mwst").addEventListener("change",function(){S.mwst=this.checked;save();renderTotals();});
+$("#q").addEventListener("input",renderPal);
+document.querySelectorAll("[data-col]").forEach(function(cb){cb.addEventListener("change",function(){S.cols[cb.getAttribute("data-col")]=cb.checked;save();applyCols();});});
+$("#vorlage").addEventListener("change",function(){
+  var p=PRESETS[this.value];if(!p)return;
+  S.rows=[];p.rows.forEach(function(x){S.rows.push(mkRow(x[0],x[1],x[2],x[3]));});S.monate=p.months;syncMeta();save();renderRows();
+  toast("Vorlage "+this.options[this.selectedIndex].text+" geladen. Alles anpassbar.");this.value="";
+});
+
+/* Zeilen bearbeiten */
+var tb=$("#rows");
+tb.addEventListener("input",function(e){
+  var f=e.target.getAttribute("data-f"),tr=e.target.closest("tr");if(!f||!tr)return;
+  var i=+tr.getAttribute("data-i"),r=S.rows[i];r[f]=e.target.value;save();
+  if(f==="price")e.target.classList.toggle("need",numIn(r.price)===0);
+  if(f==="qty"||f==="price"||f==="disc")updateRowSum(i);
+});
+tb.addEventListener("change",function(e){
+  var f=e.target.getAttribute("data-f"),tr=e.target.closest("tr");if(!f||!tr)return;
+  var i=+tr.getAttribute("data-i");S.rows[i][f]=e.target.value;save();updateRowSum(i);
+});
+document.addEventListener("click",function(e){
+  var a=e.target.closest("[data-add]");if(a){addRow(a.getAttribute("data-add"));toast(BK[a.getAttribute("data-add")][2]+" hinzugefügt");return;}
+  var d=e.target.closest("[data-del]");if(d){S.rows.splice(+d.getAttribute("data-del"),1);save();renderRows();}
+});
+$("#custom").addEventListener("click",function(){var r=addRow("custom");var inp=document.querySelector('tr[data-i="'+(S.rows.length-1)+'"] [data-f="name"]');if(inp){inp.focus();inp.select();}});
+
+/* Ziehen: Bausteine rein, Zeilen sortieren */
+var drop=$("#drop"),dragFrom=null;
+document.getElementById("pal").addEventListener("dragstart",function(e){var b=e.target.closest(".blk");if(!b)return;e.dataTransfer.setData("text/plain","add:"+b.getAttribute("data-key"));e.dataTransfer.effectAllowed="copy";b.classList.add("dragging");});
+document.getElementById("pal").addEventListener("dragend",function(e){var b=e.target.closest(".blk");if(b)b.classList.remove("dragging");});
+tb.addEventListener("dragstart",function(e){
+  var g=e.target.closest&&e.target.closest(".grip"),tr=g&&g.closest("tr");if(!tr)return;
+  dragFrom=+tr.getAttribute("data-i");e.dataTransfer.setData("text/plain","move:"+dragFrom);e.dataTransfer.effectAllowed="move";
+});
+function dropIndex(y){
+  var trs=[].slice.call(tb.querySelectorAll("tr"));
+  for(var i=0;i<trs.length;i++){var r=trs[i].getBoundingClientRect();if(y<r.top+r.height/2)return i;}
+  return trs.length;
+}
+function mark(idx){tb.querySelectorAll("tr.before").forEach(function(t){t.classList.remove("before");});var t=tb.querySelectorAll("tr")[idx];if(t)t.classList.add("before");}
+drop.addEventListener("dragover",function(e){e.preventDefault();drop.classList.add("over");mark(dropIndex(e.clientY));});
+drop.addEventListener("dragleave",function(e){if(!drop.contains(e.relatedTarget)){drop.classList.remove("over");mark(-1);}});
+drop.addEventListener("drop",function(e){
+  e.preventDefault();drop.classList.remove("over");var idx=dropIndex(e.clientY);mark(-1);
+  var d=e.dataTransfer.getData("text/plain")||"";
+  if(d.indexOf("add:")===0){var k=d.slice(4);addRow(k,idx);toast((BK[k]?BK[k][2]:"Baustein")+" hinzugefügt");}
+  else if(d.indexOf("move:")===0){var from=+d.slice(5);if(from===idx||from+1===idx)return;var r=S.rows.splice(from,1)[0];if(from<idx)idx--;S.rows.splice(idx,0,r);save();renderRows(r.id);}
+  dragFrom=null;
+});
+
+/* Speichern, Laden, Neu */
+function renderSaved(){
+  var all=load(SAVED,{}),keys=Object.keys(all).sort();
+  $("#saved").innerHTML='<option value="">Kalkulation öffnen ('+keys.length+')</option>'+keys.map(function(k){return '<option value="'+esc(k)+'">'+esc(k)+'</option>';}).join("");
+}
+$("#save").addEventListener("click",function(){
+  var name=(S.kunde.trim()||"Ohne Namen")+" · "+(S.datum?S.datum.split("-").reverse().join("."):"");
+  var all=load(SAVED,{});all[name]=JSON.parse(JSON.stringify(S));store(SAVED,all);renderSaved();toast("Gespeichert: "+name);
+});
+$("#saved").addEventListener("change",function(){
+  var all=load(SAVED,{}),v=all[this.value];if(!v)return;S=JSON.parse(JSON.stringify(v));if(!S.cols)S.cols=blank().cols;save();syncMeta();applyCols();renderRows();toast("Geöffnet: "+this.value);this.value="";
+});
+var armed=null,armT;
+$("#neu").addEventListener("click",function(){
+  var b=this,lab=b.querySelector("span:last-child");
+  if(armed!==b){armed=b;b.classList.add("armed");lab.textContent="Sicher? Nochmal";clearTimeout(armT);armT=setTimeout(function(){armed=null;b.classList.remove("armed");lab.textContent="Neu";},3500);return;}
+  armed=null;b.classList.remove("armed");lab.textContent="Neu";S=blank();save();syncMeta();applyCols();renderRows();toast("Neue Kalkulation");
+});
+
+/* Präsentation, Text, Drucken */
+$("#present").addEventListener("click",function(){
+  var on=document.body.classList.toggle("present");
+  this.querySelector("span:last-child").textContent=on?"Bearbeiten":"Präsentation";
+  window.scrollTo(0,0);
+});
+function text(){
+  var t=calc(),out=[],L=function(s){out.push(s);};
+  L("Kalkulation"+(S.kunde.trim()?" für "+S.kunde.trim():"")+(S.datum?" · "+S.datum.split("-").reverse().join("."):""));
+  L("Social Bites");L("");
+  function block(title,filter){
+    var rs=S.rows.filter(filter);if(!rs.length)return;
+    L(title);
+    rs.forEach(function(r){var d=numIn(r.disc);L("· "+r.name+": "+plain(numIn(r.qty))+" "+r.unit+" × "+eur(numIn(r.price))+(d?" minus "+plain(d)+" %":"")+" = "+eur(rowSum(r))+(r.note?" ("+r.note+")":""));});
+    L("");
+  }
+  block("Einmalig",function(r){return !r.fremd&&r.bill!=="month";});
+  block("Monatlich, Laufzeit "+t.m+(t.m===1?" Monat":" Monate"),function(r){return !r.fremd&&r.bill==="month";});
+  L("Einmalig netto: "+eur(t.once));
+  if(t.month)L("Monatlich netto: "+eur(t.month)+" × "+t.m+" = "+eur(t.month*t.m));
+  L("Auftragswert netto: "+eur(t.net));
+  if(S.mwst)L("zzgl. 19 % MwSt.: "+eur(t.tax));
+  L("Gesamt"+(S.mwst?" brutto":"")+": "+eur(t.gross));L("");
+  L("Zahlungsplan:");
+  if(t.once)L("· 50 % bei Auftrag: "+eur(t.onceG/2)+", 50 % nach Abschluss: "+eur(t.onceG/2));
+  if(t.month)L("· monatlich zum Monatsanfang: "+eur(t.monthG));
+  L("· Zahlungsziel 14 Tage");
+  var fr=S.rows.filter(function(r){return r.fremd;});
+  if(fr.length){L("");L("Fremdkosten, zahlt ihr direkt:");fr.forEach(function(r){L("· "+r.name+": "+eur(rowSum(r))+(r.bill==="month"?" pro Monat":""));});}
+  L("");L("Unverbindliche Kalkulation. Das verbindliche Angebot kommt schriftlich.");
+  return out.join("\n");
+}
+$("#copy").addEventListener("click",function(){
+  var tx=text(),b=this,lab=b.querySelector("span:last-child");
+  function fb(){$("#dlgTa").value=tx;try{$("#dlg").showModal();}catch(e){$("#dlg").setAttribute("open","");}$("#dlgTa").select();}
+  try{navigator.clipboard.writeText(tx).then(function(){lab.textContent="Kopiert";setTimeout(function(){lab.textContent="Als Text kopieren";},1800);},fb);}catch(e){fb();}
+});
+$("#dlgX").addEventListener("click",function(){$("#dlg").close();});
+$("#print").addEventListener("click",function(){try{window.print();}catch(e){toast("Drucken geht hier nicht. Seite in neuem Tab öffnen.");}});
+
+syncMeta();applyCols();renderPal();renderRows();renderSaved();
+})();
+</script>
+</body>
+</html>
