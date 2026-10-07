@@ -319,15 +319,16 @@
   @keyframes slide{from{opacity:0;transform:translateX(30px);}}
   .panel .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);font-size:22px;line-height:1;display:grid;place-items:center;}
   .panel .x:hover{background:var(--accent);}
-  .phead{display:grid;grid-template-columns:132px minmax(0,1fr);gap:16px;align-items:end;padding-right:34px;}
-  .pav{width:132px;height:176px;border-radius:18px;overflow:hidden;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--accent);}
+  .phead{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;justify-items:center;text-align:center;padding-top:6px;}
+  .phead > div:last-child{width:100%;display:grid;justify-items:center;}
+  .pav{width:min(100%,300px);height:auto;aspect-ratio:3/4;border-radius:24px;overflow:hidden;border:3px solid var(--ink);box-shadow:7px 7px 0 var(--accent),0 22px 26px -14px rgba(0,0,0,.45);}
   .pav img{width:100%;height:100%;object-fit:cover;object-position:50% 0;}
   .pav{position:relative;}
   .pav svg{width:100%;height:100%;}
   .pvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;opacity:0;transition:opacity .4s;}
   .pvid.on{opacity:1;}
   .phead .mono{color:var(--accent-ink);}
-  #pName{width:100%;border:0;border-bottom:2px dashed var(--line-2);background:transparent;padding:2px 0 3px;margin-top:3px;font:850 30px/1.05 var(--display);letter-spacing:-.05em;outline:none;}
+  #pName{width:100%;border:0;border-bottom:2px dashed var(--line-2);background:transparent;padding:2px 0 3px;margin-top:3px;font:850 38px/1.05 var(--display);letter-spacing:-.05em;outline:none;text-align:center;}
   #pName:focus{border-bottom-color:var(--accent);}
   #pName:disabled{border-bottom-color:transparent;}
   #pRole{margin:4px 0 0;color:var(--mute);font-weight:650;}
@@ -359,9 +360,8 @@
     .building{padding:12px;border-width:5px;border-radius:24px;}
     .panel{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:80dvh;box-shadow:0 -4px 0 var(--accent),0 12px 40px rgba(0,0,0,.25);}
     @keyframes slide{from{opacity:0;transform:translateY(40px);}}
-    .phead{grid-template-columns:104px minmax(0,1fr);}
-    .pav{width:104px;height:139px;}
-    #pName{font-size:26px;}
+    .pav{width:min(100%,250px);}
+    #pName{font-size:32px;}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
