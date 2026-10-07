@@ -270,6 +270,15 @@
   .frame-host{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
   .frame-host iframe,.tframe{display:block;width:100%;height:calc(100vh - var(--bar) - 16px);height:calc(100dvh - var(--bar) - 16px);min-height:600px;border:0;background:var(--card);}
   .tframe{border:1px solid var(--line);border-radius:14px;}
+  #team.fr .shell{padding-bottom:10px;}
+  .big{padding:0;border:0;margin:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:var(--paper);color:var(--ink);}
+  .big[open]{display:grid;grid-template-rows:auto minmax(0,1fr);}
+  .big::backdrop{background:rgba(20,17,16,.85);}
+  .big-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:var(--paper);}
+  .big-bar b{font-weight:800;font-size:18px;letter-spacing:-.035em;margin-right:auto;}
+  .big-bar .mono{color:var(--mute);}
+  .big iframe{display:block;width:100%;height:100%;border:0;background:var(--card);}
+  @media (max-width:640px){.big-bar .mono{display:none;}}
   .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .toggle{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:650;cursor:pointer;padding:8px 4px;}
   .toggle input{accent-color:#F04A0A;width:18px;height:18px;margin:0;}
@@ -439,6 +448,11 @@
     </div>
   </div>
 </div>
+
+<dialog class="big" id="big" aria-label="Großansicht">
+  <div class="big-bar"><b id="bigT">Großansicht</b><span class="mono">Esc schließt</span><a class="btn sm" id="bigTab" href="#" target="_blank" rel="noopener"><span class="dot"></span><span>Neuer Tab ↗</span></a><button class="btn sm inv" type="button" id="bigX"><span class="dot"></span><span>Schließen ×</span></button></div>
+  <iframe id="bigF" title="Großansicht" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+</dialog>
 
 <dialog class="dlg" id="dlg" aria-labelledby="dlgTitle">
   <button class="dlg-x" type="button" id="dlgX" aria-label="Schließen">×</button>
@@ -922,6 +936,13 @@ function tGo(v,quiet){
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
+  var fr=el.querySelector("iframe.tframe[src]"),bsrc=null;
+  if(os)bsrc=sheetSrc(os.gid);
+  else if(fr&&!/^https?:/i.test(fr.getAttribute("src"))){bsrc=fr.getAttribute("src");bsrc+=(bsrc.indexOf("?")<0?"?":"&")+"big=1";}
+  if(bsrc){var vh=el.querySelector(".vh"),acts=el.querySelector(".vh .acts");
+    if(vh&&!acts){vh.insertAdjacentHTML("beforeend",'<div class="acts"></div>');acts=vh.lastElementChild;}
+    if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
+  $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
   document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-akquise":"Akquise-Board","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
@@ -980,6 +1001,10 @@ function enterTeam(){
   var h=(location.hash||"").slice(1);
   tGo(h||"t-start",true);
 }
+function openBig(src,title){$("#bigT").textContent=title||"Großansicht";$("#bigF").setAttribute("src",src);$("#bigTab").setAttribute("href",src.replace(/([?&])big=1&?/,"$1").replace(/[?&]$/,""));$("#big").showModal();}
+$("#big").addEventListener("close",function(){$("#bigF").setAttribute("src","about:blank");});
+$("#bigX").addEventListener("click",function(){$("#big").close();});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-big]");if(b)openBig(b.getAttribute("data-big"),b.getAttribute("data-bigt"));});
 $("#tside").addEventListener("click",function(e){var b=e.target.closest("[data-tview]");if(b)tGo(b.getAttribute("data-tview"));});
 $("#tview").addEventListener("click",function(e){
   var b=e.target.closest("[data-tview]");if(b){tGo(b.getAttribute("data-tview"));return;}
