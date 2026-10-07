@@ -661,8 +661,8 @@ function roomMembers(id){
 function figCard(p,i){
   var tint=p.human?"#F8C4A8":ROOM[p.room].tint,sk=p.skills||[];
   return '<button class="fig'+(p.lead?" lead":"")+(p.human?" human":"")+(p.ph===1?" work":"")+'" type="button" data-id="'+p.id+'" aria-pressed="false" style="--i:'+i+';--tint:'+tint+'">'
-    +'<span class="fpic"><img src="buero/ag_'+p.id+'.webp" alt="" width="540" height="720" loading="lazy">'
-    +(VIDS[p.id]?'<span class="fvw"><video class="vid" muted loop playsinline preload="none" data-src="buero/vid_'+p.id+'.mp4" aria-hidden="true" tabindex="-1"></video></span>':"")
+    +'<span class="fpic"><img src="buero/ag_'+p.id+'_l.webp" alt="" width="1000" height="1333" decoding="async">'
+    +(VIDS[p.id]?'<span class="fvw"><video class="vid" muted loop playsinline preload="none" data-src="buero/vidl_'+p.id+'.mp4" aria-hidden="true" tabindex="-1"></video></span>':"")
     +(p.lead?'<i class="star">'+ico("star")+'</i>':"")+(p.ph===1?'<i class="live" title="arbeitet schon heute"></i>':"")+'</span>'
     +'<span class="fplate"><b class="nm" data-nm="'+p.id+'">'+esc(nameOf(p))+'</b><span class="rl mono">'+esc(p.r)+'</span></span>'
     +'<span class="fsk">'+sk.slice(0,3).map(function(x){return '<i>'+esc(x)+'</i>';}).join("")+(sk.length>3?'<i class="more">+'+(sk.length-3)+'</i>':"")+'</span></button>';
@@ -719,7 +719,7 @@ function chipP(id){var p=BY[id];return '<button class="pchip" type="button" data
 function openPanel(id){
   var p=BY[id];if(!p)return;
   state.sel=id;
-  $("#pAv").innerHTML=IMGS[p.id]?'<img src="buero/ag_'+p.id+'.webp" alt="" width="540" height="720">'+(VIDS[p.id]&&CAN?'<video class="pvid" src="buero/vid_'+p.id+'.mp4" autoplay muted loop playsinline aria-hidden="true"></video>':""):avatar(p);
+  $("#pAv").innerHTML=IMGS[p.id]?'<img src="buero/ag_'+p.id+'_l.webp" alt="" width="1000" height="1333">'+(VIDS[p.id]&&CAN?'<video class="pvid" src="buero/vidl_'+p.id+'.mp4" autoplay muted loop playsinline aria-hidden="true"></video>':""):avatar(p);
   var pv=$("#pAv video");if(pv){pv.onplaying=function(){pv.classList.add("on");};pv.onerror=function(){pv.remove();};}$("#pAv").style.background=p.human?"#F8C4A8":ROOM[p.room].tint;
   $("#pRoom").textContent="Raum "+ROOM[p.room].nr+" · "+ROOM[p.room].name;
   var inp=$("#pName");inp.value=nameOf(p);inp.disabled=!!p.human;inp.setAttribute("data-id",id);
