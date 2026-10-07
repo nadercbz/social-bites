@@ -44,6 +44,7 @@
 :root[data-theme="dark"] .chip.or,
 :root[data-theme="dark"] .kpi.or,
 :root[data-theme="dark"] .tile.t-or{color:#1E1B1A;}
+:root[data-theme="dark"] .pill.or{background:var(--accent);border-color:var(--accent);}
 
 :root[data-theme="dark"] .sb-tt{border-color:var(--line-2);}
 
