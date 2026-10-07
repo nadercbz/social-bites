@@ -871,7 +871,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
@@ -914,7 +914,7 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-akquise","t-kunden","t-buero","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
@@ -933,6 +933,7 @@ function tGo(v,quiet){
   else if(v==="t-trends") h=head("Kreativ","Trend-Indicator","Jeden Montag neu: virale Videos aus Food und Gastro, Hashtags, Sounds, Google-Suchtrends und die Hooks, die gerade ziehen. Kategorie oben wechseln, Videos merken, Hooks für Kunden bauen.",'<div class="acts"><a class="btn sm" href="trends.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="trends.html" title="Social Bites Trend-Indicator"></iframe>';
   else if(v==="t-galerie") h=head("Kreativ","Galerie & Moodboards","Entwürfe und Ideen als Boards. Herz für Favoriten, Notiz pro Bild, Präsentieren für den großen Bildschirm. Neue Ideen schickst du Claude im Chat.",'<div class="acts"><a class="btn sm" href="galerie.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="galerie.html" title="Social Bites Galerie" allow="fullscreen" allowfullscreen></iframe>';
   else if(v==="t-buero") h=head("Team","Büro & Mitarbeiter","Alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set, Hierarchie und Ausbaustufen. Person anklicken, Namen ändern, Skills filtern. Oben zwischen Raumplan und Organigramm wechseln.",'<div class="acts"><a class="btn sm" href="buero.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="buero.html" title="Social Bites Büro"></iframe>';
+  else if(v==="t-partner") h=head("Team","Partnerprogramm","Wer uns vermittelt, bekommt Provision und Anteilspunkte im Partner-Pool. Hier verwaltest du Partner, Vermittlungen, Auszahlungen und Vorlagen. Die öffentliche Seite ist noch nicht verlinkt, bis ihr die Konditionen freigebt.",'<div class="acts"><a class="btn sm" href="partner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Öffentliche Seite ↗</span></a><a class="btn sm" href="partner/Social-Bites-Partner-Leitfaden.pdf" target="_blank" rel="noopener"><span class="dot"></span><span>Leitfaden PDF ↗</span></a></div>')+'<iframe class="tframe" src="partner-team.html" title="Social Bites Partnerprogramm"></iframe>';
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
@@ -944,7 +945,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-akquise":"Akquise-Board","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -957,6 +958,7 @@ function tStart(){
       tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
       tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden in Berlin, täglich frisch, mit Karte.","t-or")+
       tile("t-kunden","Team","Kunden & Belege","Kundenstamm, offene Rechnungen, Mahnungen.")+
+      tile("t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or")+
       tile("t-buero","Team","Büro & Mitarbeiter","28 Agenten in 8 Räumen, mit Skill-Set und Organigramm.","t-or")+
       tile("t-playbook","Abläufe","Playbook","Bites Opening, Gastro und Brands, Schritt für Schritt.")+
       tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.")+

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Partnerprogramm intern</title>
+<meta name="description" content="Interne Verwaltung des Partnerprogramms: Partner, Vermittlungen, Auszahlungen, Pool und Vorlagen.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Partnerprogramm intern: Übersicht, Partner, Vermittlungen, Pool, Vorlagen. Alles liegt nur im Browser (localStorage), nie im Code. Sätze und Stufen kommen aus partner_config.js. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --ok:#1F7A4D; --ok-tint:#DDF1E4; --warn:#9A6400; --warn-tint:#FFF0C9; --bad:#B42318; --bad-tint:#FDE3DF;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(14px,2.4vw,32px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img{max-width:100%;height:auto;display:block;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  button{cursor:pointer;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:8px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line-2);border-radius:6px;padding:9px 13px;font:650 14.5px/1.2 var(--display);text-decoration:none;transition:border-color .2s;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);}
+  .btn.sm{padding:6px 10px;font-size:13px;gap:7px;}
+  .btn.danger{color:var(--bad);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;padding:9px var(--gutter);background:rgba(246,240,227,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:42px;width:auto;}
+  .embedded .top img{display:none;}
+  .top .ttl{display:flex;flex-direction:column;gap:2px;}
+  .top .ttl b{font-weight:850;font-size:20px;letter-spacing:-.04em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;}
+  .tabs button{font:700 14px/1 var(--display);padding:8px 13px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;}
+  .tabs button:hover{background:var(--paper-2);}
+  .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+
+  main{max-width:1280px;margin:0 auto;padding:18px var(--gutter) 70px;display:grid;gap:18px;}
+  h2.h{margin:0;font-weight:850;font-size:clamp(26px,3vw,38px);letter-spacing:-.05em;line-height:1;}
+  .sub{color:var(--mute);margin:6px 0 0;max-width:70ch;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:4px;}
+  .kpi .mono{color:var(--mute);}
+  .kpi b{font-weight:850;font-size:clamp(26px,3vw,36px);letter-spacing:-.05em;line-height:1;}
+  .kpi.or{background:var(--accent);border-color:var(--accent);} .kpi.or .mono{color:var(--ink);}
+  .kpi.dk{background:var(--ink);color:var(--paper);border-color:var(--ink);} .kpi.dk .mono{color:#CDBFAE;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;}
+  .card h3{margin:0 0 10px;font-weight:850;font-size:20px;letter-spacing:-.04em;}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .tools input[type=search],.tools select{border:1.5px solid var(--ink);border-radius:8px;background:var(--card);padding:8px 11px;font-size:15px;min-width:180px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line-2);background:var(--paper);border-radius:999px;padding:5px 12px;font:650 13.5px/1.2 var(--display);}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .badge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 10px;font:600 12px/1.3 var(--display);background:var(--paper-2);}
+  .badge.ok{background:var(--ok-tint);color:var(--ok);} .badge.warn{background:var(--warn-tint);color:var(--warn);} .badge.bad{background:var(--bad-tint);color:var(--bad);} .badge.or{background:var(--accent-tint);color:var(--accent-ink);} .badge.dk{background:var(--ink);color:var(--paper);}
+  .empty{border:2px dashed var(--line-2);border-radius:16px;padding:26px;text-align:center;color:var(--mute);display:grid;gap:12px;justify-items:center;}
+  .todo{display:grid;gap:8px;}
+  .todo .it{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);}
+  .todo .it b{font-weight:800;}
+  .todo .it .grow{flex:1;min-width:160px;}
+
+  /* Partner */
+  .plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+  .pc{background:var(--card);border:1.5px solid var(--ink);border-radius:18px;padding:16px;display:grid;gap:10px;align-content:start;}
+  .pc.off{opacity:.6;border-style:dashed;}
+  .pc h4{margin:0;font-weight:850;font-size:21px;letter-spacing:-.04em;line-height:1.05;}
+  .pc .meta{color:var(--mute);font-size:14px;}
+  .code{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--paper-2);border-radius:10px;padding:8px 10px;font:500 13.5px var(--mono);}
+  .code b{font:850 17px var(--display);letter-spacing:.04em;}
+  .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .nums div{background:var(--paper);border-radius:10px;padding:8px 10px;display:grid;gap:2px;}
+  .nums .mono{color:var(--mute);font-size:9.5px;} .nums b{font-weight:850;font-size:17px;letter-spacing:-.03em;}
+  .bar{height:8px;background:var(--paper-2);border-radius:99px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--accent);border-radius:99px;}
+  .acts2{display:flex;gap:6px;flex-wrap:wrap;}
+
+  /* Vermittlungen */
+  .dlist{display:grid;gap:10px;}
+  .dc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1.3fr);gap:14px;align-items:start;}
+  .dc h4{margin:0 0 3px;font-weight:850;font-size:19px;letter-spacing:-.035em;}
+  .dc .meta{color:var(--mute);font-size:14px;}
+  .dc .calc{display:grid;gap:4px;font-size:14.5px;}
+  .dc .calc div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding-bottom:3px;}
+  .dc .calc div:last-child{border:0;}
+  .dc .calc b{font-weight:800;}
+  .dc .pay{display:grid;gap:8px;}
+  .dc label{display:grid;gap:3px;font-size:12.5px;font-weight:650;color:var(--mute);}
+  .dc input,.dc select{border:1.5px solid var(--line-2);border-radius:8px;background:var(--paper);padding:6px 8px;font-size:14.5px;width:100%;}
+  .dc .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  table{width:100%;border-collapse:collapse;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-size:15px;}
+  th{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);}
+  td.r,th.r{text-align:right;}
+  .tw{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;}
+
+  /* Vorlagen */
+  .tpl{display:grid;gap:8px;}
+  .tpl textarea{width:100%;min-height:150px;border:1.5px solid var(--line-2);border-radius:10px;background:var(--paper);padding:10px 12px;font:500 14.5px/1.5 var(--display);resize:vertical;}
+  .check{display:grid;gap:8px;}
+  .check label{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:15px;}
+  .check input{width:19px;height:19px;accent-color:var(--accent);margin-top:2px;flex:none;}
+
+  dialog{border:2px solid var(--ink);border-radius:18px;padding:0;background:var(--card);color:var(--ink);width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;}
+  dialog::backdrop{background:rgba(20,17,16,.6);}
+  .df{padding:18px 20px 20px;display:grid;gap:12px;}
+  .df h3{margin:0;font-weight:850;font-size:26px;letter-spacing:-.045em;}
+  .df label{display:grid;gap:5px;font-weight:700;font-size:14px;}
+  .df input,.df select,.df textarea{border:1.5px solid var(--ink);border-radius:9px;background:var(--paper);padding:9px 11px;font-size:16px;width:100%;}
+  .df .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .df .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px;}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:650;font-size:14.5px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s var(--ease);z-index:90;}
+  .toast.on{opacity:1;transform:translateX(-50%);}
+  @media (max-width:900px){.grid2{grid-template-columns:minmax(0,1fr);}.dc{grid-template-columns:minmax(0,1fr);}}
+  @media (max-width:560px){.df .two,.dc .two{grid-template-columns:minmax(0,1fr);}}
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Partnerprogramm</b><span class="mono" id="sub">Intern</span></div>
+  <nav class="tabs" id="tabs" role="group" aria-label="Bereich"></nav>
+  <div class="acts">
+    <a class="btn sm" href="partner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Öffentliche Seite ↗</span></a>
+  </div>
+</header>
+<main id="main"></main>
+
+<dialog id="dP"><form class="df" id="fP" method="dialog" novalidate>
+  <h3 id="dPt">Neuer Partner</h3>
+  <div class="two"><label>Name<input name="name" required></label><label>Code<input name="code" maxlength="24" placeholder="wird erzeugt"></label></div>
+  <div class="two"><label>E-Mail<input name="mail" type="email"></label><label>Telefon<input name="tel" type="tel"></label></div>
+  <div class="two"><label>Typ<select name="typ"><option>Gastro oder Berater</option><option>Dienstleister</option><option>Creator oder Influencer</option><option>Agentur</option><option>Privatperson</option><option>Sonstiges</option></select></label>
+  <label>Status<select name="status"><option value="aktiv">Aktiv</option><option value="pausiert">Pausiert</option></select></label></div>
+  <label>Notiz<textarea name="note" rows="2"></textarea></label>
+  <p class="mono" style="color:var(--bad);margin:0" id="eP"></p>
+  <div class="row"><button class="btn" type="button" data-close>Abbrechen</button><button class="btn inv" type="submit"><span class="dot"></span><span>Speichern</span></button></div>
+</form></dialog>
+
+<dialog id="dD"><form class="df" id="fD" method="dialog" novalidate>
+  <h3 id="dDt">Neue Vermittlung</h3>
+  <label>Partner<select name="pid" required></select></label>
+  <div class="two"><label>Laden oder Marke<input name="firma" required></label><label>Paket<select name="paket"></select></label></div>
+  <div class="two"><label><span id="lW">Netto-Auftragswert in Euro</span><input name="wert" type="number" min="0" step="100" inputmode="numeric"></label><label>Datum<input name="datum" type="date"></label></div>
+  <label>Status<select name="status"><option value="empfohlen">Empfohlen</option><option value="gespraech">Im Gespräch</option><option value="angebot">Angebot raus</option><option value="gewonnen">Gewonnen</option><option value="verloren">Verloren</option><option value="bekannt">Schon bekannt, zählt nicht</option></select></label>
+  <label>Notiz<textarea name="note" rows="2"></textarea></label>
+  <p class="mono" style="color:var(--bad);margin:0" id="eD"></p>
+  <div class="row"><button class="btn" type="button" data-close>Abbrechen</button><button class="btn inv" type="submit"><span class="dot"></span><span>Speichern</span></button></div>
+</form></dialog>
+
+<dialog id="dQ"><div class="df" style="justify-items:center;text-align:center"><h3 id="qT">QR-Code</h3><img id="qI" alt="QR-Code zum Partner-Link" width="240" height="240" style="width:240px;height:240px;border:1.5px solid var(--ink);border-radius:12px;background:#fff"><p class="mono" id="qL" style="word-break:break-all;margin:0"></p><p style="margin:0;color:var(--mute);font-size:13.5px">Das Bild kommt vom kostenlosen Dienst api.qrserver.com. Es wird nur der Link übertragen.</p><div class="row"><button class="btn" type="button" data-close>Schließen</button></div></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="partner_config.js"></script>
+<script>
+try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
+(function(){
+"use strict";
+var C=window.PARTNER_CFG,$=function(s){return document.querySelector(s);};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function eur(n){return (n||0).toLocaleString("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0});}
+function num(n){return (n||0).toLocaleString("de-DE",{maximumFractionDigits:1});}
+function uid(){return "x"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function today(){return new Date().toISOString().slice(0,10);}
+function addDays(iso,n){var d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function dde(iso){if(!iso)return "";var p=iso.split("-");return p[2]+"."+p[1]+"."+p[0];}
+function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){el.classList.remove("on");},2200);}
+
+var KEY="sb-partner-v1",S={partners:[],deals:[],pool:{}},TAB="start",FILTER="alle",QUERY="",PX={};
+try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&o.partners)S=o;}}catch(e){}
+S.partners=S.partners||[];S.deals=S.deals||[];S.pool=S.pool||{};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var PK={};C.pakete.forEach(function(p){PK[p.id]=p;});
+var STAT={empfohlen:["Empfohlen","dk"],gespraech:["Im Gespräch","or"],angebot:["Angebot raus","warn"],gewonnen:["Gewonnen","ok"],verloren:["Verloren","bad"],bekannt:["Schon bekannt","bad"]};
+function P(id){return S.partners.filter(function(p){return p.id===id;})[0];}
+function link(code){return C.url+"?ref="+code;}
+
+/* ---------- Rechnung ---------- */
+function stufeFor(k){var s=C.stufen[0];C.stufen.forEach(function(x){if(x.ab<=k)s=x;});return s;}
+function wonOf(pid){return S.deals.filter(function(d){return d.pid===pid&&d.status==="gewonnen";}).sort(function(a,b){return (a.datum||"").localeCompare(b.datum||"")||a.id.localeCompare(b.id);});}
+function calcDeal(d){
+  var pk=PK[d.paket]||C.pakete[0],w=wonOf(d.pid),i=w.map(function(x){return x.id;}).indexOf(d.id),k=i>=0?i+1:w.length+1,st=stufeFor(k);
+  var basis=pk.modus==="monate"?(+d.wert||0)*pk.monate:(+d.wert||0),prov=basis*st.satz/100,pts=basis/1000*st.faktor*C.punkteProTausend;
+  var pct=Math.max(0,Math.min(100,+d.pct||0)),verdient=prov*pct/100,ausg=+d.ausgezahlt||0,offen=Math.max(0,verdient-ausg);
+  var ab=d.zahlungAm?addDays(d.zahlungAm,C.auszahlungTage):"";
+  return {st:st,basis:basis,prov:prov,pts:pts,verdient:verdient,ausg:ausg,offen:offen,ab:ab,faellig:offen>0.5&&ab&&ab<=today(),won:d.status==="gewonnen"};
+}
+function pstats(pid){
+  var w=wonOf(pid),sum={won:w.length,all:S.deals.filter(function(d){return d.pid===pid&&d.status!=="bekannt";}).length,prov:0,offen:0,pts:0,wert:0};
+  w.forEach(function(d){var c=calcDeal(d);sum.prov+=c.prov;sum.offen+=c.offen;sum.pts+=c.pts;sum.wert+=c.basis;});
+  var cur=stufeFor(Math.max(1,w.length)),next=C.stufen.filter(function(s){return s.ab>w.length;})[0];
+  sum.stufe=cur;sum.next=next;sum.toNext=next?next.ab-w.length:0;return sum;
+}
+function mkCode(name){
+  var base=String(name||"").normalize("NFD").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,4)||"SB",c,n=0;
+  do{c=base+String(Math.floor(10+Math.random()*90));n++;}while(S.partners.some(function(p){return p.code===c;})&&n<50);
+  return c;
+}
+
+/* ---------- Darstellung ---------- */
+var TABS=[["start","Übersicht"],["partner","Partner"],["deals","Vermittlungen"],["pool","Pool"],["material","Material und Vorlagen"]];
+function tabs(){$("#tabs").innerHTML=TABS.map(function(t){return '<button type="button" data-tab="'+t[0]+'" aria-pressed="'+(t[0]===TAB)+'">'+t[1]+'</button>';}).join("");}
+function demoBtn(){return '<button class="btn" type="button" data-act="demo"><span class="dot"></span><span>Beispieldaten laden</span></button>';}
+
+function vStart(){
+  var ps=S.partners.filter(function(p){return p.status==="aktiv";}).length,won=S.deals.filter(function(d){return d.status==="gewonnen";}),
+      open=S.deals.filter(function(d){return ["empfohlen","gespraech","angebot"].indexOf(d.status)>=0;}).length,prov=0,offen=0,pts=0,wert=0,faellig=[];
+  won.forEach(function(d){var c=calcDeal(d);prov+=c.prov;offen+=c.offen;pts+=c.pts;wert+=c.basis;if(c.faellig)faellig.push([d,c]);});
+  var h='<div><h2 class="h">Übersicht</h2><p class="sub">Alle Zahlen rechnen sich aus den Vermittlungen. Stufen und Sätze stehen in partner_config.js. Stand der Konditionen: '+esc(C.stand)+(C.entwurf?', noch nicht freigegeben.':'.')+'</p></div>';
+  h+='<div class="kpis"><div class="kpi"><span class="mono">Aktive Partner</span><b>'+ps+'</b></div><div class="kpi"><span class="mono">Offene Vermittlungen</span><b>'+open+'</b></div><div class="kpi"><span class="mono">Gewonnen</span><b>'+won.length+'</b></div><div class="kpi"><span class="mono">Vermitteltes Volumen</span><b>'+eur(wert)+'</b></div><div class="kpi or"><span class="mono">Provision gesamt</span><b>'+eur(prov)+'</b></div><div class="kpi dk"><span class="mono">Noch auszuzahlen</span><b>'+eur(offen)+'</b></div><div class="kpi"><span class="mono">Anteilspunkte gesamt</span><b>'+num(pts)+'</b></div></div>';
+  h+='<div class="grid2"><div class="card"><h3>Jetzt zu tun</h3><div class="todo">';
+  if(faellig.length)h+=faellig.map(function(x){var p=P(x[0].pid);return '<div class="it"><span class="badge ok">Fällig</span><div class="grow"><b>'+esc(p?p.name:"?")+'</b> · '+esc(x[0].firma)+'<br><small style="color:var(--mute)">seit '+dde(x[1].ab)+'</small></div><b>'+eur(x[1].offen)+'</b><button class="btn sm" type="button" data-act="payfull" data-id="'+x[0].id+'"><span class="dot"></span><span>Als ausgezahlt buchen</span></button></div>';}).join("");
+  var spend=S.deals.filter(function(d){return d.status==="gewonnen"&&!d.zahlungAm;});
+  spend.forEach(function(d){var p=P(d.pid);h+='<div class="it"><span class="badge warn">Zahlung prüfen</span><div class="grow"><b>'+esc(p?p.name:"?")+'</b> · '+esc(d.firma)+'<br><small style="color:var(--mute)">Zahlungseingang des Kunden fehlt noch</small></div><button class="btn sm" type="button" data-act="editdeal" data-id="'+d.id+'">Eintragen</button></div>';});
+  S.deals.filter(function(d){return d.status==="empfohlen";}).forEach(function(d){var p=P(d.pid);h+='<div class="it"><span class="badge dk">Neu</span><div class="grow"><b>'+esc(d.firma)+'</b> von '+esc(p?p.name:"?")+'<br><small style="color:var(--mute)">Noch kein Kontakt. Frist '+C.frist+' Tage ab '+dde(d.datum)+'</small></div><button class="btn sm" type="button" data-act="editdeal" data-id="'+d.id+'">Status ändern</button></div>';});
+  if(!faellig.length&&!spend.length&&!S.deals.some(function(d){return d.status==="empfohlen";}))h+='<p class="sub" style="margin:0">Nichts offen. Neue Vermittlungen trägst du im Reiter Vermittlungen ein.</p>';
+  h+='</div></div><div class="card"><h3>So funktioniert es</h3><div class="check"><label><span>1</span><span>Partner anlegen. Er bekommt einen Code und einen Link.</span></label><label><span>2</span><span>Willkommens-Mail aus dem Reiter Material verschicken, mit Leitfaden und Leistungsübersicht.</span></label><label><span>3</span><span>Kommt eine Anfrage über den Link, steht der Code in der Mail (Zeile Empfohlen von). Dann Vermittlung eintragen.</span></label><label><span>4</span><span>Bei Gewonnen rechnet die Seite Stufe, Provision und Punkte aus. Zahlungseingang eintragen, nach '+C.auszahlungTage+' Tagen erscheint die Auszahlung hier.</span></label></div></div></div>';
+  if(!S.partners.length)h+='<div class="empty"><b>Noch keine Partner angelegt.</b><div class="tools">'+'<button class="btn inv" type="button" data-act="newp"><span class="dot"></span><span>Ersten Partner anlegen</span></button>'+demoBtn()+'</div></div>';
+  return h;
+}
+
+function vPartner(){
+  var h='<div class="tools"><div style="flex:1;min-width:200px"><h2 class="h">Partner</h2><p class="sub">Jeder Partner hat einen Code. Der Link bringt Anfragen automatisch auf seinen Namen.</p></div><button class="btn inv" type="button" data-act="newp"><span class="dot"></span><span>Partner anlegen</span></button></div>';
+  if(!S.partners.length)return h+'<div class="empty"><b>Noch keine Partner.</b>'+demoBtn()+'</div>';
+  h+='<div class="plist">'+S.partners.map(function(p){
+    var s=pstats(p.id),pr=s.next?Math.round((s.won/s.next.ab)*100):100;
+    return '<article class="pc'+(p.status==="aktiv"?"":" off")+'"><div><span class="badge '+(s.stufe.id==="circle"?"dk":s.stufe.id==="partner"?"or":"")+'">'+esc(s.stufe.name)+' · '+s.stufe.satz+' %</span> '+(p.status==="aktiv"?"":'<span class="badge warn">Pausiert</span>')+'</div>'
+      +'<h4>'+esc(p.name)+'</h4><div class="meta">'+esc(p.typ||"")+(p.mail?' · '+esc(p.mail):'')+(p.tel?' · '+esc(p.tel):'')+'</div>'
+      +'<div class="code"><span>Code</span><b>'+esc(p.code)+'</b><span style="word-break:break-all;flex-basis:100%;color:var(--mute)">'+esc(link(p.code))+'</span></div>'
+      +'<div class="nums"><div><span class="mono">Abschlüsse</span><b>'+s.won+' von '+s.all+'</b></div><div><span class="mono">Provision</span><b>'+eur(s.prov)+'</b></div><div><span class="mono">Offen</span><b>'+eur(s.offen)+'</b></div></div>'
+      +'<div><div class="bar"><i style="width:'+Math.min(100,pr)+'%"></i></div><small style="color:var(--mute)">'+(s.next?'Noch '+s.toNext+' Abschluss'+(s.toNext>1?'e':'')+' bis '+esc(s.next.name):'Höchste Stufe erreicht')+' · '+num(s.pts)+' Punkte</small></div>'
+      +(p.note?'<div class="meta">'+esc(p.note)+'</div>':'')
+      +'<div class="acts2"><button class="btn sm" type="button" data-act="copylink" data-id="'+p.id+'"><span class="dot"></span><span>Link kopieren</span></button><button class="btn sm" type="button" data-act="qr" data-id="'+p.id+'">QR-Code</button><button class="btn sm" type="button" data-act="welcome" data-id="'+p.id+'">Willkommens-Mail</button><button class="btn sm" type="button" data-act="editp" data-id="'+p.id+'">Bearbeiten</button><button class="btn sm danger" type="button" data-act="delp" data-id="'+p.id+'">Löschen</button></div></article>';
+  }).join("")+'</div>';
+  return h;
+}
+
+function vDeals(){
+  var list=S.deals.slice().sort(function(a,b){return (b.datum||"").localeCompare(a.datum||"");});
+  var f={alle:null,offen:["empfohlen","gespraech","angebot"],gewonnen:["gewonnen"],verloren:["verloren","bekannt"]}[FILTER];
+  if(f)list=list.filter(function(d){return f.indexOf(d.status)>=0;});
+  var q=QUERY.trim().toLowerCase();
+  if(q)list=list.filter(function(d){var p=P(d.pid);return (d.firma+" "+(p?p.name:"")+" "+(d.note||"")).toLowerCase().indexOf(q)>=0;});
+  var h='<div class="tools"><div style="flex:1;min-width:200px"><h2 class="h">Vermittlungen</h2><p class="sub">Provision und Punkte rechnen sich bei Status Gewonnen automatisch aus. Die Stufe richtet sich nach der Zahl der Abschlüsse des Partners.</p></div><button class="btn inv" type="button" data-act="newd"><span class="dot"></span><span>Vermittlung eintragen</span></button></div>';
+  h+='<div class="tools">'+[["alle","Alle"],["offen","Offen"],["gewonnen","Gewonnen"],["verloren","Verloren"]].map(function(x){return '<button class="chip" type="button" data-filter="'+x[0]+'" aria-pressed="'+(FILTER===x[0])+'">'+x[1]+'</button>';}).join("")+'<input type="search" id="qd" placeholder="Laden oder Partner suchen" value="'+esc(QUERY)+'"></div>';
+  if(!S.deals.length)return h+'<div class="empty"><b>Noch keine Vermittlungen.</b><div class="tools">'+(S.partners.length?'':demoBtn())+'</div></div>';
+  if(!list.length)return h+'<div class="empty">Keine Treffer.</div>';
+  h+='<div class="dlist">'+list.map(function(d){
+    var p=P(d.pid),c=calcDeal(d),pk=PK[d.paket]||C.pakete[0],s=STAT[d.status]||STAT.empfohlen;
+    return '<article class="dc"><div><h4>'+esc(d.firma)+'</h4><div class="meta">'+esc(pk.name)+' · '+dde(d.datum)+'</div><div class="meta">Von <b>'+esc(p?p.name:"gelöschter Partner")+'</b></div><div style="margin-top:6px"><span class="badge '+s[1]+'">'+s[0]+'</span> '+(c.won&&c.faellig?'<span class="badge ok">Auszahlung fällig</span>':'')+'</div>'
+      +(d.note?'<div class="meta" style="margin-top:6px">'+esc(d.note)+'</div>':'')+'<div class="acts2" style="margin-top:8px"><button class="btn sm" type="button" data-act="editdeal" data-id="'+d.id+'">Bearbeiten</button><button class="btn sm danger" type="button" data-act="deld" data-id="'+d.id+'">Löschen</button></div></div>'
+      +'<div class="calc"><div><span>Basis'+(pk.modus==="monate"?' ('+pk.monate+' Monate)':'')+'</span><b>'+eur(c.basis)+'</b></div><div><span>Stufe</span><b>'+esc(c.st.name)+' · '+c.st.satz+' %</b></div><div><span>Provision'+(c.won?'':' (voraussichtlich)')+'</span><b>'+eur(c.prov)+'</b></div><div><span>Anteilspunkte</span><b>'+num(c.pts)+'</b></div></div>'
+      +(c.won?'<div class="pay"><div class="two"><label>Kunde hat bezahlt, Prozent<input type="number" min="0" max="100" step="5" data-f="pct" data-id="'+d.id+'" value="'+(d.pct==null?"":d.pct)+'" placeholder="0"></label><label>Zahlungseingang am<input type="date" data-f="zahlungAm" data-id="'+d.id+'" value="'+esc(d.zahlungAm||"")+'"></label></div><div class="two"><label>Bereits ausgezahlt in Euro<input type="number" min="0" step="10" data-f="ausgezahlt" data-id="'+d.id+'" value="'+(d.ausgezahlt==null?"":d.ausgezahlt)+'" placeholder="0"></label><div style="display:grid;gap:3px;align-content:end"><span class="mono" style="color:var(--mute)">Noch offen</span><b style="font-size:20px;letter-spacing:-.03em">'+eur(c.offen)+'</b></div></div>'+(c.ab?'<small style="color:var(--mute)">Fällig ab '+dde(c.ab)+'</small>':'<small style="color:var(--mute)">Zahlungseingang eintragen, dann läuft die Frist von '+C.auszahlungTage+' Tagen.</small>')+(c.offen>0.5?'<button class="btn sm" type="button" data-act="payfull" data-id="'+d.id+'"><span class="dot"></span><span>Offenen Betrag als ausgezahlt buchen</span></button>':'')+'</div>':'<div class="meta">Provision und Auszahlung erscheinen, sobald der Status auf Gewonnen steht.</div>')+'</article>';
+  }).join("")+'</div>';
+  return h;
+}
+
+function vPool(){
+  var years={};S.deals.forEach(function(d){if(d.status==="gewonnen"&&d.datum)years[d.datum.slice(0,4)]=1;});
+  var y=S.poolYear||String(new Date().getFullYear());years[y]=1;
+  var ys=Object.keys(years).sort(),cfgY=S.pool[y]||{gewinn:""},gew=+cfgY.gewinn||0,pool=gew*C.pool.prozent/100;
+  var rows=S.partners.map(function(p){var pts=0,n=0;wonOf(p.id).forEach(function(d){if((d.datum||"").slice(0,4)===y){pts+=calcDeal(d).pts;n++;}});return {p:p,pts:pts,n:n};}).filter(function(r){return r.pts>0;}).sort(function(a,b){return b.pts-a.pts;});
+  var tot=rows.reduce(function(s,r){return s+r.pts;},0);
+  var h='<div><h2 class="h">Partner-Pool</h2><p class="sub">'+C.pool.prozent+' Prozent des Jahresgewinns gehen an die Partner, verteilt nach Anteilspunkten. Das ist eine vertragliche Gewinnbeteiligung, keine Beteiligung an der Firma. Der Betrag hier ist nur eine Rechnung, ausgezahlt wird erst nach dem Jahresabschluss.</p></div>';
+  h+='<div class="tools"><label style="display:flex;gap:8px;align-items:center;font-weight:700">Jahr <select id="pyear">'+ys.map(function(x){return '<option'+(x===y?' selected':'')+'>'+x+'</option>';}).join("")+'</select></label><label style="display:flex;gap:8px;align-items:center;font-weight:700">Jahresgewinn in Euro <input type="number" id="pgew" min="0" step="1000" value="'+(cfgY.gewinn===""?"":cfgY.gewinn)+'" placeholder="zum Beispiel 80000" style="border:1.5px solid var(--ink);border-radius:8px;background:var(--card);padding:8px 11px;font-size:15px;width:190px"></label></div>';
+  h+='<div class="kpis"><div class="kpi"><span class="mono">Pool '+y+'</span><b>'+eur(pool)+'</b></div><div class="kpi"><span class="mono">Punkte gesamt</span><b>'+num(tot)+'</b></div><div class="kpi"><span class="mono">Partner im Pool</span><b>'+rows.length+'</b></div></div>';
+  if(!rows.length)return h+'<div class="empty">Für '+y+' gibt es noch keine gewonnenen Vermittlungen.</div>';
+  h+='<div class="tw"><table><thead><tr><th>Partner</th><th class="r">Abschlüsse</th><th class="r">Punkte</th><th class="r">Anteil</th><th class="r">Auszahlung</th></tr></thead><tbody>'+rows.map(function(r){var sh=tot?r.pts/tot:0;return '<tr><td><b>'+esc(r.p.name)+'</b></td><td class="r">'+r.n+'</td><td class="r">'+num(r.pts)+'</td><td class="r">'+(sh*100).toLocaleString("de-DE",{maximumFractionDigits:1})+' %</td><td class="r"><b>'+eur(pool*sh)+'</b></td></tr>';}).join("")+'</tbody></table></div><div class="tools"><button class="btn" type="button" data-act="csv"><span class="dot"></span><span>Als Tabelle laden (CSV)</span></button></div>';
+  PX={rows:rows,tot:tot,pool:pool,y:y};
+  return h;
+}
+
+function tplWelcome(p){
+  return "Hi "+(p?p.name.split(" ")[0]:"{Name}")+",\n\nwillkommen im Social Bites Partnerprogramm! Schön, dass du dabei bist.\n\nDein Code: "+(p?p.code:"{CODE}")+"\nDein persönlicher Link: "+(p?link(p.code):"{LINK}")+"\n\nSo geht's: Gib den Link an Leute weiter, die ein Gastro-Projekt starten oder ihre Marke nach vorn bringen wollen. Jede Anfrage über den Link wird dir automatisch zugeordnet. Hast du jemanden persönlich vorgestellt, schreib uns einfach den Namen des Ladens.\n\nDein Infomaterial:\nLeitfaden: "+C.url+"partner/Social-Bites-Partner-Leitfaden.pdf\nLeistungsübersicht: "+C.url+"partner/Social-Bites-Leistungen.pdf\nAlles auf einer Seite: "+C.url+"partner.html#material\n\nBei Fragen sind wir direkt für dich da.\n\nViele Grüße\nNader und Tommy";
+}
+var TPL=[
+ ["Auszahlung ankündigen","Hi {Name},\n\ngute Nachrichten: {Laden} hat zugesagt und bezahlt. Deine Provision beträgt {Betrag} netto und wird "+C.auszahlungTage+" Tage nach Zahlungseingang ausgezahlt.\n\nBitte schick uns dafür deine Rechnung beziehungsweise Gutschrift mit deiner Bankverbindung.\n\nDanke dir!\nNader und Tommy"],
+ ["Kontakt war uns schon bekannt","Hi {Name},\n\ndanke für die Vorstellung von {Laden}. Wir waren schon vorher im Austausch, deshalb zählt es leider nicht als neue Vermittlung. Das sagen wir dir lieber direkt als später.\n\nFür die nächste Empfehlung bist du natürlich wieder voll dabei.\n\nViele Grüße\nNader und Tommy"],
+ ["Antwort an den vorgestellten Kontakt","Hi {Kontakt},\n\n{Partner} hat uns von dir erzählt, und wir freuen uns, dass wir sprechen. Kurz zu uns: Wir sind Social Bites aus Berlin und machen Content, Openings und die komplette Markenausstattung für Gastro und Marken.\n\nWann passt dir ein kurzes Gespräch, 15 Minuten reichen?\n\nViele Grüße\nNader"],
+ ["So stellt uns ein Partner per Mail vor","Betreff: Vorstellung Social Bites\n\nHi {Kontakt},\n\nich kenne zwei Leute, die genau das machen, was du gerade brauchst: Social Bites aus Berlin. Content, Opening und Markenausstattung für Gastro. Wenn du magst, stelle ich euch vor. Passt das für dich?\n\nViele Grüße\n{Partner}"]
+];
+function vMat(){
+  var h='<div><h2 class="h">Material und Vorlagen</h2><p class="sub">Alles, was Partner bekommen, und die Texte für den Alltag. Platzhalter in geschweiften Klammern ersetzt du vor dem Senden.</p></div>';
+  h+='<div class="grid2"><div class="card"><h3>Infomaterial für Partner</h3><div class="todo">'
+    +[["Partner-Leitfaden (PDF, 3 Seiten)","partner/Social-Bites-Partner-Leitfaden.pdf"],["Leistungsübersicht (PDF, 1 Blatt)","partner/Social-Bites-Leistungen.pdf"],["Logo freigestellt (PNG)","brand/social-bites-logo.png"],["Bildmarke Mund (PNG)","brand/social-bites-mund.png"],["Öffentliche Partner-Seite","partner.html"],["Leitfaden als Seite (zum Drucken)","partner-leitfaden.html"]].map(function(m){return '<div class="it"><div class="grow"><b>'+esc(m[0])+'</b></div><a class="btn sm" href="'+m[1]+'" target="_blank" rel="noopener"><span class="dot"></span><span>Öffnen</span></a><button class="btn sm" type="button" data-act="copyurl" data-u="'+C.url+m[1]+'">Link kopieren</button></div>';}).join("")
+    +'</div></div><div class="card"><h3>Onboarding-Checkliste</h3><div class="check" id="chk"></div></div></div>';
+  h+='<div class="card"><h3>Willkommens-Mail</h3><div class="tools"><select id="wsel" style="border:1.5px solid var(--ink);border-radius:8px;background:var(--card);padding:8px 11px;font-size:15px"><option value="">Platzhalter</option>'+S.partners.map(function(p){return '<option value="'+p.id+'">'+esc(p.name)+'</option>';}).join("")+'</select></div><div class="tpl" style="margin-top:10px"><textarea id="wtxt">'+esc(tplWelcome(null))+'</textarea><div class="acts2"><button class="btn sm" type="button" data-act="copytxt" data-t="wtxt"><span class="dot"></span><span>Text kopieren</span></button><button class="btn sm" type="button" data-act="mailtxt" data-t="wtxt">Im Mail-Programm öffnen</button></div></div></div>';
+  h+='<div class="grid2">'+TPL.map(function(t,i){return '<div class="card"><h3>'+esc(t[0])+'</h3><div class="tpl"><textarea id="t'+i+'">'+esc(t[1])+'</textarea><div class="acts2"><button class="btn sm" type="button" data-act="copytxt" data-t="t'+i+'"><span class="dot"></span><span>Text kopieren</span></button></div></div></div>';}).join("")+'</div>';
+  h+='<div class="card"><h3>Daten sichern</h3><p class="sub" style="margin:0 0 10px">Die Daten liegen nur in diesem Browser. Mach hin und wieder eine Sicherung, besonders vor dem Wechsel auf ein anderes Gerät.</p><div class="acts2"><button class="btn sm" type="button" data-act="export"><span class="dot"></span><span>Sicherung laden (JSON)</span></button><label class="btn sm" style="cursor:pointer"><span class="dot"></span><span>Sicherung einspielen</span><input type="file" id="imp" accept="application/json" hidden></label></div></div>';
+  return h;
+}
+var CHK=["Partner angelegt, Code und Link erzeugt","Willkommens-Mail mit Leitfaden und Leistungsübersicht verschickt","Kurzes Gespräch geführt: Wen kennt er, was darf er sagen, was nicht","Partnervereinbarung besprochen und unterschrieben","Bankverbindung oder Rechnungsdaten für Auszahlung erhalten"];
+function chkRender(){var el=$("#chk");if(!el)return;var st=S.chk||{};el.innerHTML=CHK.map(function(t,i){return '<label><input type="checkbox" data-chk="'+i+'"'+(st[i]?" checked":"")+'><span>'+esc(t)+'</span></label>';}).join("");}
+
+function render(){
+  tabs();var m=$("#main");
+  m.innerHTML=({start:vStart,partner:vPartner,deals:vDeals,pool:vPool,material:vMat})[TAB]();
+  if(TAB==="material")chkRender();
+  $("#sub").textContent=S.partners.length+" Partner · "+S.deals.length+" Vermittlungen";
+}
+
+/* ---------- Dialoge ---------- */
+function openP(id){
+  var f=$("#fP"),p=id?P(id):null;f.dataset.id=id||"";$("#dPt").textContent=p?"Partner bearbeiten":"Neuer Partner";$("#eP").textContent="";
+  ["name","code","mail","tel","typ","status","note"].forEach(function(k){f.elements[k].value=p?(p[k]||(k==="status"?"aktiv":"")):(k==="status"?"aktiv":"");});
+  $("#dP").showModal();
+}
+$("#fP").addEventListener("submit",function(e){
+  e.preventDefault();var f=this,id=f.dataset.id,name=f.elements.name.value.trim();
+  if(!name){$("#eP").textContent="Bitte einen Namen eintragen.";return;}
+  var code=f.elements.code.value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
+  if(code&&S.partners.some(function(p){return p.code===code&&p.id!==id;})){$("#eP").textContent="Dieser Code ist schon vergeben.";return;}
+  var o={name:name,code:code||mkCode(name),mail:f.elements.mail.value.trim(),tel:f.elements.tel.value.trim(),typ:f.elements.typ.value,status:f.elements.status.value,note:f.elements.note.value.trim()};
+  if(id){Object.assign(P(id),o);}else{o.id=uid();o.created=today();S.partners.push(o);}
+  save();$("#dP").close();render();toast("Partner gespeichert");
+});
+function fillDealSelects(){
+  $("#fD").elements.pid.innerHTML=S.partners.map(function(p){return '<option value="'+p.id+'">'+esc(p.name)+' ('+esc(p.code)+')</option>';}).join("");
+  $("#fD").elements.paket.innerHTML=C.pakete.map(function(p){return '<option value="'+p.id+'">'+esc(p.name)+'</option>';}).join("");
+}
+function openD(id){
+  if(!S.partners.length){toast("Lege zuerst einen Partner an.");TAB="partner";render();return;}
+  var f=$("#fD"),d=id?S.deals.filter(function(x){return x.id===id;})[0]:null;fillDealSelects();f.dataset.id=id||"";$("#dDt").textContent=d?"Vermittlung bearbeiten":"Neue Vermittlung";$("#eD").textContent="";
+  f.elements.pid.value=d?d.pid:S.partners[0].id;f.elements.firma.value=d?d.firma:"";f.elements.paket.value=d?d.paket:"opening";f.elements.wert.value=d&&d.wert!=null?d.wert:"";f.elements.datum.value=d?d.datum:today();f.elements.status.value=d?d.status:"empfohlen";f.elements.note.value=d?(d.note||""):"";
+  lblW();$("#dD").showModal();
+}
+function lblW(){var pk=PK[$("#fD").elements.paket.value];$("#lW").textContent=pk&&pk.modus==="monate"?"Monatsbetrag netto in Euro":"Netto-Auftragswert in Euro";}
+$("#fD").elements.paket.addEventListener("change",lblW);
+$("#fD").addEventListener("submit",function(e){
+  e.preventDefault();var f=this,id=f.dataset.id,firma=f.elements.firma.value.trim();
+  if(!firma){$("#eD").textContent="Bitte Laden oder Marke eintragen.";return;}
+  var o={pid:f.elements.pid.value,firma:firma,paket:f.elements.paket.value,wert:+f.elements.wert.value||0,datum:f.elements.datum.value||today(),status:f.elements.status.value,note:f.elements.note.value.trim()};
+  if(id){Object.assign(S.deals.filter(function(x){return x.id===id;})[0],o);}else{o.id=uid();S.deals.push(o);}
+  save();$("#dD").close();render();toast("Vermittlung gespeichert");
+});
+document.addEventListener("click",function(e){var c=e.target.closest("[data-close]");if(c){c.closest("dialog").close();return;}
+  if(e.target.tagName==="DIALOG")e.target.close();});
+
+/* ---------- Aktionen ---------- */
+function copy(t,msg){try{navigator.clipboard.writeText(t).then(function(){toast(msg||"Kopiert");},function(){toast("Kopieren nicht möglich");});}catch(e){toast("Kopieren nicht möglich");}}
+function download(name,type,text){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-tab]");if(t){TAB=t.getAttribute("data-tab");render();window.scrollTo(0,0);return;}
+  var fl=e.target.closest("[data-filter]");if(fl){FILTER=fl.getAttribute("data-filter");render();return;}
+  var b=e.target.closest("[data-act]");if(!b)return;var a=b.getAttribute("data-act"),id=b.getAttribute("data-id");
+  if(a==="newp")openP();
+  else if(a==="editp")openP(id);
+  else if(a==="delp"){var n=S.deals.filter(function(d){return d.pid===id;}).length;if(n){toast("Erst die "+n+" Vermittlungen des Partners löschen.");return;}if(confirm("Partner wirklich löschen?")){S.partners=S.partners.filter(function(p){return p.id!==id;});save();render();}}
+  else if(a==="newd")openD();
+  else if(a==="editdeal")openD(id);
+  else if(a==="deld"){if(confirm("Vermittlung wirklich löschen?")){S.deals=S.deals.filter(function(d){return d.id!==id;});save();render();}}
+  else if(a==="copylink"){var p=P(id);copy(link(p.code),"Link kopiert");}
+  else if(a==="copyurl")copy(b.getAttribute("data-u"),"Link kopiert");
+  else if(a==="qr"){var p2=P(id),l=link(p2.code);$("#qT").textContent="QR-Code für "+p2.name;$("#qL").textContent=l;$("#qI").src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data="+encodeURIComponent(l);$("#dQ").showModal();}
+  else if(a==="welcome"){var p3=P(id);TAB="material";render();$("#wsel").value=id;$("#wtxt").value=tplWelcome(p3);window.scrollTo(0,0);toast("Willkommens-Mail ist vorbereitet");}
+  else if(a==="payfull"){var d=S.deals.filter(function(x){return x.id===id;})[0],c=calcDeal(d);d.ausgezahlt=Math.round((c.verdient)*100)/100;save();render();toast("Als ausgezahlt gebucht");}
+  else if(a==="copytxt")copy($("#"+b.getAttribute("data-t")).value,"Text kopiert");
+  else if(a==="mailtxt"){var txt=$("#"+b.getAttribute("data-t")).value,wp=P($("#wsel").value);location.href="mailto:"+(wp&&wp.mail?wp.mail:"")+"?subject="+encodeURIComponent("Willkommen im Social Bites Partnerprogramm")+"&body="+encodeURIComponent(txt);}
+  else if(a==="csv"){var lines=["Partner;Abschlüsse;Punkte;Anteil;Auszahlung"];PX.rows.forEach(function(r){var sh=PX.tot?r.pts/PX.tot:0;lines.push([r.p.name,r.n,String(r.pts).replace(".",","),(sh*100).toFixed(1).replace(".",",")+" %",(PX.pool*sh).toFixed(2).replace(".",",")].join(";"));});download("partner-pool-"+PX.y+".csv","text/csv;charset=utf-8","﻿"+lines.join("\n"));}
+  else if(a==="export")download("social-bites-partner-"+today()+".json","application/json",JSON.stringify(S,null,1));
+  else if(a==="demo"){loadDemo();}
+});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(t.id==="qd"){QUERY=t.value;var pos=t.selectionStart;render();var el=$("#qd");el.focus();try{el.setSelectionRange(pos,pos);}catch(err){}return;}
+  if(t.id==="pgew"){var y=S.poolYear||String(new Date().getFullYear());S.pool[y]={gewinn:t.value};save();clearTimeout(input.t);input.t=setTimeout(function(){var el=$("#pgew"),pos=el.selectionStart;render();var n=$("#pgew");n.focus();try{n.setSelectionRange(pos,pos);}catch(err){}},350);return;}
+  if(t.id==="wsel"){var p=P(t.value);$("#wtxt").value=tplWelcome(p);return;}
+});
+function input(){}
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.id==="pyear"){S.poolYear=t.value;save();render();return;}
+  if(t.id==="imp"&&t.files[0]){var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(!o.partners||!o.deals)throw 0;S=o;S.pool=S.pool||{};save();render();toast("Sicherung eingespielt");}catch(err){toast("Datei passt nicht");}};r.readAsText(t.files[0]);return;}
+  if(t.hasAttribute("data-chk")){S.chk=S.chk||{};S.chk[t.getAttribute("data-chk")]=t.checked;save();return;}
+  var f=t.getAttribute&&t.getAttribute("data-f");
+  if(f){var d=S.deals.filter(function(x){return x.id===t.getAttribute("data-id");})[0];if(!d)return;d[f]=t.type==="number"?(t.value===""?null:+t.value):t.value;save();render();}
+});
+
+function loadDemo(){
+  var a=uid(),b=uid(),y=new Date().getFullYear()+"";
+  S.partners.push({id:a,name:"Beispiel Berater",code:mkCode("Berater"),mail:"berater@example.org",tel:"",typ:"Gastro oder Berater",status:"aktiv",note:"Beispieldaten, kann gelöscht werden.",created:today()});
+  S.partners.push({id:b,name:"Beispiel Creator",code:mkCode("Creator"),mail:"",tel:"",typ:"Creator oder Influencer",status:"aktiv",note:"Beispieldaten, kann gelöscht werden.",created:today()});
+  S.deals.push({id:uid(),pid:a,firma:"Beispiel Pizzeria",paket:"opening",wert:6000,datum:y+"-03-12",status:"gewonnen",pct:100,zahlungAm:y+"-04-02",ausgezahlt:0,note:"Beispiel"});
+  S.deals.push({id:uid(),pid:a,firma:"Beispiel Café",paket:"gastro",wert:1500,datum:y+"-05-20",status:"gewonnen",pct:50,zahlungAm:today(),ausgezahlt:0,note:"Beispiel"});
+  S.deals.push({id:uid(),pid:b,firma:"Beispiel Burger",paket:"brands",wert:18000,datum:today(),status:"gespraech",note:"Beispiel"});
+  S.deals.push({id:uid(),pid:b,firma:"Beispiel Bowl",paket:"opening",wert:4500,datum:today(),status:"empfohlen",note:"Beispiel"});
+  save();render();toast("Beispieldaten geladen");
+}
+render();
+})();
+</script>
+</body>
+</html>

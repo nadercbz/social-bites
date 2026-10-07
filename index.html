@@ -1464,6 +1464,9 @@
   var anf = d.getElementById('anfrage');
   if (anf && typeof anf.showModal === 'function') {
     var ANF_TO = 'naderlaouad@gmail.com';
+    // Partnerprogramm: Code aus dem Link (?ref=CODE) 90 Tage merken und an die Anfrage hängen
+    try { var rm = location.search.match(/[?&]ref=([A-Za-z0-9_-]{3,24})/); if (rm) localStorage.setItem('sb-ref', JSON.stringify({c: rm[1].toUpperCase(), t: Date.now()})); } catch (e) {}
+    function refCode(){ try { var r = JSON.parse(localStorage.getItem('sb-ref') || 'null'); if (r && r.c && Date.now() - r.t < 90 * 864e5) return r.c; } catch (e) {} return ''; }
     var form = d.getElementById('anf-form'), steps = [].slice.call(form.querySelectorAll('.anf-step')), dots = [].slice.call(anf.querySelectorAll('.anf-dots i'));
     var bBack = anf.querySelector('[data-anf-back]'), bNext = anf.querySelector('[data-anf-next]'), bSend = anf.querySelector('[data-anf-send]'), err = d.getElementById('anf-err');
     var done = d.getElementById('anf-done'), cur = 0, sending = false;
@@ -1558,8 +1561,8 @@
       sending = true; bSend.disabled = true; bSend.querySelector('span').textContent = 'Wird gesendet';
       var data = {
         'name': val('name'), 'Paket': paket || 'kein bestimmtes', 'Laden oder Marke': val('laden'), 'Thema': picked('thema').join(', '), 'Start': picked('start').join(''),
-        'Rückmeldung per': picked('rueckmeldung').join(''), 'Telefon': val('telefon') || 'nicht angegeben', 'Vorhaben': val('nachricht') || 'nicht angegeben',
-        '_subject': 'Neue Projekt-Anfrage: ' + val('laden') + (paket ? ' (' + paket + ')' : ''), '_template': 'table', '_captcha': 'false', '_honey': val('_honey')
+        'Empfohlen von (Partner-Code)': refCode() || 'nein', 'Rückmeldung per': picked('rueckmeldung').join(''), 'Telefon': val('telefon') || 'nicht angegeben', 'Vorhaben': val('nachricht') || 'nicht angegeben',
+        '_subject': 'Neue Projekt-Anfrage: ' + val('laden') + (paket ? ' (' + paket + ')' : '') + (refCode() ? ' [Partner ' + refCode() + ']' : ''), '_template': 'table', '_captcha': 'false', '_honey': val('_honey')
       };
       if (val('email')) {
         data.email = val('email');

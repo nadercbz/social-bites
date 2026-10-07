@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Partner-Leitfaden</title>
+<meta name="description" content="Leitfaden für Partner von Social Bites: wer wir sind, wie du uns erklärst, was du darfst und was nicht, und deine Konditionen.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Druckbarer Leitfaden, A4, CI Social Bites. Konditionen kommen aus partner_config.js. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0; --peach:#F4CDB4;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper-2);color:var(--ink);font-family:var(--display);font-weight:500;-webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(0px,3vw,36px) clamp(0px,2vw,24px);}
+  img{max-width:100%;height:auto;display:block;}
+  .sheet{width:100%;max-width:794px;background:var(--card);box-shadow:0 30px 70px -30px rgba(30,27,26,.35);padding:clamp(24px,6vw,58px);}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:10.5px;}
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;border-bottom:1.5px solid var(--ink);padding-bottom:20px;margin-bottom:22px;}
+  header .eyebrow{color:var(--accent-ink);margin:0 0 10px;}
+  header h1{margin:0 0 10px;font-weight:850;font-size:clamp(38px,6.6vw,58px);line-height:.9;letter-spacing:-.055em;}
+  header .sub{margin:0;font-size:15.5px;line-height:1.45;max-width:46ch;color:#3a3532;}
+  header img{width:clamp(70px,12vw,100px);}
+  h2{margin:0 0 10px;font-weight:850;font-size:20px;letter-spacing:-.04em;display:flex;align-items:baseline;gap:10px;}
+  h2 .n{font:500 11px var(--mono);color:var(--accent-ink);letter-spacing:.06em;}
+  section{margin-bottom:24px;break-inside:avoid;page-break-inside:avoid;}
+  p{margin:0 0 8px;font-size:13.5px;line-height:1.55;max-width:70ch;}
+  ul{margin:0;padding:0;list-style:none;}
+  li{position:relative;padding-left:15px;font-size:13.5px;line-height:1.5;}
+  li+li{margin-top:3px;}
+  li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;background:var(--accent);}
+  .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .box{border:1.5px solid var(--ink);border-radius:10px;padding:12px 13px;display:grid;gap:4px;align-content:start;}
+  .box b{font-weight:850;font-size:15.5px;letter-spacing:-.03em;}
+  .box span{font-size:12.5px;color:var(--mute);line-height:1.4;}
+  .box.or{background:var(--accent);border-color:var(--accent);} .box.or span{color:var(--ink);}
+  .tier{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;border:1.5px solid var(--ink);border-radius:10px;padding:10px 14px;margin-bottom:8px;}
+  .tier .p{font-weight:850;font-size:34px;letter-spacing:-.06em;color:var(--accent);line-height:1;min-width:76px;}
+  .tier b{font-weight:850;font-size:15px;letter-spacing:-.03em;display:block;}
+  .tier span.d{font-size:12.5px;color:var(--mute);}
+  .tier .pt{font:600 11.5px var(--display);background:var(--ink);color:var(--paper);border-radius:999px;padding:4px 10px;white-space:nowrap;}
+  .pitch{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin-bottom:10px;}
+  .pitch .mono{color:var(--accent-ink);display:block;margin-bottom:3px;}
+  .pitch p{margin:0;font-size:13.5px;}
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .dd .do,.dd .dont{border-radius:10px;padding:12px 14px;}
+  .dd .do{background:#DDF1E4;} .dd .dont{background:#FDE3DF;}
+  .dd h3{margin:0 0 6px;font:800 14px var(--display);letter-spacing:-.02em;}
+  .dd li::before{background:#1F7A4D;} .dd .dont li::before{background:#B42318;}
+  .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+  .st{border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12.5px;line-height:1.4;}
+  .st b{display:block;font-weight:850;font-size:14px;letter-spacing:-.03em;margin-bottom:2px;}
+  .st i{font:850 22px var(--display);font-style:normal;color:var(--accent);display:block;line-height:1;margin-bottom:4px;}
+  .contact{background:var(--peach);border-radius:12px;padding:14px 16px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+  .contact b{font-weight:850;font-size:17px;letter-spacing:-.03em;}
+  footer{margin-top:20px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--mute);}
+  .pb{break-before:page;page-break-before:always;}
+  @media (max-width:600px){.three,.steps,.dd{grid-template-columns:minmax(0,1fr);}.tier{grid-template-columns:auto minmax(0,1fr);}.tier .pt{grid-column:1/-1;justify-self:start;}header{grid-template-columns:minmax(0,1fr);}header img{order:-1;}}
+  @media print{
+    @page{size:A4;margin:13mm 14mm;}
+    body{padding:0;background:#fff;display:block;}
+    .sheet{box-shadow:none;max-width:none;width:auto;padding:0;}
+  }
+</style>
+</head>
+<body>
+<article class="sheet">
+  <header>
+    <div>
+      <p class="mono eyebrow" id="eb"></p>
+      <h1>Partner-Leitfaden.</h1>
+      <p class="sub">Alles, was du brauchst, um Social Bites zu empfehlen: wer wir sind, wie du uns erklärst und was du dafür bekommst.</p>
+    </div>
+    <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  </header>
+
+  <section>
+    <h2><span class="n">01</span>Wer wir sind, in 30 Sekunden</h2>
+    <p id="pKurz"></p>
+    <p>Wir sind ein kleines Team aus Berlin mit eigener Produktion. Wir drehen, schneiden, planen und gestalten selbst, mit festen Ansprechpartnern statt wechselnder Agentur-Teams.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span>Unsere drei Pakete</h2>
+    <div class="three">
+      <div class="box or"><b>Bites Opening</b><span>Für Neueröffnungen. Content, Teaser, Opening-Event und alles, was dazugehört, vom ersten Spatenstich bis zur Schlange vor der Tür.</span></div>
+      <div class="box"><b>Bites for Gastro</b><span>Für bestehende Läden. Monatliche Betreuung mit Reels, Redaktionsplan, Community und Zahlen.</span></div>
+      <div class="box"><b>Bites for Brands</b><span>Für Ketten und Marken. Kampagnen, Imagefilme und Produktionen mit mehreren Freigabestufen.</span></div>
+    </div>
+    <p style="margin-top:8px;color:#6B6357;font-size:12.5px">Preise nennen wir nach einem kurzen Gespräch, damit das Paket zum Laden passt. Bitte nenne keine Preise.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span>Wann du an uns denken solltest</h2>
+    <ul id="sig"></ul>
+  </section>
+
+  <section class="pb">
+    <h2><span class="n">04</span>So erklärst du uns</h2>
+    <div class="pitch"><span class="mono">Kurz, für ein Gespräch zwischen Tür und Angel</span><p id="p1"></p></div>
+    <div class="pitch"><span class="mono">Mittel, für eine Nachricht</span><p id="p2"></p></div>
+    <div class="pitch"><span class="mono">Lang, wenn jemand genau wissen will</span><p id="p3"></p></div>
+  </section>
+
+  <section>
+    <h2><span class="n">05</span>Was du darfst und was nicht</h2>
+    <div class="dd">
+      <div class="do"><h3>Gern</h3><ul>
+        <li>Leute vorstellen, die damit einverstanden sind</li>
+        <li>Deinen persönlichen Link weitergeben</li>
+        <li>Unser Infomaterial zeigen und schicken</li>
+        <li>Ehrlich sagen, was du von uns gesehen hast</li></ul></div>
+      <div class="dont"><h3>Bitte nicht</h3><ul>
+        <li>Preise, Ergebnisse oder Reichweiten zusagen</li>
+        <li>Massenmails oder Kaltanrufe in unserem Namen</li>
+        <li>Kontaktdaten ohne Einverständnis weitergeben</li>
+        <li>Dich als Mitarbeiter von Social Bites ausgeben</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">06</span>So läuft eine Vermittlung</h2>
+    <div class="steps">
+      <div class="st"><i>1</i><b>Vorstellen</b>Link weitergeben oder uns den Kontakt mit einem Satz zum Laden schicken.</div>
+      <div class="st"><i>2</i><b>Gespräch</b>Wir melden uns beim Kontakt, klären Bedarf und passendes Paket.</div>
+      <div class="st"><i>3</i><b>Auftrag</b>Zählt als deine Vermittlung, wenn er innerhalb von <span id="fr"></span> Tagen zusagt.</div>
+      <div class="st"><i>4</i><b>Auszahlung</b><span id="az"></span></div>
+    </div>
+  </section>
+
+  <section class="pb">
+    <h2><span class="n">07</span>Deine Konditionen</h2>
+    <div id="tiers"></div>
+    <p><b>Wie die Provision berechnet wird:</b> auf den Netto-Auftragswert. Bei Bites for Gastro auf die ersten 6 Monatsbeträge, bei Bites Opening und Bites for Brands auf den gesamten Auftrag. Zahlt der Kunde in Raten, bekommst du deine Provision anteilig.</p>
+    <p id="poolP"></p>
+    <p style="color:#6B6357;font-size:12.5px">Der Partner-Pool ist eine vertraglich vereinbarte Gewinnbeteiligung. Du wirst nicht Gesellschafter von Social Bites. Provisionen verstehen sich netto. Steuerlich lässt du dich bitte selbst beraten. Verbindlich ist die Partnervereinbarung, die wir mit dir abschließen.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">08</span>Dein Code und dein Link</h2>
+    <p>Nach der Anmeldung bekommst du einen persönlichen Code. Dein Link sieht so aus:</p>
+    <p style="font:500 13px var(--mono);background:var(--paper-2);border-radius:8px;padding:9px 12px" id="ref"></p>
+    <p>Jede Anfrage, die über deinen Link kommt, wird dir automatisch zugeordnet. Hast du jemanden persönlich vorgestellt, schreib uns den Namen des Ladens mit einem Satz, dann tragen wir es auf deinen Code ein.</p>
+  </section>
+
+  <section>
+    <div class="contact">
+      <div><span class="mono" style="color:#6B3A1F">Fragen? Melde dich direkt.</span><br><b>Nader und Tommy, Social Bites Berlin</b></div>
+      <div style="font-weight:700;font-size:14px;line-height:1.5">Nader: <a href="tel:+4917622733831" style="color:inherit">0176 22733831</a><br>Tommy: <a href="tel:+4917680256378" style="color:inherit">0176 80256378</a></div>
+    </div>
+  </section>
+
+  <footer class="mono"><span>Social Bites · Berlin</span><span id="st"></span><span>Online gesehen. Offline gegessen.</span></footer>
+</article>
+
+<script src="partner_config.js"></script>
+<script>
+(function(){
+var C=window.PARTNER_CFG,$=function(s){return document.querySelector(s);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function num(n){return n.toLocaleString("de-DE",{maximumFractionDigits:1});}
+$("#eb").textContent="Für Partner · Stand "+C.stand;$("#st").textContent="Stand "+C.stand;
+$("#pKurz").textContent=C.pitch.kurz;$("#p1").textContent=C.pitch.kurz;$("#p2").textContent=C.pitch.mittel;$("#p3").textContent=C.pitch.lang;
+$("#sig").innerHTML=C.signale.map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
+$("#fr").textContent=C.frist;$("#az").textContent=C.auszahlungTage+" Tage nach Zahlungseingang des Kunden, gegen deine Rechnung oder Gutschrift.";
+$("#tiers").innerHTML=C.stufen.map(function(s){return '<div class="tier"><div class="p">'+s.satz+' %</div><div><b>'+esc(s.name)+'</b><span class="d">'+esc(s.text)+'</span></div><span class="pt">'+num(s.faktor)+' mal Punkte</span></div>';}).join("");
+$("#poolP").innerHTML="<b>Partner-Pool:</b> "+C.pool.prozent+" Prozent des Jahresgewinns von Social Bites gehen in den Pool. Jeder Abschluss bringt dir Anteilspunkte (pro 1.000 Euro Netto-Auftragswert "+num(C.punkteProTausend)+" Punkt mal Stufenfaktor). Am Jahresende teilen wir den Pool nach Punkten auf.";
+$("#ref").textContent=C.url+"?ref=DEINCODE";
+})();
+</script>
+</body>
+</html>
