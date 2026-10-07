@@ -262,12 +262,60 @@
   .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:90;background:var(--ink);color:var(--paper);padding:12px 16px;border-radius:10px;font-weight:650;font-size:15px;transition:opacity .25s ease,transform .25s var(--ease);pointer-events:none;max-width:calc(100vw - 32px);}
   .toast.on{opacity:1;transform:translate(-50%,0);}
 
+  /* Team-Bereich (intern): Google Sheet, Brand Book, Brand-Kit, Drive eingebettet */
+  .side-h{margin:16px 0 4px;padding:0 12px;color:var(--mute);font-size:11px;}
+  .side-h:first-child{margin-top:0;}
+  .nav-b .ext{font-family:var(--mono);font-size:11px;color:var(--accent-ink);}
+  .tmain{min-width:0;display:grid;gap:12px;}
+  .frame-host{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .frame-host iframe,.tframe{display:block;width:100%;height:calc(100vh - var(--bar) - 230px);height:calc(100dvh - var(--bar) - 230px);min-height:520px;border:0;background:var(--card);}
+  .tframe{border:1px solid var(--line);border-radius:14px;}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:650;cursor:pointer;padding:8px 4px;}
+  .toggle input{accent-color:#F04A0A;width:18px;height:18px;margin:0;}
+  .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+  .tile{appearance:none;text-align:left;display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;min-height:150px;transition:border-color .2s ease,transform .3s var(--ease);}
+  .tile:hover,.tile:focus-visible{border-color:var(--accent);transform:translateY(-2px);}
+  .tile b{font-weight:800;font-size:22px;letter-spacing:-.035em;line-height:1.05;}
+  .tile span:last-child{color:var(--mute);font-size:14.5px;line-height:1.4;margin-top:auto;}
+  .tile.t-or{background:var(--accent);border-color:var(--accent);}
+  .tile.t-or span:last-child,.tile.t-or .mono{color:var(--ink);}
+  .tile.t-ink{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+  .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(246,240,227,.75);}
+  .quick{display:flex;flex-wrap:wrap;gap:8px;}
+  .dlgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .dlc{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+  .dlc .th{aspect-ratio:16/10;display:grid;place-items:center;padding:10%;border-bottom:1px solid var(--line);}
+  .dlc .th{position:relative;}
+  .dlc .th img{position:absolute;left:10%;top:10%;width:80%;height:80%;object-fit:contain;}
+  .dlc .tx{padding:12px;display:grid;gap:8px;}
+  .dlc .tx b{font-weight:750;font-size:15.5px;}
+  .dlc .tx small{color:var(--mute);font-size:13px;}
+  .checker{background:repeating-conic-gradient(#e7e1d4 0 25%,#fffdf8 0 50%) 0 0/14px 14px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chipc{appearance:none;display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;cursor:pointer;font-weight:650;font-size:14px;}
+  .chipc i{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:block;}
+  .chipc small{font-family:var(--mono);font-size:11px;color:var(--mute);}
+  .chipc:hover{border-color:var(--accent);}
+  .folders{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  .folders a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);text-decoration:none;}
+  .folders a:hover{border-color:var(--accent);}
+  .folders b{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.01em;}
+  .folders small{grid-column:1;color:var(--mute);font-size:13px;}
+  .folders a::after{content:"↗";grid-row:1/span 2;grid-column:2;align-self:center;color:var(--accent-ink);font-weight:700;}
+  .safe-note{border:1.5px dashed var(--line-2);border-radius:14px;padding:16px 18px;display:grid;gap:6px;background:var(--paper);}
+  .safe-note b{font-weight:800;}
+  .safe-note p{margin:0;font-size:14.5px;color:var(--mute);line-height:1.45;}
   @media (max-width:1100px){
     .kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
     .track{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:18px;}
     .track li:nth-child(4)::before{right:auto;width:12px;}
   }
   @media (max-width:900px){
+    .side-h{display:none;}
+    .tiles,.dlgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .folders{grid-template-columns:minmax(0,1fr);}
+    .frame-host iframe,.tframe{height:calc(100vh - var(--bar) - 300px);height:calc(100dvh - var(--bar) - 300px);min-height:460px;}
     .login{grid-template-columns:minmax(0,1fr);}
     .lg-art{min-height:auto;padding-bottom:28px;}
     .lg-art h1{margin-top:40px;}
@@ -281,6 +329,7 @@
     .bar-label{display:none;}
   }
   @media (max-width:640px){
+    .tiles,.dlgrid{grid-template-columns:minmax(0,1fr);}
     :root{--bar:64px;}
     .bar{gap:10px;}
     .bar-logo img{height:42px;}
@@ -366,6 +415,27 @@
       </div>
     </nav>
     <main class="view" id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<!-- Team-Bereich (intern) -->
+<div id="team" hidden>
+  <header class="bar">
+    <a class="bar-logo" href="index.html" aria-label="Zur Website von Social Bites"><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806"></a>
+    <span class="mono bar-label">Team-Bereich</span>
+    <span class="client"><b>Social Bites</b><span class="pill or">Intern</span></span>
+    <div class="bar-right">
+      <span class="avatar" aria-hidden="true">SB</span>
+      <button class="btn sm" type="button" id="tlogout"><span class="dot"></span><span>Abmelden</span></button>
+    </div>
+  </header>
+  <div class="shell">
+    <nav class="side" id="tside" aria-label="Bereiche im Team-Bereich"></nav>
+    <div class="tmain">
+      <main class="view" id="tview" tabindex="-1"></main>
+      <div class="frame-host" id="tframe" hidden><iframe id="tsheet" title="Social Bites OS in Google Sheets" allow="clipboard-read; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <p class="demo-note" id="tframenote" hidden>Leer, grau oder ein Anmeldefenster? Dann bist du in diesem Browser nicht bei Google angemeldet, das Sheet ist nicht mit deinem Konto geteilt, oder der Browser blockiert eingebettete Google-Inhalte (oft Safari). Dann über "In Google Sheets öffnen" arbeiten.</p>
+    </div>
   </div>
 </div>
 
@@ -480,8 +550,20 @@ function badges(){
 
 /* Login */
 var AUTH="sb-portal-auth";
-function authed(){try{return sessionStorage.getItem(AUTH)==="1";}catch(e){return !!authed.mem;}}
-function setAuth(v){try{if(v)sessionStorage.setItem(AUTH,"1");else sessionStorage.removeItem(AUTH);}catch(e){}authed.mem=v;}
+function authMode(){try{return sessionStorage.getItem(AUTH)||"";}catch(e){return authed.mem||"";}}
+function authed(){return authMode()==="1";}
+function setAuth(v){try{if(v)sessionStorage.setItem(AUTH,v);else sessionStorage.removeItem(AUTH);}catch(e){}authed.mem=v||"";}
+/* Team-Zugang: nur die SHA-256-Prüfsumme von "benutzer:passwort" steht im Code */
+var TEAM_HASH="eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab";
+function isTeam(u,p){
+  try{
+    if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
+    return crypto.subtle.digest("SHA-256",new TextEncoder().encode(u+":"+p)).then(function(b){
+      var hex=Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,"0");}).join("");
+      return hex===TEAM_HASH;
+    },function(){return false;});
+  }catch(e){return Promise.resolve(false);}
+}
 $("#pwToggle").addEventListener("click",function(){
   var p=$("#loginPass"),show=p.type==="password";p.type=show?"text":"password";
   this.textContent=show?"Verbergen":"Zeigen";this.setAttribute("aria-pressed",show?"true":"false");
@@ -491,14 +573,15 @@ $("#loginForm").addEventListener("submit",function(e){
   e.preventDefault();
   var u=$("#loginUser").value.trim().toLowerCase(),p=$("#loginPass").value,err=$("#loginErr"),f=$("#loginForm");
   if(!u||!p){err.textContent="Bitte Benutzername und Passwort eingeben.";return;}
-  if(u!==CRED.u||p!==CRED.p){
+  if(u===CRED.u&&p===CRED.p){err.textContent="";setAuth("1");enter();return;}
+  isTeam(u,p).then(function(ok){
+    if(ok){err.textContent="";setAuth("team");enterTeam();return;}
     err.textContent="Benutzername oder Passwort stimmt nicht. Für die Demo: Demo-Zugang einsetzen.";
-    f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");return;
-  }
-  err.textContent="";setAuth(true);enter();
+    f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");
+  });
 });
 $("#logout").addEventListener("click",function(){setAuth(false);$("#loginPass").value="";showLogin();toast("Abgemeldet.");});
-function showLogin(){$("#app").hidden=true;$("#login").hidden=false;document.title="Social Bites Kundenportal";try{history.replaceState(null,"","#login");}catch(e){}}
+function showLogin(){$("#app").hidden=true;$("#team").hidden=true;$("#login").hidden=false;document.title="Social Bites Kundenportal";try{history.replaceState(null,"","#login");}catch(e){}}
 function enter(){$("#login").hidden=true;$("#app").hidden=false;var h=(location.hash||"").slice(1);go(VIEWS_OK.indexOf(h)>-1?h:"uebersicht",true);}
 
 /* Navigation */
@@ -756,7 +839,132 @@ $("#resetDemo").addEventListener("click",function(){
 });
 
 document.addEventListener("visibilitychange",function(){if(document.hidden)document.querySelectorAll("video").forEach(function(v){v.pause();});});
-if(authed())enter();else showLogin();
+/* Team-Bereich: Social Bites OS, Marke und Ablage. Daten bleiben bei Google, sichtbar nur für freigegebene Konten. */
+var SHEET_ID="1_FqTqrjCY3Z9Tf0bUV6QOTejolP4MtBb5fELHgE6JIw", SHEET_URL="https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/edit";
+var DRIVE_ROOT="1A06bZGZa-nnHcozUo0pJSz_o5yq7EnvY", DRIVE_BRAND="1OXxRAiXlNHDcA9TssmZCpkkUBMKI5blI";
+function driveUrl(id){return "https://drive.google.com/drive/folders/"+id;}
+var OS_TABS=[
+  {v:"os-start",t:"Cockpit",gid:"258340492",d:"Kennzahlen, Diagramme und Sprünge in alle Bereiche. Rechnet mit, sobald ihr in den anderen Tabs etwas eintragt."},
+  {v:"os-aufgaben",t:"Aufgaben",gid:"121202435",d:"Wer macht was bis wann. Erledigte Aufgaben werden durchgestrichen, überfällige rot."},
+  {v:"os-meetings",t:"Meetings",gid:"1016476679",d:"Montags ab 14 Uhr. Was wir besprochen haben und was als Nächstes kommt."},
+  {v:"os-pipeline",t:"Pipeline",gid:"2080876804",d:"Kunden und Partner von Erstkontakt bis Auftrag. Wert in Euro eintragen, das Cockpit rechnet mit."},
+  {v:"os-leistungen",t:"Leistungen & Preise",gid:"555043041",d:"Unser Angebot mit Preisideen. Preis ab ist der niedrigste Wert und dient zum Sortieren."},
+  {v:"os-portfolio",t:"Portfolio",gid:"907173369",d:"Referenzen mit echten Views und Direktlinks."},
+  {v:"os-netzwerk",t:"Netzwerk",gid:"791724350",d:"Creator, Talente und Partner für Projekte. Barter heißt Leistung gegen Essen oder Produkt statt Geld."},
+  {v:"os-ideen",t:"Ideen & Upsells",gid:"1476262564",d:"Alles sammeln, dann nach Potenzial und Aufwand sortieren."},
+  {v:"os-pitch",t:"Pitch & Marke",gid:"1495234469",d:"Was zum Pitch gehört und wofür Social Bites steht."},
+  {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
+];
+var TNAV=[
+  ["Team",[["t-start","Start"]]],
+  ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
+  ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
+  ["Ablage",[["t-dateien","Dateien im Drive"]]]
+];
+var FOLDERS=[
+  ["00_Firma & Organisation","1mGbPIH-tGAipvoLPRd5h1RTnK0rYCYaD","Firma, Struktur, Organisation"],
+  ["01_Kunden, Uploads & Briefings","1Z2E8xBHh-OW659gdZRyIEqyGhdVQasIa","Ein Ordner pro Kunde, Briefings, Rohmaterial"],
+  ["02_Social Bites Marketing","191m0aibn_PtBBszhzOegDLXxZ5eaAvoq","Unsere eigenen Posts und BTS"],
+  ["03_Strategie & Growth","1exIjN_Fs3srsp5yf3oVvFBBEz0E69jta","Strategie, Ziele, Wachstum"],
+  ["04_Dokumente, Admin & Verträge","1zasElHlwjOsZTfIXWkk0oXJqwKB6ps6Z","Verträge, Angebote, Rechnungen. Nie mit Kunden teilen"],
+  ["06_Branding & Asset-Bibliothek",DRIVE_BRAND,"Logos, Farben, Fonts, Templates, Sounds"],
+  ["07_Ads, SEO & Social Media","1tqdUHgV_KJkYmEsrhmvQkVpPOFFLJU4z","Kampagnen und Kanäle"],
+  ["08_Sales","1HAWdsqy7e3BvEGn5dKRT8x8eZcfB-EZb","Angebotsvorlagen, Preislisten, Leads"],
+  ["09_HR & Team","1-uu6nRDpHqGlDpVGA1lHx28tyyJA09Ef","Team und Zusammenarbeit"],
+  ["12_Onboarding / Pitches","1pkqXd5xEQcBpZz-OXnWzeJLe-JfiCp-E","Pitch-Decks, Treatments, Playbook"],
+  ["99_Archiv","1CrsDZRxvFrC93GpILEP5kt3AwHMyKzve","Abgeschlossenes und Altes"]
+];
+var KIT=[
+  ["brand/social-bites-logo.png","Logo, freigestellt","PNG, durchsichtig, 1580 px","checker"],
+  ["brand/social-bites-logo-creme.png","Logo auf Creme","PNG, 2400 × 1600",""],
+  ["brand/social-bites-logo-orange.png","Logo auf Orange","PNG, 2400 × 1600",""],
+  ["brand/social-bites-mund.png","Bildmarke Mund","PNG, durchsichtig","checker"],
+  ["brand/social-bites-profilbild.png","Profilbild","PNG, 1080 × 1080",""],
+  ["og.jpg","Teilen-Bild","JPG, 1200 × 630",""]
+];
+var KITCOL=[["Orange","#F04A0A"],["Creme","#F6F0E3"],["Tinte","#1E1B1A"],["Orange dunkel","#B83806"],["Papier","#EDE4D0"],["Grau","#6B6357"],["Pfirsich","#FFE2D0"]];
+var TCUR="t-start", sheetTools=false, sheetGid=null;
+function tNav(){
+  $("#tside").innerHTML=TNAV.map(function(g){
+    return '<p class="side-h mono">'+esc(g[0])+'</p>'+g[1].map(function(it){return '<button class="nav-b" type="button" data-tview="'+it[0]+'"><span>'+esc(it[1])+'</span></button>';}).join("");
+  }).join("")+'<div class="side-foot"><a class="link" href="'+SHEET_URL+'" target="_blank" rel="noopener">Social Bites OS in Google öffnen ↗</a><a class="link" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener">Drive-Ordner öffnen ↗</a></div>';
+}
+function sheetSrc(gid){return SHEET_URL+(sheetTools?"":"?rm=minimal")+"#gid="+gid;}
+function showSheet(o){
+  var f=$("#tsheet"),want=sheetSrc(o.gid);
+  if(f.getAttribute("src")!==want)f.setAttribute("src",want);  /* gleicher Pfad, nur #gid anders: Google wechselt den Tab ohne Neuladen */
+  sheetGid=o.gid;
+}
+function tGo(v,quiet){
+  var os=OS_TABS.filter(function(o){return o.v===v;})[0];
+  if(!os&&["t-start","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  TCUR=v;
+  document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+  var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
+  var el=$("#tview"),h="";
+  $("#tframe").hidden=!os;$("#tframenote").hidden=!os;
+  if(os){
+    h=head("Social Bites OS",esc(os.t),esc(os.d),'<div class="acts"><label class="toggle"><input type="checkbox" id="ttools"'+(sheetTools?" checked":"")+'> Werkzeugleiste</label><a class="btn sm" href="'+SHEET_URL+"#gid="+os.gid+'" target="_blank" rel="noopener"><span class="dot"></span><span>In Google Sheets öffnen ↗</span></a></div>');
+    showSheet(os);
+  } else if(v==="t-start") h=tStart();
+  else if(v==="t-brandbook") h=head("Marke","Brand Book","Logo, Farben, Schrift, Sprache und Bildsprache. Zum Weitergeben an alle, die für uns gestalten.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="brandbook.html" title="Social Bites Brand Book"></iframe>';
+  else if(v==="t-brandkit") h=tKit();
+  else if(v==="t-dateien") h=tFiles();
+  el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
+  var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
+  document.title=(os?os.t:({"t-start":"Start","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  try{history.replaceState(null,"","#"+v);}catch(e){}
+  if(!quiet){window.scrollTo(0,0);}
+}
+function tStart(){
+  var tile=function(v,label,title,txt,cls){return '<button class="tile'+(cls?" "+cls:"")+'" type="button" data-tview="'+v+'"><span class="mono">'+label+'</span><b>'+title+'</b><span>'+txt+'</span></button>';};
+  return head("Team-Bereich","Alles von Social Bites an einem Ort.","Social Bites OS, Marke und Ablage. Die Tabellen kommen live aus Google Sheets und speichern jede Änderung sofort.")+
+    '<div class="tiles">'+
+      tile("os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or")+
+      tile("os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.")+
+      tile("os-pipeline","Social Bites OS","Pipeline","Kunden und Partner bis zum Auftrag.")+
+      tile("os-meetings","Social Bites OS","Meetings","Montags ab 14 Uhr, Notizen und nächste Schritte.")+
+      tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.","t-ink")+
+      tile("t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.")+
+    '</div>'+
+    '<section class="card" style="margin-top:14px"><h2>Schnellzugriff</h2><div class="quick">'+
+      '<a class="btn sm" href="index.html" target="_blank" rel="noopener"><span class="dot"></span><span>Website ↗</span></a>'+
+      '<a class="btn sm" href="https://nadercbz.github.io/social-bites-playbook/" target="_blank" rel="noopener"><span class="dot"></span><span>Playbook ↗</span></a>'+
+      '<a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a>'+
+      '<a class="btn sm" href="'+SHEET_URL+'" target="_blank" rel="noopener"><span class="dot"></span><span>Social Bites OS in Google ↗</span></a>'+
+      '<a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive-Ordner ↗</span></a>'+
+    '</div></section>'+
+    '<div class="safe-note" style="margin-top:14px"><b>Wie sicher ist das hier?</b><p>Der Login hält Neugierige draußen, ist aber kein echter Schutz, denn die Seite liegt öffentlich auf GitHub. Darum stehen hier keine Kundendaten im Code. Tabellen und Dateien kommen direkt von Google und sind nur für Konten sichtbar, mit denen ihr sie geteilt habt. Wer was sieht, regelt ihr also im Google Sheet und im Drive über "Teilen".</p></div>';
+}
+function tKit(){
+  var dl=KIT.map(function(k){return '<div class="dlc"><div class="th '+(k[3]||"")+'"><img src="'+k[0]+'" alt="" loading="lazy"></div><div class="tx"><b>'+esc(k[1])+'</b><small>'+esc(k[2])+'</small><a class="btn sm" href="'+k[0]+'" download><span class="dot"></span><span>Laden</span></a></div></div>';}).join("");
+  var col=KITCOL.map(function(c){return '<button class="chipc" type="button" data-hex="'+c[1]+'"><i style="background:'+c[1]+'"></i>'+esc(c[0])+' <small>'+c[1]+'</small></button>';}).join("");
+  return head("Marke","Brand-Kit & Logos","Logos zum Laden, Farben zum Kopieren, Schriften zum Installieren. Alles Weitere liegt im Drive unter Branding.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a></div>')+
+    '<div class="dlgrid">'+dl+'</div>'+
+    '<section class="card" style="margin-top:14px"><h2>Farben</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Klick kopiert den Farbcode.</p><div class="chips">'+col+'</div></section>'+
+    '<section class="card" style="margin-top:14px"><h2>Schriften</h2><div class="quick"><a class="btn sm" href="https://fonts.google.com/specimen/Schibsted+Grotesk" target="_blank" rel="noopener"><span class="dot"></span><span>Schibsted Grotesk ↗</span></a><a class="btn sm" href="https://fonts.google.com/specimen/Geist+Mono" target="_blank" rel="noopener"><span class="dot"></span><span>Geist Mono ↗</span></a></div></section>'+
+    '<div class="vh" style="margin:28px 0 12px"><div><p class="mono hot">Drive</p><h1 style="font-size:clamp(26px,3vw,38px)">Branding & Asset-Bibliothek</h1><p>Farben & Fonts, Logo & Wortmarke, Musik & Sound-Assets, Templates. Hochladen geht im Drive: Ordner öffnen, Datei reinziehen.</p></div><div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_BRAND)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Im Drive öffnen ↗</span></a></div></div>'+
+    '<iframe class="tframe" style="height:420px;min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_BRAND+'#grid" title="Drive-Ordner Branding"></iframe>';
+}
+function tFiles(){
+  return head("Ablage","Dateien im Drive","Alle Ordner von Social Bites. Öffnen und herunterladen geht direkt hier, hochladen im Drive: Ordner öffnen, Datei reinziehen.",'<div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive öffnen und hochladen ↗</span></a></div>')+
+    '<iframe class="tframe" style="height:460px;min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_ROOT+'#list" title="Drive-Ordner Social Bites"></iframe>'+
+    '<section class="card" style="margin-top:14px"><h2>Ordner direkt öffnen</h2><ul class="folders">'+FOLDERS.map(function(f){return '<li><a href="'+driveUrl(f[1])+'" target="_blank" rel="noopener"><b>'+esc(f[0])+'</b><small>'+esc(f[2])+'</small></a></li>';}).join("")+'</ul></section>'+
+    note("Eingebettete Drive-Ordner zeigen nur, was dein angemeldetes Google-Konto sehen darf. Verträge und Rechnungen liegen in 04 und werden nie mit Kunden geteilt.");
+}
+function enterTeam(){
+  $("#login").hidden=true;$("#app").hidden=true;$("#team").hidden=false;
+  if(!$("#tside").children.length)tNav();
+  var h=(location.hash||"").slice(1);
+  tGo(h||"t-start",true);
+}
+$("#tside").addEventListener("click",function(e){var b=e.target.closest("[data-tview]");if(b)tGo(b.getAttribute("data-tview"));});
+$("#tview").addEventListener("click",function(e){
+  var b=e.target.closest("[data-tview]");if(b){tGo(b.getAttribute("data-tview"));return;}
+  var c=e.target.closest("[data-hex]");if(c){var v=c.getAttribute("data-hex");try{navigator.clipboard.writeText(v).then(function(){toast(v+" kopiert");},function(){toast(v);});}catch(err){toast(v);}}
+});
+$("#tlogout").addEventListener("click",function(){setAuth(false);$("#loginPass").value="";$("#tsheet").removeAttribute("src");showLogin();toast("Abgemeldet.");});
+if(authMode()==="team")enterTeam();else if(authed())enter();else showLogin();
 })();
 </script>
 </body>

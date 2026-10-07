@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Brand Book</title>
+<meta name="description" content="CI Brand Book von Social Bites: Logo, Farben, Schrift, Sprache, Bildsprache, Elemente und Downloads.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: oranges Deckblatt, darunter Kapitel 01 bis 09 mit klebendem Inhaltsverzeichnis links. Eine CI, ein Look. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,3vw,40px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --dots:radial-gradient(rgba(30,27,26,.16) 1px,transparent 1.3px);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:24px;}
+  body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:17px;line-height:1.45;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img,video{max-width:100%;height:auto;display:block;}
+  a{color:inherit;}
+  button{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:12px;line-height:1.3;}
+  .pill{display:inline-flex;align-items:center;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;line-height:1;border:1.5px solid var(--ink);border-radius:999px;padding:6px 10px;text-transform:uppercase;white-space:nowrap;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:10px 14px;font:600 15px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;text-decoration:none;transition:color .3s ease,border-color .3s ease;white-space:nowrap;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
+
+  /* Deckblatt */
+  .cover{position:relative;overflow:hidden;background:var(--accent);padding:clamp(20px,3vw,36px) var(--gutter) clamp(36px,5vw,64px);}
+  .cover::before{content:"";position:absolute;inset:0;background-image:var(--dots);background-size:7px 7px;pointer-events:none;}
+  .cover > *{position:relative;}
+  .cover-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .cover-top a{font-weight:650;font-size:15px;text-decoration:none;border-bottom:1.5px solid var(--ink);}
+  .cover-logo{width:min(620px,78vw);margin:clamp(30px,6vw,80px) auto clamp(24px,4vw,48px);}
+  .cover-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;max-width:1360px;margin:0 auto;}
+  .cover-foot h1{margin:0;font-weight:800;font-size:clamp(46px,8vw,120px);line-height:.86;letter-spacing:-.055em;}
+  .cover-foot p{margin:0;max-width:44ch;font-size:clamp(16px,1.4vw,19px);line-height:1.4;}
+
+  /* Rahmen */
+  .wrap{display:grid;grid-template-columns:220px minmax(0,1fr);gap:clamp(20px,4vw,64px);max-width:1360px;margin:0 auto;padding:clamp(40px,6vw,80px) var(--gutter) 80px;}
+  .toc{position:sticky;top:24px;align-self:start;display:grid;gap:2px;}
+  .toc p{margin:0 0 10px;color:var(--mute);}
+  .toc a{display:flex;gap:10px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;font-weight:650;font-size:15px;border:1px solid transparent;}
+  .toc a span{font-family:var(--mono);font-size:11px;color:var(--accent-ink);}
+  .toc a:hover{background:rgba(255,253,248,.7);border-color:var(--line);}
+  .toc a[aria-current="true"]{background:var(--card);border-color:var(--ink);}
+  main{min-width:0;display:grid;gap:clamp(64px,8vw,110px);}
+  .ch{scroll-margin-top:24px;min-width:0;}
+  .ch-h{display:flex;align-items:baseline;gap:14px;border-bottom:1.5px solid var(--ink);padding-bottom:12px;margin-bottom:clamp(20px,3vw,32px);}
+  .ch-h .mono{color:var(--accent-ink);}
+  .ch-h h2{margin:0;font-weight:800;font-size:clamp(36px,5vw,72px);line-height:.9;letter-spacing:-.05em;}
+  .lead{margin:0 0 24px;max-width:62ch;font-size:clamp(18px,1.6vw,22px);line-height:1.4;}
+  h3{margin:0 0 10px;font-weight:800;font-size:clamp(20px,1.8vw,24px);letter-spacing:-.03em;line-height:1.1;}
+  p{margin:0;}
+  .muted{color:var(--mute);}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,2vw,24px);min-width:0;}
+  .card p+p{margin-top:8px;}
+
+  /* 01 Marke */
+  .claim{background:var(--ink);color:var(--paper);border-radius:14px;padding:clamp(22px,3vw,36px);}
+  .claim .mono{color:var(--accent);}
+  .claim b{display:block;margin-top:10px;font-weight:800;font-size:clamp(34px,4.6vw,64px);line-height:.95;letter-spacing:-.05em;}
+  .rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1.5px solid var(--ink);}
+  .rules li{padding:16px 16px 18px 0;border-bottom:1px solid var(--line);}
+  .rules li:nth-child(2n){padding-left:16px;border-left:1px solid var(--line);}
+  .rules b{display:flex;gap:9px;align-items:baseline;font-size:18px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px;}
+  .rules b::before{content:"";width:9px;height:9px;background:var(--accent);flex:none;}
+  .rules span{color:var(--mute);font-size:15px;}
+
+  /* 02 Logo */
+  .logo-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .lt{border-radius:14px;aspect-ratio:4/3;display:grid;place-items:center;padding:12%;border:1px solid var(--line);position:relative;}
+  .lt img{position:absolute;left:14%;top:12%;width:72%;height:68%;max-width:none;object-fit:contain;}
+  .lt figcaption{position:absolute;left:12px;bottom:10px;}
+  .lt.c{background:var(--paper);}
+  .lt.o{background:var(--accent);border-color:var(--accent);}
+  .lt.k{background:var(--card);}
+  .lt.o figcaption{color:var(--ink);}
+  figure{margin:0;}
+  .space{position:relative;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(28px,5vw,60px);}
+  .space .box{position:relative;padding:clamp(22px,4vw,46px);outline:1.5px dashed var(--accent-ink);}
+  .space .box img{width:min(340px,60vw);}
+  .space .tag{position:absolute;top:8px;left:50%;transform:translateX(-50%);color:var(--accent-ink);background:var(--card);padding:0 6px;}
+  .donts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+  .dn{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .dn .stage{aspect-ratio:1;display:grid;place-items:center;padding:16%;position:relative;overflow:hidden;background:var(--paper);}
+  .dn .stage::after{content:"";position:absolute;inset:10px;background:linear-gradient(45deg,transparent calc(50% - 1.5px),var(--accent-ink) calc(50% - 1.5px),var(--accent-ink) calc(50% + 1.5px),transparent calc(50% + 1.5px));opacity:.85;pointer-events:none;}
+  .dn p{padding:10px 12px 12px;font-size:14px;font-weight:650;}
+  .dn .stage img{position:absolute;left:16%;top:16%;width:68%;height:68%;max-width:none;object-fit:contain;}
+  .d1 img{transform:scaleX(1.5);} .d2 img{transform:rotate(-18deg);} .d3 img{filter:hue-rotate(160deg) saturate(1.6);} .d4 img{filter:drop-shadow(6px 8px 0 #1E1B1A) drop-shadow(0 0 10px #F04A0A);}
+  .d5 .stage{background:url("media/pf/food_bao_2.webp") center/cover;}
+  .note{margin-top:16px;display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--mute);}
+  .note::before{content:"";width:8px;height:8px;margin-top:6px;background:var(--accent);flex:none;}
+
+  /* 03 Farben */
+  .swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+  .sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);display:flex;flex-direction:column;}
+  .sw .chip{height:120px;display:flex;align-items:flex-end;padding:10px 12px;}
+  .sw .chip b{font-weight:800;font-size:20px;letter-spacing:-.03em;}
+  .sw dl{margin:0;padding:10px 12px 12px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;font-size:13.5px;}
+  .sw dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--mute);padding-top:2px;}
+  .sw dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;}
+  .sw .use{padding:0 12px 12px;font-size:13.5px;color:var(--mute);margin-top:auto;}
+  .sw button.hex{background:none;border:0;padding:0;cursor:pointer;font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;}
+  .ratio{display:flex;height:56px;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:16px;}
+  .ratio span{display:flex;align-items:center;padding:0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+  table.contrast{width:100%;border-collapse:collapse;font-size:15px;}
+  table.contrast th,table.contrast td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:middle;}
+  table.contrast thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1.5px solid var(--ink);}
+  .sample{display:inline-block;padding:6px 10px;border-radius:6px;font-weight:800;}
+  .scroll{overflow-x:auto;}
+
+  /* 04 Schrift */
+  .spec{display:grid;gap:0;border-top:1.5px solid var(--ink);}
+  .spec > div{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line);}
+  .spec .mono{color:var(--mute);}
+  .s-h1{font-weight:800;font-size:clamp(46px,6vw,88px);line-height:.9;letter-spacing:-.05em;}
+  .s-h2{font-weight:800;font-size:clamp(32px,3.6vw,48px);line-height:.95;letter-spacing:-.045em;}
+  .s-h3{font-weight:800;font-size:30px;line-height:1;letter-spacing:-.04em;}
+  .s-body{font-weight:500;font-size:17px;line-height:1.45;max-width:58ch;}
+  .s-label{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .fontcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:20px;}
+  .fc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,2vw,26px);display:grid;gap:12px;}
+  .fc .big{font-size:clamp(56px,7vw,96px);line-height:.9;letter-spacing:-.05em;font-weight:800;}
+  .fc.m .big{font-family:var(--mono);font-weight:500;letter-spacing:0;font-size:clamp(44px,5vw,72px);}
+  .fc .chars{font-size:15px;color:var(--mute);word-break:break-word;}
+  .fc.m .chars{font-family:var(--mono);}
+
+  /* 05 Sprache */
+  .dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .dd{border-radius:14px;padding:clamp(16px,2vw,24px);border:1.5px solid var(--ink);display:grid;gap:10px;align-content:start;}
+  .dd.no{border-style:dashed;border-color:var(--accent-ink);}
+  .dd h3{display:flex;align-items:center;gap:10px;}
+  .dd.yes h3::before{content:"✓";width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:14px;}
+  .dd.no h3::before{content:"×";width:26px;height:26px;border-radius:50%;background:var(--accent-ink);color:var(--paper);display:grid;place-items:center;font-size:18px;}
+  .dd q{display:block;quotes:none;font-weight:700;font-size:18px;line-height:1.3;letter-spacing:-.02em;}
+  .dd.no q{color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(184,56,6,.6);}
+
+  /* 06 Bild und Video */
+  .mood{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:180px;gap:12px;margin-bottom:20px;}
+  .mood figure{border-radius:12px;overflow:hidden;position:relative;background:var(--ink);}
+  .mood img,.mood video{width:100%;height:100%;object-fit:cover;}
+  .mood .tall{grid-row:span 2;}
+  .mood .wide{grid-column:span 2;}
+  .mood figcaption{position:absolute;left:8px;bottom:8px;background:var(--card);border-radius:999px;padding:4px 8px;font-size:10.5px;}
+  .checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 20px;}
+  .checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:15.5px;}
+  .checks li::before{content:"✓";width:22px;height:22px;border-radius:5px;background:var(--accent);display:grid;place-items:center;font-weight:800;font-size:13px;}
+
+  /* 07 Elemente */
+  .els{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .el{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+  .el .demo{min-height:180px;display:grid;place-items:center;padding:20px;background:var(--paper);border-bottom:1px solid var(--line);}
+  .el .txt{padding:14px 16px 16px;display:grid;gap:6px;}
+  .el .txt p{font-size:14.5px;color:var(--mute);}
+  .phone{width:96px;aspect-ratio:9/16;border-radius:16px;border:5px solid var(--ink);overflow:hidden;background:var(--ink);transform:rotate(-4deg);}
+  .phone video{width:100%;height:100%;object-fit:cover;}
+  .dotsdemo{background:var(--accent);background-image:var(--dots);background-size:7px 7px;width:100%;height:140px;border-radius:10px;}
+  .graindemo{background:var(--grain),var(--paper-2);width:100%;height:140px;border-radius:10px;border:1px solid var(--line);}
+  .ticker{width:100%;overflow:hidden;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:10px 0;}
+  .ticker div{display:flex;gap:28px;white-space:nowrap;font-weight:800;font-size:22px;letter-spacing:-.03em;animation:tick 14s linear infinite;}
+  .ticker i{font-style:normal;color:var(--accent);}
+  @keyframes tick{to{transform:translateX(-50%);}}
+
+  /* 08 Anwendungen */
+  .apps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .app{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;}
+  .app .pic{aspect-ratio:16/10;background:var(--paper-2);display:grid;place-items:center;overflow:hidden;}
+  .app .pic img{width:100%;height:100%;object-fit:cover;}
+  .app .pic.pad{padding:10%;}
+  .app .pic.pad img{object-fit:contain;border-radius:50%;width:auto;height:100%;}
+  .app .txt{padding:14px 16px 16px;display:grid;gap:4px;}
+  .app .txt b{font-weight:800;font-size:18px;letter-spacing:-.02em;}
+  .app .txt span{font-size:14px;color:var(--mute);}
+  a.app:hover{border-color:var(--accent);}
+
+  /* 09 Downloads */
+  .dl{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
+  .dl li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px;}
+  .dl .th{width:72px;height:52px;border-radius:8px;display:grid;place-items:center;overflow:hidden;border:1px solid var(--line);}
+  .dl .th img{width:100%;height:100%;object-fit:contain;padding:3px;}
+  .dl b{display:block;font-weight:750;}
+  .dl small{color:var(--mute);font-size:13.5px;}
+  .foot{max-width:1360px;margin:0 auto;padding:28px var(--gutter) 48px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 24px;color:var(--mute);font-size:14px;}
+  .foot a{color:var(--ink);font-weight:600;}
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:90;background:var(--ink);color:var(--paper);padding:12px 16px;border-radius:10px;font-weight:650;font-size:15px;transition:opacity .25s ease,transform .25s var(--ease);pointer-events:none;}
+  .toast.on{opacity:1;transform:translate(-50%,0);}
+
+  @media (max-width:1100px){
+    .swatches{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .donts{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .mood{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (max-width:900px){
+    .wrap{grid-template-columns:minmax(0,1fr);}
+    .toc{display:none;}
+    .logo-tiles,.grid3,.els,.apps{grid-template-columns:minmax(0,1fr);}
+    .spec > div{grid-template-columns:minmax(0,1fr);gap:6px;}
+  }
+  @media (max-width:640px){
+    .grid2,.fontcards,.dodont,.rules,.checks{grid-template-columns:minmax(0,1fr);}
+    .rules li:nth-child(2n){padding-left:0;border-left:0;}
+    .donts{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .swatches{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+    .sw .chip{height:76px;}
+    .sw .chip b{font-size:17px;}
+    .sw dl{grid-template-columns:minmax(0,1fr);gap:1px;}
+    .sw dt{padding-top:6px;}
+    .mood{grid-auto-rows:150px;}
+    .dl li{grid-template-columns:56px minmax(0,1fr);}
+    .dl li .btn{grid-column:1/-1;justify-content:center;}
+    .dl .th{width:56px;height:44px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="cover-top">
+    <span class="pill">Brand Book · Version 1.0 · Oktober 2026</span>
+    <a href="index.html" target="_top">← Zur Website</a>
+  </div>
+  <img class="cover-logo" src="brand/social-bites-logo.png" alt="Social Bites" width="1580" height="1422">
+  <div class="cover-foot">
+    <h1>So sieht Social Bites aus.</h1>
+    <p>Logo, Farben, Schrift, Sprache und Bildsprache an einem Ort. Für alle, die für uns gestalten, schreiben oder drehen.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Kapitel">
+    <p class="mono">Inhalt</p>
+    <a href="#marke"><span>01</span>Marke</a>
+    <a href="#logo"><span>02</span>Logo</a>
+    <a href="#farben"><span>03</span>Farben</a>
+    <a href="#schrift"><span>04</span>Schrift</a>
+    <a href="#sprache"><span>05</span>Sprache</a>
+    <a href="#bild"><span>06</span>Bild und Video</a>
+    <a href="#elemente"><span>07</span>Elemente</a>
+    <a href="#anwendungen"><span>08</span>Anwendungen</a>
+    <a href="#downloads"><span>09</span>Downloads</a>
+  </nav>
+
+  <main>
+    <section class="ch" id="marke">
+      <div class="ch-h"><span class="mono">01</span><h2>Marke</h2></div>
+      <p class="lead">Wir sind ein Kollektiv aus Creatorn, die sich für jedes Projekt gezielt zusammenstellen, um es bestmöglich umzusetzen. Vor und hinter der Kamera: Content Creator, Influencer-Talente, Filmemacher, Marketing-Strategen.</p>
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="claim"><span class="mono">Claim</span><b>Online gesehen. Offline gegessen.</b></div>
+        <div class="claim" style="background:var(--accent);color:var(--ink)"><span class="mono" style="color:var(--ink)">Hero-Satz</span><b>Wir machen Content, den keiner wegscrollt.</b></div>
+      </div>
+      <div class="card" style="margin-bottom:24px"><h3>Was wir machen</h3><p>Food Content, Openings und Branding für Gastro und Marken aus Berlin. Social Media trifft echtes Offline-Marketing. Drei Abläufe: Bites Opening für neue Läden, Bites for Gastro für bestehende Läden, Bites for Brands für Ketten und Marken.</p></div>
+      <ul class="rules">
+        <li><b>Online plus offline.</b><span>Jedes Projekt bekommt mindestens eine Aktion, die Leute vom Handy in den Laden holt.</span></li>
+        <li><b>Erst das Ziel, dann der Content.</b><span>Mehr Gäste, ein Opening, ein neues Gericht. Jede Idee muss darauf einzahlen.</span></li>
+        <li><b>Hook in drei Sekunden.</b><span>Was in den ersten drei Sekunden nicht packt, wird weggescrollt.</span></li>
+        <li><b>Nur echte Zahlen.</b><span>Keine geschätzten Views und keine erfundenen Zitate. Zahlen immer mit Quelle und Stand.</span></li>
+      </ul>
+    </section>
+
+    <section class="ch" id="logo">
+      <div class="ch-h"><span class="mono">02</span><h2>Logo</h2></div>
+      <p class="lead">Die Wortmarke ist handgezeichnet und verzahnt. Der Mund ersetzt das O. Das Logo ist schwarz, Farbe kommt nur aus dem Mund und aus dem Grund.</p>
+      <div class="logo-tiles" style="margin-bottom:16px">
+        <figure class="lt c"><img src="brand/social-bites-logo.png" alt="Logo auf Creme" width="1580" height="1422" loading="lazy"><figcaption class="mono">Auf Creme</figcaption></figure>
+        <figure class="lt o"><img src="brand/social-bites-logo.png" alt="Logo auf Orange" width="1580" height="1422" loading="lazy"><figcaption class="mono">Auf Orange</figcaption></figure>
+        <figure class="lt k"><img src="brand/social-bites-mund.png" alt="Bildmarke: der Mund" width="260" height="508" loading="lazy" style="transform:rotate(-8deg)"><figcaption class="mono">Bildmarke Mund</figcaption></figure>
+      </div>
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="space"><div class="box"><span class="tag mono">Schutzzone</span><img src="brand/social-bites-logo.png" alt="Logo mit Schutzzone" width="1580" height="1422" loading="lazy"></div></div>
+        <div class="card" style="display:grid;gap:14px;align-content:start">
+          <div><h3>Schutzzone</h3><p>Rundum mindestens so viel Platz, wie der Mund breit ist. Darin stehen keine Texte, Kanten oder anderen Logos.</p></div>
+          <div><h3>Mindestgröße</h3><p>Digital mindestens 40 px hoch. Im Druck mindestens 18 mm breit. Darunter nur die Bildmarke Mund verwenden.</p></div>
+          <div><h3>Bildmarke</h3><p>Der Mund allein funktioniert als Profilbild, Favicon, Sticker und Stempel. Er darf leicht gekippt stehen, 8 Grad gegen den Uhrzeigersinn wie auf der Website.</p></div>
+        </div>
+      </div>
+      <h3 style="margin-top:28px">Bitte nicht</h3>
+      <div class="donts">
+        <figure class="dn d1"><div class="stage"><img src="brand/social-bites-logo.png" alt="" width="1580" height="1422" loading="lazy"></div><p>Verzerren</p></figure>
+        <figure class="dn d2"><div class="stage"><img src="brand/social-bites-logo.png" alt="" width="1580" height="1422" loading="lazy"></div><p>Drehen</p></figure>
+        <figure class="dn d3"><div class="stage"><img src="brand/social-bites-logo.png" alt="" width="1580" height="1422" loading="lazy"></div><p>Umfärben</p></figure>
+        <figure class="dn d4"><div class="stage"><img src="brand/social-bites-logo.png" alt="" width="1580" height="1422" loading="lazy"></div><p>Schatten und Effekte</p></figure>
+        <figure class="dn d5"><div class="stage"><img src="brand/social-bites-logo.png" alt="" width="1580" height="1422" loading="lazy"></div><p>Auf unruhige Bilder</p></figure>
+      </div>
+      <p class="note">Die Vektor-Datei (SVG) ist noch in Arbeit. Bis dahin das PNG in voller Größe nutzen: reicht für Web, Social und Druck bis etwa A5. Eine helle Version für dunkle Flächen kommt mit der Vektor-Datei.</p>
+    </section>
+
+    <section class="ch" id="farben">
+      <div class="ch-h"><span class="mono">03</span><h2>Farben</h2></div>
+      <p class="lead">Creme als Grund, Tinte für Schrift und Logo, Orange als Signal. Pink gibt es nur im Mund des Logos. Klick auf einen Farbcode kopiert ihn.</p>
+      <div class="swatches" id="swatches"></div>
+      <div class="ratio" aria-label="Verhältnis der Farben">
+        <span style="flex:60;background:var(--paper)">Creme 60 %</span>
+        <span style="flex:25;background:var(--ink);color:var(--paper)">Tinte 25 %</span>
+        <span style="flex:15;background:var(--accent)">Orange 15 %</span>
+      </div>
+      <h3 style="margin-top:32px">Kontrast und Lesbarkeit</h3>
+      <div class="scroll"><table class="contrast">
+        <thead><tr><th scope="col">Kombination</th><th scope="col">Kontrast</th><th scope="col">Erlaubt für</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sample" style="background:var(--paper);color:var(--ink);border:1px solid var(--line)">Tinte auf Creme</span></td><td>15,1 : 1</td><td>Alles, auch kleine Schrift</td></tr>
+          <tr><td><span class="sample" style="background:var(--paper);color:var(--accent-ink);border:1px solid var(--line)">Orange dunkel auf Creme</span></td><td>5,1 : 1</td><td>Kleine orange Schrift, Labels, Links</td></tr>
+          <tr><td><span class="sample" style="background:var(--paper);color:var(--accent);border:1px solid var(--line)">Orange auf Creme</span></td><td>3,3 : 1</td><td>Nur große Schrift ab 24 px, Flächen, Punkte</td></tr>
+          <tr><td><span class="sample" style="background:var(--accent);color:var(--ink)">Tinte auf Orange</span></td><td>4,6 : 1</td><td>Schrift auf orangen Flächen, Knöpfe</td></tr>
+          <tr><td><span class="sample" style="background:var(--ink);color:var(--paper)">Creme auf Tinte</span></td><td>15,1 : 1</td><td>Alles, auch kleine Schrift</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">CMYK-Werte stammen aus den Druckdaten der Visitenkarten. Große schwarze Flächen im Druck in sattem Schwarz 40/30/30/100, kleine Schrift immer nur 100 % Schwarz.</p>
+    </section>
+
+    <section class="ch" id="schrift">
+      <div class="ch-h"><span class="mono">04</span><h2>Schrift</h2></div>
+      <p class="lead">Zwei Schriften, beide kostenlos über Google Fonts. Schibsted Grotesk trägt die Marke, Geist Mono beschriftet.</p>
+      <div class="fontcards">
+        <div class="fc"><span class="mono">Hauptschrift</span><span class="big">Schibsted Grotesk</span><span class="chars">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz Ää Öö Üü ß 0123456789</span><a class="btn" href="https://fonts.google.com/specimen/Schibsted+Grotesk" target="_blank" rel="noopener"><span class="dot"></span><span>Bei Google Fonts laden ↗</span></a></div>
+        <div class="fc m"><span class="mono">Labels und Zahlen</span><span class="big">Geist Mono</span><span class="chars">AA BB CC DD EE FF GG HH II JJ KK LL MM NN OO PP 0123456789 · €</span><a class="btn" href="https://fonts.google.com/specimen/Geist+Mono" target="_blank" rel="noopener"><span class="dot"></span><span>Bei Google Fonts laden ↗</span></a></div>
+      </div>
+      <div class="spec">
+        <div><span class="mono">Headline groß<br>Schibsted 800 · Laufweite minus 5 %</span><span class="s-h1">Mehr als Food.</span></div>
+        <div><span class="mono">Headline<br>Schibsted 800 · minus 4,5 %</span><span class="s-h2">So beißen wir uns rein</span></div>
+        <div><span class="mono">Zwischentitel<br>Schibsted 800 · 30 px</span><span class="s-h3">Wir hören zu.</span></div>
+        <div><span class="mono">Fließtext<br>Schibsted 500 bis 600 · 17 px</span><span class="s-body">Was soll passieren? Mehr Gäste, ein Opening, ein neues Gericht, ein Kanal, der endlich läuft. Erst das Ziel, dann der Content.</span></div>
+        <div><span class="mono">Label<br>Geist Mono 500 · Großbuchstaben · +6 %</span><span class="s-label">Schritt 01 · Briefing · Online + Offline</span></div>
+      </div>
+    </section>
+
+    <section class="ch" id="sprache">
+      <div class="ch-h"><span class="mono">05</span><h2>Sprache</h2></div>
+      <p class="lead">Wir reden wie Macher, nicht wie eine Agentur-Broschüre. Kurz, direkt, mit Haltung.</p>
+      <ul class="checks" style="margin-bottom:24px">
+        <li>Wir duzen, auf der Website, in Mails und in Captions.</li>
+        <li>Kurze Sätze. Ein Gedanke pro Satz.</li>
+        <li>Keine Gedankenstriche. Lieber Punkt, Komma oder neue Zeile.</li>
+        <li>Zahlen als Ziffern und nur, wenn sie belegt sind.</li>
+        <li>Deutsch zuerst. Englisch nur, wo es Szene ist: Reel, Hook, Behind the Scenes.</li>
+        <li>Konkrete Bilder statt Floskeln: Schlange vor der Tür statt Reichweite steigern.</li>
+      </ul>
+      <div class="dodont">
+        <div class="dd yes"><h3>So</h3><q>Wir machen Content, den keiner wegscrollt.</q><q>Aus Views werden Gäste.</q><q>Erst das Ziel, dann der Content.</q></div>
+        <div class="dd no"><h3>Nicht so</h3><q>Wir bieten innovative, ganzheitliche Social-Media-Lösungen.</q><q>Wir steigern Ihre Reichweite nachhaltig und garantiert!</q><q>Millionen Views in kürzester Zeit!</q></div>
+      </div>
+    </section>
+
+    <section class="ch" id="bild">
+      <div class="ch-h"><span class="mono">06</span><h2>Bild und Video</h2></div>
+      <p class="lead">Echt, nah und hungrig machend. Wir zeigen Essen, Menschen und den Moment, nicht die perfekte Werbewelt.</p>
+      <div class="mood">
+        <figure class="tall"><img src="media/pf/food_pho.webp" alt="Pho mit Chili, Limette und Kräutern" loading="lazy"><figcaption class="mono">Food von oben</figcaption></figure>
+        <figure class="wide"><img src="media/pf/food_burger.webp" alt="Burger mit Süßkartoffel-Pommes" loading="lazy"><figcaption class="mono">Close-up, satte Farben</figcaption></figure>
+        <figure class="tall"><video src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline autoplay preload="metadata" aria-label="Sauce-Spirale auf der Pizza"></video><figcaption class="mono">9:16 und Bewegung</figcaption></figure>
+        <figure><img src="media/pf/bts_orange.webp" alt="Nader an der Kamera im orangen Gegenlicht" loading="lazy"><figcaption class="mono">Behind the Scenes</figcaption></figure>
+        <figure><img src="media/pf/food_sushi.webp" alt="Sushi-Platte auf Schiefer" loading="lazy"><figcaption class="mono">Dunkler Grund</figcaption></figure>
+      </div>
+      <ul class="checks">
+        <li>9:16 zuerst, alles andere wird daraus geschnitten.</li>
+        <li>Hook in den ersten drei Sekunden.</li>
+        <li>Food sofort nach dem Anrichten: Dampf, Käsezug, Crunch.</li>
+        <li>Echte Menschen: Crew, Gäste, Creator. Nur mit Einverständnis.</li>
+        <li>Warmes Licht, satte Farben, kein Stock-Look.</li>
+        <li>Untertitel immer. In Ads nur Musik mit Werbelizenz.</li>
+      </ul>
+    </section>
+
+    <section class="ch" id="elemente">
+      <div class="ch-h"><span class="mono">07</span><h2>Elemente</h2></div>
+      <p class="lead">Wiederkehrende Bausteine, die Social Bites erkennbar machen, auch ohne Logo.</p>
+      <div class="els">
+        <div class="el"><div class="demo"><span style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><span class="pill">Viral</span><span class="pill" style="background:var(--accent);border-color:var(--accent)">Food</span><span class="pill" style="background:var(--ink);color:var(--paper)">Openings</span></span></div><div class="txt"><h3>Pills</h3><p>Geist Mono, Großbuchstaben, runder Rahmen. Für Kategorien, Tags und Status.</p></div></div>
+        <div class="el"><div class="demo"><span style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><a class="btn" href="#elemente"><span class="dot"></span><span>Projekt starten</span></a><a class="btn inv" href="#elemente"><span class="dot"></span><span>Ansehen</span></a></span></div><div class="txt"><h3>Knopf mit Punkt</h3><p>Der orange Punkt wächst beim Drüberfahren zur Füllung. Fahr mal drüber.</p></div></div>
+        <div class="el"><div class="demo"><div class="phone"><video src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline autoplay preload="metadata" aria-label="Video im Handy-Rahmen"></video></div></div><div class="txt"><h3>Handy-Rahmen</h3><p>Reels zeigen wir im Hochformat mit dunklem Rahmen, leicht gekippt.</p></div></div>
+        <div class="el"><div class="demo"><div class="dotsdemo"></div></div><div class="txt"><h3>Punktraster</h3><p>Feine Punkte auf Orange für große Flächen, Menüs und Deckblätter.</p></div></div>
+        <div class="el"><div class="demo"><div class="graindemo"></div></div><div class="txt"><h3>Papierkörnung</h3><p>Leichte Körnung auf Creme. Fühlt sich nach Papier an statt nach Bildschirm.</p></div></div>
+        <div class="el"><div class="demo"><div class="ticker" aria-hidden="true"><div><span>Online gesehen.</span><i>●</i><span>Offline gegessen.</span><i>●</i><span>Online gesehen.</span><i>●</i><span>Offline gegessen.</span><i>●</i><span>Online gesehen.</span><i>●</i><span>Offline gegessen.</span><i>●</i><span>Online gesehen.</span><i>●</i><span>Offline gegessen.</span><i>●</i></div></div></div><div class="txt"><h3>Laufband</h3><p>Claim oder Marken laufen als Band durch, mit orangem Punkt als Trenner.</p></div></div>
+      </div>
+    </section>
+
+    <section class="ch" id="anwendungen">
+      <div class="ch-h"><span class="mono">08</span><h2>Anwendungen</h2></div>
+      <p class="lead">Wo die Marke schon lebt. Neue Anwendungen orientieren sich daran.</p>
+      <div class="apps">
+        <a class="app" href="index.html" target="_top"><div class="pic"><img src="og.jpg" alt="Vorschaubild der Website" loading="lazy"></div><div class="txt"><b>Website</b><span>Creme, Orange, Sticky-Projekte, Laufband</span></div></a>
+        <figure class="app"><div class="pic"><img src="brand/visitenkarte-vorderseite.jpg" alt="Vorderseite der Visitenkarte" loading="lazy"></div><div class="txt"><b>Visitenkarte</b><span>85 × 55 mm, vorne Orange mit Logo, hinten Creme</span></div></figure>
+        <figure class="app"><div class="pic pad" style="background:var(--paper)"><img src="brand/social-bites-profilbild.png" alt="Social-Profilbild" loading="lazy"></div><div class="txt"><b>Profilbild</b><span>Instagram, TikTok, LinkedIn. Logo auf Orange, rund beschnitten</span></div></figure>
+      </div>
+    </section>
+
+    <section class="ch" id="downloads">
+      <div class="ch-h"><span class="mono">09</span><h2>Downloads</h2></div>
+      <p class="lead">Alles für den Alltag. Weitere Vorlagen und Rohdateien liegen im Drive-Ordner Branding &amp; Asset-Bibliothek.</p>
+      <ul class="dl">
+        <li><span class="th" style="background:repeating-conic-gradient(#e7e1d4 0 25%,#fffdf8 0 50%) 0 0/12px 12px"><img src="brand/social-bites-logo.png" alt="" loading="lazy"></span><div><b>Logo, freigestellt</b><small>PNG, 1580 × 1422, durchsichtiger Hintergrund</small></div><a class="btn" href="brand/social-bites-logo.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th" style="background:var(--paper)"><img src="brand/social-bites-logo-creme.png" alt="" loading="lazy"></span><div><b>Logo auf Creme</b><small>PNG, 2400 × 1600</small></div><a class="btn" href="brand/social-bites-logo-creme.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th" style="background:var(--accent)"><img src="brand/social-bites-logo-orange.png" alt="" loading="lazy"></span><div><b>Logo auf Orange</b><small>PNG, 2400 × 1600</small></div><a class="btn" href="brand/social-bites-logo-orange.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th" style="background:repeating-conic-gradient(#e7e1d4 0 25%,#fffdf8 0 50%) 0 0/12px 12px"><img src="brand/social-bites-mund.png" alt="" loading="lazy"></span><div><b>Bildmarke Mund</b><small>PNG, durchsichtiger Hintergrund</small></div><a class="btn" href="brand/social-bites-mund.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th" style="background:var(--accent)"><img src="brand/social-bites-mund-orange.png" alt="" loading="lazy"></span><div><b>Mund auf Orange</b><small>PNG, 1080 × 1080, für Sticker und Story-Highlights</small></div><a class="btn" href="brand/social-bites-mund-orange.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th" style="background:var(--accent)"><img src="brand/social-bites-profilbild.png" alt="" loading="lazy"></span><div><b>Profilbild</b><small>PNG, 1080 × 1080, für Instagram, TikTok, LinkedIn</small></div><a class="btn" href="brand/social-bites-profilbild.png" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th"><img src="og.jpg" alt="" loading="lazy"></span><div><b>Teilen-Bild</b><small>JPG, 1200 × 630, Vorschau für Links in WhatsApp und Co.</small></div><a class="btn" href="og.jpg" download><span class="dot"></span><span>Laden</span></a></li>
+        <li><span class="th"><img src="apple-touch-icon.png" alt="" loading="lazy"></span><div><b>App-Icon und Favicon</b><small>PNG, 180 × 180 und 64 × 64</small></div><a class="btn" href="apple-touch-icon.png" download><span class="dot"></span><span>Laden</span></a></li>
+      </ul>
+      <p class="note">Schriften gibt es kostenlos bei Google Fonts, Links oben unter Schrift. Druckdaten der Visitenkarten liegen im Projektordner unter Visitenkarten.</p>
+      <p style="margin-top:16px"><a class="btn inv" href="https://drive.google.com/drive/folders/1OXxRAiXlNHDcA9TssmZCpkkUBMKI5blI" target="_blank" rel="noopener"><span class="dot"></span><span>Drive: Branding &amp; Asset-Bibliothek ↗</span></a></p>
+    </section>
+  </main>
+</div>
+
+<footer class="foot"><span>Social Bites, Berlin · Brand Book Version 1.0, Oktober 2026</span><a href="index.html" target="_top">Website</a><a href="portal.html" target="_top">Kundenportal</a></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var COLORS=[
+    {n:"Orange",h:"#F04A0A",rgb:"240 74 10",cmyk:"0 80 100 0",use:"Signalfarbe: Flächen, große Schrift, Knöpfe, Punkte",dark:false},
+    {n:"Creme",h:"#F6F0E3",rgb:"246 240 227",cmyk:"3 5 12 0",use:"Grundfarbe für Seiten, Karten-Rückseiten, Flächen",dark:false},
+    {n:"Tinte",h:"#1E1B1A",rgb:"30 27 26",cmyk:"0 0 0 100 (Schrift)",use:"Logo und Schrift. Große Flächen im Druck 40 30 30 100",dark:true},
+    {n:"Orange dunkel",h:"#B83806",rgb:"184 56 6",cmyk:"10 85 100 8",use:"Kleine orange Schrift auf Creme, Labels, Links",dark:true},
+    {n:"Papier",h:"#EDE4D0",rgb:"237 228 208",cmyk:"nur digital",use:"Zweiter Grund, Abschnitte, Knopf-Flächen",dark:false},
+    {n:"Karte",h:"#FFFDF8",rgb:"255 253 248",cmyk:"nur digital",use:"Karten und Felder auf Creme",dark:false},
+    {n:"Grau",h:"#6B6357",rgb:"107 99 87",cmyk:"nur digital",use:"Nebentext, Hinweise, Bildunterschriften",dark:true},
+    {n:"Pfirsich",h:"#FFE2D0",rgb:"255 226 208",cmyk:"nur digital",use:"Hinweis- und Markierungsflächen",dark:false}
+  ];
+  var sw=document.getElementById("swatches");
+  sw.innerHTML=COLORS.map(function(c){
+    return '<div class="sw"><div class="chip" style="background:'+c.h+';color:'+(c.dark?'#F6F0E3':'#1E1B1A')+'"><b>'+c.n+'</b></div>'+
+      '<dl><dt>HEX</dt><dd><button class="hex" type="button" data-copy="'+c.h+'">'+c.h+'</button></dd><dt>RGB</dt><dd>'+c.rgb+'</dd><dt>CMYK</dt><dd>'+c.cmyk+'</dd></dl>'+
+      '<p class="use">'+c.use+'</p></div>';
+  }).join("");
+  var toast=document.getElementById("toast");
+  function show(t){toast.textContent=t;toast.classList.add("on");clearTimeout(show.t);show.t=setTimeout(function(){toast.classList.remove("on");},1800);}
+  sw.addEventListener("click",function(e){
+    var b=e.target.closest("[data-copy]");if(!b)return;
+    var v=b.getAttribute("data-copy");
+    try{navigator.clipboard.writeText(v).then(function(){show(v+" kopiert");},function(){show(v);});}catch(err){show(v);}
+  });
+  if("IntersectionObserver" in window){
+    var links={};document.querySelectorAll(".toc a").forEach(function(a){links[a.getAttribute("href").slice(1)]=a;});
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){Object.keys(links).forEach(function(k){links[k].removeAttribute("aria-current");});var a=links[en.target.id];if(a)a.setAttribute("aria-current","true");}});},{rootMargin:"-45% 0px -50% 0px"});
+    document.querySelectorAll(".ch").forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>
