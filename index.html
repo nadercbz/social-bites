@@ -457,27 +457,85 @@
   .pf-ov .mono{font-size:10.5px;letter-spacing:.05em;opacity:.88;}
 
   /* Haltung: Mission, Vision, Zahlen und die vier Bausteine, Inhalte aus dem Pitch */
-  .wirk{padding:clamp(56px,8vw,120px) var(--gutter) clamp(36px,5vw,80px);max-width:1280px;margin:0 auto;}
+  .wirk{padding:clamp(56px,8vw,120px) var(--gutter) clamp(36px,5vw,80px);max-width:1280px;margin:0 auto;overflow-x:clip;overflow-clip-margin:24px;}
   .wirk-lead{max-width:64ch;margin:24px auto 0;text-align:center;font-size:clamp(17px,1.5vw,21px);font-weight:600;line-height:1.4;letter-spacing:-.02em;}
   .wirk-lead b{color:var(--accent-ink,#B83806);}
   .wirk-stats{list-style:none;margin:clamp(28px,4vw,52px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,28px);}
   .wirk-stats li{border-top:2px solid var(--ink);padding-top:12px;}
   .wirk-stats b{display:block;font-weight:850;font-size:clamp(36px,7.4vw,104px);letter-spacing:-.06em;line-height:.9;}
-  .wirk-stats span{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;}
+  .wirk-stats li > span{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;}
   .wirk-mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:clamp(24px,3vw,40px);}
-  .wirk-card{border-radius:20px;padding:clamp(20px,2.6vw,34px);display:grid;gap:12px;align-content:start;}
+  .wirk-card{border-radius:20px;padding:clamp(20px,2.6vw,34px);display:grid;gap:12px;align-content:start;height:100%;}
   .wirk-card.ink{background:var(--ink);color:var(--paper);}
   .wirk-card.or{background:var(--accent);color:var(--ink);}
   .wirk-card .mono{font-size:11px;opacity:.8;}
   .wirk-card p{margin:0;font-weight:700;font-size:clamp(20px,2.1vw,30px);letter-spacing:-.03em;line-height:1.12;}
-  .wirk-bs{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:b;}
-  .wirk-bs li{counter-increment:b;border:1px solid var(--line);border-radius:16px;padding:18px;background:rgba(255,253,248,.7);display:grid;gap:8px;align-content:start;}
-  .wirk-bs li::before{content:"0" counter(b);font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent-ink,#B83806);}
+  .wirk-bs{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+  .bs-card{height:100%;border:1px solid var(--line);border-radius:16px;padding:18px;background:#FFFDF8;display:grid;gap:8px;align-content:start;}
+  .bs-nr{font-size:11px;letter-spacing:.06em;color:var(--accent-ink,#B83806);}
   .wirk-bs h3{margin:0;font-weight:800;font-size:clamp(20px,1.9vw,26px);letter-spacing:-.04em;line-height:1.05;}
   .wirk-bs p{margin:0;font-size:15px;line-height:1.45;}
+
+  /* Zahlen: Linie füllt sich, das Plus ploppt */
+  .wirk-stats li{position:relative;border-top-color:rgba(30,27,26,.14);}
+  .wirk-stats li::before{content:"";position:absolute;left:0;right:0;top:-2px;height:2px;background:var(--ink);transform-origin:left;}
+  .wirk-stats .cnt{font-variant-numeric:tabular-nums;}
+  .wirk-stats b i{font-style:normal;color:var(--accent);display:inline-block;}
+  .wirk-stats li.done b i{animation:plus-pop .6s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes plus-pop{0%{transform:scale(1);}45%{transform:scale(1.45) rotate(-8deg);}100%{transform:scale(1);}}
+
+  /* Biss beim Drüberfahren: Mund schnappt zu, danach fehlt die Ecke */
+  @property --b1{syntax:'<length>';inherits:true;initial-value:-2px;}
+  @property --b2{syntax:'<length>';inherits:true;initial-value:-2px;}
+  @property --b3{syntax:'<length>';inherits:true;initial-value:-2px;}
+  .bite-wrap{position:relative;--b1:-2px;--b2:-2px;--b3:-2px;transition:--b1 .5s cubic-bezier(.34,1.56,.64,1),--b2 .5s cubic-bezier(.34,1.56,.64,1) .05s,--b3 .5s cubic-bezier(.34,1.56,.64,1) .1s,transform .5s var(--ease),filter .5s var(--ease);}
+  .bite{position:relative;height:100%;
+    -webkit-mask-image:radial-gradient(circle at calc(100% - 30px) 0,transparent var(--b1),#000 calc(var(--b1) + 1px)),radial-gradient(circle at calc(100% - 90px) -6px,transparent var(--b2),#000 calc(var(--b2) + 1px)),radial-gradient(circle at calc(100% + 4px) 68px,transparent var(--b3),#000 calc(var(--b3) + 1px));
+    -webkit-mask-composite:source-in;
+    mask-image:radial-gradient(circle at calc(100% - 30px) 0,transparent var(--b1),#000 calc(var(--b1) + 1px)),radial-gradient(circle at calc(100% - 90px) -6px,transparent var(--b2),#000 calc(var(--b2) + 1px)),radial-gradient(circle at calc(100% + 4px) 68px,transparent var(--b3),#000 calc(var(--b3) + 1px));
+    mask-composite:intersect;}
+  .bite-mouth{position:absolute;z-index:3;right:-6px;top:-40px;height:96px;width:auto;opacity:0;pointer-events:none;transform-origin:50% 55%;filter:drop-shadow(0 6px 0 rgba(30,27,26,.2));}
+  .wirk-bs .bite-mouth{height:74px;top:-30px;right:-4px;}
+  .bite-wrap::after{content:"";position:absolute;z-index:2;right:46px;top:10px;width:5px;height:5px;border-radius:50%;background:transparent;pointer-events:none;opacity:0;
+    box-shadow:-6px 4px 0 rgba(30,27,26,.55),8px 10px 0 -1px rgba(30,27,26,.45),-16px 12px 0 -1px rgba(240,74,10,.8),2px 18px 0 rgba(30,27,26,.35);}
+  @media (hover:hover) and (prefers-reduced-motion:no-preference){
+    .bite-wrap:hover{--b1:44px;--b2:28px;--b3:34px;transform:translateY(-6px) rotate(-.6deg);filter:drop-shadow(8px 8px 0 rgba(240,74,10,.9));transition-delay:.2s,.25s,.3s,0s,0s;}
+    .bite-wrap:has(.or):hover{filter:drop-shadow(8px 8px 0 rgba(30,27,26,.92));}
+    .wirk-bs .bite-wrap:hover{--b1:32px;--b2:20px;--b3:26px;}
+    .bite-wrap:hover .bite-mouth{animation:chomp .8s cubic-bezier(.3,.8,.3,1) both;}
+    .bite-wrap:hover::after{animation:crumbs .9s ease-out .38s both;}
+    .wirk-anim .wirk .bite-wrap.rv.in:hover{transition-delay:0s,0s,0s,.2s,.25s,.3s;}
+  }
+  .bite-wrap:focus-within{--b1:44px;--b2:28px;--b3:34px;}
+  .wirk-bs .bite-wrap:focus-within{--b1:32px;--b2:20px;--b3:26px;}
+  @media (hover:none) and (prefers-reduced-motion:no-preference){
+    .wirk-anim .bite-wrap.in{--b1:44px;--b2:28px;--b3:34px;}
+    .wirk-anim .wirk-bs .bite-wrap.in{--b1:32px;--b2:20px;--b3:26px;}
+    .wirk-anim .wirk .bite-wrap.rv.in{transition-delay:calc(var(--i,0) * 110ms),0s,0s,calc(var(--i,0) * 110ms + .75s),calc(var(--i,0) * 110ms + .8s),calc(var(--i,0) * 110ms + .85s);}
+    .wirk-anim .bite-wrap.in .bite-mouth{animation:chomp .8s cubic-bezier(.3,.8,.3,1) calc(var(--i,0) * 110ms + .55s) both;}
+  }
+  @keyframes chomp{
+    0%{opacity:0;transform:translate(24px,-26px) rotate(-22deg) scale(.45);}
+    28%{opacity:1;transform:translate(0,0) rotate(-36deg) scale(1);}
+    46%{transform:translate(-6px,6px) rotate(-36deg) scale(1.05,.42);}
+    62%{transform:translate(0,0) rotate(-36deg) scale(1);}
+    78%{opacity:1;transform:translate(6px,-6px) rotate(-30deg) scale(.95);}
+    100%{opacity:0;transform:translate(30px,-34px) rotate(-18deg) scale(.6);}
+  }
+  @keyframes crumbs{0%{opacity:0;transform:translate(0,0);}15%{opacity:1;}100%{opacity:0;transform:translate(-14px,46px) rotate(40deg);}}
+
+  /* Einblenden beim Scrollen (nur mit JS und ohne reduzierte Bewegung) */
+  .wirk-anim .wirk .rv{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .95s var(--ease);transition-delay:calc(var(--i,0) * 110ms);}
+  .wirk-anim .wirk .rv.in{opacity:1;transform:none;}
+  .wirk-anim .wirk .bite-wrap.rv.in{transition:opacity .8s var(--ease) calc(var(--i,0) * 110ms),transform .5s var(--ease),filter .5s var(--ease),--b1 .5s cubic-bezier(.34,1.56,.64,1),--b2 .5s cubic-bezier(.34,1.56,.64,1) .05s,--b3 .5s cubic-bezier(.34,1.56,.64,1) .1s;}
+  .wirk-anim .wirk-stats li::before{transform:scaleX(0);transition:transform 1.8s cubic-bezier(.16,1,.3,1) calc(var(--i,0) * 160ms);}
+  .wirk-anim .wirk-stats li.in::before{transform:scaleX(1);}
+  .wirk-lead b{background:linear-gradient(rgba(240,74,10,.16),rgba(240,74,10,.16)) no-repeat 0 92%/100% 40%;}
+  .wirk-anim .wirk-lead b{background-size:0% 40%;transition:background-size 1.3s var(--ease) .6s;}
+  .wirk-anim .wirk-lead.in b{background-size:100% 40%;}
   .wirk-cta{margin:clamp(26px,3.4vw,44px) 0 0;display:flex;gap:14px 22px;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:clamp(18px,1.8vw,24px);letter-spacing:-.03em;}
   @media (max-width:900px){.wirk-bs{grid-template-columns:repeat(2,minmax(0,1fr));}}
-  @media (max-width:640px){.wirk-mv{grid-template-columns:1fr;}.wirk-bs{grid-template-columns:1fr;}.wirk-stats span{font-size:9.5px;}}
+  @media (max-width:640px){.wirk-mv{grid-template-columns:1fr;}.wirk-bs{grid-template-columns:1fr;}.wirk-stats li > span{font-size:9.5px;}}
   .pf-tall{--h:clamp(320px,36vw,460px);}
   .pf-ref:hover video{transform:scale(1.03);}
   .pf-ref video{transition:transform .6s var(--ease);}
@@ -785,25 +843,25 @@
   </div>
 
   <section class="wirk" id="wirkung" aria-labelledby="wirk-h">
-    <div class="sec-pill"><span class="pill">Unsere &bull; Haltung</span></div>
-    <h2 class="big-h" id="wirk-h">Wirkung, nicht nur Reichweite.</h2>
-    <p class="wirk-lead">Wir bringen Marken und Menschen digital n&auml;her zusammen. 80&nbsp;% der deutschen Unternehmen sind auf Social Media aktiv (laut Bitkom), doch viele bleiben unter ihrem Potenzial. <b>Das Problem ist nicht die Plattform. Das Problem ist fehlende Strategie und Konstanz.</b></p>
+    <div class="sec-pill rv"><span class="pill">Unsere &bull; Haltung</span></div>
+    <h2 class="big-h rv" id="wirk-h">Wirkung, nicht nur Reichweite.</h2>
+    <p class="wirk-lead rv" style="--i:1">Wir bringen Marken und Menschen digital n&auml;her zusammen. 80&nbsp;% der deutschen Unternehmen sind auf Social Media aktiv (laut Bitkom), doch viele bleiben unter ihrem Potenzial. <b>Das Problem ist nicht die Plattform. Das Problem ist fehlende Strategie und Konstanz.</b></p>
     <ul class="wirk-stats">
-      <li><b>15&nbsp;Mio+</b><span>Social-Media-Impressionen</span></li>
-      <li><b>60+</b><span>Kunden und Projekte</span></li>
-      <li><b>40</b><span>Projekte allein in 2026</span></li>
+      <li class="rv" style="--i:0"><b><span class="cnt" data-to="15">15</span>&nbsp;Mio<i>+</i></b><span>Social-Media-Impressionen</span></li>
+      <li class="rv" style="--i:1"><b><span class="cnt" data-to="60">60</span><i>+</i></b><span>Kunden und Projekte</span></li>
+      <li class="rv" style="--i:2"><b><span class="cnt" data-to="40">40</span></b><span>Projekte allein in 2026</span></li>
     </ul>
     <div class="wirk-mv">
-      <article class="wirk-card ink"><span class="mono">Mission</span><p>Starke Unternehmen mit klarer Strategie, starken Kurzvideos und modernem Content sichtbar machen und Aufmerksamkeit in Vertrauen und Kundenbindung verwandeln.</p></article>
-      <article class="wirk-card or"><span class="mono">Vision</span><p>Starke Unternehmen sichtbar, nahbar und relevant machen, mit Content, der nachhaltig Wirkung erzeugt.</p></article>
+      <div class="bite-wrap rv" style="--i:0"><article class="wirk-card ink bite"><span class="mono">Mission</span><p>Starke Unternehmen mit klarer Strategie, starken Kurzvideos und modernem Content sichtbar machen und Aufmerksamkeit in Vertrauen und Kundenbindung verwandeln.</p></article><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></div>
+      <div class="bite-wrap rv" style="--i:1"><article class="wirk-card or bite"><span class="mono">Vision</span><p>Starke Unternehmen sichtbar, nahbar und relevant machen, mit Content, der nachhaltig Wirkung erzeugt.</p></article><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></div>
     </div>
     <ol class="wirk-bs" aria-label="Unsere vier Bausteine">
-      <li><h3>Content Strategy</h3><p>Themen, Formate, Hooks und Positionierung. Dazu die Content-Planung, damit aus guten Ideen eine Serie wird.</p></li>
-      <li><h3>Video Production</h3><p>Kurzvideos, Reels, TikToks und Shorts. Werbevideos und gebündelte Drehtage, die Content für Wochen liefern.</p></li>
-      <li><h3>Social Media Management</h3><p>Posting, Planung, Stories und Captions, dazu die laufende Betreuung deiner Kanäle.</p></li>
-      <li><h3>Growth &amp; Ads</h3><p>Paid Social, Ad-Creatives und Kampagnen mit datenbasierter Optimierung.</p></li>
+      <li class="bite-wrap rv" style="--i:0"><div class="bs-card bite"><span class="bs-nr mono">01</span><h3>Content Strategy</h3><p>Themen, Formate, Hooks und Positionierung. Dazu die Content-Planung, damit aus guten Ideen eine Serie wird.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
+      <li class="bite-wrap rv" style="--i:1"><div class="bs-card bite"><span class="bs-nr mono">02</span><h3>Video Production</h3><p>Kurzvideos, Reels, TikToks und Shorts. Werbevideos und gebündelte Drehtage, die Content für Wochen liefern.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
+      <li class="bite-wrap rv" style="--i:2"><div class="bs-card bite"><span class="bs-nr mono">03</span><h3>Social Media Management</h3><p>Posting, Planung, Stories und Captions, dazu die laufende Betreuung deiner Kanäle.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
+      <li class="bite-wrap rv" style="--i:3"><div class="bs-card bite"><span class="bs-nr mono">04</span><h3>Growth &amp; Ads</h3><p>Paid Social, Ad-Creatives und Kampagnen mit datenbasierter Optimierung.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
     </ol>
-    <p class="wirk-cta"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#kontakt"><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
+    <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#kontakt"><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
   </section>
 
   <section class="services" id="leistungen">
@@ -1112,6 +1170,34 @@
       entries.forEach(function(e){ e.target.classList.toggle('is-off', !e.isIntersecting); });
     });
     each('.marquee,.win-rows', function(el){ ioM.observe(el); });
+  }
+
+  // Haltung: Inhalte beim Scrollen einblenden, Zahlen hochzählen
+  var wirk = d.getElementById('wirkung');
+  if (wirk && hasIO && !reduce) {
+    root.classList.add('wirk-anim');
+    var ioR = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); ioR.unobserve(e.target); } });
+    }, {rootMargin: '0px 0px -10% 0px'});
+    each('.rv', function(el){ ioR.observe(el); }, wirk);
+    var cnts = [].slice.call(wirk.querySelectorAll('[data-to]'));
+    cnts.forEach(function(c){ c.textContent = '0'; });
+    var ioC = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) return;
+        ioC.unobserve(e.target);
+        var el = e.target, to = +el.dataset.to, li = el.closest('li'), delay = cnts.indexOf(el) * 160, dur = 1700, t0 = null;
+        setTimeout(function(){
+          requestAnimationFrame(function step(t){
+            if (t0 === null) t0 = t;
+            var p = Math.min(1, (t - t0) / dur), k = p >= 1 ? 1 : 1 - Math.pow(2, -10 * p);
+            el.textContent = Math.round(to * k);
+            if (p < 1) requestAnimationFrame(step); else if (li) li.classList.add('done');
+          });
+        }, delay);
+      });
+    }, {threshold: .5});
+    cnts.forEach(function(c){ ioC.observe(c); });
   }
 
   // Header: beim Runterscrollen weg, beim Hochscrollen wieder da
