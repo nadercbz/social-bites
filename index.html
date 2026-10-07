@@ -569,6 +569,80 @@
   .pfd .p-link:hover{color:var(--accent);}
   .pfd-hint{margin:0;font-size:10.5px;color:rgba(246,240,227,.6);}
 
+
+  /* Anfrage-Pop-up: drei kurze Schritte, daneben Anruf und WhatsApp */
+  .anf{padding:0;margin:auto;border:0;background:transparent;color:var(--ink);width:min(1000px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);overflow:visible;}
+  .anf::backdrop{background:rgba(20,17,16,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+  .anf[open]{animation:anf-in .45s var(--ease);}
+  @keyframes anf-in{from{opacity:0;transform:translateY(24px) scale(.98);}to{opacity:1;transform:none;}}
+  .anf-box{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 320px;background:var(--paper);border-radius:22px;overflow:hidden;max-height:calc(100dvh - 32px);box-shadow:0 30px 80px rgba(0,0,0,.35);}
+  .anf-main{padding:clamp(22px,3vw,40px);overflow:auto;display:grid;gap:18px;align-content:start;max-height:calc(100dvh - 32px);}
+  .anf-top{display:flex;align-items:center;gap:14px;padding-right:44px;}
+  .anf-dots{display:flex;gap:6px;margin-left:auto;}
+  .anf-dots i{width:26px;height:6px;border-radius:6px;background:rgba(30,27,26,.14);transition:background-color .3s ease,width .3s var(--ease);}
+  .anf-dots i.on{background:var(--accent);width:40px;}
+  .anf-dots i.done{background:var(--ink);}
+  .anf-x{position:absolute;right:14px;top:14px;z-index:3;width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:background-color .2s ease,transform .3s var(--ease);}
+  .anf-x:hover{background:var(--accent);transform:rotate(90deg);}
+  .anf-step{border:0;margin:0;padding:0;min-width:0;display:grid;gap:14px;}
+  .anf-step legend{padding:0;margin:0 0 4px;}
+  .anf h2{margin:0;font-weight:850;font-size:clamp(32px,4.4vw,54px);letter-spacing:-.055em;line-height:.95;}
+  .anf-sub{margin:-6px 0 0;color:var(--mute);font-size:15px;}
+  .anf-q{margin:8px 0 0;font-weight:800;font-size:19px;letter-spacing:-.03em;}
+  .anf-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .anf-chips label{position:relative;cursor:pointer;}
+  .anf-chips input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;}
+  .anf-chips span{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 15px;border:1.5px solid var(--ink);border-radius:999px;font-weight:650;font-size:15.5px;letter-spacing:-.01em;background:#FFFDF8;transition:background-color .2s ease,color .2s ease,transform .25s var(--ease);}
+  .anf-chips span::before{content:"";width:0;height:9px;margin-right:-8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1),width .2s ease,margin .2s ease;}
+  .anf-chips label:hover span{transform:translateY(-2px);}
+  .anf-chips input:checked + span{background:var(--ink);color:var(--paper);}
+  .anf-chips input:checked + span::before{transform:scale(1);width:9px;margin-right:0;}
+  .anf-chips input:focus-visible + span{outline:2px solid var(--accent-ink);outline-offset:2px;}
+  .anf-f{display:grid;gap:6px;}
+  .anf-f > span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);}
+  .anf-f em{font-style:normal;opacity:.7;text-transform:none;letter-spacing:0;}
+  .anf-f input,.anf-f textarea{width:100%;min-height:50px;border:1.5px solid var(--ink);border-radius:10px;background:#FFFDF8;padding:12px 14px;font:600 17px/1.3 var(--display);color:var(--ink);}
+  .anf-f textarea{min-height:96px;font-weight:500;resize:vertical;}
+  .anf-f input:focus,.anf-f textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(240,74,10,.18);}
+  .anf-f input[aria-invalid="true"]{border-color:#B42318;box-shadow:0 0 0 4px rgba(180,35,24,.14);}
+  .anf-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .anf-ok{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--mute);cursor:pointer;}
+  .anf-ok input{width:20px;height:20px;margin:1px 0 0;accent-color:#F04A0A;flex:none;}
+  .anf-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  .anf-nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-top:6px;}
+  .anf-nav .sp{flex:1;}
+  .anf-nav .btn{min-height:48px;padding:12px 18px;font-size:16px;}
+  .btn.or{background:var(--accent);border-color:var(--accent);color:var(--ink);}
+  .btn.or .dot{background:var(--paper);}
+  .btn.or:hover,.btn.or:focus-visible{border-color:var(--ink);}
+  .anf-err{margin:0;min-height:1.3em;color:#B42318;font-weight:650;font-size:14.5px;}
+  .anf-side{position:relative;background:var(--ink);color:var(--paper);padding:clamp(22px,3vw,34px) 24px;display:grid;gap:14px;align-content:start;overflow:hidden;}
+  .anf-side h3{margin:0;font-weight:850;font-size:30px;letter-spacing:-.05em;line-height:1;}
+  .anf-side > p{margin:0;font-size:15px;line-height:1.45;color:rgba(246,240,227,.78);}
+  .anf-pp{display:grid;gap:10px;padding:14px;border:1px solid rgba(246,240,227,.18);border-radius:14px;background:rgba(246,240,227,.05);position:relative;z-index:1;}
+  .anf-pp b{font-weight:800;font-size:18px;letter-spacing:-.03em;}
+  .anf-pp small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(246,240,227,.6);margin-top:2px;}
+  .anf-pp .row{display:flex;gap:8px;flex-wrap:wrap;}
+  .anf-pp a{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 13px;border-radius:999px;font-weight:700;font-size:14.5px;text-decoration:none;transition:transform .25s var(--ease),background-color .2s ease;}
+  .anf-pp a:hover{transform:translateY(-2px);}
+  .anf-pp a svg{width:17px;height:17px;flex:none;}
+  .anf-call{background:var(--paper);color:var(--ink);}
+  .anf-call:hover{background:var(--accent);}
+  .anf-wa{background:#25D366;color:#0B2E17;}
+  .anf-wa:hover{background:#3BE07A;}
+  .anf-side .anf-mouth{position:absolute;right:-26px;bottom:-40px;height:170px;width:auto;transform:rotate(-14deg);opacity:.95;pointer-events:none;}
+  .anf-done{display:grid;gap:16px;align-content:start;text-align:left;}
+  .anf-done .big{width:74px;height:74px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:36px;font-weight:900;animation:anf-pop .6s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes anf-pop{from{transform:scale(.3);opacity:0;}to{transform:none;opacity:1;}}
+  .anf-done p{margin:0;font-size:17px;line-height:1.45;max-width:46ch;}
+  @media (max-width:820px){
+    .anf{width:100vw;max-height:100dvh;height:100dvh;margin:0;}
+    .anf-box{display:block;border-radius:0;height:100dvh;max-height:100dvh;overflow:auto;overscroll-behavior:contain;}
+    .anf-main{overflow:visible;padding-bottom:10px;max-height:none;}
+    .anf-side{padding-bottom:110px;}
+    .anf-two{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){.anf[open]{animation:none;}}
   @media (prefers-reduced-motion:no-preference){
     .hero-h .row{animation:rise .85s var(--ease) both;}
     .hero-h .row:nth-child(2){animation-delay:.08s;}
@@ -606,7 +680,7 @@
   </nav>
   <div class="head-actions">
     <a class="portal-link" href="portal.html"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Kundenportal</span></a>
-    <a class="btn" href="#kontakt"><span>Projekt starten</span><i class="dot"></i></a>
+    <a class="btn" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a>
     <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
   <div class="progress" aria-hidden="true"></div>
@@ -618,7 +692,7 @@
   <a href="#reels"><small>03</small>Reels</a>
   <a href="#portfolio"><small>04</small>Portfolio</a>
   <a href="#ablauf"><small>05</small>So läuft's</a>
-  <a href="#kontakt"><small>06</small>Kontakt</a>
+  <a href="#anfrage" data-anfrage><small>06</small>Projekt starten</a>
   <a href="portal.html"><small>07</small>Kundenportal</a>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
@@ -861,7 +935,7 @@
       <li class="bite-wrap rv" style="--i:2"><div class="bs-card bite"><span class="bs-nr mono">03</span><h3>Social Media Management</h3><p>Posting, Planung, Stories und Captions, dazu die laufende Betreuung deiner Kanäle.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
       <li class="bite-wrap rv" style="--i:3"><div class="bs-card bite"><span class="bs-nr mono">04</span><h3>Growth &amp; Ads</h3><p>Paid Social, Ad-Creatives und Kampagnen mit datenbasierter Optimierung.</p></div><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></li>
     </ol>
-    <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#kontakt"><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
+    <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#anfrage" data-anfrage><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
   </section>
 
   <section class="services" id="leistungen">
@@ -1069,8 +1143,8 @@
   <section class="contact" id="kontakt">
     <div>
       <h2>Content, den Leute sehen wollen <a class="btn" href="portal.html"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span>Kundenportal ansehen</span><i class="dot"></i></a></h2>
-      <div class="mail"><small>Kostenloses Erstgespräch</small><span class="mail-soon">Ziele und Umfang festlegen, ersten Drehtag planen.</span></div>
-      <div class="mail"><small>Lieber per Mail?</small><span class="mail-soon">Unsere Adresse kommt mit der eigenen Domain.</span></div>
+      <div class="mail"><small>Kostenloses Erstgespräch: Ziele und Umfang festlegen, ersten Drehtag planen.</small><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+      <div class="mail"><small>Lieber direkt anrufen?</small><span class="mail-soon"><a href="tel:+4917622733831">Nader 0176 22733831</a><br><a href="tel:+4917680256378">Tommy 0176 80256378</a></span></div>
     </div>
     <div class="foot-grid">
       <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#wirkung">Haltung</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
@@ -1088,6 +1162,61 @@
   </div>
   <div class="foot-logo"><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806" loading="lazy" decoding="async"></div>
 </footer>
+
+<dialog class="anf" id="anfrage" aria-labelledby="anf-h">
+  <div class="anf-box">
+    <button class="anf-x" type="button" aria-label="Schließen" data-anf-close>&times;</button>
+    <div class="anf-main">
+      <div class="anf-top"><span class="pill">Projekt &bull; starten</span><div class="anf-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div></div>
+      <form id="anf-form" novalidate>
+        <fieldset class="anf-step" data-step="1">
+          <legend><h2 id="anf-h">Worum geht's?</h2></legend>
+          <p class="anf-sub">Tipp an, was passt. Mehrere gehen auch.</p>
+          <div class="anf-chips" role="group"><label><input type="checkbox" name="thema" value="Food Content & Reels"><span>Food Content &amp; Reels</span></label><label><input type="checkbox" name="thema" value="Opening oder Event"><span>Opening oder Event</span></label><label><input type="checkbox" name="thema" value="Branding & Laden"><span>Branding &amp; Laden</span></label><label><input type="checkbox" name="thema" value="Film Produktion"><span>Film Produktion</span></label><label><input type="checkbox" name="thema" value="Influencer"><span>Influencer</span></label><label><input type="checkbox" name="thema" value="KI Automation"><span>KI Automation</span></label><label><input type="checkbox" name="thema" value="Weiß ich noch nicht"><span>Weiß ich noch nicht</span></label></div>
+          <p class="anf-q">Wann soll's losgehen?</p>
+          <div class="anf-chips" role="group"><label><input type="radio" name="start" value="So schnell wie möglich" checked><span>So schnell wie möglich</span></label><label><input type="radio" name="start" value="In 1 bis 3 Monaten"><span>In 1 bis 3 Monaten</span></label><label><input type="radio" name="start" value="Erst mal informieren"><span>Erst mal informieren</span></label></div>
+        </fieldset>
+        <fieldset class="anf-step" data-step="2" hidden>
+          <legend><h2>Erzähl kurz.</h2></legend>
+          <label class="anf-f"><span>Laden oder Marke</span><input name="laden" autocomplete="organization" placeholder="z. B. Teig &amp; Tomate"></label>
+          <label class="anf-f"><span>Was habt ihr vor? <em>(optional)</em></span><textarea name="nachricht" rows="3" placeholder="z. B. Opening im März, wir wollen unter der Woche mehr Gäste."></textarea></label>
+        </fieldset>
+        <fieldset class="anf-step" data-step="3" hidden>
+          <legend><h2>Wie erreichen wir dich?</h2></legend>
+          <label class="anf-f"><span>Dein Name</span><input name="name" autocomplete="name" placeholder="Vor- und Nachname"></label>
+          <div class="anf-two">
+            <label class="anf-f"><span>E-Mail</span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@laden.de"></label>
+            <label class="anf-f"><span>Telefon <em>(optional)</em></span><input name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="0176 …"></label>
+          </div>
+          <p class="anf-q">Wie sollen wir uns melden?</p>
+          <div class="anf-chips" role="group"><label><input type="radio" name="rueckmeldung" value="Per Mail" checked><span>Per Mail</span></label><label><input type="radio" name="rueckmeldung" value="Anruf"><span>Anruf</span></label><label><input type="radio" name="rueckmeldung" value="WhatsApp"><span>WhatsApp</span></label></div>
+          <label class="anf-ok"><input type="checkbox" name="ok"> <span>Ich bin einverstanden, dass Social Bites meine Angaben für diese Anfrage nutzt. Sie werden über den Dienst FormSubmit per Mail an uns geschickt und nicht weitergegeben.</span></label>
+          <div class="anf-hp" aria-hidden="true"><label>Bitte leer lassen <input name="_honey" tabindex="-1" autocomplete="off"></label></div>
+        </fieldset>
+        <p class="anf-err" role="alert" id="anf-err"></p>
+        <div class="anf-nav">
+          <button class="btn" type="button" data-anf-back hidden><span>Zurück</span><i class="dot"></i></button>
+          <span class="sp"></span>
+          <button class="btn inv" type="button" data-anf-next><span>Weiter</span><i class="dot"></i></button>
+          <button class="btn or" type="submit" data-anf-send hidden><span>Anfrage senden</span><i class="dot"></i></button>
+        </div>
+      </form>
+      <div class="anf-done" id="anf-done" hidden>
+        <div class="big" aria-hidden="true">&#10003;</div>
+        <h2 id="anf-done-h">Danke!</h2>
+        <p id="anf-done-p">Deine Anfrage ist bei uns. Wir melden uns so schnell wie möglich.</p>
+        <div class="anf-nav"><button class="btn inv" type="button" data-anf-close><span>Schließen</span><i class="dot"></i></button><a class="btn" id="anf-mailto" href="#" hidden><span>Per Mail-Programm senden</span><i class="dot"></i></a></div>
+      </div>
+    </div>
+    <aside class="anf-side" aria-label="Direkter Kontakt">
+      <h3>Lieber direkt?</h3>
+      <p>Ruf an oder schreib uns per WhatsApp. Wir melden uns so schnell wie möglich.</p>
+      <div class="anf-pp"><div><b>Nader</b><small>Co-Founder</small></div><div class="row"><a class="anf-call" href="tel:+4917622733831"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>0176 22733831</span></a><a class="anf-wa" href="https://wa.me/4917622733831?text=" data-wa="Nader" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.3z"/></svg><span>WhatsApp</span></a></div></div>
+      <div class="anf-pp"><div><b>Tommy</b><small>Co-Founder</small></div><div class="row"><a class="anf-call" href="tel:+4917680256378"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg><span>0176 80256378</span></a><a class="anf-wa" href="https://wa.me/4917680256378?text=" data-wa="Tommy" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.3z"/></svg><span>WhatsApp</span></a></div></div>
+      <img class="anf-mouth" src="mouth.webp" alt="" width="200" height="383" loading="lazy" decoding="async">
+    </aside>
+  </div>
+</dialog>
 
 <dialog class="player" id="player" aria-labelledby="player-title">
   <div class="player-box">
@@ -1198,6 +1327,109 @@
       });
     }, {threshold: .5});
     cnts.forEach(function(c){ ioC.observe(c); });
+  }
+
+  // Anfrage: Pop-up mit drei kurzen Schritten, Versand per FormSubmit an unser Postfach
+  var anf = d.getElementById('anfrage');
+  if (anf && typeof anf.showModal === 'function') {
+    var ANF_TO = 'naderlaouad@gmail.com';
+    var form = d.getElementById('anf-form'), steps = [].slice.call(form.querySelectorAll('.anf-step')), dots = [].slice.call(anf.querySelectorAll('.anf-dots i'));
+    var bBack = anf.querySelector('[data-anf-back]'), bNext = anf.querySelector('[data-anf-next]'), bSend = anf.querySelector('[data-anf-send]'), err = d.getElementById('anf-err');
+    var done = d.getElementById('anf-done'), cur = 0, sending = false;
+    function val(n){ var el = form.elements[n]; return el ? String(el.value || '').trim() : ''; }
+    function picked(n){ return [].slice.call(form.querySelectorAll('input[name="' + n + '"]:checked')).map(function(i){ return i.value; }); }
+    function show(i){
+      cur = i; err.textContent = '';
+      steps.forEach(function(s, k){ s.hidden = k !== i; });
+      dots.forEach(function(dt, k){ dt.className = k < i ? 'done' : k === i ? 'on' : ''; });
+      bBack.hidden = i === 0; bNext.hidden = i === steps.length - 1; bSend.hidden = i !== steps.length - 1;
+      var f = steps[i].querySelector('input:not([type=checkbox]):not([type=radio]),textarea');
+      if (f && matchMedia('(min-width: 821px)').matches) setTimeout(function(){ f.focus(); }, 60);
+    }
+    function bad(name, msg){
+      var el = form.elements[name]; if (el && el.setAttribute) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
+      err.textContent = msg; return false;
+    }
+    function check(i){
+      [].slice.call(form.querySelectorAll('[aria-invalid]')).forEach(function(el){ el.removeAttribute('aria-invalid'); });
+      if (i === 0 && !picked('thema').length) { err.textContent = 'Tipp kurz an, worum es geht.'; return false; }
+      if (i === 1 && !val('laden')) return bad('laden', 'Wie heißt dein Laden oder deine Marke?');
+      if (i === 2) {
+        if (!val('name')) return bad('name', 'Wie dürfen wir dich ansprechen?');
+        var m = val('email'), t = val('telefon');
+        if (!m && !t) return bad('email', 'Mail oder Telefon brauchen wir, sonst können wir uns nicht melden.');
+        if (m && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(m)) return bad('email', 'Die Mailadresse sieht nicht ganz richtig aus.');
+        if (picked('rueckmeldung')[0] !== 'Per Mail' && !t) return bad('telefon', 'Für Anruf oder WhatsApp brauchen wir deine Nummer.');
+        if (!form.elements.ok.checked) { err.textContent = 'Bitte kurz das Häkchen setzen, damit wir deine Angaben nutzen dürfen.'; return false; }
+      }
+      err.textContent = ''; return true;
+    }
+    function summary(){
+      return 'Thema: ' + picked('thema').join(', ') + '\nStart: ' + picked('start').join('') + '\nLaden oder Marke: ' + val('laden') +
+        (val('nachricht') ? '\nVorhaben: ' + val('nachricht') : '') + '\nName: ' + val('name') + (val('email') ? '\nMail: ' + val('email') : '') +
+        (val('telefon') ? '\nTelefon: ' + val('telefon') : '') + '\nRückmeldung: ' + picked('rueckmeldung').join('');
+    }
+    function waText(who){
+      var n = val('name'), l = val('laden'), th = picked('thema');
+      return 'Hi ' + who + ', ' + (n ? 'hier ist ' + n + (l ? ' von ' + l : '') + '. Ich' : 'ich') + ' interessiere mich für ein Projekt mit Social Bites' + (th.length && th[0] !== 'Weiß ich noch nicht' ? ' (' + th.join(', ') + ')' : '') + '.';
+    }
+    function setWa(){ [].slice.call(anf.querySelectorAll('[data-wa]')).forEach(function(a){ a.href = a.href.split('?')[0] + '?text=' + encodeURIComponent(waText(a.dataset.wa)); }); }
+    function openAnf(){
+      if (!done.hidden) { form.reset(); form.hidden = false; done.hidden = true; show(0); }
+      setWa(); anf.showModal(); if (!form.hidden) show(cur);
+      try { history.replaceState(null, '', '#anfrage'); } catch (e) {}
+    }
+    function closeAnf(){ if (anf.open) anf.close(); }
+    anf.addEventListener('close', function(){ if (location.hash === '#anfrage') try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} });
+    d.addEventListener('click', function(e){
+      var t = e.target.closest('[data-anfrage]');
+      if (t) { e.preventDefault(); if (root.classList.contains('menu-open')) { var mb = d.querySelector('.menu-btn'); if (mb) mb.click(); } openAnf(); return; }
+      if (e.target.closest('[data-anf-close]')) closeAnf();
+    });
+    anf.addEventListener('click', function(e){ if (e.target === anf) closeAnf(); });
+    bNext.addEventListener('click', function(){ if (check(cur)) show(cur + 1); });
+    bBack.addEventListener('click', function(){ show(cur - 1); });
+    form.addEventListener('input', function(){ setWa(); if (err.textContent) err.textContent = ''; });
+    form.addEventListener('change', function(e){
+      if (e.target.name === 'start' && cur === 0 && picked('thema').length) setTimeout(function(){ show(1); }, 220);
+    });
+    form.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < steps.length - 1) { e.preventDefault(); if (check(cur)) show(cur + 1); }
+    });
+    function finish(ok){
+      form.hidden = true; done.hidden = false;
+      var n = val('name').split(' ')[0];
+      d.getElementById('anf-done-h').textContent = ok ? 'Danke' + (n ? ', ' + n : '') + '!' : 'Fast geschafft.';
+      d.getElementById('anf-done-p').textContent = ok
+        ? 'Deine Anfrage ist bei uns. Wir melden uns so schnell wie möglich' + (picked('rueckmeldung')[0] === 'Per Mail' ? ' per Mail.' : ' per ' + picked('rueckmeldung')[0] + '.')
+        : 'Der automatische Versand hat gerade nicht geklappt. Schick die Anfrage mit einem Klick über dein Mail-Programm, ruf an oder schreib uns per WhatsApp.';
+      var mt = d.getElementById('anf-mailto');
+      mt.hidden = ok;
+      mt.href = 'mailto:' + ANF_TO + '?subject=' + encodeURIComponent('Projekt-Anfrage: ' + val('laden')) + '&body=' + encodeURIComponent(summary());
+      dots.forEach(function(dt){ dt.className = 'done'; });
+      setWa();
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (sending || !check(2)) return;
+      sending = true; bSend.disabled = true; bSend.querySelector('span').textContent = 'Wird gesendet';
+      var data = {
+        'name': val('name'), 'Laden oder Marke': val('laden'), 'Thema': picked('thema').join(', '), 'Start': picked('start').join(''),
+        'Rückmeldung per': picked('rueckmeldung').join(''), 'Telefon': val('telefon') || 'nicht angegeben', 'Vorhaben': val('nachricht') || 'nicht angegeben',
+        '_subject': 'Neue Projekt-Anfrage: ' + val('laden'), '_template': 'table', '_captcha': 'false', '_honey': val('_honey')
+      };
+      if (val('email')) {
+        data.email = val('email');
+        data._replyto = val('email');
+        data._autoresponse = 'Danke für deine Anfrage bei Social Bites! Wir haben alles bekommen und melden uns so schnell wie möglich bei dir. Viele Grüße, Nader und Tommy';
+      }
+      fetch('https://formsubmit.co/ajax/' + ANF_TO, {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)})
+        .then(function(r){ return r.json(); })
+        .then(function(j){ finish(String(j && j.success) === 'true'); })
+        .catch(function(){ finish(false); })
+        .then(function(){ sending = false; bSend.disabled = false; bSend.querySelector('span').textContent = 'Anfrage senden'; });
+    });
+    if (location.hash === '#anfrage') setTimeout(openAnf, 300);
   }
 
   // Header: beim Runterscrollen weg, beim Hochscrollen wieder da
