@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Kunden und Belege</title>
+<meta name="description" content="Kundenstamm, Rechnungsbuch und Mahnungen von Social Bites.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Zwei Bereiche: Kunden (Stammdaten, Formular in Schritten) und Belege (Rechnungsbuch, Mahnungen). Alles liegt nur im Browser (localStorage), nie im Code. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --ok:#1F7A4D; --ok-tint:#DDF1E4; --warn:#9A6400; --warn-tint:#FFF0C9; --bad:#B42318; --bad-tint:#FDE3DF;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img{max-width:100%;height:auto;display:block;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:600 14.5px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;text-decoration:none;white-space:nowrap;transition:color .3s ease,border-color .3s ease;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
+  .btn.or{background:var(--accent);border-color:var(--accent);color:var(--ink);}
+  .btn.or:hover,.btn.or:focus-visible{border-color:var(--ink);}
+  .btn.sm{padding:6px 9px;font-size:13px;gap:7px;}
+  .btn.danger{color:var(--bad);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(246,240,227,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:46px;width:auto;}
+  .top .ttl{display:flex;flex-direction:column;gap:2px;}
+  .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .embedded .top img{display:none;}
+  .seg{display:inline-flex;flex-wrap:wrap;gap:6px;}
+  .seg button{font:650 14px/1 var(--display);padding:9px 13px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;transition:background-color .2s ease,color .2s ease;}
+  .seg button:hover{background:var(--paper-2);}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .seg button .n{font-family:var(--mono);font-size:11px;opacity:.75;margin-left:4px;}
+
+  main{padding:18px var(--gutter) 70px;}
+  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px;}
+  .stat b{font-weight:850;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.045em;line-height:1;}
+  .stat .mono{color:var(--mute);}
+  .stat.hot{border-color:var(--bad);background:var(--bad-tint);}
+  .stat.hot .mono{color:var(--bad);}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .bar input[type=search]{flex:1;min-width:200px;min-height:42px;border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px;background:var(--card);font-size:16px;font-weight:600;}
+  .bar input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .local{font-size:13px;color:var(--mute);margin:18px 0 0;}
+
+  /* Kundenkarten */
+  .klist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px;}
+  .kc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;text-align:left;cursor:pointer;transition:border-color .2s ease,transform .25s var(--ease),box-shadow .25s var(--ease);}
+  .kc:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:5px 5px 0 var(--accent);}
+  .kc .hd{display:flex;align-items:flex-start;gap:8px;}
+  .kc h3{margin:0;font-weight:800;font-size:21px;letter-spacing:-.035em;line-height:1.1;flex:1;min-width:0;overflow-wrap:anywhere;}
+  .kc .who{font-size:14.5px;color:#3a3532;}
+  .kc .meta{display:flex;gap:6px;flex-wrap:wrap;}
+  .kc .money{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;border-top:1px solid var(--line);padding-top:8px;color:var(--mute);}
+  .kc .money b{color:var(--ink);}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid var(--line-2);color:var(--mute);white-space:nowrap;}
+  .pill.ink{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .pill.or{background:var(--accent-tint);color:var(--accent-ink);border-color:rgba(184,56,6,.35);}
+  .pill.ok{background:var(--ok-tint);color:var(--ok);border-color:rgba(31,122,77,.3);}
+  .pill.warn{background:var(--warn-tint);color:var(--warn);border-color:rgba(154,100,0,.3);}
+  .pill.bad{background:var(--bad-tint);color:var(--bad);border-color:rgba(180,35,24,.3);}
+  .empty{padding:36px 16px;text-align:center;color:var(--mute);border:1px dashed var(--line-2);border-radius:14px;display:grid;gap:10px;justify-items:center;}
+
+  /* Belegbuch */
+  .tbl-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;}
+  table.bk{width:100%;border-collapse:collapse;font-size:14.5px;min-width:820px;}
+  table.bk th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 10px;border-bottom:1.5px solid var(--ink);white-space:nowrap;}
+  table.bk td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  table.bk tr:last-child td{border-bottom:0;}
+  table.bk tr.over td{background:rgba(253,227,223,.45);}
+  table.bk .r{text-align:right;white-space:nowrap;}
+  table.bk .nr{font-family:var(--mono);font-size:12.5px;white-space:nowrap;}
+  table.bk td small{display:block;color:var(--mute);font-size:12px;}
+  table.bk .acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;}
+
+  /* Dialoge */
+  dialog.sheet{width:min(760px,calc(100vw - 24px));max-height:calc(100dvh - 24px);border:0;border-radius:16px;padding:0;background:var(--paper);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.3);}
+  dialog.sheet::backdrop{background:rgba(30,27,26,.5);}
+  dialog.sheet[open]{display:flex;flex-direction:column;}
+  .sh-bar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .sh-bar b{font-weight:850;font-size:22px;letter-spacing:-.04em;}
+  .sh-bar .x{margin-left:auto;}
+  .sh-body{overflow:auto;padding:16px 18px 20px;display:grid;gap:14px;}
+  .sh-foot{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);background:var(--paper-2);align-items:center;}
+  .sh-foot .sp{flex:1;}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;}
+  .steps button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--card);border-radius:999px;padding:6px 11px 6px 6px;font:650 13.5px/1 var(--display);cursor:pointer;}
+  .steps button i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:var(--mono);font-size:11px;background:var(--paper-2);}
+  .steps button[aria-current="step"]{border-color:var(--ink);background:var(--ink);color:var(--paper);}
+  .steps button[aria-current="step"] i{background:var(--accent);color:var(--ink);}
+  .steps button.done i{background:var(--ink);color:var(--paper);}
+  .progress{height:5px;border-radius:5px;background:var(--paper-2);overflow:hidden;}
+  .progress span{display:block;height:100%;background:var(--accent);transition:width .35s var(--ease);}
+  .st-h{margin:0;font-weight:850;font-size:28px;letter-spacing:-.045em;line-height:1;}
+  .st-d{margin:4px 0 0;color:var(--mute);font-size:14.5px;}
+  .dg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;}
+  .f{display:grid;gap:5px;min-width:0;}
+  .f.full{grid-column:1/-1;}
+  .f label{color:var(--mute);}
+  .f input,.f select,.f textarea{width:100%;min-height:44px;background:var(--card);border:1.5px solid var(--line-2);border-radius:8px;padding:9px 11px;font-size:16px;font-weight:600;}
+  .f textarea{min-height:96px;font-weight:500;line-height:1.45;resize:vertical;}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .f .seg button{padding:8px 11px;font-size:13.5px;}
+  .f .req{color:var(--accent-ink);}
+  .chk{display:inline-flex;align-items:center;gap:8px;min-height:40px;font-weight:650;font-size:15px;cursor:pointer;}
+  .chk input{width:20px;height:20px;accent-color:#F04A0A;margin:0;}
+  .dl{display:grid;gap:12px;}
+  .dl section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .dl h4{margin:0 0 8px;color:var(--accent-ink);}
+  .dl dl{margin:0;display:grid;grid-template-columns:150px minmax(0,1fr);gap:5px 12px;font-size:14.5px;}
+  .dl dt{color:var(--mute);}
+  .dl dd{margin:0;font-weight:600;overflow-wrap:anywhere;white-space:pre-wrap;}
+  .dl dd a{color:var(--accent-ink);}
+
+  /* Mahn-Dialog, gleicher Aufbau wie Angebot und Rechnung im Rechner */
+  dialog.doc{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink);overflow:hidden;}
+  dialog.doc[open]{display:flex;flex-direction:column;}
+  dialog.doc::backdrop{background:rgba(30,27,26,.5);}
+  .doc-bar{display:flex;align-items:center;gap:12px;padding:10px var(--gutter);border-bottom:1px solid var(--line);background:var(--paper-2);flex-wrap:wrap;}
+  .doc-bar b{font-weight:800;font-size:20px;letter-spacing:-.035em;}
+  .doc-bar .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .doc-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);}
+  .doc-ctrl{overflow:auto;padding:14px var(--gutter);border-right:1px solid var(--line);display:grid;gap:12px;align-content:start;background:var(--card);}
+  .doc-out{overflow:auto;padding:14px var(--gutter) 40px;display:grid;gap:12px;align-content:start;min-width:0;}
+  .doc-ctrl .dg{gap:8px 10px;}
+  .doc-ctrl .f input,.doc-ctrl .f select{min-height:40px;font-size:15px;background:var(--paper);border-width:1px;}
+  .dgt{margin:6px 0 0;color:var(--accent-ink);padding-top:10px;border-top:1px solid var(--line);}
+  .doc-ctrl details{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);}
+  .doc-ctrl summary{cursor:pointer;font-weight:750;}
+  .doc-ctrl details .dg{margin-top:10px;}
+  .fine{font-size:13px;color:var(--mute);margin:0;line-height:1.45;}
+  .hist{display:grid;gap:4px;font-size:13.5px;}
+  .hist div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:3px;}
+  .miss-box{background:var(--accent-tint);border:1px dashed rgba(184,56,6,.5);border-radius:10px;padding:10px 12px;display:grid;gap:8px;}
+  .miss-box .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .miss-box button{font:650 13px/1 var(--display);padding:6px 10px;border-radius:999px;border:1px solid var(--accent-ink);background:var(--card);color:var(--accent-ink);cursor:pointer;}
+  .ok-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-weight:650;font-size:14.5px;}
+  .filebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;}
+  .filebar code{font-family:var(--mono);font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 8px;word-break:break-all;}
+  .sheetwrap{overflow:hidden;border:1px solid var(--line-2);border-radius:6px;background:#ddd6c4;}
+  .dsheet{width:794px;transform-origin:top left;background:#fff;color:#1E1B1A;padding:50px 56px 38px;min-height:1123px;display:flex;flex-direction:column;font-size:12.5px;line-height:1.45;}
+  .dsheet *{box-sizing:border-box;}
+  .d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
+  .d-logo{height:58px;width:auto;}
+  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:#3a3532;}
+  .d-mid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;margin-top:34px;align-items:start;}
+  .d-addr{font-size:13.5px;line-height:1.5;}
+  .d-addr small{display:block;font-size:9px;letter-spacing:.02em;color:#6B6357;border-bottom:1px solid #cfc8b8;padding-bottom:3px;margin-bottom:8px;}
+  .d-meta{margin:0;display:grid;gap:3px;font-size:11.5px;}
+  .d-meta div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px;}
+  .d-meta dt{color:#6B6357;}
+  .d-meta dd{margin:0;font-weight:650;}
+  .d-title{margin:34px 0 0;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.045em;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .d-title small{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#B83806;}
+  .d-text{margin:16px 0 0;max-width:64ch;display:grid;gap:9px;font-size:13px;}
+  .d-text p{margin:0;}
+  .d-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:12.5px;}
+  .d-table th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;text-align:left;padding:6px 6px 6px 0;border-bottom:1.5px solid #1E1B1A;}
+  .d-table td{padding:8px 6px 8px 0;border-bottom:1px solid #e3ddcf;vertical-align:top;}
+  .d-table .r{text-align:right;white-space:nowrap;}
+  .d-tot{margin:16px 0 0 auto;width:330px;display:grid;gap:3px;}
+  .d-tot div{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;}
+  .d-tot div.total{font-weight:800;font-size:15.5px;background:#F04A0A;color:#1E1B1A;padding:8px 10px;border-radius:5px;margin-top:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .d-pay{margin-top:20px;font-size:12.5px;break-inside:avoid;}
+  .d-pay p{margin:0 0 6px;}
+  .d-bank{margin:0;display:grid;gap:2px;font-size:12px;border-left:3px solid #F04A0A;padding-left:12px;}
+  .d-bank div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px;}
+  .d-bank dt{color:#6B6357;}
+  .d-bank dd{margin:0;font-weight:650;word-break:break-word;}
+  .d-close{margin-top:22px;font-size:13px;display:grid;gap:4px;}
+  .d-foot{margin-top:auto;padding-top:26px;}
+  .d-foot div{border-top:1px solid #cfc8b8;padding-top:7px;display:flex;flex-wrap:wrap;gap:2px 16px;font-size:9.5px;color:#6B6357;}
+  mark.miss{background:#FFE2D0;color:#B83806;border-radius:3px;padding:0 3px;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .mailbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;}
+  .mailbox h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.03em;}
+  .mailbox label{color:var(--mute);}
+  .mailbox input,.mailbox textarea{width:100%;min-height:40px;background:var(--paper);border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;font-size:15px;font-weight:600;}
+  .mailbox textarea{min-height:300px;font-weight:500;line-height:1.45;resize:vertical;}
+  .mailbox .acts2{display:flex;gap:8px;flex-wrap:wrap;}
+  #printHost{display:none;}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px;font-weight:600;font-size:14.5px;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s var(--ease);z-index:100;max-width:calc(100vw - 32px);}
+  .toast.on{opacity:1;transform:translate(-50%,0);}
+
+  @media (max-width:900px){
+    .stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+    dialog.doc[open]{display:block;overflow:auto;}
+    .doc-bar{position:sticky;top:0;z-index:5;}
+    .doc-body{display:block;}
+    .doc-ctrl{overflow:visible;border-right:0;border-bottom:1px solid var(--line);}
+    .doc-out{overflow:visible;}
+  }
+  @media (max-width:560px){
+    .dg{grid-template-columns:minmax(0,1fr);}
+    .dl dl{grid-template-columns:minmax(0,1fr);gap:2px;}
+    .dl dd{margin-bottom:6px;}
+    .top .acts .lbl{display:none;}
+    dialog.sheet{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0;margin:0;}
+    #kSaved{display:none;}
+    .sh-foot{padding:10px 12px;}
+    .steps button span{display:none;}
+    .steps button{padding:6px;}
+  }
+  @media print{
+    body.print-beleg > *:not(#printHost){display:none!important;}
+    body.print-beleg #printHost{display:block!important;}
+    body.print-beleg{background:#fff;}
+    #printHost .dsheet{width:auto!important;min-height:calc(297mm - 24mm);padding:0;transform:none!important;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Kunden &amp; Belege</b><span class="mono">Kundenstamm, Rechnungsbuch, Mahnungen</span></div>
+  <div class="seg" role="group" aria-label="Bereich" id="tabs">
+    <button type="button" data-tab="kunden" aria-pressed="true">Kunden <span class="n" id="nK">0</span></button>
+    <button type="button" data-tab="belege" aria-pressed="false">Belege <span class="n" id="nB">0</span></button>
+  </div>
+  <div class="acts">
+    <button class="btn or" type="button" id="newK"><span class="dot"></span><span>+ Kunde<span class="lbl"> anlegen</span></span></button>
+    <button class="btn" type="button" id="newB"><span class="dot"></span><span>+ Rechnung<span class="lbl"> erfassen</span></span></button>
+    <button class="btn" type="button" id="dataBtn"><span class="dot"></span><span>Sichern</span></button>
+  </div>
+</header>
+
+<main>
+  <section id="vKunden">
+    <div class="stats" id="kStats"></div>
+    <div class="bar">
+      <input type="search" id="kq" placeholder="Suchen: Name, Ansprechpartner, Bezirk, Notiz" aria-label="Kunden suchen">
+      <div class="seg" role="group" aria-label="Status" id="kFilter"></div>
+    </div>
+    <div class="klist" id="klist"></div>
+  </section>
+
+  <section id="vBelege" hidden>
+    <div class="stats" id="bStats"></div>
+    <div class="bar">
+      <input type="search" id="bq" placeholder="Suchen: Nummer, Kunde, Projekt" aria-label="Belege suchen">
+      <div class="seg" role="group" aria-label="Filter" id="bFilter"></div>
+    </div>
+    <div class="tbl-wrap"><table class="bk"><thead><tr><th>Nummer</th><th>Kunde</th><th>Art</th><th>Datum</th><th>Fällig</th><th class="r">Betrag</th><th>Status</th><th class="r">Aktion</th></tr></thead><tbody id="blist"></tbody></table></div>
+  </section>
+  <p class="local">Kunden und Belege liegen nur in diesem Browser, nicht im Code und nicht auf GitHub. Über „Sichern“ exportierst du alles als Datei, zum Beispiel für Tommy oder als Backup im Drive unter 04_Dokumente.</p>
+</main>
+
+<!-- Kunde anlegen oder bearbeiten -->
+<dialog class="sheet" id="kDlg" aria-labelledby="kDlgH">
+  <div class="sh-bar"><b id="kDlgH">Kunde anlegen</b><button class="btn sm x" type="button" data-close="kDlg"><span class="dot"></span><span>Schließen</span></button></div>
+  <div class="sh-body">
+    <nav class="steps" id="kSteps" aria-label="Schritte"></nav>
+    <div class="progress"><span id="kProg"></span></div>
+    <div id="kStep"></div>
+  </div>
+  <div class="sh-foot">
+    <button class="btn" type="button" id="kBack"><span class="dot"></span><span>Zurück</span></button>
+    <span class="sp"></span>
+    <span class="mono" id="kSaved" style="color:var(--mute)"></span>
+    <button class="btn" type="button" id="kSave"><span class="dot"></span><span>Speichern</span></button>
+    <button class="btn inv" type="button" id="kNext"><span class="dot"></span><span>Weiter</span></button>
+  </div>
+</dialog>
+
+<!-- Kunde ansehen -->
+<dialog class="sheet" id="vDlg" aria-labelledby="vDlgH">
+  <div class="sh-bar"><b id="vDlgH">Kunde</b><button class="btn sm x" type="button" data-close="vDlg"><span class="dot"></span><span>Schließen</span></button></div>
+  <div class="sh-body" id="vBody"></div>
+  <div class="sh-foot" id="vFoot"></div>
+</dialog>
+
+<!-- Rechnung erfassen oder bearbeiten -->
+<dialog class="sheet" id="bDlg" aria-labelledby="bDlgH">
+  <div class="sh-bar"><b id="bDlgH">Rechnung erfassen</b><button class="btn sm x" type="button" data-close="bDlg"><span class="dot"></span><span>Schließen</span></button></div>
+  <div class="sh-body">
+    <p class="fine">Für Rechnungen, die nicht über den Rechner entstanden sind. Belege aus dem Rechner landen beim Drucken automatisch hier.</p>
+    <div class="dg" id="bForm"></div>
+  </div>
+  <div class="sh-foot"><button class="btn danger" type="button" id="bDel" hidden><span class="dot"></span><span>Löschen</span></button><span class="sp"></span><button class="btn inv" type="button" id="bSave"><span class="dot"></span><span>Speichern</span></button></div>
+</dialog>
+
+<!-- Sichern -->
+<dialog class="sheet" id="dDlg" aria-labelledby="dDlgH">
+  <div class="sh-bar"><b id="dDlgH">Sichern und übertragen</b><button class="btn sm x" type="button" data-close="dDlg"><span class="dot"></span><span>Schließen</span></button></div>
+  <div class="sh-body">
+    <p class="fine">Die Daten liegen nur in diesem Browser. Mit der Sicherung bringst du sie auf ein anderes Gerät oder zu Tommy. Die Datei enthält Kundendaten, also nur im Drive unter 04_Dokumente ablegen, nie öffentlich teilen.</p>
+    <div class="dg">
+      <div class="f full"><button class="btn inv" type="button" id="expJson"><span class="dot"></span><span>Sicherung herunterladen (.json)</span></button></div>
+      <div class="f full"><button class="btn" type="button" id="expCsv"><span class="dot"></span><span>Kundenliste als CSV für Google Sheets</span></button></div>
+      <div class="f full"><label class="mono" for="impFile">Sicherung einspielen</label><input type="file" id="impFile" accept="application/json,.json"></div>
+      <div class="f full"><label class="chk"><input type="checkbox" id="impMerge" checked> Zusammenführen statt ersetzen</label></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- Mahnung -->
+<dialog class="doc" id="mDlg" aria-labelledby="mDlgH">
+  <div class="doc-bar">
+    <b id="mDlgH">Mahnung</b>
+    <span class="mono" style="color:var(--mute)" id="mFor"></span>
+    <div class="acts">
+      <button class="btn inv" type="button" id="mPrint"><span class="dot"></span><span>Drucken / PDF</span></button>
+      <button class="btn" type="button" data-close="mDlg"><span class="dot"></span><span>Schließen</span></button>
+    </div>
+  </div>
+  <div class="doc-body">
+    <div class="doc-ctrl" id="mCtrl">
+      <div class="seg" role="group" aria-label="Stufe" id="mStufe">
+        <button type="button" data-st="1">Zahlungserinnerung</button>
+        <button type="button" data-st="2">1. Mahnung</button>
+        <button type="button" data-st="3">2. Mahnung</button>
+      </div>
+      <div class="hist" id="mHist"></div>
+      <p class="dgt mono">Mahnung</p>
+      <div class="dg">
+        <div class="f"><label class="mono" for="m_datum">Datum</label><input id="m_datum" type="date" data-m="datum"></div>
+        <div class="f"><label class="mono" for="m_frist">Neue Frist, Tage</label><input id="m_frist" type="number" min="1" data-m="frist"></div>
+        <div class="f"><label class="mono" for="m_teil">Schon bezahlt, €</label><input id="m_teil" type="number" min="0" step="0.01" data-m="teil" placeholder="0"></div>
+        <div class="f"><label class="mono" for="m_geb">Mahngebühr, €</label><input id="m_geb" type="number" min="0" step="0.01" data-m="geb" placeholder="0"></div>
+        <div class="f full"><label class="mono" for="m_art">Kunde ist</label><select id="m_art" data-m="art"><option value="b2b">Unternehmen</option><option value="privat">Privatperson</option></select></div>
+        <div class="f full"><label class="chk"><input type="checkbox" data-m="pausch"> Verzugspauschale 40 € (nur Unternehmen, § 288 Abs. 5 BGB)</label></div>
+        <div class="f full"><label class="chk"><input type="checkbox" data-m="zins"> Verzugszinsen ausweisen</label></div>
+        <div class="f" id="zinsBox"><label class="mono" for="m_basis">Basiszinssatz, %</label><input id="m_basis" type="number" step="0.01" data-m="basis" placeholder="aktuell prüfen"></div>
+        <div class="f full"><p class="fine">Verzugszinsen: Basiszinssatz plus 9 Punkte bei Unternehmen, plus 5 bei Privatpersonen (§ 288 BGB). Den aktuellen Basiszinssatz veröffentlicht die Bundesbank zum 1. Januar und 1. Juli. Gebühren und Zinsen sind freiwillig, bei Stammkunden oft besser weglassen.</p></div>
+      </div>
+      <details id="mFirma">
+        <summary>Firmendaten (wie im Rechner)</summary>
+        <p class="fine" style="margin-top:8px">Gleiche Daten wie bei Angebot und Rechnung. Bleiben nur in diesem Browser.</p>
+        <div class="dg">
+          <div class="f full"><label class="mono" for="f_name">Firma oder Name laut Anmeldung</label><input id="f_name" data-fk="name" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_strasse">Straße und Hausnummer</label><input id="f_strasse" data-fk="strasse" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_ort">PLZ und Ort</label><input id="f_ort" data-fk="ort" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_mail">E-Mail</label><input id="f_mail" data-fk="mail" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_tel">Telefon</label><input id="f_tel" data-fk="tel" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_steuernr">Steuernummer</label><input id="f_steuernr" data-fk="steuernr" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_ustid">USt-IdNr.</label><input id="f_ustid" data-fk="ustid" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_iban">IBAN</label><input id="f_iban" data-fk="iban" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_bic">BIC</label><input id="f_bic" data-fk="bic" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_bank">Bank</label><input id="f_bank" data-fk="bank" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_sender">Dein Name unter Mails</label><input id="f_sender" data-fk="sender" placeholder="z. B. Nader" autocomplete="off"></div>
+        </div>
+      </details>
+    </div>
+    <div class="doc-out">
+      <div id="mMissing"></div>
+      <div class="filebar"><span class="mono" style="color:var(--mute)">Dateiname</span><code id="mFile"></code></div>
+      <div class="sheetwrap" id="mWrap"><div class="dsheet" id="mSheet"></div></div>
+      <section class="mailbox" aria-label="Mail-Text">
+        <h3>Text für die Mail</h3>
+        <p class="fine">Passt zur Stufe, zum Kunden und zum Betrag. Die PDF hängst du selbst an.</p>
+        <label class="mono" for="mSub">Betreff</label>
+        <input id="mSub" autocomplete="off">
+        <label class="mono" for="mBody">Text</label>
+        <textarea id="mBody"></textarea>
+        <div class="acts2">
+          <button class="btn inv" type="button" id="mCopyBody"><span class="dot"></span><span>Text kopieren</span></button>
+          <button class="btn" type="button" id="mCopySub"><span class="dot"></span><span>Betreff kopieren</span></button>
+          <a class="btn" id="mMail" href="#"><span class="dot"></span><span>Im Mail-Programm öffnen</span></a>
+        </div>
+      </section>
+    </div>
+  </div>
+</dialog>
+<div id="printHost" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s);};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast("Speichern im Browser geht hier nicht");}}
+var toastT;function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("on");},2200);}
+var EUR=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
+function eur(n){return EUR.format(Math.round((+n||0)*100)/100);}
+function num(v){var n=parseFloat(String(v==null?"":v).replace(",","."));return isFinite(n)?n:0;}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function fmtD(iso){return iso?String(iso).split("-").reverse().join("."):"";}
+function addDays(iso,n){var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m)return "";var d=new Date(+m[1],+m[2]-1,+m[3]+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function daysBetween(a,b){var x=new Date(a+"T00:00:00"),y=new Date(b+"T00:00:00");return Math.round((y-x)/864e5);}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function slug(s){return String(s||"Kunde").trim().replace(/&/g,"und").replace(/[\/\\:*?"<>|]/g,"").replace(/\s+/g,"_")||"Kunde";}
+function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){toast(msg||"Kopiert");},function(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg||"Kopiert");}catch(e){toast("Kopieren ging nicht");}ta.remove();});}
+function openD(d){try{d.showModal();}catch(e){d.setAttribute("open","");}}
+
+var KK="sb-kunden",BK="sb-belege",FK="sb-rechner-firma";
+var K=load(KK,[]),B=load(BK,[]),FIRMA=load(FK,{});
+function saveK(){store(KK,K);}
+function saveB(){store(BK,B);}
+window.addEventListener("storage",function(e){if(e.key===KK){K=load(KK,[]);renderK();}if(e.key===BK){B=load(BK,[]);renderB();renderK();}if(e.key===FK)FIRMA=load(FK,{});});
+
+/* Formular-Schritte. Feld: [key, label, typ, optionen, voll, platzhalter] */
+var STATUS=[["lead","Lead","or"],["gespraech","Im Gespräch","warn"],["angebot","Angebot raus","warn"],["kunde","Kunde","ok"],["pause","Pausiert",""],["verloren","Verloren",""]];
+var TYP=[["opening","Bites Opening"],["gastro","Bites for Gastro"],["brands","Bites for Brands"],["sonst","Sonstiges"]];
+var STEPS=[
+  {t:"Basis",d:"Wer ist der Kunde? Mehr braucht es zum Speichern nicht.",f:[
+    ["name","Name des Ladens oder der Marke","text",null,1,"z. B. Teig & Tomate",1],
+    ["typ","Was machen wir mit ihnen?","seg",TYP,1],
+    ["status","Status","seg",STATUS.map(function(s){return [s[0],s[1]];}),1],
+    ["konzept","Küche und Konzept in einem Satz","text",null,1,"z. B. Neapolitanische Pizza, junges Publikum"],
+    ["quelle","Wie kam der Kontakt?","select",["","Empfehlung","Instagram oder TikTok","Kaltakquise vor Ort","Netzwerk","Event","Website","Sonstiges"],0],
+    ["bezirk","Bezirk oder Stadt","text",null,0,"z. B. Kreuzberg"]
+  ]},
+  {t:"Ansprechpartner",d:"Wer entscheidet, wer ist im Alltag dran?",f:[
+    ["kontakt","Ansprechpartner, Vor- und Nachname","text",null,1],
+    ["rolle","Rolle","text",null,0,"z. B. Inhaber, Marketing"],
+    ["form","Ansprache","seg",[["du","Du"],["sie","Sie"]],0],
+    ["tel","Telefon","tel",null,0],
+    ["mail","E-Mail","email",null,0],
+    ["inhaber","Inhaber, wer unterschreibt?","text",null,1,"falls jemand anderes"],
+    ["freigabe","Wer gibt Content frei, wie schnell?","text",null,1]
+  ]},
+  {t:"Rechnung",d:"Damit Angebote, Rechnungen und Mahnungen sofort richtig rausgehen.",f:[
+    ["firma","Rechnungsempfänger, rechtlicher Name","text",null,1,"z. B. Teig & Tomate GmbH"],
+    ["strasse","Straße und Hausnummer","text",null,1],
+    ["ort","PLZ und Ort","text",null,0],
+    ["land","Land","text",null,0,"Deutschland"],
+    ["rechMail","Mail für Rechnungen","email",null,0,"falls andere als oben"],
+    ["pay","Zahlungsziel in Tagen","number",null,0,"14"],
+    ["ustid","USt-IdNr.","text",null,0],
+    ["po","Bestellnummer, PO","text",null,0],
+    ["liefnr","Lieferantennummer bei ihnen","text",null,1,"bei Ketten und Marken"]
+  ]},
+  {t:"Laden & Kanäle",d:"Wo wir drehen und wo sie heute stehen.",f:[
+    ["laden","Adresse des Ladens","text",null,1,"falls anders als Rechnungsadresse"],
+    ["zeiten","Öffnungszeiten, Sitzplätze","text",null,1],
+    ["insta","Instagram","text",null,0,"@name"],
+    ["tiktok","TikTok","text",null,0,"@name"],
+    ["web","Website","text",null,0],
+    ["google","Google-Profil, Bewertungen","text",null,0,"z. B. 4,6 bei 320"],
+    ["liefer","Lieferplattformen","text",null,1,"Wolt, Lieferando, Uber Eats"]
+  ]},
+  {t:"Projekt & Notizen",d:"Was steht an, was ist ihnen wichtig?",f:[
+    ["paket","Projekt oder Paket","text",null,1,"z. B. Opening mit Event, Monatsbetreuung"],
+    ["start","Start","date",null,0],
+    ["opening","Opening oder Launch","date",null,0],
+    ["budget","Budget","text",null,0,"z. B. 3.000 € im Monat"],
+    ["drive","Drive-Ordner","url",null,0,"Link zum Kundenordner"],
+    ["notiz","Notizen, Bauchgefühl","textarea",null,1]
+  ]}
+];
+var LABEL={};STEPS.forEach(function(s){s.f.forEach(function(f){LABEL[f[0]]=f[1];});});
+function stInfo(k){return STATUS.filter(function(s){return s[0]===k;})[0]||["","Ohne Status",""];}
+function typName(k){var t=TYP.filter(function(x){return x[0]===k;})[0];return t?t[1]:"";}
+
+/* Rechnungsbuch */
+var TYPN={angebot:"Angebot",tr1:"Teilrechnung 1",tr2:"Teilrechnung 2",gesamt:"Rechnung",monat:"Monatsrechnung",manuell:"Rechnung"};
+function isInv(b){return b.typ!=="angebot";}
+function offen(b){return Math.max(0,num(b.brutto)-num(b.teil));}
+function isOver(b){return isInv(b)&&b.status==="offen"&&b.faellig&&b.faellig<today();}
+function bState(b){
+  if(!isInv(b))return b.status==="angenommen"?["Angenommen","ok"]:b.status==="abgelehnt"?["Abgelehnt",""]:["Angebot offen","warn"];
+  if(b.status==="bezahlt")return ["Bezahlt","ok"];
+  if(b.status==="storniert")return ["Storniert",""];
+  var ms=(b.mahn||[]).length;
+  if(isOver(b))return [(ms?["Erinnert","1. Mahnung","2. Mahnung"][Math.min(ms,3)-1]+" · ":"")+daysBetween(b.faellig,today())+" Tage über",ms>=2?"bad":"bad"];
+  return [ms?["Erinnert","1. Mahnung","2. Mahnung"][Math.min(ms,3)-1]:"Offen",ms?"warn":""];
+}
+function kOf(b){return K.filter(function(k){return (b.kid&&k.id===b.kid)||(!b.kid&&k.name&&b.kunde&&k.name.trim().toLowerCase()===b.kunde.trim().toLowerCase());})[0];}
+function belegeOf(k){return B.filter(function(b){return b.kid===k.id||(!b.kid&&b.kunde&&k.name&&b.kunde.trim().toLowerCase()===k.name.trim().toLowerCase());});}
+
+/* Ansicht */
+var tab="kunden",kFil="alle",bFil="offen";
+function setTab(t){tab=t;document.querySelectorAll("#tabs [data-tab]").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-tab")===t);});$("#vKunden").hidden=t!=="kunden";$("#vBelege").hidden=t!=="belege";try{history.replaceState(null,"","#"+t);}catch(e){}}
+function renderK(){
+  $("#nK").textContent=K.length;
+  var aktiv=K.filter(function(k){return k.status==="kunde";}).length,leads=K.filter(function(k){return ["lead","gespraech","angebot"].indexOf(k.status)>-1;}).length;
+  var offenSum=B.filter(function(b){return isInv(b)&&b.status==="offen";}).reduce(function(a,b){return a+offen(b);},0);
+  $("#kStats").innerHTML='<div class="stat"><span class="mono">Kunden gesamt</span><b>'+K.length+'</b></div><div class="stat"><span class="mono">Aktive Kunden</span><b>'+aktiv+'</b></div><div class="stat"><span class="mono">In der Pipeline</span><b>'+leads+'</b></div><div class="stat"><span class="mono">Offen bei Kunden</span><b>'+eur(offenSum)+'</b></div>';
+  var fl=[["alle","Alle"]].concat(STATUS.map(function(s){return [s[0],s[1]];}));
+  $("#kFilter").innerHTML=fl.map(function(f){var n=f[0]==="alle"?K.length:K.filter(function(k){return k.status===f[0];}).length;return (f[0]==="alle"||n)?'<button type="button" data-kfil="'+f[0]+'" aria-pressed="'+(kFil===f[0])+'">'+esc(f[1])+'<span class="n">'+n+'</span></button>':"";}).join("");
+  var q=$("#kq").value.trim().toLowerCase();
+  var list=K.filter(function(k){return (kFil==="alle"||k.status===kFil)&&(!q||Object.keys(k).some(function(x){return typeof k[x]==="string"&&k[x].toLowerCase().indexOf(q)>-1;}));})
+    .sort(function(a,b){return String(b.updated||"").localeCompare(String(a.updated||""));});
+  if(!K.length){$("#klist").innerHTML='<div class="empty" style="grid-column:1/-1"><b>Noch keine Kunden gespeichert.</b><span>Leg den ersten an, gern direkt im Gespräch. Nur der Name ist Pflicht, der Rest geht auch später.</span><button class="btn or" type="button" data-newk><span class="dot"></span><span>+ Ersten Kunden anlegen</span></button></div>';return;}
+  if(!list.length){$("#klist").innerHTML='<div class="empty" style="grid-column:1/-1">Nichts gefunden.</div>';return;}
+  $("#klist").innerHTML=list.map(function(k){
+    var st=stInfo(k.status),bs=belegeOf(k),op=bs.filter(function(b){return isInv(b)&&b.status==="offen";}),ov=bs.filter(isOver);
+    var sum=bs.filter(function(b){return isInv(b)&&b.status!=="storniert";}).reduce(function(a,b){return a+num(b.brutto);},0);
+    return '<button class="kc" type="button" data-kv="'+esc(k.id)+'"><div class="hd"><h3>'+esc(k.name)+'</h3><span class="pill '+st[2]+'">'+esc(st[1])+'</span></div>'+
+      '<div class="who">'+(k.kontakt?esc(k.kontakt)+(k.rolle?", "+esc(k.rolle):""):'<span style="color:var(--mute)">Ansprechpartner fehlt</span>')+'</div>'+
+      '<div class="meta"><span class="pill">'+esc(k.nr||"")+'</span>'+(k.typ?'<span class="pill ink">'+esc(typName(k.typ))+'</span>':"")+(k.bezirk?'<span class="pill">'+esc(k.bezirk)+'</span>':"")+(ov.length?'<span class="pill bad">'+ov.length+' überfällig</span>':"")+'</div>'+
+      '<div class="money"><span>Umsatz <b>'+eur(sum)+'</b></span><span>Offen <b>'+eur(op.reduce(function(a,b){return a+offen(b);},0))+'</b></span></div></button>';
+  }).join("");
+}
+function renderB(){
+  $("#nB").textContent=B.length;
+  var inv=B.filter(isInv),op=inv.filter(function(b){return b.status==="offen";}),ov=inv.filter(isOver);
+  var ym=today().slice(0,7),paid=inv.filter(function(b){return b.status==="bezahlt"&&String(b.bezahltAm||"").slice(0,7)===ym;});
+  $("#bStats").innerHTML='<div class="stat"><span class="mono">Offen</span><b>'+eur(op.reduce(function(a,b){return a+offen(b);},0))+'</b></div><div class="stat'+(ov.length?" hot":"")+'"><span class="mono">Überfällig, '+ov.length+'</span><b>'+eur(ov.reduce(function(a,b){return a+offen(b);},0))+'</b></div><div class="stat"><span class="mono">Bezahlt diesen Monat</span><b>'+eur(paid.reduce(function(a,b){return a+num(b.brutto);},0))+'</b></div><div class="stat"><span class="mono">Angebote offen</span><b>'+B.filter(function(b){return !isInv(b)&&(!b.status||b.status==="offen");}).length+'</b></div>';
+  var fl=[["offen","Offen",op.length],["ueber","Überfällig",ov.length],["bezahlt","Bezahlt",inv.filter(function(b){return b.status==="bezahlt";}).length],["angebote","Angebote",B.length-inv.length],["alle","Alle",B.length]];
+  $("#bFilter").innerHTML=fl.map(function(f){return '<button type="button" data-bf="'+f[0]+'" aria-pressed="'+(bFil===f[0])+'">'+f[1]+'<span class="n">'+f[2]+'</span></button>';}).join("");
+  var q=$("#bq").value.trim().toLowerCase();
+  var list=B.filter(function(b){
+    var ok=bFil==="alle"||(bFil==="offen"&&isInv(b)&&b.status==="offen")||(bFil==="ueber"&&isOver(b))||(bFil==="bezahlt"&&isInv(b)&&b.status==="bezahlt")||(bFil==="angebote"&&!isInv(b));
+    return ok&&(!q||[b.nr,b.kunde,b.projekt,b.angNr].join(" ").toLowerCase().indexOf(q)>-1);
+  }).sort(function(a,b){return String(b.datum||"").localeCompare(String(a.datum||""))||String(b.nr).localeCompare(String(a.nr));});
+  if(!list.length){$("#blist").innerHTML='<tr><td colspan="8"><div class="empty" style="border:0">'+(B.length?"Nichts in diesem Filter.":"Noch keine Belege. Angebote und Rechnungen aus dem Preisrechner landen hier automatisch, sobald du sie druckst. Ältere Rechnungen trägst du über „+ Rechnung erfassen“ nach.")+'</div></td></tr>';return;}
+  $("#blist").innerHTML=list.map(function(b){
+    var s=bState(b),acts="";
+    if(isInv(b)&&b.status==="offen"){acts='<button class="btn sm" type="button" data-paid="'+esc(b.id)+'"><span class="dot"></span><span>Bezahlt</span></button><button class="btn sm '+(isOver(b)?"or":"")+'" type="button" data-mahn="'+esc(b.id)+'"><span class="dot"></span><span>'+(isOver(b)?"Mahnen":"Erinnern")+'</span></button>';}
+    else if(isInv(b)&&b.status==="bezahlt"){acts='<button class="btn sm" type="button" data-unpaid="'+esc(b.id)+'"><span class="dot"></span><span>Wieder offen</span></button>';}
+    else if(!isInv(b)&&(!b.status||b.status==="offen")){acts='<button class="btn sm" type="button" data-acc="'+esc(b.id)+'"><span class="dot"></span><span>Angenommen</span></button>';}
+    acts+='<button class="btn sm" type="button" data-bedit="'+esc(b.id)+'" aria-label="Bearbeiten"><span class="dot"></span><span>✎</span></button>';
+    return '<tr class="'+(isOver(b)?"over":"")+'"><td class="nr">'+esc(b.nr)+(b.angNr&&b.angNr!==b.nr?'<small>zu '+esc(b.angNr)+'</small>':"")+'</td><td><b>'+esc(b.kunde||"")+'</b>'+(b.projekt?'<small>'+esc(b.projekt)+'</small>':"")+'</td><td>'+esc(TYPN[b.typ]||"Rechnung")+'</td><td>'+fmtD(b.datum)+'</td><td>'+(isInv(b)?fmtD(b.faellig):"")+'</td><td class="r"><b>'+eur(b.brutto)+'</b>'+(num(b.teil)?'<small>offen '+eur(offen(b))+'</small>':"")+'</td><td><span class="pill '+s[1]+'">'+esc(s[0])+'</span>'+(b.status==="bezahlt"&&b.bezahltAm?'<small>am '+fmtD(b.bezahltAm)+'</small>':"")+'</td><td><div class="acts">'+acts+'</div></td></tr>';
+  }).join("");
+}
+function render(){renderK();renderB();}
+
+/* Kunde anlegen, Schritte */
+var kEdit=null,kStep=0,kDraft=null,kDirty=false;
+function nextKNr(){var m=0;K.forEach(function(k){var x=/(\d+)$/.exec(k.nr||"");if(x)m=Math.max(m,+x[1]);});return "K-"+String(m+1).padStart(3,"0");}
+function openK(id,step){
+  kEdit=id||null;var k=id?K.filter(function(x){return x.id===id;})[0]:null;
+  kDraft=k?JSON.parse(JSON.stringify(k)):(load("sb-kunden-entwurf",null)||{form:"du",status:"lead",typ:"gastro",land:"Deutschland",pay:"14"});
+  kStep=step||0;kDirty=false;
+  $("#kDlgH").textContent=k?k.name:"Kunde anlegen";
+  $("#kSaved").textContent=k?"":"Entwurf wird mitgespeichert";
+  openD($("#kDlg"));drawK();
+}
+function fieldHTML(f,v){
+  var id="k_"+f[0],lab='<label class="mono" for="'+id+'">'+esc(f[1])+(f[6]?' <span class="req">*</span>':"")+'</label>',ph=f[5]?' placeholder="'+esc(f[5])+'"':"";
+  var inner;
+  if(f[2]==="seg")inner='<label class="mono">'+esc(f[1])+'</label><div class="seg" role="group" aria-label="'+esc(f[1])+'">'+f[3].map(function(o){return '<button type="button" data-kseg="'+f[0]+'" data-v="'+o[0]+'" aria-pressed="'+(v===o[0])+'">'+esc(o[1])+'</button>';}).join("")+'</div>';
+  else if(f[2]==="select")inner=lab+'<select id="'+id+'" data-kf="'+f[0]+'">'+f[3].map(function(o){return '<option value="'+esc(o)+'"'+(v===o?" selected":"")+'>'+(o?esc(o):"Bitte wählen")+'</option>';}).join("")+'</select>';
+  else if(f[2]==="textarea")inner=lab+'<textarea id="'+id+'" data-kf="'+f[0]+'"'+ph+'>'+esc(v||"")+'</textarea>';
+  else inner=lab+'<input id="'+id+'" type="'+f[2]+'" data-kf="'+f[0]+'" value="'+esc(v||"")+'"'+ph+(f[2]==="tel"?' inputmode="tel" autocomplete="off"':' autocomplete="off"')+'>';
+  return '<div class="f'+(f[4]?" full":"")+'">'+inner+'</div>';
+}
+function drawK(){
+  var s=STEPS[kStep];
+  $("#kSteps").innerHTML=STEPS.map(function(x,i){var done=x.f.some(function(f){return kDraft[f[0]]&&f[2]!=="seg";});return '<button type="button" data-kstep="'+i+'" class="'+(done&&i!==kStep?"done":"")+'"'+(i===kStep?' aria-current="step"':"")+'><i>'+(i+1)+'</i><span>'+esc(x.t)+'</span></button>';}).join("");
+  $("#kProg").style.width=((kStep+1)/STEPS.length*100)+"%";
+  $("#kStep").innerHTML='<h2 class="st-h">'+esc(s.t)+'</h2><p class="st-d">'+esc(s.d)+'</p><div class="dg" style="margin-top:14px">'+s.f.map(function(f){return fieldHTML(f,kDraft[f[0]]);}).join("")+'</div>';
+  $("#kBack").disabled=kStep===0;
+  $("#kNext").querySelector("span:last-child").textContent=kStep===STEPS.length-1?"Fertig":"Weiter";
+  var first=$("#kStep input,#kStep textarea");if(first&&window.matchMedia("(min-width: 700px)").matches)setTimeout(function(){first.focus();},40);
+}
+function kField(key,v){kDraft[key]=v;kDirty=true;if(!kEdit)store("sb-kunden-entwurf",kDraft);}
+$("#kStep").addEventListener("input",function(e){var k=e.target.getAttribute("data-kf");if(k)kField(k,e.target.value);});
+$("#kStep").addEventListener("change",function(e){var k=e.target.getAttribute("data-kf");if(k&&e.target.tagName==="SELECT")kField(k,e.target.value);});
+$("#kStep").addEventListener("click",function(e){var b=e.target.closest("[data-kseg]");if(!b)return;kField(b.getAttribute("data-kseg"),b.getAttribute("data-v"));b.parentNode.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});});
+$("#kSteps").addEventListener("click",function(e){var b=e.target.closest("[data-kstep]");if(b){kStep=+b.getAttribute("data-kstep");drawK();}});
+$("#kBack").addEventListener("click",function(){if(kStep>0){kStep--;drawK();}});
+$("#kNext").addEventListener("click",function(){if(kStep<STEPS.length-1){if(kStep===0&&!String(kDraft.name||"").trim()){toast("Erst den Namen eintragen");$("#k_name").focus();return;}kStep++;drawK();$("#kDlg .sh-body").scrollTop=0;}else saveKunde(true);});
+$("#kSave").addEventListener("click",function(){saveKunde(false);});
+function saveKunde(close){
+  if(!String(kDraft.name||"").trim()){kStep=0;drawK();toast("Name fehlt");$("#k_name").focus();return;}
+  var now=new Date().toISOString();kDraft.name=kDraft.name.trim();kDraft.updated=now;
+  if(kEdit){K=K.map(function(k){return k.id===kEdit?kDraft:k;});}
+  else{
+    var dup=K.filter(function(k){return k.name.trim().toLowerCase()===kDraft.name.toLowerCase();})[0];
+    if(dup&&!confirm("„"+dup.name+"“ gibt es schon. Trotzdem als neuen Kunden anlegen?"))return;
+    kDraft.id=uid("k");kDraft.nr=nextKNr();kDraft.created=now;K.push(kDraft);kEdit=kDraft.id;
+    try{localStorage.removeItem("sb-kunden-entwurf");}catch(e){}
+  }
+  saveK();kDirty=false;render();
+  $("#kDlgH").textContent=kDraft.name;$("#kSaved").textContent="Gespeichert "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+  toast("„"+kDraft.name+"“ gespeichert");
+  if(close){$("#kDlg").close();viewK(kEdit);}
+}
+$("#kDlg").addEventListener("close",function(){if(kEdit&&kDirty){K=load(KK,[]);}kDirty=false;});
+$("#kDlg").addEventListener("cancel",function(e){if(kDirty&&kEdit&&!confirm("Änderungen verwerfen?"))e.preventDefault();});
+
+/* Kunde ansehen */
+function link(k,v){
+  if(!v)return "";var s=String(v);
+  if(k==="mail"||k==="rechMail")return '<a href="mailto:'+esc(s)+'">'+esc(s)+'</a>';
+  if(k==="tel")return '<a href="tel:'+esc(s.replace(/[^\d+]/g,""))+'">'+esc(s)+'</a>';
+  if(k==="insta"||k==="tiktok"){var h=s.replace(/^@/,"").replace(/^https?:\/\/(www\.)?(instagram|tiktok)\.com\/@?/,"").replace(/\/.*$/,"");return '<a href="https://www.'+(k==="insta"?"instagram.com/":"tiktok.com/@")+encodeURIComponent(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>';}
+  if(k==="web"||k==="drive"){var u=/^https?:\/\//.test(s)?s:"https://"+s;return '<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(s.replace(/^https?:\/\//,"").slice(0,48))+'</a>';}
+  if(k==="start"||k==="opening")return fmtD(s);
+  if(k==="typ")return esc(typName(s));
+  if(k==="status")return esc(stInfo(s)[1]);
+  if(k==="form")return s==="sie"?"Sie":"Du";
+  return esc(s);
+}
+var vId=null;
+function viewK(id){
+  var k=K.filter(function(x){return x.id===id;})[0];if(!k)return;vId=id;
+  $("#vDlgH").textContent=k.name;
+  var bs=belegeOf(k).sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));});
+  var h='<div class="dl">'+STEPS.map(function(s,i){
+    var rows=s.f.filter(function(f){return k[f[0]]&&String(k[f[0]]).trim();});
+    return '<section><h4 class="mono" style="display:flex;justify-content:space-between">'+esc(s.t)+'<button class="btn sm" type="button" data-kedit="'+i+'"><span class="dot"></span><span>Bearbeiten</span></button></h4>'+
+      (rows.length?'<dl>'+rows.map(function(f){return '<dt>'+esc(f[1])+'</dt><dd>'+link(f[0],k[f[0]])+'</dd>';}).join("")+'</dl>':'<p class="fine">Noch leer.</p>')+'</section>';
+  }).join("")+
+  '<section><h4 class="mono">Belege</h4>'+(bs.length?'<dl>'+bs.map(function(b){var s=bState(b);return '<dt>'+esc(b.nr)+'</dt><dd>'+esc(TYPN[b.typ]||"Rechnung")+' · '+fmtD(b.datum)+' · '+eur(b.brutto)+' · <span class="pill '+s[1]+'">'+esc(s[0])+'</span></dd>';}).join("")+'</dl>':'<p class="fine">Noch keine Belege. Angebot im Rechner starten, beim Drucken landet es hier.</p>')+'</section></div>';
+  $("#vBody").innerHTML=h;
+  $("#vFoot").innerHTML='<button class="btn danger" type="button" data-kdel><span class="dot"></span><span>Löschen</span></button><span class="sp" style="flex:1"></span>'+
+    '<a class="btn" href="rechner.html?kunde='+encodeURIComponent(k.id)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Angebot im Rechner ↗</span></a>'+
+    '<button class="btn" type="button" data-kcopy><span class="dot"></span><span>Als Text kopieren</span></button>'+
+    '<button class="btn inv" type="button" data-kedit="0"><span class="dot"></span><span>Bearbeiten</span></button>';
+  openD($("#vDlg"));
+}
+function kText(k){
+  var t=k.name+" ("+(k.nr||"")+")\n";
+  STEPS.forEach(function(s){var rows=s.f.filter(function(f){return k[f[0]]&&String(k[f[0]]).trim();});if(rows.length){t+="\n"+s.t+"\n";rows.forEach(function(f){var v=k[f[0]];t+="· "+f[1]+": "+(f[0]==="typ"?typName(v):f[0]==="status"?stInfo(v)[1]:f[0]==="form"?(v==="sie"?"Sie":"Du"):(f[0]==="start"||f[0]==="opening")?fmtD(v):v)+"\n";});}});
+  return t;
+}
+$("#vFoot").addEventListener("click",function(e){
+  var t=e.target.closest("[data-kedit],[data-kdel],[data-kcopy]");if(!t)return;
+  var k=K.filter(function(x){return x.id===vId;})[0];if(!k)return;
+  if(t.hasAttribute("data-kedit")){$("#vDlg").close();openK(vId,+t.getAttribute("data-kedit"));}
+  else if(t.hasAttribute("data-kcopy"))copy(kText(k),"Kundendaten kopiert");
+  else if(t.hasAttribute("data-kdel")){if(confirm("„"+k.name+"“ wirklich löschen? Belege bleiben im Rechnungsbuch."+"\n\nTipp: vorher unter „Sichern“ eine Sicherung laden.")){K=K.filter(function(x){return x.id!==vId;});saveK();render();$("#vDlg").close();toast("Gelöscht");}}
+});
+$("#vBody").addEventListener("click",function(e){var t=e.target.closest("[data-kedit]");if(t){$("#vDlg").close();openK(vId,+t.getAttribute("data-kedit"));}});
+
+/* Rechnung erfassen */
+var bEdit=null;
+var BF=[["nr","Rechnungsnummer","text",1],["typ","Art","select",0,[["manuell","Rechnung"],["tr1","Teilrechnung 1"],["tr2","Teilrechnung 2"],["monat","Monatsrechnung"],["angebot","Angebot"]]],["kid","Kunde aus Kundenstamm","kunde",0],["kunde","Kundenname auf dem Beleg","text",1],["datum","Rechnungsdatum","date",0],["faellig","Fällig am","date",0],["brutto","Betrag brutto, €","number",0],["teil","Davon schon bezahlt, €","number",0],["projekt","Projekt","text",1],["status","Status","select",0,[["offen","Offen"],["bezahlt","Bezahlt"],["storniert","Storniert"],["angenommen","Angenommen (Angebot)"],["abgelehnt","Abgelehnt (Angebot)"]]],["bezahltAm","Bezahlt am","date",0]];
+function openB(id){
+  bEdit=id||null;var b=id?B.filter(function(x){return x.id===id;})[0]:{typ:"manuell",datum:today(),faellig:addDays(today(),14),status:"offen"};
+  $("#bDlgH").textContent=id?"Beleg "+b.nr:"Rechnung erfassen";$("#bDel").hidden=!id;
+  $("#bForm").innerHTML=BF.map(function(f){
+    var v=b[f[0]]==null?"":b[f[0]],id2="b_"+f[0],lab='<label class="mono" for="'+id2+'">'+esc(f[1])+'</label>';
+    if(f[2]==="select")return '<div class="f'+(f[3]?" full":"")+'">'+lab+'<select id="'+id2+'" data-bf2="'+f[0]+'">'+f[4].map(function(o){return '<option value="'+o[0]+'"'+(v===o[0]?" selected":"")+'>'+esc(o[1])+'</option>';}).join("")+'</select></div>';
+    if(f[2]==="kunde")return '<div class="f full">'+lab+'<select id="'+id2+'" data-bf2="kid"><option value="">Ohne Zuordnung</option>'+K.slice().sort(function(a,c){return a.name.localeCompare(c.name);}).map(function(k){return '<option value="'+esc(k.id)+'"'+(v===k.id?" selected":"")+'>'+esc(k.name)+'</option>';}).join("")+'</select></div>';
+    return '<div class="f'+(f[3]?" full":"")+'">'+lab+'<input id="'+id2+'" type="'+f[2]+'"'+(f[2]==="number"?' step="0.01" min="0"':"")+' data-bf2="'+f[0]+'" value="'+esc(v)+'" autocomplete="off"></div>';
+  }).join("");
+  openD($("#bDlg"));
+}
+$("#bForm").addEventListener("change",function(e){if(e.target.getAttribute("data-bf2")==="kid"){var k=K.filter(function(x){return x.id===e.target.value;})[0];if(k){$("#b_kunde").value=k.firma||k.name;}}});
+$("#bSave").addEventListener("click",function(){
+  var o={};document.querySelectorAll("#bForm [data-bf2]").forEach(function(el){o[el.getAttribute("data-bf2")]=el.value;});
+  if(!o.nr.trim()){toast("Nummer fehlt");$("#b_nr").focus();return;}
+  o.brutto=num(o.brutto);o.teil=num(o.teil);
+  if(o.status==="bezahlt"&&!o.bezahltAm)o.bezahltAm=today();
+  var k=K.filter(function(x){return x.id===o.kid;})[0];
+  if(bEdit){B=B.map(function(b){return b.id===bEdit?Object.assign({},b,o):b;});}
+  else{if(B.some(function(b){return b.nr===o.nr.trim()&&b.typ===o.typ;})&&!confirm("Diese Nummer gibt es schon. Trotzdem speichern?"))return;
+    o.id=uid("b");o.nr=o.nr.trim();o.mahn=[];o.created=new Date().toISOString();
+    if(k){o.kontakt=k.kontakt||"";o.form=k.form||"du";o.mail=k.rechMail||k.mail||"";o.strasse=k.strasse||"";o.ort=k.ort||"";}
+    B.push(o);}
+  saveB();render();$("#bDlg").close();toast("Beleg gespeichert");
+});
+$("#bDel").addEventListener("click",function(){if(bEdit&&confirm("Beleg aus dem Rechnungsbuch löschen?")){B=B.filter(function(b){return b.id!==bEdit;});saveB();render();$("#bDlg").close();toast("Beleg gelöscht");}});
+
+/* Mahnung */
+var mB=null,mS={},mTouched=false;
+var STUFE={1:"Zahlungserinnerung",2:"1. Mahnung",3:"2. Mahnung"};
+function openM(id){
+  mB=B.filter(function(x){return x.id===id;})[0];if(!mB)return;FIRMA=load(FK,{});
+  var k=kOf(mB)||{};
+  mS={stufe:Math.min(3,(mB.mahn||[]).length+1),datum:today(),frist:7,teil:num(mB.teil)||"",geb:"",art:"b2b",pausch:false,zins:false,basis:load("sb-basiszins",""),
+    kunde:mB.kunde||k.firma||k.name,kontakt:mB.kontakt||k.kontakt||"",strasse:mB.strasse||k.strasse||"",ort:mB.ort||k.ort||"",mail:mB.mail||k.rechMail||k.mail||"",form:mB.form||k.form||"du"};
+  mTouched=false;
+  $("#mFor").textContent=mB.nr+" · "+(mS.kunde||"");
+  fillM();openD($("#mDlg"));setStufe(mS.stufe);
+}
+function fillM(){
+  document.querySelectorAll("#mCtrl [data-m]").forEach(function(el){var v=mS[el.getAttribute("data-m")];if(el.type==="checkbox")el.checked=!!v;else el.value=v==null?"":v;});
+  document.querySelectorAll("#mCtrl [data-fk]").forEach(function(el){el.value=FIRMA[el.getAttribute("data-fk")]||"";});
+  $("#mHist").innerHTML=(mB.mahn||[]).length?(mB.mahn.map(function(m){return '<div><span>'+esc(STUFE[m.stufe]||"Mahnung")+'</span><span>'+fmtD(m.datum)+', Frist '+fmtD(m.frist)+'</span></div>';}).join("")):'<p class="fine">Noch nicht gemahnt. Fällig war '+fmtD(mB.faellig)+(isOver(mB)?", seit "+daysBetween(mB.faellig,today())+" Tagen überfällig.":".")+'</p>';
+}
+function setStufe(s){mS.stufe=s;mTouched=false;document.querySelectorAll("#mStufe button").forEach(function(b){b.setAttribute("aria-pressed",+b.getAttribute("data-st")===s);});renderM();}
+function sie(){return mS.form==="sie";}
+function mCalc(){
+  var o={offen:Math.max(0,num(mB.brutto)-num(mS.teil)),geb:num(mS.geb),pausch:mS.pausch&&mS.art==="b2b"?40:0,zins:0,tage:0};
+  o.frist=addDays(mS.datum,num(mS.frist)||7);
+  if(mS.zins&&mS.basis!==""&&mB.faellig){o.tage=Math.max(0,daysBetween(mB.faellig,mS.datum));o.satz=num(mS.basis)+(mS.art==="b2b"?9:5);o.zins=o.offen*o.satz/100*o.tage/365;}
+  o.summe=o.offen+o.geb+o.pausch+o.zins;
+  return o;
+}
+function mNr(){return mB.nr+"-M"+mS.stufe;}
+function mFile(){var t=mS.stufe===1?"Zahlungserinnerung":"Mahnung_"+(mS.stufe-1);return t+"_"+String(mB.nr).replace(/[^\w-]/g,"-")+"_"+slug(mS.kunde)+"_"+String(mS.datum||today()).slice(0,7)+".pdf";}
+function miss(v,l){return v&&String(v).trim()?esc(v):'<mark class="miss">'+esc(l)+'</mark>';}
+function mMissing(){
+  var m=[];[["f_name","Rechnungssteller",FIRMA.name],["f_strasse","Eure Adresse",FIRMA.strasse],["f_ort","Euer Ort",FIRMA.ort],["f_iban","IBAN",FIRMA.iban],["kunde","Adresse des Kunden",mS.strasse&&mS.ort]].forEach(function(n){if(!n[2])m.push(n);});
+  if(mS.zins&&mS.basis==="")m.push(["m_basis","Basiszinssatz",""]);
+  return m;
+}
+function prev(){var p=(mB.mahn||[]).filter(function(m){return m.stufe<mS.stufe;});return p;}
+function mLetter(){
+  var o=mCalc(),F=FIRMA,s=sie(),you=s?"Sie":"du",nr=mB.nr,p=prev();
+  var first=(mS.kontakt||"").trim().split(" ")[0];
+  var anrede=s?("Sehr geehrte Damen und Herren,"):("Hallo"+(first?" "+first:"")+",");
+  if(s&&mS.kontakt)anrede="Guten Tag "+mS.kontakt+",";
+  var T=[];
+  if(mS.stufe===1){
+    T.push(s?"sicher ist es im Alltag untergegangen: Unsere Rechnung "+nr+" vom "+fmtD(mB.datum)+" über "+eur(mB.brutto)+" war am "+fmtD(mB.faellig)+" fällig. Bis heute konnten wir keinen Zahlungseingang feststellen.":"sicher ist es im Alltag untergegangen: Unsere Rechnung "+nr+" vom "+fmtD(mB.datum)+" über "+eur(mB.brutto)+" war am "+fmtD(mB.faellig)+" fällig. Bei uns ist bisher noch nichts angekommen.");
+    T.push((s?"Bitte überweisen Sie ":"Bitte überweise ")+"den offenen Betrag bis zum "+fmtD(o.frist)+".");
+    T.push(s?"Falls Sie bereits gezahlt haben, betrachten Sie dieses Schreiben bitte als gegenstandslos.":"Falls du schon bezahlt hast, ist diese Erinnerung hinfällig. Dann einfach ignorieren.");
+  } else if(mS.stufe===2){
+    T.push((s?"leider ist unsere Rechnung ":"leider ist unsere Rechnung ")+nr+" vom "+fmtD(mB.datum)+" trotz "+(p.length?"Zahlungserinnerung vom "+fmtD(p[p.length-1].datum):"Fälligkeit am "+fmtD(mB.faellig))+" weiterhin offen.");
+    T.push((s?"Wir bitten Sie, ":"Wir bitten dich, ")+"den offenen Betrag von "+eur(o.summe)+" bis spätestens "+fmtD(o.frist)+" zu überweisen.");
+    T.push(s?"Sollte es Unklarheiten zur Rechnung geben, melden Sie sich bitte direkt bei uns, dann klären wir das schnell.":"Wenn es Fragen zur Rechnung gibt, meld dich einfach direkt bei uns, dann klären wir das schnell.");
+  } else {
+    T.push("trotz "+(p.length?p.map(function(m){return (STUFE[m.stufe]||"Mahnung")+" vom "+fmtD(m.datum);}).join(" und "):"Fälligkeit am "+fmtD(mB.faellig))+" ist unsere Rechnung "+nr+" vom "+fmtD(mB.datum)+" weiterhin offen.");
+    T.push((s?"Wir fordern Sie hiermit letztmalig auf, ":"Wir bitten dich hiermit ein letztes Mal, ")+"den Gesamtbetrag von "+eur(o.summe)+" bis spätestens "+fmtD(o.frist)+" zu überweisen.");
+    T.push("Geht bis dahin keine Zahlung ein, müssen wir weitere Schritte einleiten, zum Beispiel ein gerichtliches Mahnverfahren. Das wollen wir mit Blick auf unsere Zusammenarbeit wirklich vermeiden.");
+  }
+  if(o.zins)T.push("Die Verzugszinsen betragen "+String(o.satz).replace(".",",")+" % pro Jahr für "+o.tage+" Tage seit Fälligkeit (§ 288 BGB).");
+  var h='<div class="d-head"><img class="d-logo" src="logo_social_bites.webp" alt="Social Bites"><div class="d-from"><b>'+(F.name?esc(F.name):"Social Bites")+'</b><br>'+miss(F.strasse,"Straße")+'<br>'+miss(F.ort,"PLZ Ort")+(F.mail?'<br>'+esc(F.mail):"")+(F.tel?'<br>'+esc(F.tel):"")+'</div></div>';
+  h+='<div class="d-mid"><div class="d-addr"><small>'+esc(F.name||"Social Bites")+(F.strasse?" · "+esc(F.strasse):"")+(F.ort?" · "+esc(F.ort):"")+'</small><b>'+miss(mS.kunde,"Kunde")+'</b><br>'+(mS.kontakt?esc(mS.kontakt)+'<br>':"")+miss(mS.strasse,"Straße")+'<br>'+miss(mS.ort,"PLZ Ort")+'</div>'+
+    '<dl class="d-meta"><div><dt>Datum</dt><dd>'+fmtD(mS.datum)+'</dd></div><div><dt>Rechnung</dt><dd>'+esc(nr)+'</dd></div><div><dt>Rechnungsdatum</dt><dd>'+fmtD(mB.datum)+'</dd></div><div><dt>Fällig war</dt><dd>'+fmtD(mB.faellig)+'</dd></div><div><dt>Neue Frist</dt><dd>'+fmtD(o.frist)+'</dd></div></dl></div>';
+  h+='<h1 class="d-title">'+esc(STUFE[mS.stufe])+(mS.stufe===3?' <small>Letzte Mahnung</small>':"")+'</h1>';
+  h+='<div class="d-text"><p>'+esc(anrede)+'</p>'+T.map(function(x){return '<p>'+esc(x)+'</p>';}).join("")+'</div>';
+  h+='<table class="d-table"><thead><tr><th>Position</th><th class="r">Betrag</th></tr></thead><tbody><tr><td>Rechnung '+esc(nr)+' vom '+fmtD(mB.datum)+(mB.projekt?', '+esc(mB.projekt):"")+'</td><td class="r">'+eur(mB.brutto)+'</td></tr>'+
+    (num(mS.teil)?'<tr><td>Bereits bezahlt</td><td class="r">− '+eur(num(mS.teil))+'</td></tr>':"")+
+    (o.geb?'<tr><td>Mahngebühr</td><td class="r">'+eur(o.geb)+'</td></tr>':"")+
+    (o.pausch?'<tr><td>Verzugspauschale nach § 288 Abs. 5 BGB</td><td class="r">'+eur(40)+'</td></tr>':"")+
+    (o.zins?'<tr><td>Verzugszinsen, '+String(o.satz).replace(".",",")+' % p. a., '+o.tage+' Tage</td><td class="r">'+eur(o.zins)+'</td></tr>':"")+'</tbody></table>';
+  h+='<div class="d-tot"><div class="total"><span>Offener Betrag</span><span>'+eur(o.summe)+'</span></div></div>';
+  h+='<div class="d-pay"><p>Bitte überweise'+(s?"n Sie":"")+' <b>'+eur(o.summe)+'</b> bis zum <b>'+fmtD(o.frist)+'</b> mit dem Verwendungszweck <b>'+esc(nr)+'</b>:</p><dl class="d-bank"><div><dt>Kontoinhaber</dt><dd>'+miss(F.name,"Firma")+'</dd></div><div><dt>IBAN</dt><dd>'+miss(F.iban,"IBAN")+'</dd></div>'+(F.bic?'<div><dt>BIC</dt><dd>'+esc(F.bic)+'</dd></div>':"")+(F.bank?'<div><dt>Bank</dt><dd>'+esc(F.bank)+'</dd></div>':"")+'</dl></div>';
+  h+='<div class="d-close"><span>'+(s?"Mit freundlichen Grüßen":"Viele Grüße")+'</span><b>'+esc(F.sender?F.sender+", Social Bites":"Social Bites")+'</b></div>';
+  h+='<div class="d-foot"><div><span>'+esc(F.name||"Social Bites")+'</span>'+(F.strasse?'<span>'+esc(F.strasse)+(F.ort?", "+esc(F.ort):"")+'</span>':"")+(F.steuernr?'<span>Steuernummer '+esc(F.steuernr)+'</span>':"")+(F.ustid?'<span>USt-IdNr. '+esc(F.ustid)+'</span>':"")+(F.iban?'<span>IBAN '+esc(F.iban)+'</span>':"")+(F.mail?'<span>'+esc(F.mail)+'</span>':"")+'</div></div>';
+  return h;
+}
+function mMail(){
+  var o=mCalc(),s=sie(),F=FIRMA,first=(mS.kontakt||"").trim().split(" ")[0],nr=mB.nr;
+  var hi=s?("Guten Tag"+(mS.kontakt?" "+mS.kontakt:"")+","):("Hi"+(first?" "+first:"")+",");
+  var team=F.sender?F.sender+" von Social Bites":"Nader und Tommy von Social Bites";
+  var L=[hi,""],sub;
+  if(mS.stufe===1){
+    sub="Kurze Erinnerung: Rechnung "+nr;
+    L.push(s?"kurze Erinnerung: Unsere Rechnung "+nr+" über "+eur(mB.brutto)+" war am "+fmtD(mB.faellig)+" fällig, bei uns ist noch keine Zahlung eingegangen.":"kurze Erinnerung: Unsere Rechnung "+nr+" über "+eur(mB.brutto)+" war am "+fmtD(mB.faellig)+" fällig, bei uns ist noch nichts angekommen. Kann im Alltag mal passieren.");
+    L.push("");L.push((s?"Könnten Sie den Betrag bis zum ":"Kannst du den Betrag bis zum ")+fmtD(o.frist)+" überweisen? Die Zahlungserinnerung mit allen Daten hängt an.");
+    L.push("");L.push(s?"Falls Sie bereits bezahlt haben, ist diese Mail hinfällig.":"Falls du schon bezahlt hast, vergiss die Mail einfach.");
+  } else if(mS.stufe===2){
+    sub="1. Mahnung: Rechnung "+nr;
+    L.push("unsere Rechnung "+nr+" vom "+fmtD(mB.datum)+" ist leider weiterhin offen. Im Anhang ist die erste Mahnung über "+eur(o.summe)+".");
+    L.push("");L.push((s?"Bitte überweisen Sie ":"Bitte überweise ")+"den Betrag bis spätestens "+fmtD(o.frist)+". Wenn es ein Problem mit der Rechnung gibt, "+(s?"melden Sie sich":"meld dich")+" gern direkt, dann finden wir eine Lösung.");
+  } else {
+    sub="Letzte Mahnung: Rechnung "+nr;
+    L.push("trotz Erinnerung und Mahnung ist unsere Rechnung "+nr+" weiterhin offen. Im Anhang ist die letzte Mahnung über "+eur(o.summe)+", zahlbar bis "+fmtD(o.frist)+".");
+    L.push("");L.push("Danach müssen wir weitere Schritte einleiten. Das wollen wir wirklich vermeiden, deshalb "+(s?"melden Sie sich bitte":"meld dich bitte")+" vorher, falls es irgendwo hakt.");
+  }
+  L.push("");L.push(s?"Mit freundlichen Grüßen":"Viele Grüße");L.push(team);
+  return {sub:sub,body:L.join("\n")};
+}
+function scaleM(){var w=$("#mWrap").clientWidth,sc=Math.min(1,w/794),sh=$("#mSheet");sh.style.transform="scale("+sc+")";$("#mWrap").style.height=(sh.offsetHeight*sc)+"px";}
+function renderM(){
+  $("#zinsBox").hidden=!mS.zins;
+  var pc=$("#mCtrl [data-m=pausch]");pc.disabled=mS.art!=="b2b";if(pc.disabled)pc.checked=false;
+  var m=mMissing();
+  $("#mMissing").innerHTML=m.length?'<div class="miss-box"><b>Fehlt noch:</b><div class="chips">'+m.map(function(x){return '<button type="button" data-mfocus="'+x[0]+'">'+esc(x[1])+'</button>';}).join("")+'</div></div>':'<div class="ok-box">Alles da. '+esc(STUFE[mS.stufe])+' kann raus.</div>';
+  $("#mSheet").innerHTML=mLetter();$("#mFile").textContent=mFile();
+  if(!mTouched){var t=mMail();$("#mSub").value=t.sub;$("#mBody").value=t.body;}
+  setMailto();scaleM();
+}
+function setMailto(){$("#mMail").href="mailto:"+encodeURIComponent(mS.mail||"")+"?subject="+encodeURIComponent($("#mSub").value)+"&body="+encodeURIComponent($("#mBody").value);}
+$("#mStufe").addEventListener("click",function(e){var b=e.target.closest("[data-st]");if(b)setStufe(+b.getAttribute("data-st"));});
+function mField(el){
+  var k=el.getAttribute("data-m"),fk=el.getAttribute("data-fk");
+  if(k){mS[k]=el.type==="checkbox"?el.checked:el.value;if(k==="basis")store("sb-basiszins",el.value);}
+  else if(fk){FIRMA=load(FK,{});FIRMA[fk]=el.value;store(FK,FIRMA);}
+  else return;
+  mTouched=false;renderM();
+}
+$("#mCtrl").addEventListener("input",function(e){mField(e.target);});
+$("#mCtrl").addEventListener("change",function(e){if(e.target.type==="checkbox"||e.target.tagName==="SELECT")mField(e.target);});
+$("#mMissing").addEventListener("click",function(e){var b=e.target.closest("[data-mfocus]");if(!b)return;var id=b.getAttribute("data-mfocus");
+  if(id==="kunde"){toast("Adresse im Kundenstamm unter „Rechnung“ ergänzen");return;}
+  if(id.indexOf("f_")===0)$("#mFirma").open=true;var el=document.getElementById(id);if(el){el.focus();el.scrollIntoView({block:"center"});}});
+["mSub","mBody"].forEach(function(id){$("#"+id).addEventListener("input",function(){mTouched=true;setMailto();});});
+$("#mCopyBody").addEventListener("click",function(){copy($("#mBody").value,"Text kopiert");});
+$("#mCopySub").addEventListener("click",function(){copy($("#mSub").value,"Betreff kopiert");});
+$("#mPrint").addEventListener("click",function(){
+  var o=mCalc(),entry={stufe:mS.stufe,datum:mS.datum,frist:o.frist,summe:Math.round(o.summe*100)/100};
+  B=load(BK,[]);B=B.map(function(b){if(b.id!==mB.id)return b;var ms=(b.mahn||[]).filter(function(m){return m.stufe!==entry.stufe;});ms.push(entry);ms.sort(function(a,c){return a.stufe-c.stufe;});b.mahn=ms;if(num(mS.teil))b.teil=num(mS.teil);mB=b;return b;});saveB();render();fillM();
+  var host=$("#printHost");host.innerHTML='<div class="dsheet">'+$("#mSheet").innerHTML+'</div>';
+  var old=document.title;document.title=mFile().replace(/\.pdf$/,"");document.body.classList.add("print-beleg");
+  function done(){document.body.classList.remove("print-beleg");document.title=old;host.innerHTML="";window.removeEventListener("afterprint",done);}
+  window.addEventListener("afterprint",done);
+  try{window.print();}catch(e){done();toast("Drucken geht hier nicht. Seite in neuem Tab öffnen.");}
+  setTimeout(done,60000);
+  toast(STUFE[mS.stufe]+" im Rechnungsbuch vermerkt");
+});
+window.addEventListener("resize",function(){if($("#mDlg").open)scaleM();});
+
+/* Sichern */
+function dl(name,text,type){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},400);}
+$("#expJson").addEventListener("click",function(){dl("Social_Bites_Kunden_Belege_"+today()+".json",JSON.stringify({app:"social-bites-kunden",version:1,exported:new Date().toISOString(),kunden:K,belege:B},null,2),"application/json");toast("Sicherung geladen");});
+$("#expCsv").addEventListener("click",function(){
+  var keys=["nr"].concat([].concat.apply([],STEPS.map(function(s){return s.f.map(function(f){return f[0];});})));
+  var head=["Nr"].concat(keys.slice(1).map(function(k){return LABEL[k];}));
+  var q=function(v){v=String(v==null?"":v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  var rows=[head.map(q).join(";")].concat(K.map(function(k){return keys.map(function(x){var v=k[x];if(x==="typ")v=typName(v);if(x==="status")v=stInfo(v)[1];return q(v);}).join(";");}));
+  dl("Social_Bites_Kunden_"+today()+".csv","﻿"+rows.join("\n"),"text/csv;charset=utf-8");toast("CSV geladen");
+});
+$("#impFile").addEventListener("change",function(){
+  var f=this.files&&this.files[0];if(!f)return;var r=new FileReader(),merge=$("#impMerge").checked,inp=this;
+  r.onload=function(){try{var d=JSON.parse(r.result);if(!d||!Array.isArray(d.kunden)||!Array.isArray(d.belege))throw 0;
+    if(merge){var ik={};K.forEach(function(k){ik[k.id]=1;});d.kunden.forEach(function(k){if(ik[k.id])K=K.map(function(x){return x.id===k.id&&String(k.updated||"")>String(x.updated||"")?k:x;});else K.push(k);});
+      var ib={};B.forEach(function(b){ib[b.id]=1;});d.belege.forEach(function(b){if(ib[b.id])B=B.map(function(x){return x.id===b.id?b:x;});else B.push(b);});}
+    else{if(!confirm("Alle Kunden und Belege in diesem Browser durch die Sicherung ersetzen?"))return;K=d.kunden;B=d.belege;}
+    saveK();saveB();render();toast(d.kunden.length+" Kunden und "+d.belege.length+" Belege eingespielt");$("#dDlg").close();
+  }catch(e){toast("Das ist keine gültige Sicherung");}finally{inp.value="";}};
+  r.readAsText(f);
+});
+
+/* Klicks */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-close],[data-tab],[data-kfil],[data-bf],[data-kv],[data-newk],[data-paid],[data-unpaid],[data-acc],[data-mahn],[data-bedit]");if(!t)return;
+  if(t.hasAttribute("data-close")){var d=document.getElementById(t.getAttribute("data-close"));if(d)d.close();return;}
+  if(t.hasAttribute("data-tab")){setTab(t.getAttribute("data-tab"));return;}
+  if(t.hasAttribute("data-kfil")){kFil=t.getAttribute("data-kfil");renderK();return;}
+  if(t.hasAttribute("data-bf")){bFil=t.getAttribute("data-bf");renderB();return;}
+  if(t.hasAttribute("data-kv")){viewK(t.getAttribute("data-kv"));return;}
+  if(t.hasAttribute("data-newk")){openK(null,0);return;}
+  var id;
+  if((id=t.getAttribute("data-paid"))){B=B.map(function(b){if(b.id===id){b.status="bezahlt";b.bezahltAm=today();}return b;});saveB();render();toast("Als bezahlt markiert");return;}
+  if((id=t.getAttribute("data-unpaid"))){B=B.map(function(b){if(b.id===id){b.status="offen";delete b.bezahltAm;}return b;});saveB();render();return;}
+  if((id=t.getAttribute("data-acc"))){B=B.map(function(b){if(b.id===id)b.status="angenommen";return b;});saveB();render();toast("Angebot angenommen");return;}
+  if((id=t.getAttribute("data-mahn"))){openM(id);return;}
+  if((id=t.getAttribute("data-bedit"))){openB(id);return;}
+});
+$("#newK").addEventListener("click",function(){openK(null,0);});
+$("#newB").addEventListener("click",function(){openB(null);});
+$("#dataBtn").addEventListener("click",function(){openD($("#dDlg"));});
+$("#kq").addEventListener("input",renderK);
+$("#bq").addEventListener("input",renderB);
+
+if(/belege/.test(location.hash)){setTab("belege");if(B.some(isOver))bFil="ueber";}
+render();
+})();
+</script>
+</body>
+</html>

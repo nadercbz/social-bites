@@ -401,6 +401,7 @@
 
       <p class="dgt mono">Kunde</p>
       <div class="dg">
+        <div class="f full"><label class="mono" for="d_pick">Aus dem Kundenstamm</label><div class="row2"><select id="d_pick"><option value="">Kunde wählen</option></select><button class="btn" type="button" id="saveKunde" title="Kundendaten im Kundenstamm speichern"><span class="dot"></span><span>Merken</span></button></div><small class="hint">Neue Kunden mit „Merken“ speichern. <a href="kunden.html" target="_blank" rel="noopener" style="color:var(--accent-ink)">Kundenstamm öffnen ↗</a></small></div>
         <div class="f full"><label class="mono" for="d_kunde">Name des Ladens oder der Marke</label><input id="d_kunde" data-g="root" data-k="kunde" autocomplete="off"></div>
         <div class="f full"><label class="mono" for="d_kontakt">Ansprechpartner, Vor- und Nachname</label><input id="d_kontakt" data-g="cust" data-k="kontakt" autocomplete="off"></div>
         <div class="f full"><label class="mono" for="d_strasse">Straße und Hausnummer</label><input id="d_strasse" data-g="cust" data-k="strasse" autocomplete="off"></div>
@@ -824,7 +825,7 @@ function docHTML(){
   var h='<div class="d-head"><img class="d-logo" src="logo_social_bites.webp" alt="Social Bites"><div class="d-from">'+
     '<b>'+(F.name?esc(F.name):"Social Bites")+'</b><br>'+miss(F.strasse,"Straße")+'<br>'+miss(F.ort,"PLZ Ort")+(F.mail?'<br>'+esc(F.mail):"")+(F.tel?'<br>'+esc(F.tel):"")+'</div></div>';
   h+='<div class="d-mid"><div class="d-addr"><small>'+esc(F.name||"Social Bites")+(F.strasse?" · "+esc(F.strasse):"")+(F.ort?" · "+esc(F.ort):"")+'</small>'+
-    '<b>'+miss(S.kunde,"Kunde")+'</b><br>'+(c.kontakt?esc(c.kontakt)+'<br>':"")+miss(c.strasse,"Straße")+'<br>'+miss(c.ort,"PLZ Ort")+'</div>'+
+    '<b>'+miss(c.firma||S.kunde,"Kunde")+'</b><br>'+(c.kontakt?esc(c.kontakt)+'<br>':"")+miss(c.strasse,"Straße")+'<br>'+miss(c.ort,"PLZ Ort")+'</div>'+
     '<dl class="d-meta">'+(docType==="angebot"?'<div><dt>Angebotsnummer</dt><dd>'+esc(b.angNr||"")+'</dd></div><div><dt>Datum</dt><dd>'+fmtD(b.datum)+'</dd></div><div><dt>Gültig bis</dt><dd>'+fmtD(o.validUntil)+'</dd></div>'
       :'<div><dt>Rechnungsnummer</dt><dd>'+esc(nr)+'</dd></div><div><dt>Rechnungsdatum</dt><dd>'+fmtD(b.datum)+'</dd></div><div><dt>Angebot</dt><dd>'+esc(b.angNr||"")+'</dd></div>'+
        (docType==="monat"?'<div><dt>Leistungszeitraum</dt><dd>'+miss(monthName(b.monat),"Monat")+'</dd></div>':'<div><dt>Leistungszeitraum</dt><dd>'+miss(b.period,"Zeitraum")+'</dd></div>')+
@@ -950,7 +951,7 @@ function renderDoc(){
 }
 function openDoc(t){
   ensureDoc();S.beleg.datum=S.beleg.datum||S.datum;save();
-  fillCtrl();
+  fillCtrl();fillPick();
   try{dlgDoc.showModal();}catch(e){dlgDoc.setAttribute("open","");}
   setType(t||"angebot");
   requestAnimationFrame(scaleSheet);
@@ -963,7 +964,7 @@ function docField(el){
   var g=el.getAttribute("data-g"),k=el.getAttribute("data-k");if(!g)return;
   var v=el.type==="checkbox"?el.checked:el.value;
   if(g==="root"){S[k]=v;if(k==="kunde"){$("#kunde").value=v;renderTotals();}}
-  else if(g==="beleg"){S.beleg[k]=v;if(k==="angNr")bumpNr();if(k==="datum")S.beleg.datumFix=true;}
+  else if(g==="beleg"){S.beleg[k]=v;if(k==="angNr")bumpNr();if(k==="datum")S.beleg.datumFix=true;if(k==="projekt")S.beleg.projektFix=true;}
   else if(g==="cust")S.cust[k]=v;
   else{FIRMA[k]=v;store(FIRMA_KEY,FIRMA);}
   save();mailTouched=false;renderDoc();
@@ -987,8 +988,51 @@ function copyTxt(tx,btn,okLabel,defLabel){
 $("#copyBody").addEventListener("click",function(){copyTxt($("#mBody").value,this,"Kopiert","Text kopieren");});
 $("#copySub").addEventListener("click",function(){copyTxt($("#mSub").value,this,"Kopiert","Betreff kopieren");});
 $("#copyFile").addEventListener("click",function(){copyTxt($("#docFile").textContent,this,"Kopiert","Kopieren");});
+
+/* Kundenstamm und Belegbuch, geteilt mit kunden.html (nur localStorage) */
+var KUNDEN_KEY="sb-kunden",BELEGE_KEY="sb-belege";
+function r2(n){return Math.round((+n||0)*100)/100;}
+function uidK(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function fillPick(){
+  var ks=load(KUNDEN_KEY,[]).slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name));});
+  $("#d_pick").innerHTML='<option value="">'+(ks.length?"Kunde wählen":"Noch keine Kunden gespeichert")+'</option>'+ks.map(function(k){return '<option value="'+esc(k.id)+'"'+(S.cust&&S.cust.kid===k.id?" selected":"")+'>'+esc(k.name)+(k.ort?" · "+esc(k.ort):"")+'</option>';}).join("");
+}
+function applyKunde(k){
+  ensureDoc();
+  S.kunde=k.name;
+  S.cust=Object.assign({},S.cust,{kid:k.id,firma:k.firma||"",kontakt:k.kontakt||"",strasse:k.strasse||"",ort:k.ort||"",mail:k.rechMail||k.mail||"",po:k.po||"",ustid:k.ustid||"",form:k.form||"du"});
+  if(k.pay)S.beleg.pay=k.pay;
+  if(k.paket&&!S.beleg.projektFix)S.beleg.projekt=k.paket;
+  $("#kunde").value=S.kunde;save();renderTotals();
+}
+$("#d_pick").addEventListener("change",function(){var k=load(KUNDEN_KEY,[]).filter(function(x){return x.id===this.value;},this)[0];if(!k)return;applyKunde(k);fillCtrl();mailTouched=false;renderDoc();toast("„"+k.name+"“ übernommen");});
+function upsertKunde(status){
+  var K=load(KUNDEN_KEY,[]),c=S.cust||{},now=new Date().toISOString(),name=String(S.kunde||"").trim();if(!name)return null;
+  var k=K.filter(function(x){return (c.kid&&x.id===c.kid)||String(x.name).trim().toLowerCase()===name.toLowerCase();})[0];
+  if(!k){var m=0;K.forEach(function(x){var r=/(\d+)$/.exec(x.nr||"");if(r)m=Math.max(m,+r[1]);});k={id:uidK("k"),nr:"K-"+String(m+1).padStart(3,"0"),created:now,status:"lead",typ:guessProject()==="Bites Opening"?"opening":guessProject()==="Bites for Brands"?"brands":"gastro",land:"Deutschland"};K.push(k);}
+  k.name=k.name||name;
+  ["kontakt","strasse","ort","po","ustid","form","firma"].forEach(function(f){if(c[f])k[f]=c[f];});
+  if(c.mail&&!k.mail)k.mail=c.mail;
+  if(S.beleg&&S.beleg.pay)k.pay=String(S.beleg.pay);
+  var rank={lead:0,gespraech:1,angebot:2,kunde:3};
+  if(status&&(rank[k.status]==null||rank[status]>rank[k.status]))k.status=status;
+  k.updated=now;c.kid=k.id;S.cust=c;store(KUNDEN_KEY,K);save();
+  return k;
+}
+$("#saveKunde").addEventListener("click",function(){var k=upsertKunde(docType==="angebot"?"angebot":"kunde");if(!k){toast("Erst den Kundennamen eintragen");$("#d_kunde").focus();return;}fillPick();toast("„"+k.name+"“ im Kundenstamm gespeichert");});
+function logBeleg(){
+  var o=docCalc(),B=load(BELEGE_KEY,[]),nr=docType==="angebot"?(S.beleg.angNr||""):reNr(),id="r:"+docType+":"+nr,now=new Date().toISOString(),c=S.cust||{};
+  var k=upsertKunde(docType==="angebot"?"angebot":"kunde");
+  var e={id:id,nr:nr,typ:docType,angNr:S.beleg.angNr||"",kunde:c.firma||S.kunde||"",kid:k?k.id:"",kontakt:c.kontakt||"",form:c.form||"du",mail:c.mail||"",strasse:c.strasse||"",ort:c.ort||"",
+    datum:S.beleg.datum||today(),faellig:docType==="angebot"?"":o.due,netto:r2(o.net),brutto:r2(o.gross),projekt:S.beleg.projekt||"",file:fileName(),updated:now};
+  var ex=B.filter(function(b){return b.id===id;})[0];
+  if(ex)B=B.map(function(b){return b.id===id?Object.assign({},b,e):b;});
+  else{e.status="offen";e.mahn=[];e.created=now;B.push(e);}
+  store(BELEGE_KEY,B);fillPick();
+}
 $("#docPrint").addEventListener("click",function(){
   if(docType==="tr1"){S.beleg.tr1Done=true;save();}
+  logBeleg();toast((isInvoice()?"Rechnung":"Angebot")+" im Belegbuch gespeichert");
   var host=$("#printHost");host.innerHTML='<div class="dsheet">'+$("#dsheet").innerHTML+'</div>';
   var oldTitle=document.title;document.title=fileName().replace(/\.pdf$/,"");
   document.body.classList.add("print-beleg");
@@ -999,6 +1043,7 @@ $("#docPrint").addEventListener("click",function(){
 });
 window.addEventListener("resize",function(){if(dlgDoc.open)scaleSheet();});
 
+(function(){var q=null;try{q=new URLSearchParams(location.search).get("kunde");}catch(e){}if(!q)return;var k=load(KUNDEN_KEY,[]).filter(function(x){return x.id===q;})[0];if(!k)return;applyKunde(k);setTimeout(function(){toast("Kunde „"+k.name+"“ übernommen");},300);try{history.replaceState(null,"",location.pathname);}catch(e){}})();
 syncMeta();applyCols();renderPal();renderRows();renderSaved();
 })();
 </script>
