@@ -97,6 +97,12 @@
   .portal-link{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:15px;padding:9px 12px;border-radius:999px;border:1.5px solid transparent;transition:border-color .25s ease;}
   .portal-link:hover,.portal-link:focus-visible{border-color:var(--ink);}
   .portal-link svg{color:var(--accent-ink);}
+  @media (max-width:1180px) and (min-width:901px){
+    .nav{gap:16px;font-size:15px;}
+    .portal-link{padding:9px;}
+    .portal-link span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+    .head-actions .btn{white-space:nowrap;}
+  }
   .menu-btn{display:none;position:relative;width:42px;height:42px;border-radius:6px;border:1px solid var(--line);background:var(--paper-2);cursor:pointer;}
   .menu-btn span{position:absolute;left:11px;right:11px;height:2px;background:var(--ink);transition:transform .35s var(--ease),top .35s var(--ease);}
   .menu-btn span:first-child{top:16px;}
@@ -411,6 +417,58 @@
     .panel{min-height:320px;}
   }
 
+  [hidden]{display:none!important;}
+
+  /* Portfolio 2.0: Musikvideos, Werbung, Food, Events, Behind the Scenes */
+  .pf{padding:clamp(80px,10vw,140px) var(--gutter) clamp(60px,8vw,110px);}
+  .pf-lead{margin:22px auto 0;max-width:58ch;text-align:center;color:var(--mute);font-weight:600;font-size:clamp(16px,1.35vw,19px);line-height:1.45;}
+  .pf-lead b{color:var(--ink);}
+  .pf-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:28px auto 30px;max-width:920px;}
+  .pf-tab{font:600 15px/1 var(--display);letter-spacing:-.01em;padding:10px 14px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:background-color .2s ease,color .2s ease;}
+  .pf-tab sup{font-family:var(--mono);font-weight:500;font-size:10px;margin-left:5px;vertical-align:top;position:relative;top:-1px;}
+  .pf-tab:hover{background:var(--paper-2);}
+  .pf-tab[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .pf-grid{columns:3 290px;column-gap:16px;max-width:1400px;margin:0 auto;}
+  .pf-card{display:block;width:100%;break-inside:avoid;margin:0 0 16px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);text-align:left;cursor:pointer;color:var(--ink);font:inherit;}
+  figure.pf-card{cursor:default;}
+  .pf-card img,.pf-card video{display:block;width:100%;height:auto;}
+  .pf-media{position:relative;display:block;overflow:hidden;background:var(--ink);}
+  .pf-169{aspect-ratio:16/9;}
+  .pf-169 img,.pf-169 video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .pf-photo img,.pf-film .pf-media img{transition:transform .6s var(--ease);}
+  .pf-photo:hover img,.pf-film:hover .pf-media img{transform:scale(1.04);}
+  .pf-play{position:absolute;left:10px;bottom:10px;z-index:1;background:var(--accent);color:var(--ink);border-radius:999px;padding:6px 10px;font-size:11px;transition:transform .3s var(--ease);}
+  .pf-film:hover .pf-play{transform:scale(1.08);}
+  .pf-cap{display:grid;gap:5px;padding:12px 14px 14px;}
+  .pf-cap b{font-weight:800;font-size:19px;letter-spacing:-.03em;line-height:1.1;}
+  .pf-cap .mono{font-size:11px;color:var(--mute);letter-spacing:.04em;}
+  .pf-loop figcaption{padding:10px 14px;font-size:11px;color:var(--mute);}
+  .pf-foot{display:flex;justify-content:center;margin-top:12px;}
+  .pf-note{margin:18px auto 0;text-align:center;font-size:11px;color:var(--mute);max-width:64ch;}
+  .pfd{padding:0;margin:0;border:0;background:transparent;color:var(--paper);width:100%;height:100%;max-width:none;max-height:none;}
+  .pfd[open]{display:grid;place-items:center;}
+  .pfd::backdrop{background:rgba(20,17,16,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+  .pfd-box{display:flex;flex-direction:column;gap:12px;width:min(94vw,1100px,calc((100vh - 210px) * 16 / 9));width:min(94vw,1100px,calc((100dvh - 210px) * 16 / 9));min-width:min(94vw,320px);}
+  .pfd.is-photo .pfd-box{width:min(94vw,1200px);}
+  .pfd-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+  .pfd-meta{display:block;font-size:11px;color:var(--accent);margin-bottom:6px;}
+  .pfd-head h2{margin:0;font-weight:800;letter-spacing:-.045em;font-size:clamp(22px,3vw,40px);line-height:1.02;}
+  .pfd-x{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);font-size:24px;line-height:1;cursor:pointer;transition:transform .3s var(--ease);}
+  .pfd-x:hover{transform:rotate(90deg);}
+  .pfd-stage{position:relative;border-radius:14px;overflow:hidden;background:#000;border:3px solid #3B3532;}
+  .pfd-stage.vid{aspect-ratio:16/9;}
+  .pfd-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .pfd-stage img{display:block;width:100%;height:auto;max-height:calc(100vh - 230px);max-height:calc(100dvh - 230px);object-fit:contain;}
+  .pfd.is-photo .pfd-stage{background:transparent;border:0;border-radius:0;display:flex;justify-content:center;}
+  .pfd.is-photo .pfd-stage img{width:auto;max-width:100%;border-radius:12px;}
+  .pfd-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;min-height:44px;}
+  .pfd-nav{display:inline-flex;align-items:center;gap:12px;font-size:11px;}
+  .pfd-nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(246,240,227,.4);background:transparent;color:var(--paper);font-size:20px;cursor:pointer;transition:background-color .2s ease,border-color .2s ease,color .2s ease;}
+  .pfd-nav button:hover,.pfd-nav button:focus-visible{background:var(--accent);border-color:var(--accent);color:var(--ink);}
+  .pfd .p-link{color:var(--paper);margin-left:auto;}
+  .pfd .p-link:hover{color:var(--accent);}
+  .pfd-hint{margin:0;font-size:10.5px;color:rgba(246,240,227,.6);}
+
   @media (prefers-reduced-motion:no-preference){
     .hero-h .row{animation:rise .85s var(--ease) both;}
     .hero-h .row:nth-child(2){animation-delay:.08s;}
@@ -443,6 +501,7 @@
     <a href="#arbeiten">Arbeiten</a>
     <a href="#leistungen">Leistungen</a>
     <a href="#reels">Reels</a>
+    <a href="#portfolio">Portfolio</a>
     <a href="#ablauf">So läuft's</a>
   </nav>
   <div class="head-actions">
@@ -457,9 +516,10 @@
   <a href="#arbeiten"><small>01</small>Arbeiten</a>
   <a href="#leistungen"><small>02</small>Leistungen</a>
   <a href="#reels"><small>03</small>Reels</a>
-  <a href="#ablauf"><small>04</small>So läuft's</a>
-  <a href="#kontakt"><small>05</small>Kontakt</a>
-  <a href="portal.html"><small>06</small>Kundenportal</a>
+  <a href="#portfolio"><small>04</small>Portfolio</a>
+  <a href="#ablauf"><small>05</small>So läuft's</a>
+  <a href="#kontakt"><small>06</small>Kontakt</a>
+  <a href="portal.html"><small>07</small>Kundenportal</a>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
 
@@ -737,6 +797,66 @@
     </div>
   </section>
 
+  <!-- PORTFOLIO START -->
+  <section class="pf" id="portfolio" aria-labelledby="pf-h">
+    <div class="sec-pill"><span class="pill">Film &bull; Foto &bull; Musik</span></div>
+    <h2 class="big-h" id="pf-h">Mehr als Food.</h2>
+    <p class="pf-lead">Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube. Dazu Werbefilme, Events, Food-Fotografie und Blicke hinter die Kamera. Das bringt unser Kollektiv mit an den Tisch.</p>
+    <div class="pf-tabs" role="group" aria-label="Portfolio filtern"><button class="pf-tab" type="button" data-f="alle" aria-pressed="true">Alle<sup>38</sup></button><button class="pf-tab" type="button" data-f="musik" aria-pressed="false">Musikvideos<sup>10</sup></button><button class="pf-tab" type="button" data-f="werbung" aria-pressed="false">Werbung<sup>11</sup></button><button class="pf-tab" type="button" data-f="food" aria-pressed="false">Food<sup>8</sup></button><button class="pf-tab" type="button" data-f="events" aria-pressed="false">Events &amp; Content<sup>3</sup></button><button class="pf-tab" type="button" data-f="bts" aria-pressed="false">Behind the Scenes<sup>6</sup></button></div>
+    <div class="pf-grid">
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="4dbXRCS_dmQ" data-title="KORB" data-meta="HAVA · 11,5 Mio Views · 2:57" data-url="https://www.youtube.com/watch?v=4dbXRCS_dmQ" aria-label="KORB von HAVA abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_4dbXRCS_dmQ.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><video data-src="media/pf/mv_hava.mp4" poster="media/pf/mv_hava.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>KORB</b><span class="mono">HAVA · 11,5 Mio Views · 2:57</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_burger_xl.webp" data-cap="Burger mit Süßkartoffel-Pommes" aria-label="Foto vergrößern: Burger mit Süßkartoffel-Pommes"><img src="media/pf/food_burger.webp" alt="Burger mit Süßkartoffel-Pommes" width="900" height="707" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="g-12PRCBYPI" data-title="Wollt dir nur sagen" data-meta="Mathea · 5,0 Mio Views · 3:00" data-url="https://www.youtube.com/watch?v=g-12PRCBYPI" aria-label="Wollt dir nur sagen von Mathea abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_g-12PRCBYPI.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>Wollt dir nur sagen</b><span class="mono">Mathea · 5,0 Mio Views · 3:00</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_orange_xl.webp" data-cap="Nader an der Kamera im orangen Gegenlicht" aria-label="Foto vergrößern: Nader an der Kamera im orangen Gegenlicht"><img src="media/pf/bts_orange.webp" alt="Nader an der Kamera im orangen Gegenlicht" width="900" height="430" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="werbung" data-plat="vm" data-id="363573551" data-title="Audi inexhaustible" data-meta="Pitch · 0:39" data-url="https://vimeo.com/363573551" aria-label="Audi inexhaustible von Pitch abspielen, Vimeo"><span class="pf-media pf-169"><img src="media/pf/vm_363573551.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><video data-src="media/pf/com_ev.mp4" poster="media/pf/com_ev.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; Vimeo</span></span><span class="pf-cap"><b>Audi inexhaustible</b><span class="mono">Pitch · 0:39</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_sushi_xl.webp" data-cap="Sushi-Platte auf Schiefer" aria-label="Foto vergrößern: Sushi-Platte auf Schiefer"><img src="media/pf/food_sushi.webp" alt="Sushi-Platte auf Schiefer" width="900" height="600" loading="lazy" decoding="async"></button>
+      <figure class="pf-card pf-loop" data-cat="werbung"><span class="pf-media pf-169"><video data-src="media/pf/com_bowling.mp4" poster="media/pf/com_bowling.webp" muted loop playsinline preload="none" aria-label="Ausschnitt aus einem Fashion-Spot in einer Bowlingbahn"></video></span><figcaption class="mono">Ausschnitt · Werbung</figcaption></figure>
+      <button class="pf-card pf-film" type="button" data-cat="events" data-plat="vm" data-id="390701415" data-title="BMW Eventfilm" data-meta="Shuto Crew · 0:55" data-url="https://vimeo.com/390701415" aria-label="BMW Eventfilm von Shuto Crew abspielen, Vimeo"><span class="pf-media pf-169"><img src="media/pf/vm_390701415.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; Vimeo</span></span><span class="pf-cap"><b>BMW Eventfilm</b><span class="mono">Shuto Crew · 0:55</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_neon_xl.webp" data-cap="Zwei Frauen vor roter Neonkulisse" aria-label="Foto vergrößern: Zwei Frauen vor roter Neonkulisse"><img src="media/pf/com_neon.webp" alt="Zwei Frauen vor roter Neonkulisse" width="719" height="900" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="krZk_lMgwlE" data-title="Panik" data-meta="Emilio · 594.000 Views · 3:00" data-url="https://www.youtube.com/watch?v=krZk_lMgwlE" aria-label="Panik von Emilio abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_krZk_lMgwlE.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>Panik</b><span class="mono">Emilio · 594.000 Views · 3:00</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_pho_xl.webp" data-cap="Pho mit Chili, Limette und Kräutern" aria-label="Foto vergrößern: Pho mit Chili, Limette und Kräutern"><img src="media/pf/food_pho.webp" alt="Pho mit Chili, Limette und Kräutern" width="600" height="900" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_dance_xl.webp" data-cap="Am Set: Tanzszene vor einer Graffitiwand, Kamera auf dem Gimbal" aria-label="Foto vergrößern: Am Set: Tanzszene vor einer Graffitiwand, Kamera auf dem Gimbal"><img src="media/pf/bts_dance.webp" alt="Am Set: Tanzszene vor einer Graffitiwand, Kamera auf dem Gimbal" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="werbung" data-plat="vm" data-id="390696762" data-title="Heavens" data-meta="Shuto Crew · 1:02" data-url="https://vimeo.com/390696762" aria-label="Heavens von Shuto Crew abspielen, Vimeo"><span class="pf-media pf-169"><img src="media/pf/vm_390696762.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; Vimeo</span></span><span class="pf-cap"><b>Heavens</b><span class="mono">Shuto Crew · 1:02</span></span></button>
+      <figure class="pf-card pf-loop" data-cat="musik"><span class="pf-media pf-169"><video data-src="media/pf/mv_corridor.mp4" poster="media/pf/mv_corridor.webp" muted loop playsinline preload="none" aria-label="Ausschnitt aus einem Musikvideo: Szene im Hotelflur"></video></span><figcaption class="mono">Ausschnitt · Musikvideos</figcaption></figure>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_bao_1_xl.webp" data-cap="Bao-Burger in Bambuskörben" aria-label="Foto vergrößern: Bao-Burger in Bambuskörben"><img src="media/pf/food_bao_1.webp" alt="Bao-Burger in Bambuskörben" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_glass_xl.webp" data-cap="Fashion unter einer Glaskuppel" aria-label="Foto vergrößern: Fashion unter einer Glaskuppel"><img src="media/pf/com_glass.webp" alt="Fashion unter einer Glaskuppel" width="600" height="900" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="wkh5g5IckeI" data-title="Was ich will" data-meta="Rina · 255.000 Views · 3:06" data-url="https://www.youtube.com/watch?v=wkh5g5IckeI" aria-label="Was ich will von Rina abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_wkh5g5IckeI.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>Was ich will</b><span class="mono">Rina · 255.000 Views · 3:06</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="events" data-full="media/pf/event_lights_xl.webp" data-cap="Gäste in einer digitalen Lichtinstallation" aria-label="Foto vergrößern: Gäste in einer digitalen Lichtinstallation"><img src="media/pf/event_lights.webp" alt="Gäste in einer digitalen Lichtinstallation" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_poke_xl.webp" data-cap="Poke Bowl mit Avocado und Edamame" aria-label="Foto vergrößern: Poke Bowl mit Avocado und Edamame"><img src="media/pf/food_poke.webp" alt="Poke Bowl mit Avocado und Edamame" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="werbung" data-plat="vm" data-id="390687582" data-title="Zìrán Minh2" data-meta="Shuto Crew · 0:29" data-url="https://vimeo.com/390687582" aria-label="Zìrán Minh2 von Shuto Crew abspielen, Vimeo"><span class="pf-media pf-169"><img src="media/pf/vm_390687582.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; Vimeo</span></span><span class="pf-cap"><b>Zìrán Minh2</b><span class="mono">Shuto Crew · 0:29</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_pink_xl.webp" data-cap="Nader mit Gimbal vor pinker Fassade" aria-label="Foto vergrößern: Nader mit Gimbal vor pinker Fassade"><img src="media/pf/bts_pink.webp" alt="Nader mit Gimbal vor pinker Fassade" width="900" height="595" loading="lazy" decoding="async"></button>
+      <figure class="pf-card pf-loop" data-cat="events"><span class="pf-media pf-169"><video data-src="media/pf/content_neon.mp4" poster="media/pf/content_neon.webp" muted loop playsinline preload="none" aria-label="Ausschnitt: Neon-Portrait in einem Diner"></video></span><figcaption class="mono">Ausschnitt · Events &amp; Content</figcaption></figure>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_bowling_1_xl.webp" data-cap="Fashion-Shooting in einer Bowlingbahn" aria-label="Foto vergrößern: Fashion-Shooting in einer Bowlingbahn"><img src="media/pf/com_bowling_1.webp" alt="Fashion-Shooting in einer Bowlingbahn" width="900" height="506" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="XSQbhLU8h5Q" data-title="5xWilly" data-meta="Willy Will · 237.000 Views · 3:25" data-url="https://www.youtube.com/watch?v=XSQbhLU8h5Q" aria-label="5xWilly von Willy Will abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_XSQbhLU8h5Q.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>5xWilly</b><span class="mono">Willy Will · 237.000 Views · 3:25</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_blackbun_xl.webp" data-cap="Black-Bun-Burger in der Box" aria-label="Foto vergrößern: Black-Bun-Burger in der Box"><img src="media/pf/food_blackbun.webp" alt="Black-Bun-Burger in der Box" width="900" height="707" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="musik" data-full="media/pf/mv_tunnel_xl.webp" data-cap="Tänzerin in einem Tunnel, Still aus einem Musikvideo" aria-label="Foto vergrößern: Tänzerin in einem Tunnel, Still aus einem Musikvideo"><img src="media/pf/mv_tunnel.webp" alt="Tänzerin in einem Tunnel, Still aus einem Musikvideo" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_ev_1_xl.webp" data-cap="Model mit blauem E-SUV in der Stadt" aria-label="Foto vergrößern: Model mit blauem E-SUV in der Stadt"><img src="media/pf/com_ev_1.webp" alt="Model mit blauem E-SUV in der Stadt" width="900" height="636" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="tueGnRHj6b8" data-title="Hold My Cup" data-meta="Mougleta · 204.000 Views · 2:32" data-url="https://www.youtube.com/watch?v=tueGnRHj6b8" aria-label="Hold My Cup von Mougleta abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_tueGnRHj6b8.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>Hold My Cup</b><span class="mono">Mougleta · 204.000 Views · 2:32</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_crew_xl.webp" data-cap="Crew und Cast vor dem Dreh zwischen Containern" aria-label="Foto vergrößern: Crew und Cast vor dem Dreh zwischen Containern"><img src="media/pf/bts_crew.webp" alt="Crew und Cast vor dem Dreh zwischen Containern" width="900" height="506" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_rolls_xl.webp" data-cap="Sommerrollen mit Garnelen" aria-label="Foto vergrößern: Sommerrollen mit Garnelen"><img src="media/pf/food_rolls.webp" alt="Sommerrollen mit Garnelen" width="601" height="900" loading="lazy" decoding="async"></button>
+      <figure class="pf-card pf-loop" data-cat="musik"><span class="pf-media pf-169"><video data-src="media/pf/mv_veil.mp4" poster="media/pf/mv_veil.webp" muted loop playsinline preload="none" aria-label="Ausschnitt aus einem Musikvideo: Frau im weißen Mantel"></video></span><figcaption class="mono">Ausschnitt · Musikvideos</figcaption></figure>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_red_xl.webp" data-cap="Portrait im roten Licht am Heck eines Autos" aria-label="Foto vergrößern: Portrait im roten Licht am Heck eines Autos"><img src="media/pf/com_red.webp" alt="Portrait im roten Licht am Heck eines Autos" width="900" height="634" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-film" type="button" data-cat="musik" data-plat="yt" data-id="HCGKTmKtc7U" data-title="Run Away" data-meta="Cymo feat. Harina · 39.000 Views · 3:11" data-url="https://www.youtube.com/watch?v=HCGKTmKtc7U" aria-label="Run Away von Cymo feat. Harina abspielen, YouTube"><span class="pf-media pf-169"><img src="media/pf/yt_HCGKTmKtc7U.webp" alt="" width="960" height="540" loading="lazy" decoding="async"><span class="pf-play mono" aria-hidden="true">&#9654; YouTube</span></span><span class="pf-cap"><b>Run Away</b><span class="mono">Cymo feat. Harina · 39.000 Views · 3:11</span></span></button>
+      <button class="pf-card pf-photo" type="button" data-cat="food" data-full="media/pf/food_bao_2_xl.webp" data-cap="Bao und Fries im Bambuskorb" aria-label="Foto vergrößern: Bao und Fries im Bambuskorb"><img src="media/pf/food_bao_2.webp" alt="Bao und Fries im Bambuskorb" width="900" height="600" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_gimbal_xl.webp" data-cap="Kamera-Setup am Gimbal in einer Halle" aria-label="Foto vergrößern: Kamera-Setup am Gimbal in einer Halle"><img src="media/pf/bts_gimbal.webp" alt="Kamera-Setup am Gimbal in einer Halle" width="900" height="601" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_ev_2_xl.webp" data-cap="Model in Orange auf der Straße, dahinter das E-SUV" aria-label="Foto vergrößern: Model in Orange auf der Straße, dahinter das E-SUV"><img src="media/pf/com_ev_2.webp" alt="Model in Orange auf der Straße, dahinter das E-SUV" width="900" height="637" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="werbung" data-full="media/pf/com_bowling_2_xl.webp" data-cap="Model auf einem Tisch im warmen Licht" aria-label="Foto vergrößern: Model auf einem Tisch im warmen Licht"><img src="media/pf/com_bowling_2.webp" alt="Model auf einem Tisch im warmen Licht" width="900" height="506" loading="lazy" decoding="async"></button>
+      <button class="pf-card pf-photo" type="button" data-cat="bts" data-full="media/pf/bts_studio_xl.webp" data-cap="Lichtaufbau in einer alten Fabrikhalle" aria-label="Foto vergrößern: Lichtaufbau in einer alten Fabrikhalle"><img src="media/pf/bts_studio.webp" alt="Lichtaufbau in einer alten Fabrikhalle" width="900" height="600" loading="lazy" decoding="async"></button>
+    </div>
+    <div class="pf-foot"><button class="btn pf-more" type="button"><span>Alle 38 Arbeiten zeigen</span><i class="dot"></i></button></div>
+    <p class="pf-note mono">Views laut YouTube, Stand 07.10.2026. Die Musikvideos laufen auf den Kanälen der Artists.</p>
+  </section>
+
+  <dialog class="pfd" id="pfd" aria-labelledby="pfd-title">
+    <div class="pfd-box">
+      <div class="pfd-head"><div><span class="pfd-meta mono" id="pfd-meta"></span><h2 id="pfd-title"></h2></div><button class="pfd-x" type="button" aria-label="Schließen">&times;</button></div>
+      <div class="pfd-stage" id="pfd-stage"></div>
+      <div class="pfd-foot"><span class="pfd-nav"><button class="pfd-prev" type="button" aria-label="Vorheriges Foto">&larr;</button><span class="mono" id="pfd-count"></span><button class="pfd-next" type="button" aria-label="Nächstes Foto">&rarr;</button></span><a class="p-link" id="pfd-link" href="#" target="_blank" rel="noopener"><span id="pfd-link-text">Original ansehen</span><span aria-hidden="true">&#8599;</span></a></div>
+      <p class="pfd-hint mono" id="pfd-hint"></p>
+    </div>
+  </dialog>
+<!-- PORTFOLIO END -->
+
   <section class="process" id="ablauf">
     <h2 class="big-h">So beißen wir uns <img src="mouth.webp" alt="" width="200" height="383" loading="lazy" decoding="async"> rein</h2>
     <div class="cards" id="cards" tabindex="0" role="group" aria-label="Ablauf in fünf Schritten">
@@ -783,7 +903,7 @@
       <div class="mail"><small>Lieber per Mail?</small><span class="mail-soon">Unsere Adresse kommt mit der eigenen Domain.</span></div>
     </div>
     <div class="foot-grid">
-      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
+      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
       <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
       <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
     </div>
@@ -975,6 +1095,82 @@
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(mail).then(done, legacy);
     else legacy();
   });
+  }
+
+  // Portfolio 2.0: Filter, Filme im Player, Fotos groß
+  var pf = d.getElementById('portfolio'), pfd = d.getElementById('pfd');
+  if (pf && pfd) {
+    var pfCards = [].slice.call(pf.querySelectorAll('.pf-card')), pfTabs = [].slice.call(pf.querySelectorAll('.pf-tab')),
+        pfMore = pf.querySelector('.pf-more'), pfCur = 'alle', pfAll = false, PF_LIMIT = 12, pfNames = {};
+    pfTabs.forEach(function(t){ pfNames[t.getAttribute('data-f')] = t.firstChild.textContent; });
+    function pfApply(){
+      var n = 0;
+      pfCards.forEach(function(c){
+        var ok = pfCur === 'alle' || c.getAttribute('data-cat') === pfCur;
+        if (ok && pfCur === 'alle' && !pfAll) ok = n < PF_LIMIT;
+        if (ok) n++;
+        c.hidden = !ok;
+      });
+      pfMore.hidden = !(pfCur === 'alle' && !pfAll);
+      pfTabs.forEach(function(t){ t.setAttribute('aria-pressed', t.getAttribute('data-f') === pfCur ? 'true' : 'false'); });
+    }
+    pfTabs.forEach(function(t){ t.addEventListener('click', function(){ pfCur = t.getAttribute('data-f'); pfApply(); }); });
+    pfMore.addEventListener('click', function(){ pfAll = true; pfApply(); });
+    pfApply();
+
+    var stage = d.getElementById('pfd-stage'), pfTitle = d.getElementById('pfd-title'), pfMeta = d.getElementById('pfd-meta'),
+        pfLink = d.getElementById('pfd-link'), pfLinkText = d.getElementById('pfd-link-text'), pfHint = d.getElementById('pfd-hint'),
+        pfNav = pfd.querySelector('.pfd-nav'), pfCount = d.getElementById('pfd-count'), photos = [], pIdx = 0;
+    function pfShow(){
+      live.forEach(function(v){ v.pause(); });
+      if (!pfd.open) { try { pfd.showModal(); } catch (err) { pfd.setAttribute('open', ''); } }
+    }
+    function pfClose(){ stage.innerHTML = ''; if (pfd.open) pfd.close(); }
+    function openFilm(b){
+      var yt = b.getAttribute('data-plat') === 'yt', id = b.getAttribute('data-id'), name = yt ? 'YouTube' : 'Vimeo';
+      var f = d.createElement('iframe');
+      f.src = yt ? 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1'
+                 : 'https://player.vimeo.com/video/' + id + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0';
+      f.title = b.getAttribute('data-title');
+      f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
+      f.setAttribute('allowfullscreen', '');
+      stage.className = 'pfd-stage vid'; stage.innerHTML = ''; stage.appendChild(f);
+      pfTitle.textContent = b.getAttribute('data-title');
+      pfMeta.textContent = b.getAttribute('data-meta');
+      pfLink.href = b.getAttribute('data-url'); pfLink.hidden = false; pfLinkText.textContent = 'Auf ' + name + ' ansehen';
+      pfNav.hidden = true;
+      pfHint.textContent = 'Das Video kommt direkt von ' + name + '. Läuft es hier nicht, öffne es über den Link.';
+      pfd.classList.remove('is-photo'); pfShow();
+    }
+    function showPhoto(){
+      var b = photos[pIdx], img = d.createElement('img');
+      img.src = b.getAttribute('data-full'); img.alt = b.getAttribute('data-cap');
+      stage.className = 'pfd-stage'; stage.innerHTML = ''; stage.appendChild(img);
+      pfTitle.textContent = b.getAttribute('data-cap');
+      pfMeta.textContent = 'Foto · ' + (pfNames[b.getAttribute('data-cat')] || '');
+      pfCount.textContent = (pIdx + 1) + ' / ' + photos.length;
+      pfNav.hidden = photos.length < 2; pfLink.hidden = true; pfHint.textContent = '';
+    }
+    function openPhoto(b){
+      photos = pfCards.filter(function(c){ return c.classList.contains('pf-photo') && (pfCur === 'alle' || c.getAttribute('data-cat') === pfCur); });
+      pIdx = Math.max(0, photos.indexOf(b));
+      pfd.classList.add('is-photo'); showPhoto(); pfShow();
+    }
+    function pfStep(n){ if (photos.length) { pIdx = (pIdx + n + photos.length) % photos.length; showPhoto(); } }
+    pf.addEventListener('click', function(e){
+      var b = e.target.closest('.pf-film,.pf-photo'); if (!b) return;
+      if (b.classList.contains('pf-film')) openFilm(b); else openPhoto(b);
+    });
+    pfd.querySelector('.pfd-x').addEventListener('click', pfClose);
+    pfd.querySelector('.pfd-prev').addEventListener('click', function(){ pfStep(-1); });
+    pfd.querySelector('.pfd-next').addEventListener('click', function(){ pfStep(1); });
+    pfd.addEventListener('click', function(e){ if (e.target === pfd) pfClose(); });
+    pfd.addEventListener('cancel', function(e){ e.preventDefault(); pfClose(); });
+    pfd.addEventListener('close', function(){ if (pfd.open) return; stage.innerHTML = ''; if (!d.hidden) live.forEach(play); });
+    d.addEventListener('keydown', function(e){
+      if (!pfd.open || !pfd.classList.contains('is-photo')) return;
+      if (e.key === 'ArrowRight') pfStep(1); else if (e.key === 'ArrowLeft') pfStep(-1);
+    });
   }
 
   // Berlin-Uhr
