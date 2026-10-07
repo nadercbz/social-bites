@@ -857,7 +857,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-kunden","Kunden & Belege"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-kunden","Kunden & Belege"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
@@ -900,7 +900,7 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-kunden","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-kunden","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
@@ -914,6 +914,7 @@ function tGo(v,quiet){
   else if(v==="t-rechner") h=head("Team","Preisrechner","Vor Ort mit dem Kunden rechnen: Bausteine reinziehen, Mengen und Preise anpassen, fertig ist die Übersicht. Für den Kunden im Präsentationsmodus zeigen.",'<div class="acts"><a class="btn sm inv" href="rechner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild für den Kunden ↗</span></a></div>')+'<iframe class="tframe" src="rechner.html" title="Social Bites Preisrechner" style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:620px"></iframe>';
   else if(v==="t-playbook") h=head("Team","Abläufe (Playbook)","Vom Ja bis zur fertigen Produktion: Bites Opening, Bites for Gastro und Bites for Brands. Schritt für Schritt mit Checklisten, Terminen und Ablage. Haken und Notizen bleiben in deinem Browser.",'<div class="acts"><a class="btn sm" href="playbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="playbook.html" title="Social Bites Playbook"></iframe>';
   else if(v==="t-leistungen") h=head("Team","Leistungen","Was wir machen, auf einer Seite. Ohne Preise, darf also auch an Kunden. Zum Drucken oder als PDF: in neuem Tab öffnen und drucken.",'<div class="acts"><a class="btn sm" href="leistungen.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a><button class="btn sm" type="button" data-tview="os-leistungen"><span class="dot"></span><span>Preise im OS</span></button></div>')+'<iframe class="tframe" src="leistungen.html" title="Social Bites Leistungen"></iframe>';
+  else if(v==="t-akquise") h=head("Team","Akquise-Board","Jeden Morgen neue Chancen in Berlin: Läden, die bald aufmachen, neue Firmen, Praxen und Kanzleien, mit Score, Karte, Kontakt und fertigem Erstkontakt-Text. Die Daten sind verschlüsselt, die Passphrase kennen nur Nader und Tommy.",'<div class="acts"><a class="btn sm" href="akquise.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="akquise.html" title="Social Bites Akquise-Board" style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:640px"></iframe>';
   else if(v==="t-kunden") h=head("Team","Kunden & Belege","Kundenstamm Schritt für Schritt anlegen, auch direkt im Gespräch. Dazu das Rechnungsbuch: was offen ist, was überfällig ist, und Mahnungen in drei Stufen mit Mail-Text. Alles bleibt nur in diesem Browser.",'<div class="acts"><a class="btn sm" href="kunden.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="kunden.html" title="Social Bites Kunden und Belege" style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:620px"></iframe>';
   else if(v==="t-trends") h=head("Kreativ","Trend-Indicator","Jeden Montag neu: virale Videos aus Food und Gastro, Hashtags, Sounds, Google-Suchtrends und die Hooks, die gerade ziehen. Kategorie oben wechseln, Videos merken, Hooks für Kunden bauen.",'<div class="acts"><a class="btn sm" href="trends.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="trends.html" title="Social Bites Trend-Indicator" style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:620px"></iframe>';
   else if(v==="t-galerie") h=head("Kreativ","Galerie & Moodboards","Entwürfe und Ideen als Boards. Herz für Favoriten, Notiz pro Bild, Präsentieren für den großen Bildschirm. Neue Ideen schickst du Claude im Chat.",'<div class="acts"><a class="btn sm" href="galerie.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="galerie.html" title="Social Bites Galerie" allow="fullscreen" allowfullscreen style="height:calc(100vh - var(--bar) - 190px);height:calc(100dvh - var(--bar) - 190px);min-height:620px"></iframe>';
@@ -921,7 +922,7 @@ function tGo(v,quiet){
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-akquise":"Akquise-Board","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -932,6 +933,7 @@ function tStart(){
       tile("os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or")+
       tile("os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.")+
       tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
+      tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden in Berlin, täglich frisch, mit Karte.","t-or")+
       tile("t-kunden","Team","Kunden & Belege","Kundenstamm, offene Rechnungen, Mahnungen.")+
       tile("t-playbook","Abläufe","Playbook","Bites Opening, Gastro und Brands, Schritt für Schritt.")+
       tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.")+

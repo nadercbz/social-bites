@@ -155,7 +155,7 @@
   .trust-label span{font-size:11px;line-height:1.15;}
   .marquee{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
   .marquee-track{display:flex;gap:56px;width:max-content;align-items:center;}
-  .js .marquee-track{animation:slide 44s linear infinite;}
+  .js .marquee-track{animation:slide 96s linear infinite;}
   .client{font-size:22px;white-space:nowrap;opacity:.84;}
   .c1{font-weight:900;letter-spacing:-.04em;text-transform:uppercase;}
   .c2{font-weight:700;letter-spacing:-.04em;text-transform:lowercase;}
@@ -308,7 +308,7 @@
   .win-rows{margin-top:clamp(30px,5vw,60px);display:flex;flex-direction:column;gap:18px;overflow-x:auto;scrollbar-width:none;}
   .js .win-rows{overflow:visible;}
   .win-row{display:flex;gap:18px;width:max-content;padding-left:18px;}
-  .js .win-row{animation:slide 64s linear infinite;padding-left:0;}
+  .js .win-row{animation:slide 100s linear infinite;padding-left:0;}
   .js .win-row.rev{animation-direction:reverse;}
   .win-rows:hover .win-row{animation-play-state:paused;}
   .win{width:260px;flex:none;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:0 10px 30px -20px rgba(30,27,26,.5);}
@@ -455,6 +455,33 @@
   .pf-ov{position:absolute;left:0;right:0;bottom:0;z-index:1;display:grid;gap:5px;margin:0;padding:34px 14px 12px;background:linear-gradient(rgba(20,17,16,0),rgba(20,17,16,.85));color:var(--paper);}
   .pf-ov b{font-weight:800;font-size:clamp(17px,1.5vw,21px);letter-spacing:-.03em;line-height:1.08;}
   .pf-ov .mono{font-size:10.5px;letter-spacing:.05em;opacity:.88;}
+
+  /* Haltung: Mission, Vision, Zahlen und die vier Bausteine, Inhalte aus dem Pitch */
+  .wirk{padding:clamp(56px,8vw,120px) var(--gutter) clamp(36px,5vw,80px);max-width:1280px;margin:0 auto;}
+  .wirk-lead{max-width:64ch;margin:24px auto 0;text-align:center;font-size:clamp(17px,1.5vw,21px);font-weight:600;line-height:1.4;letter-spacing:-.02em;}
+  .wirk-lead b{color:var(--accent-ink,#B83806);}
+  .wirk-stats{list-style:none;margin:clamp(28px,4vw,52px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,28px);}
+  .wirk-stats li{border-top:2px solid var(--ink);padding-top:12px;}
+  .wirk-stats b{display:block;font-weight:850;font-size:clamp(36px,7.4vw,104px);letter-spacing:-.06em;line-height:.9;}
+  .wirk-stats span{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;}
+  .wirk-mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:clamp(24px,3vw,40px);}
+  .wirk-card{border-radius:20px;padding:clamp(20px,2.6vw,34px);display:grid;gap:12px;align-content:start;}
+  .wirk-card.ink{background:var(--ink);color:var(--paper);}
+  .wirk-card.or{background:var(--accent);color:var(--ink);}
+  .wirk-card .mono{font-size:11px;opacity:.8;}
+  .wirk-card p{margin:0;font-weight:700;font-size:clamp(20px,2.1vw,30px);letter-spacing:-.03em;line-height:1.12;}
+  .wirk-bs{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:b;}
+  .wirk-bs li{counter-increment:b;border:1px solid var(--line);border-radius:16px;padding:18px;background:rgba(255,253,248,.7);display:grid;gap:8px;align-content:start;}
+  .wirk-bs li::before{content:"0" counter(b);font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--accent-ink,#B83806);}
+  .wirk-bs h3{margin:0;font-weight:800;font-size:clamp(20px,1.9vw,26px);letter-spacing:-.04em;line-height:1.05;}
+  .wirk-bs p{margin:0;font-size:15px;line-height:1.45;}
+  .wirk-cta{margin:clamp(26px,3.4vw,44px) 0 0;display:flex;gap:14px 22px;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:clamp(18px,1.8vw,24px);letter-spacing:-.03em;}
+  @media (max-width:900px){.wirk-bs{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media (max-width:640px){.wirk-mv{grid-template-columns:1fr;}.wirk-bs{grid-template-columns:1fr;}.wirk-stats span{font-size:9.5px;}}
+  .pf-tall{--h:clamp(320px,36vw,460px);}
+  .pf-ref:hover video{transform:scale(1.03);}
+  .pf-ref video{transition:transform .6s var(--ease);}
+  @media (max-width:760px){.pf-tall{--h:min(76vw,440px);}}
   @media (max-width:640px){
     .pf-strip{--h:calc((100vw - 64px) * 9 / 16);}
     .pf-row-h h3{font-size:clamp(28px,8vw,40px);}
@@ -554,9 +581,9 @@
           <img src="mouth.webp" alt="" width="200" height="383" decoding="async">
           <span class="mono">Projekte<br>mit</span>
         </div>
-        <div class="marquee" role="img" aria-label="Projekte mit Zalando und Nike, Burger King, Aldi Nord, Wolt, Mmaah, ESN, The Pizzary, Spreequell und Crazy Canes">
+        <div class="marquee" role="img" aria-label="Projekte mit Zalando und Nike, Burger King, Aldi Nord, Wolt, Mmaah, ESN, The Pizzary, Spreequell, Crazy Canes, 44 Chicken, Wild Chicken, Spreegold, Romero Berlin, Yakido Mundsburg, Jam Jam Sushi, Yin Seafood, Frank Dube, Markt 11 und Marco Gläser Holding">
           <div class="marquee-track" data-loop aria-hidden="true">
-            <span class="client c2">Zalando × Nike</span><span class="client c1">Burger King</span><span class="client c3">Aldi Nord</span><span class="client c4">Wolt</span><span class="client c4">Mmaah</span><span class="client c1">ESN</span><span class="client c2">The Pizzary</span><span class="client c5">Spreequell</span><span class="client c3">Crazy Canes</span>
+            <span class="client c2">Zalando × Nike</span><span class="client c1">Burger King</span><span class="client c3">Aldi Nord</span><span class="client c4">Wolt</span><span class="client c4">Mmaah</span><span class="client c1">ESN</span><span class="client c2">The Pizzary</span><span class="client c5">Spreequell</span><span class="client c3">Crazy Canes</span><span class="client c1">44 Chicken</span><span class="client c2">Wild Chicken</span><span class="client c3">Spreegold</span><span class="client c4">Romero Berlin</span><span class="client c5">Yakido Mundsburg</span><span class="client c1">Jam Jam Sushi</span><span class="client c2">Yin Seafood</span><span class="client c3">Frank Dube</span><span class="client c4">Markt 11</span><span class="client c5">Marco Gläser Holding</span>
           </div>
         </div>
       </div>
@@ -757,6 +784,28 @@
     <p class="ruler-note mono">15 Sekunden. Drei Sekunden entscheiden.</p>
   </div>
 
+  <section class="wirk" id="wirkung" aria-labelledby="wirk-h">
+    <div class="sec-pill"><span class="pill">Unsere &bull; Haltung</span></div>
+    <h2 class="big-h" id="wirk-h">Wirkung, nicht nur Reichweite.</h2>
+    <p class="wirk-lead">Wir bringen Marken und Menschen digital n&auml;her zusammen. 80&nbsp;% der deutschen Unternehmen sind auf Social Media aktiv (laut Bitkom), doch viele bleiben unter ihrem Potenzial. <b>Das Problem ist nicht die Plattform. Das Problem ist fehlende Strategie und Konstanz.</b></p>
+    <ul class="wirk-stats">
+      <li><b>15&nbsp;Mio+</b><span>Social-Media-Impressionen</span></li>
+      <li><b>60+</b><span>Kunden und Projekte</span></li>
+      <li><b>40</b><span>Projekte allein in 2026</span></li>
+    </ul>
+    <div class="wirk-mv">
+      <article class="wirk-card ink"><span class="mono">Mission</span><p>Starke Unternehmen mit klarer Strategie, starken Kurzvideos und modernem Content sichtbar machen und Aufmerksamkeit in Vertrauen und Kundenbindung verwandeln.</p></article>
+      <article class="wirk-card or"><span class="mono">Vision</span><p>Starke Unternehmen sichtbar, nahbar und relevant machen, mit Content, der nachhaltig Wirkung erzeugt.</p></article>
+    </div>
+    <ol class="wirk-bs" aria-label="Unsere vier Bausteine">
+      <li><h3>Content Strategy</h3><p>Themen, Formate, Hooks und Positionierung. Dazu die Content-Planung, damit aus guten Ideen eine Serie wird.</p></li>
+      <li><h3>Video Production</h3><p>Kurzvideos, Reels, TikToks und Shorts. Werbevideos und gebündelte Drehtage, die Content für Wochen liefern.</p></li>
+      <li><h3>Social Media Management</h3><p>Posting, Planung, Stories und Captions, dazu die laufende Betreuung deiner Kanäle.</p></li>
+      <li><h3>Growth &amp; Ads</h3><p>Paid Social, Ad-Creatives und Kampagnen mit datenbasierter Optimierung.</p></li>
+    </ol>
+    <p class="wirk-cta"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#kontakt"><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
+  </section>
+
   <section class="services" id="leistungen">
     <div class="sec-pill"><span class="pill">Unsere • Leistungen</span></div>
     <ol class="svc-list">
@@ -799,6 +848,10 @@
         <div class="win" data-play="zalando_nike"><div class="win-bar mono"><i></i><i></i><i></i><b>Zalando_Nike_TikTok.mp4</b></div><div class="win-body"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:50</span><span class="win-scrub"></span></div></div>
         <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_500_Free_Pizza.mp4</b></div><div class="win-body"><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
         <div class="win" data-play="mmaah"><div class="win-bar mono"><i></i><i></i><i></i><b>Mmaah_KBBQ_Challenge.mp4</b></div><div class="win-body"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:36</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="c44_vorstellung"><div class="win-bar mono"><i></i><i></i><i></i><b>44Chicken_Vorstellung.mp4</b></div><div class="win-body"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:44</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="spreegold"><div class="win-bar mono"><i></i><i></i><i></i><b>Spreegold_Restaurant.mp4</b></div><div class="win-body"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:28</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="wild_thai"><div class="win-bar mono"><i></i><i></i><i></i><b>WildChicken_Thai_Fried.mp4</b></div><div class="win-body"><video data-src="media/ref_wild_thai_loop.mp4" poster="media/ref_wild_thai.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:36</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="frank_dube"><div class="win-bar mono"><i></i><i></i><i></i><b>FrankDube_Barber.mp4</b></div><div class="win-body"><video data-src="media/ref_frank_dube_loop.mp4" poster="media/ref_frank_dube.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 1:34</span><span class="win-scrub"></span></div></div>
       </div>
       <div class="win-row rev" data-loop>
         <div class="win" data-play="esn"><div class="win-bar mono"><i></i><i></i><i></i><b>ESN_Olympia.mp4</b></div><div class="win-body"><video data-src="media/ref_esn_loop.mp4" poster="media/ref_esn.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:52</span><span class="win-scrub"></span></div></div>
@@ -808,6 +861,10 @@
         <div class="win" data-play="aldi"><div class="win-bar mono"><i></i><i></i><i></i><b>AldiNord_Gamescom.mp4</b></div><div class="win-body"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:05</span><span class="win-scrub"></span></div></div>
         <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>ThePizzary_POV_ASMR.mp4</b></div><div class="win-body"><video data-src="media/asmr.mp4" poster="media/asmr.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
         <div class="win"><div class="win-bar mono"><i></i><i></i><i></i><b>Mmaah_Crispy_Love_01.mp4</b></div><div class="win-body"><video data-src="media/crispy.mp4" poster="media/crispy.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="c44_bowls"><div class="win-bar mono"><i></i><i></i><i></i><b>44Chicken_Bowls.mp4</b></div><div class="win-body"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:14</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="wild_probe"><div class="win-bar mono"><i></i><i></i><i></i><b>WildChicken_Probe.mp4</b></div><div class="win-body"><video data-src="media/ref_wild_probe_loop.mp4" poster="media/ref_wild_probe.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:32</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="c44_sandwich"><div class="win-bar mono"><i></i><i></i><i></i><b>44Chicken_Sandwich_5Euro.mp4</b></div><div class="win-body"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:17</span><span class="win-scrub"></span></div></div>
+        <div class="win" data-play="wild_team"><div class="win-bar mono"><i></i><i></i><i></i><b>WildChicken_Team.mp4</b></div><div class="win-body"><video data-src="media/ref_wild_team_loop.mp4" poster="media/ref_wild_team.webp" muted loop playsinline preload="none" tabindex="-1"></video><span class="win-play mono">&#9654; 0:24</span><span class="win-scrub"></span></div></div>
       </div>
     </div>
   </section>
@@ -816,8 +873,8 @@
   <section class="pf" id="portfolio" aria-labelledby="pf-h">
     <div class="sec-pill"><span class="pill">Film &bull; Foto &bull; Musik</span></div>
     <h2 class="big-h" id="pf-h">Mehr als Food.</h2>
-    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube, Food-Fotografie, Events und Blicke hinter die Kamera. Das bringt unser Kollektiv mit an den Tisch.</p>
-    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a><a class="pf-tab" href="#pf-food">Food<sup>8</sup></a><a class="pf-tab" href="#pf-events">Events &amp; Content<sup>3</sup></a><a class="pf-tab" href="#pf-bts">Behind the Scenes<sup>6</sup></a></nav>
+    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube, Food-Fotografie, Kampagnen und Reels für Kunden, Events und Blicke hinter die Kamera. Das bringt unser Kollektiv mit an den Tisch.</p>
+    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a><a class="pf-tab" href="#pf-food">Food<sup>8</sup></a><a class="pf-tab" href="#pf-kampagnen">Kampagnen &amp; Reels<sup>10</sup></a><a class="pf-tab" href="#pf-events">Events &amp; Content<sup>3</sup></a><a class="pf-tab" href="#pf-bts">Behind the Scenes<sup>6</sup></a></nav>
     <div class="pf-rows">
       <div class="pf-row" id="pf-werbung">
         <div class="pf-row-h"><div><h3>Commercials</h3><span class="mono">3 Filme · 1 Clip · 7 Fotos</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Commercials: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Commercials: weiter">&rarr;</button></div></div>
@@ -863,6 +920,21 @@
           <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/food_bao_2_xl.webp" data-cap="Bao und Fries im Bambuskorb" aria-label="Foto vergrößern: Bao und Fries im Bambuskorb"><img src="media/pf/food_bao_2.webp" alt="Bao und Fries im Bambuskorb" width="900" height="600" loading="lazy" decoding="async"></button>
         </div>
       </div>
+      <div class="pf-row" id="pf-kampagnen">
+        <div class="pf-row-h"><div><h3>Kampagnen &amp; Reels</h3><span class="mono">10 Videos mit Ton</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Kampagnen &amp; Reels: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Kampagnen &amp; Reels: weiter">&rarr;</button></div></div>
+        <div class="pf-strip pf-tall" tabindex="0" aria-label="Kampagnen &amp; Reels">
+          <button class="pf-card pf-ref" type="button" data-play="kampagne_lifestyle" style="aspect-ratio:9/16" aria-label="Kampagne Lifestyle, Kampagne: Video mit Ton abspielen (0:29)"><video data-src="media/ref_kampagne_lifestyle_loop.mp4" poster="media/ref_kampagne_lifestyle.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:29</span><span class="pf-ov"><b>Kampagne Lifestyle</b><span class="mono">Kampagne</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="kampagne_street" style="aspect-ratio:9/16" aria-label="Kampagne Street, Kampagne: Video mit Ton abspielen (0:44)"><video data-src="media/ref_kampagne_street_loop.mp4" poster="media/ref_kampagne_street.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:44</span><span class="pf-ov"><b>Kampagne Street</b><span class="mono">Kampagne</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="c44_vorstellung" style="aspect-ratio:9/16" aria-label="44 Chicken, Vorstellung: Video mit Ton abspielen (0:44)"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:44</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Vorstellung</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="c44_sandwich" style="aspect-ratio:9/16" aria-label="44 Chicken, Sandwich für 5 €: Video mit Ton abspielen (0:17)"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:17</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Sandwich für 5 €</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="c44_bowls" style="aspect-ratio:9/16" aria-label="44 Chicken, Bowls und Chicken: Video mit Ton abspielen (0:14)"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:14</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Bowls und Chicken</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="spreegold" style="aspect-ratio:9/16" aria-label="Spreegold, Restaurant: Video mit Ton abspielen (0:28)"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:28</span><span class="pf-ov"><b>Spreegold</b><span class="mono">Restaurant</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="wild_thai" style="aspect-ratio:9/16" aria-label="Wild Chicken, Thai Fried Chicken: Video mit Ton abspielen (0:36)"><video data-src="media/ref_wild_thai_loop.mp4" poster="media/ref_wild_thai.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:36</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Thai Fried Chicken</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="wild_probe" style="aspect-ratio:9/16" aria-label="Wild Chicken, Geschmackstest: Video mit Ton abspielen (0:32)"><video data-src="media/ref_wild_probe_loop.mp4" poster="media/ref_wild_probe.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:32</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Geschmackstest</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="wild_team" style="aspect-ratio:9/16" aria-label="Wild Chicken, Das Team: Video mit Ton abspielen (0:24)"><video data-src="media/ref_wild_team_loop.mp4" poster="media/ref_wild_team.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:24</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Das Team</span></span></button>
+          <button class="pf-card pf-ref" type="button" data-play="frank_dube" style="aspect-ratio:9/16" aria-label="Frank Dube, Barber: Video mit Ton abspielen (1:34)"><video data-src="media/ref_frank_dube_loop.mp4" poster="media/ref_frank_dube.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 1:34</span><span class="pf-ov"><b>Frank Dube</b><span class="mono">Barber</span></span></button>
+        </div>
+      </div>
       <div class="pf-row" id="pf-events">
         <div class="pf-row-h"><div><h3>Events &amp; Content</h3><span class="mono">1 Film · 1 Clip · 1 Foto</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Events &amp; Content: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Events &amp; Content: weiter">&rarr;</button></div></div>
         <div class="pf-strip" tabindex="0" aria-label="Events &amp; Content">
@@ -902,7 +974,7 @@
       <article class="card">
         <div><div class="step mono"><b>Schritt 01</b><span>Briefing</span></div>
         <h3>Wir hören zu.</h3>
-        <p>Was soll passieren? Mehr Gäste, ein Opening, ein neues Gericht, ein Kanal, der endlich läuft. Erst das Ziel, dann der Content.</p></div>
+        <p>Was soll passieren? Mehr Gäste, ein Opening, ein neues Gericht, ein Kanal, der endlich läuft. Wir klären Ziele und Positionierung, dann kommt der Content.</p></div>
         <div class="card-foot"><span class="tag both mono">Online + Offline</span><button class="card-vid" type="button" data-play="step_mmaah" aria-label="Mmaah: Video mit Ton abspielen (1:14)"><video data-src="media/ref_step_mmaah_loop.mp4" poster="media/ref_step_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 1:14</span><span class="cv-name mono" aria-hidden="true">Mmaah</span></button></div>
       </article>
       <article class="card">
@@ -914,13 +986,13 @@
       <article class="card">
         <div><div class="step mono"><b>Schritt 03</b><span>Dreh</span></div>
         <h3>Shotlist steht, Kamera läuft.</h3>
-        <p>Komplette Shotlist für den Tag. Wir drehen bei dir vor Ort, führen Regie und organisieren die Talente vor der Kamera.</p></div>
+        <p>Komplette Shotlist für den Tag. Wir bündeln alles in einem Drehtag bei dir vor Ort, führen Regie und organisieren die Talente vor der Kamera.</p></div>
         <div class="card-foot"><span class="tag mono">Online</span><button class="card-vid" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:50</span><span class="cv-name mono" aria-hidden="true">Zalando × Nike</span></button></div>
       </article>
       <article class="card">
         <div><div class="step mono"><b>Schritt 04</b><span>Schnitt</span></div>
         <h3>Schnitt, Posting, Community.</h3>
-        <p>Editing mit Hook in den ersten drei Sekunden. Auf Wunsch posten wir für dich und kümmern uns um Kommentare und Nachrichten.</p></div>
+        <p>Editing mit Hook in den ersten drei Sekunden. Auf Wunsch posten wir für dich, antworten auf Kommentare, werten die Zahlen aus und optimieren laufend.</p></div>
         <div class="card-foot"><span class="tag mono">Online</span><button class="card-vid" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:53</span><span class="cv-name mono" aria-hidden="true">The Pizzary</span></button></div>
       </article>
       <article class="card">
@@ -939,10 +1011,11 @@
   <section class="contact" id="kontakt">
     <div>
       <h2>Content, den Leute sehen wollen <a class="btn" href="portal.html"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span>Kundenportal ansehen</span><i class="dot"></i></a></h2>
+      <div class="mail"><small>Kostenloses Erstgespräch</small><span class="mail-soon">Ziele und Umfang festlegen, ersten Drehtag planen.</span></div>
       <div class="mail"><small>Lieber per Mail?</small><span class="mail-soon">Unsere Adresse kommt mit der eigenen Domain.</span></div>
     </div>
     <div class="foot-grid">
-      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
+      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#wirkung">Haltung</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
       <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
       <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
     </div>
@@ -1091,16 +1164,28 @@
     step_mmaah:{t:'Mmaah',p:'Instagram',d:'1:14',u:'https://www.instagram.com/reel/Dbvh3AICSJB/'},
     step_crazycanes:{t:'Crazy Canes',p:'Instagram',d:'0:30',u:'https://www.instagram.com/p/DdjR4qdiQHX/'},
     step_pizzary:{t:'The Pizzary',p:'Instagram',d:'0:53',u:'https://www.instagram.com/p/DddwzPsMbJN/'},
-    step_vrohstoff:{t:'Vrohstoff',p:'Instagram',d:'0:44',u:'https://www.instagram.com/p/DbqbCuzNRrM/'}
+    step_vrohstoff:{t:'Vrohstoff',p:'Instagram',d:'0:44',u:'https://www.instagram.com/p/DbqbCuzNRrM/'},
+    c44_vorstellung:{t:'44 Chicken',p:'Kurzvideo',d:'0:44',u:'https://www.instagram.com/44chkn/',lt:'Instagram-Profil'},
+    c44_bowls:{t:'44 Chicken',p:'Kurzvideo',d:'0:14',u:'https://www.instagram.com/44chkn/',lt:'Instagram-Profil'},
+    c44_sandwich:{t:'44 Chicken',p:'Kurzvideo',d:'0:17',u:'https://www.instagram.com/44chkn/',lt:'Instagram-Profil'},
+    spreegold:{t:'Spreegold',p:'Kurzvideo',d:'0:28',u:'https://www.instagram.com/spreegold.berlin/',lt:'Instagram-Profil'},
+    wild_thai:{t:'Wild Chicken',p:'Kurzvideo',d:'0:36',u:'https://www.instagram.com/wildchicken_nastythaiflavour/',lt:'Instagram-Profil'},
+    wild_probe:{t:'Wild Chicken',p:'Kurzvideo',d:'0:32',u:'https://www.instagram.com/wildchicken_nastythaiflavour/',lt:'Instagram-Profil'},
+    wild_team:{t:'Wild Chicken',p:'Kurzvideo',d:'0:24',u:'https://www.instagram.com/wildchicken_nastythaiflavour/',lt:'Instagram-Profil'},
+    frank_dube:{t:'Frank Dube',p:'Kurzvideo',d:'1:34',u:'https://www.instagram.com/frank_dube58/',lt:'Instagram-Profil'},
+    kampagne_lifestyle:{t:'Kampagne Lifestyle',p:'Kurzvideo',d:'0:29',u:'',lt:''},
+    kampagne_street:{t:'Kampagne Street',p:'Kurzvideo',d:'0:44',u:'',lt:''}
   };
   var dlg = d.getElementById('player'), pv = d.getElementById('player-video');
   function openRef(k){
     var r = REFS[k]; if (!r) return;
-    if (typeof dlg.showModal !== 'function') { window.open(r.u, '_blank', 'noopener'); return; }
+    if (typeof dlg.showModal !== 'function') { if (r.u) window.open(r.u, '_blank', 'noopener'); return; }
     d.getElementById('player-title').textContent = r.t;
     d.getElementById('player-meta').textContent = r.p + ' · ' + r.d + (r.v ? ' · ' + r.v + ' Views' : '');
-    d.getElementById('player-link').href = r.u;
-    d.getElementById('player-link-text').textContent = 'Original auf ' + r.p;
+    var pl = d.getElementById('player-link');
+    pl.hidden = !r.u;
+    pl.href = r.u || '#';
+    d.getElementById('player-link-text').textContent = r.lt || ('Original auf ' + r.p);
     pv.poster = 'media/ref_' + k + '.webp';
     pv.src = 'media/ref_' + k + '.mp4';
     live.forEach(function(v){ v.pause(); });

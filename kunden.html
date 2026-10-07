@@ -394,6 +394,7 @@
 <div id="printHost" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="kunden_seed.js"></script>
 <script>
 try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
 (function(){
@@ -845,6 +846,22 @@ $("#dataBtn").addEventListener("click",function(){openD($("#dDlg"));});
 $("#kq").addEventListener("input",renderK);
 $("#bq").addEventListener("input",renderB);
 
+/* Startliste der bisherigen Kunden einmal übernehmen (gelöschte kommen nicht zurück) */
+(function(){
+  var seed=window.KUNDEN_SEED||[],done=load("sb-kunden-seed",{}),added=0,t0=Date.now();
+  seed.forEach(function(sd,i){
+    if(done[sd.id])return;
+    done[sd.id]=1;
+    var nm=sd.name.trim().toLowerCase();
+    if(K.some(function(k){return String(k.name).trim().toLowerCase()===nm;}))return;
+    var o=Object.assign({form:"du",land:"Deutschland",pay:"14"},sd);
+    o.id=uid("k");o.nr=nextKNr();o.created=o.updated=new Date(t0-i*1000).toISOString();
+    K.push(o);added++;
+  });
+  if(added)saveK();
+  store("sb-kunden-seed",done);
+  if(added)setTimeout(function(){toast(added+" Kunden aus der Kundenliste übernommen");},400);
+})();
 if(/belege/.test(location.hash)){setTab("belege");if(B.some(isOver))bFil="ueber";}
 render();
 })();
