@@ -412,7 +412,7 @@ function warnPills(i){
 /* ---------- Filter ---------- */
 function ok(i,f,skip){
   if(skip!=="q"&&f.q){var h=fold([i.name,i.instagram,i.tiktok,i.youtube,i.nische,i.notiz,i.stadt,(i.genres||[]).join(" "),(i.projekte||[]).join(" "),i.agentur,(i.tags||[]).join(" ")].join(" "));if(f.q.split(/\s+/).some(function(w){return w&&h.indexOf(w)<0;}))return false;}
-  if(skip!=="stadt"&&f.stadt&&i.stadt!==f.stadt&&(i.orte||[]).indexOf(f.stadt)<0)return false;
+  if(skip!=="stadt"&&f.stadt){if(f.stadt==="__offen"){if(i.stadt)return false;}else if(i.stadt!==f.stadt&&(i.orte||[]).indexOf(f.stadt)<0)return false;}
   if(skip!=="bl"&&f.bl&&i.bundesland!==f.bl)return false;
   if(skip!=="genres"&&f.genres.length&&!(i.genres||[]).some(function(g){return f.genres.indexOf(g)>-1;}))return false;
   if(skip!=="branche"&&f.branche&&(i.branchen||[]).indexOf(f.branche)<0)return false;
@@ -441,7 +441,8 @@ function buildFilters(){
 }
 function updateFilters(){
   var set=function(id,html){var el=$("#"+id);if(el&&el.innerHTML!==html)el.innerHTML=html;};
-  set("fstadt",opts("fstadt","Alle Städte",counts(filtered("stadt"),function(i){return i.stadt;}),F.stadt,true));
+  var cst=counts(filtered("stadt"),function(i){return i.stadt;}),noc=filtered("stadt").filter(function(i){return !i.stadt;}).length;
+  set("fstadt",opts("fstadt","Alle Städte",cst,F.stadt,true).replace("</select>","")+(noc?'<option value="__offen"'+(F.stadt==="__offen"?" selected":"")+'>Stadt offen ('+noc+')</option>':""));
   set("fbl",opts("fbl","Alle Bundesländer",counts(filtered("bl"),function(i){return i.bundesland;}),F.bl,true));
   set("fbranche",opts("fbranche","Alle Branchen",counts(filtered("branche"),function(i){return i.branchen;}),F.branche,true));
   var cp=counts(filtered("plat"),function(i){return [i.instagram?"instagram":"",i.tiktok?"tiktok":"",i.youtube?"youtube":""];});
