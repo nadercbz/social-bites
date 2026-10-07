@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Preisrechner</title>
 <meta name="description" content="Preisrechner von Social Bites: Bausteine wählen, Preis vor Ort mit dem Kunden berechnen.">
@@ -236,7 +237,7 @@
   .dsheet *{box-sizing:border-box;}
   .d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
   .d-logo{height:58px;width:auto;}
-  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:#3a3532;}
+  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:var(--ink-2);}
   .d-mid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;margin-top:34px;align-items:start;}
   .d-addr{font-size:13.5px;line-height:1.5;}
   .d-addr small{display:block;font-size:9px;letter-spacing:.02em;color:#6B6357;border-bottom:1px solid #cfc8b8;padding-bottom:3px;margin-bottom:8px;}
@@ -256,7 +257,7 @@
   .d-table td small{display:block;color:#6B6357;font-size:11px;margin-top:1px;}
   .d-table tr.grp td{padding:12px 0 4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#B83806;border-bottom:0;}
   .d-table tr{break-inside:avoid;}
-  .d-scope{margin:12px 0 0;font-size:11.5px;color:#3a3532;}
+  .d-scope{margin:12px 0 0;font-size:11.5px;color:var(--ink-2);}
   .d-scope b{display:block;font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;margin-bottom:4px;}
   .d-scope ul{margin:0;padding-left:16px;columns:2;column-gap:20px;}
   .d-tot{margin:16px 0 0 auto;width:310px;display:grid;gap:3px;}
@@ -271,7 +272,7 @@
   .d-bank dd{margin:0;font-weight:650;word-break:break-word;}
   .d-plan{margin:0;padding:0;list-style:none;display:grid;gap:2px;}
   .d-plan li{display:flex;justify-content:space-between;gap:12px;max-width:430px;}
-  .d-hint{margin:16px 0 0;padding:0;list-style:none;font-size:11.5px;color:#3a3532;display:grid;gap:3px;}
+  .d-hint{margin:16px 0 0;padding:0;list-style:none;font-size:11.5px;color:var(--ink-2);display:grid;gap:3px;}
   .d-hint li{padding-left:12px;position:relative;}
   .d-hint li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;background:#F04A0A;}
   .d-sign{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:34px;font-size:11px;color:#6B6357;break-inside:avoid;}
@@ -305,6 +306,7 @@
   }
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 

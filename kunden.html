@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Kunden und Belege</title>
 <meta name="description" content="Kundenstamm, Rechnungsbuch und Mahnungen von Social Bites.">
@@ -79,7 +80,7 @@
   .kc:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:5px 5px 0 var(--accent);}
   .kc .hd{display:flex;align-items:flex-start;gap:8px;}
   .kc h3{margin:0;font-weight:800;font-size:21px;letter-spacing:-.035em;line-height:1.1;flex:1;min-width:0;overflow-wrap:anywhere;}
-  .kc .who{font-size:14.5px;color:#3a3532;}
+  .kc .who{font-size:14.5px;color:var(--ink-2);}
   .kc .meta{display:flex;gap:6px;flex-wrap:wrap;}
   .kc .money{display:flex;justify-content:space-between;gap:8px;font-size:13.5px;border-top:1px solid var(--line);padding-top:8px;color:var(--mute);}
   .kc .money b{color:var(--ink);}
@@ -172,7 +173,7 @@
   .dsheet *{box-sizing:border-box;}
   .d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
   .d-logo{height:58px;width:auto;}
-  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:#3a3532;}
+  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:var(--ink-2);}
   .d-mid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;margin-top:34px;align-items:start;}
   .d-addr{font-size:13.5px;line-height:1.5;}
   .d-addr small{display:block;font-size:9px;letter-spacing:.02em;color:#6B6357;border-bottom:1px solid #cfc8b8;padding-bottom:3px;margin-bottom:8px;}
@@ -238,6 +239,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <header class="top">

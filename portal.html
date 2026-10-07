@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Kundenportal</title>
 <meta name="description" content="Kundenportal von Social Bites: Freigaben, Termine, Dateien, Rechnungen und Zahlen zu deinem Projekt.">
@@ -362,6 +363,7 @@
     *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
   }
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
@@ -371,6 +373,7 @@
     <div class="lg-top">
       <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
       <a class="lg-back" href="index.html">← Zur Website</a>
+      <button class="theme-btn" type="button" data-theme-toggle></button>
     </div>
     <div class="lg-phone" aria-hidden="true"><video src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline autoplay preload="metadata"></video></div>
     <h1 id="lg-h">Dein Projekt.<br>Live.</h1>
@@ -406,6 +409,7 @@
     <span class="mono bar-label">Kundenportal</span>
     <span class="client"><b>Teig &amp; Tomate</b><span class="pill soft">Beispielkunde</span></span>
     <div class="bar-right">
+      <button class="theme-btn" type="button" data-theme-toggle></button>
       <span class="avatar" aria-hidden="true">S</span>
       <button class="btn sm" type="button" id="logout"><span class="dot"></span><span>Abmelden</span></button>
     </div>
@@ -436,6 +440,7 @@
     <span class="client"><b>Social Bites</b><span class="pill or">Intern</span></span>
     <div class="bar-right">
       <span class="avatar" aria-hidden="true">SB</span>
+      <button class="theme-btn" type="button" data-theme-toggle></button>
       <button class="btn sm" type="button" id="tlogout"><span class="dot"></span><span>Abmelden</span></button>
     </div>
   </header>

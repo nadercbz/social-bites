@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Büro</title>
 <meta name="description" content="Das Büro von Social Bites: alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set und Hierarchie.">
@@ -115,17 +116,17 @@
   .prop svg{width:23px;height:23px;}
   .seats{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:14px 4px;}
 
-  .r-bruecke{--tex:url(buero/tex_bruecke.webp);--veil:rgba(255,246,228,.1);}
-  .r-radar{--tex:url(buero/tex_radar.webp);--veil:rgba(255,236,222,.2);}
-  .r-kueche{--tex:url(buero/tex_kueche.webp);--veil:rgba(255,248,225,.08);--acc:#E8A41C;--accI:#946400;}
-  .r-set{--tex:url(buero/tex_set.webp);--veil:rgba(230,240,252,.12);--acc:#2B59A6;--accI:#1D4283;}
-  .r-post{--tex:url(buero/tex_post.webp);--veil:rgba(40,16,40,.18);--sign:rgba(36,22,34,.82);--signtx:#F6F0E3;--acc:#C25AA0;--accI:#EBA6D2;--mu:#CDBFAE;}
-  .r-redaktion{--tex:url(buero/tex_redaktion.webp);--veil:rgba(220,245,244,.08);--acc:#1B8A8F;--accI:#0F5C60;}
-  .r-kasse{--tex:url(buero/tex_kasse.webp);--veil:rgba(235,250,240,.12);--acc:#1F6B4F;--accI:#17513b;}
-  .r-maschinen{--tex:url(buero/tex_maschinen.webp);--veil:rgba(235,232,226,.2);--acc:#4B6573;--accI:#34505f;overflow:hidden;}
+  .r-bruecke{--tex:url(buero/tex2_bruecke.webp);--veil:rgba(255,255,255,0);}
+  .r-radar{--tex:url(buero/tex2_radar.webp);--veil:rgba(255,255,255,0);}
+  .r-kueche{--tex:url(buero/tex2_kueche.webp);--veil:rgba(255,255,255,0);--acc:#E8A41C;--accI:#946400;}
+  .r-set{--tex:url(buero/tex2_set.webp);--veil:rgba(255,255,255,0);--acc:#2B59A6;--accI:#1D4283;}
+  .r-post{--tex:url(buero/tex2_post.webp);--veil:rgba(30,12,30,.10);--sign:rgba(36,22,34,.82);--signtx:#F6F0E3;--acc:#C25AA0;--accI:#EBA6D2;--mu:#CDBFAE;}
+  .r-redaktion{--tex:url(buero/tex2_redaktion.webp);--veil:rgba(255,255,255,0);--acc:#1B8A8F;--accI:#0F5C60;}
+  .r-kasse{--tex:url(buero/tex2_kasse.webp);--veil:rgba(255,255,255,0);--acc:#1F6B4F;--accI:#17513b;}
+  .r-maschinen{--tex:url(buero/tex2_maschinen.webp);--veil:rgba(255,255,255,0);--acc:#4B6573;--accI:#34505f;overflow:hidden;}
   .r-maschinen::before{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;background:repeating-linear-gradient(135deg,#E8A41C 0 12px,#1E1B1A 12px 24px);}
   .r-maschinen .door{display:none;}
-  .r-konf{--tex:url(buero/tex_bruecke.webp);--veil:rgba(60,30,10,.18);}
+  .r-konf{--tex:url(buero/tex2_bruecke.webp);--veil:rgba(255,255,255,0);}
 
   .bz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 18px;}
   .zone{display:grid;gap:12px;align-content:start;}
@@ -365,6 +366,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">

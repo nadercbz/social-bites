@@ -1,0 +1,99 @@
+/* Dunkelmodus für alle Seiten von Social Bites. Wird nach dem Seiten-CSS geladen.
+   Er überschreibt die gemeinsamen Farbwörter (Papier, Karte, Tinte, Linien) und korrigiert fest eingestellte Farben.
+   Hell ist der Ausgangszustand der Seiten, Dunkel greift nur bei html[data-theme="dark"]. Schalten: theme.js. */
+
+:root{--ink-2:#3a3532;}
+
+/* Umschalt-Knopf (überall gleich) */
+[data-theme-toggle]{display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
+.tt-ic{display:inline-grid;place-items:center;width:20px;height:20px;flex:none;}
+.tt-ic svg{width:18px;height:18px;}
+.theme-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line-2,rgba(30,27,26,.3));background:transparent;color:var(--ink,#1E1B1A);padding:0;justify-content:center;transition:background-color .2s,border-color .2s;}
+.theme-btn:hover,.theme-btn:focus-visible{border-color:var(--accent,#F04A0A);background:var(--accent-tint,#FFE2D0);}
+.theme-btn .tt-ic svg{width:19px;height:19px;}
+.sb-tt{position:fixed;right:14px;bottom:14px;z-index:95;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink,#1E1B1A);background:var(--card,#FFFDF8);color:var(--ink,#1E1B1A);justify-content:center;box-shadow:0 6px 16px -6px rgba(0,0,0,.35);padding:0;}
+.sb-tt:hover{background:var(--accent,#F04A0A);color:#1E1B1A;}
+.sb-tt .tt-ic{width:22px;height:22px;} .sb-tt .tt-ic svg{width:21px;height:21px;}
+@media print{.sb-tt{display:none!important;}}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#151211; --paper-2:#221D1B; --card:#1D1917; --ink:#F3ECDD; --mute:#A89F90;
+  --line:rgba(243,236,221,.14); --line-2:rgba(243,236,221,.30);
+  --accent-ink:#FF8A50; --accent-tint:#3B1E10; --peach:#3A2418; --ink-2:#D4CBBB;
+  --ok:#4CC38A; --ok-tint:#12301F; --warn:#E8B04A; --warn-tint:#352809; --bad:#FF8A7D; --bad-tint:#3A1612;
+  --up:#4CC38A; --up-tint:#12301F; --down:#FF8A7D; --down-tint:#3A1612;
+  --dots:radial-gradient(rgba(243,236,221,.12) 1px,transparent 1.3px);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .92 0 0 0 0 .86 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] body{background-color:var(--paper);color:var(--ink);}
+:root[data-theme="dark"] ::selection{background:var(--accent);color:#1E1B1A;}
+
+/* Kopfleisten mit halbtransparentem Papier */
+:root[data-theme="dark"] .top,
+:root[data-theme="dark"] .bar,
+:root[data-theme="dark"] .bars,
+:root[data-theme="dark"] header.hd,
+:root[data-theme="dark"] .side,
+:root[data-theme="dark"] .head{background:rgba(21,18,17,.94);}
+
+/* Kontrast auf Akzentflächen: dort bleibt die Schrift dunkel */
+:root[data-theme="dark"] .btn.or,
+:root[data-theme="dark"] .btn.accent,
+:root[data-theme="dark"] .pill.or,
+:root[data-theme="dark"] .chip.or,
+:root[data-theme="dark"] .kpi.or,
+:root[data-theme="dark"] .tile.t-or{color:#1E1B1A;}
+
+:root[data-theme="dark"] .sb-tt{border-color:var(--line-2);}
+
+/* ===== Website (index.html) ===== */
+:root[data-theme="dark"] .site-head.is-stuck{background:rgba(21,18,17,.88);}
+/* Flächen, die im Hellmodus dunkel sind, bleiben dunkel: Tinte und Papier tauschen nur dort */
+:root[data-theme="dark"] .panel.dark,
+:root[data-theme="dark"] .anf-side,
+:root[data-theme="dark"] .wirk-card.ink,
+:root[data-theme="dark"] .pf-card,
+:root[data-theme="dark"] .card-vid,
+:root[data-theme="dark"] .reel-v,
+:root[data-theme="dark"] .tile.t-ink{--ink:#2A2422;--paper:#F3ECDD;}
+:root[data-theme="dark"] .bs-card,
+:root[data-theme="dark"] .anf-chips span,
+:root[data-theme="dark"] .anf-f input,
+:root[data-theme="dark"] .anf-f textarea,
+:root[data-theme="dark"] .pkd-facts div{background:var(--card);}
+
+/* ===== Partnerprogramm ===== */
+:root[data-theme="dark"] .kpi.dk,
+:root[data-theme="dark"] .tier.hot,
+:root[data-theme="dark"] .calc .out,
+:root[data-theme="dark"] .refbox{--ink:#2A2422;--paper:#F3ECDD;}
+:root[data-theme="dark"] .tier.hot p{color:#E8DFCE;}
+
+/* ===== Büro (buero.html) ===== */
+:root[data-theme="dark"] .building{border-color:#4A423D;background-blend-mode:normal;box-shadow:0 24px 50px -18px rgba(0,0,0,.7),inset 0 0 0 999px rgba(15,12,10,.58);}
+:root[data-theme="dark"] .room{--sign:rgba(30,25,23,.9);--signtx:#F3ECDD;--mu:#B5AB9B;--ol:#0E0C0B;box-shadow:0 10px 18px -8px rgba(0,0,0,.65),inset 0 0 0 999px rgba(15,12,10,.5);}
+:root[data-theme="dark"] .r-post{box-shadow:0 10px 18px -8px rgba(0,0,0,.65),inset 0 0 0 999px rgba(15,12,10,.2);}
+:root[data-theme="dark"] .r-bruecke,:root[data-theme="dark"] .r-radar,:root[data-theme="dark"] .r-konf{--accI:#FF8A50;}
+:root[data-theme="dark"] .r-kueche{--accI:#F2C14E;}
+:root[data-theme="dark"] .r-set{--accI:#8DB0F4;}
+:root[data-theme="dark"] .r-post{--accI:#EBA6D2;}
+:root[data-theme="dark"] .r-redaktion{--accI:#62C9CC;}
+:root[data-theme="dark"] .r-kasse{--accI:#6FD3A0;}
+:root[data-theme="dark"] .r-maschinen{--accI:#A9BFCF;}
+:root[data-theme="dark"] .room .door{background:#151211;}
+:root[data-theme="dark"] .plate,:root[data-theme="dark"] .fplate,:root[data-theme="dark"] .mn{background:rgba(34,29,27,.94);}
+:root[data-theme="dark"] .nm{color:#F3ECDD;}
+:root[data-theme="dark"] .rl{color:#B5AB9B;}
+:root[data-theme="dark"] .seat.lead .plate,:root[data-theme="dark"] .fig.lead .fplate,:root[data-theme="dark"] .mini.lead .mn{background:#F3ECDD;}
+:root[data-theme="dark"] .seat.lead .nm,:root[data-theme="dark"] .fig.lead .fplate .nm,:root[data-theme="dark"] .mini.lead .mn{color:#1E1B1A;}
+:root[data-theme="dark"] .seat.lead .rl,:root[data-theme="dark"] .fig.lead .fplate .rl{color:#5A5248;}
+:root[data-theme="dark"] .fsk i{background:rgba(34,29,27,.92);border-color:rgba(243,236,221,.3);color:#F3ECDD;}
+:root[data-theme="dark"] .fsk .more{background:#F3ECDD;color:#1E1B1A;border-color:#F3ECDD;}
+:root[data-theme="dark"] .fpic{border-color:rgba(243,236,221,.85);}
+:root[data-theme="dark"] .rt b,:root[data-theme="dark"] .rt .mono{color:#1E1B1A;}
+:root[data-theme="dark"] .outside{background:rgba(29,25,23,.7);border-color:rgba(243,236,221,.35);}
+:root[data-theme="dark"] .ocard.founder{background:#F3ECDD;color:#1E1B1A;border-color:#F3ECDD;}
+:root[data-theme="dark"] .ocard.founder small{color:#5A5248;}
+:root[data-theme="dark"] .star{background:#F3ECDD;box-shadow:0 0 0 2px #151211;}
+:root[data-theme="dark"] .panel{box-shadow:6px 6px 0 var(--accent),0 20px 40px rgba(0,0,0,.5);}

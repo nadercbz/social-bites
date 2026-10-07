@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Galerie</title>
 <meta name="description" content="Galerie von Social Bites: Moodboards, Entwürfe und Ideen an einem Ort.">
@@ -93,7 +94,7 @@
   .fav[aria-pressed="true"] svg{fill:var(--accent);stroke:var(--accent-ink);}
   .card .body{padding:12px 14px 14px;display:grid;gap:8px;}
   .card h3{margin:0;font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1.1;}
-  .card p{margin:0;font-size:14.5px;line-height:1.45;color:#3a3532;}
+  .card p{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink-2);}
   .tags{display:flex;gap:5px;flex-wrap:wrap;}
   .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;border:1px solid var(--line-2);color:var(--mute);}
   .sw{display:flex;gap:4px;}
@@ -139,7 +140,7 @@
   .swl button:hover{border-color:var(--accent);}
   .info details{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);}
   .info summary{cursor:pointer;font-weight:700;}
-  .info pre{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;line-height:1.5;margin:8px 0;color:#3a3532;}
+  .info pre{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;line-height:1.5;margin:8px 0;color:var(--ink-2);}
   .info textarea{width:100%;min-height:90px;border:1px solid var(--line-2);border-radius:8px;background:var(--paper);padding:8px 10px;font-size:14.5px;line-height:1.4;resize:vertical;}
   .info textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
   .info .acts{display:flex;gap:8px;flex-wrap:wrap;}
@@ -180,6 +181,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <header class="top">

@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Partnerprogramm</title>
 <meta name="description" content="Stell uns vor und werde Partner von Social Bites: Provision auf jeden Abschluss, Anteilspunkte im Partner-Pool und Infomaterial zum Weitergeben.">
@@ -71,13 +72,13 @@
   .sh{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:clamp(18px,3vw,34px);}
   .sh .mono{color:var(--accent-ink);}
   .sh h2{margin:0;font-weight:850;font-size:clamp(30px,4.4vw,58px);line-height:.95;letter-spacing:-.05em;text-wrap:balance;max-width:20ch;}
-  .lead{max-width:62ch;font-size:19px;color:#3a3532;margin:0 0 26px;}
+  .lead{max-width:62ch;font-size:19px;color:var(--ink-2);margin:0 0 26px;}
 
   .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,24px);counter-reset:st;}
   .step{background:var(--card);border:1.5px solid var(--ink);border-radius:20px;padding:22px 22px 24px;position:relative;box-shadow:5px 5px 0 var(--ink);}
   .step::before{counter-increment:st;content:counter(st);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--accent);color:var(--ink);font:850 24px var(--display);margin-bottom:14px;}
   .step h3{margin:0 0 6px;font-weight:850;font-size:24px;letter-spacing:-.04em;}
-  .step p{margin:0;color:#3a3532;font-size:16px;}
+  .step p{margin:0;color:var(--ink-2);font-size:16px;}
 
   .tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,24px);}
   .tier{background:var(--card);border:1.5px solid var(--ink);border-radius:22px;padding:24px;display:grid;gap:10px;align-content:start;position:relative;}
@@ -85,7 +86,7 @@
   .tier h3{margin:0;font-weight:850;font-size:30px;letter-spacing:-.05em;}
   .tier .big{font-weight:850;font-size:clamp(54px,6vw,84px);line-height:.9;letter-spacing:-.06em;color:var(--accent);}
   .tier .big small{font-size:.38em;letter-spacing:-.02em;color:var(--ink);margin-left:4px;}
-  .tier p{margin:0;font-size:15.5px;color:#3a3532;}
+  .tier p{margin:0;font-size:15.5px;color:var(--ink-2);}
   .tier .pt{display:inline-flex;align-self:start;background:var(--ink);color:var(--paper);border-radius:999px;padding:5px 12px;font:600 13px var(--display);}
   .tier.hot{background:var(--ink);color:var(--paper);box-shadow:8px 8px 0 var(--accent);}
   .tier.hot .mono{color:#CDBFAE;} .tier.hot p{color:#E8DFCE;} .tier.hot .big small{color:var(--paper);} .tier.hot .pt{background:var(--accent);color:var(--ink);}
@@ -140,7 +141,7 @@
   summary::-webkit-details-marker{display:none;}
   summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font:700 20px/1 var(--display);transition:transform .3s var(--ease);}
   details[open] summary::after{transform:translateY(-50%) rotate(45deg);}
-  details p{margin:0;padding:0 22px 18px;color:#3a3532;max-width:70ch;}
+  details p{margin:0;padding:0 22px 18px;color:var(--ink-2);max-width:70ch;}
 
   /* Anmeldung */
   .join{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(18px,3vw,44px);align-items:start;}
@@ -172,6 +173,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <div class="entwurf" id="entwurf">Entwurf der Konditionen, noch nicht freigegeben. Die Seite ist nicht öffentlich verlinkt.</div>
