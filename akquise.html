@@ -275,7 +275,7 @@ function webUrl(u){return /^https?:/.test(u)?u:"https://"+u;}
 
 var BR={gastro:"Gastro",praxis:"Praxis & Medizin",kanzlei:"Kanzlei & Beratung",beauty:"Beauty & Wellness",fitness:"Fitness & Sport",handel:"Handel & Concept",sonstige:"Sonstige"};
 var SIE={praxis:1,kanzlei:1};
-var SIG={opening:"Opening-Termin",neu_bei_wolt:"Neu bei Wolt",neu_lieferando:"Neu bei Lieferando",neu_osm:"Neu auf der Karte",neu_gegruendet:"Neu im Handelsregister",stelle_social:"Sucht Social Media",gewerbe_gesuch:"Sucht Gewerbefläche",nachmieter:"Nachmieter gesucht",presse:"In der Presse",gewerbe_angebot:"Fläche wird frei"};
+var SIG={opening:"Opening-Termin",neu_bei_wolt:"Neu bei Wolt",neu_lieferando:"Neu bei Lieferando",neu_osm:"Neu auf der Karte",neu_gegruendet:"Neu im Handelsregister",stelle_social:"Sucht Social Media",stelle_eroeffnung:"Stellt für Neueröffnung ein",gewerbe_gesuch:"Sucht Gewerbefläche",nachmieter:"Nachmieter gesucht",presse:"In der Presse",gewerbe_angebot:"Fläche wird frei"};
 var STAT=[["neu","Neu"],["vorgemerkt","Vorgemerkt"],["kontaktiert","Kontaktiert"],["gespraech","Gespräch"],["angebot","Angebot"],["gewonnen","Gewonnen"],["verloren","Verloren"],["kein_fit","Kein Fit"]];
 var KAN=["vorgemerkt","kontaktiert","gespraech","angebot","gewonnen"];
 function stName(k){return (STAT.filter(function(s){return s[0]===k;})[0]||[0,k])[1];}
@@ -368,7 +368,7 @@ $("#filters").addEventListener("input",function(e){if(e.target.id==="fMin"){FIL.
 /* ---------- Texte ---------- */
 function firstName(n){return String(n||"").replace(/^(Dr\.|Prof\.|Dipl\.-\w+\.?)\s*/,"").split(" ")[0];}
 function topSig(l){
-  var pr=["opening","neu_bei_wolt","neu_lieferando","neu_gegruendet","stelle_social","nachmieter","gewerbe_gesuch","gewerbe_angebot","neu_osm","presse"];
+  var pr=["opening","stelle_eroeffnung","neu_bei_wolt","neu_lieferando","neu_gegruendet","stelle_social","nachmieter","gewerbe_gesuch","gewerbe_angebot","neu_osm","presse"];
   var g=(l.signale||[]).slice().sort(function(a,b){return pr.indexOf(a.typ)-pr.indexOf(b.typ);});
   return g[0]||null;
 }
@@ -381,6 +381,7 @@ function hook(l,sie){
   }
   if(g&&(g.typ==="neu_bei_wolt"||g.typ==="neu_lieferando"))return n+" ist ganz neu bei "+(g.typ==="neu_bei_wolt"?"Wolt":"Lieferando")+", herzlichen Glückwunsch zum Start.";
   if(g&&g.typ==="neu_gegruendet")return "ich habe gelesen, dass "+n+" neu gegründet wurde, herzlichen Glückwunsch.";
+  if(g&&g.typ==="stelle_eroeffnung")return sie?"ich habe gesehen, dass Sie gerade das Team für Ihre Neueröffnung"+(l.kiez?" in "+l.kiez:"")+" aufbauen.":"ich habe gesehen, dass ihr gerade das Team für eure Neueröffnung"+(l.kiez?" in "+l.kiez:"")+" aufbaut.";
   if(g&&g.typ==="stelle_social")return sie?"ich habe gesehen, dass Sie Unterstützung für Social Media suchen.":"ich habe gesehen, dass ihr Unterstützung für Social Media sucht.";
   if(g&&g.typ==="nachmieter")return "ich habe gesehen, dass bei "+n+" gerade ein Wechsel ansteht.";
   if(g&&(g.typ==="gewerbe_gesuch"||g.typ==="gewerbe_angebot"))return sie?"ich habe gesehen, dass Sie sich gerade mit neuen Räumen beschäftigen.":"ich habe gesehen, dass ihr euch gerade mit neuen Räumen beschäftigt.";

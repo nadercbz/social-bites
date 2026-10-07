@@ -643,6 +643,57 @@
     .anf-two{grid-template-columns:1fr;}
   }
   @media (prefers-reduced-motion:reduce){.anf[open]{animation:none;}}
+
+  /* Pakete: drei Boxen als feste Produkte, Preis auf Anfrage */
+  .pakete{padding:clamp(56px,8vw,120px) var(--gutter) clamp(30px,4vw,60px);max-width:1360px;margin:0 auto;overflow-x:clip;overflow-clip-margin:24px;}
+  .pk-lead{max-width:58ch;margin:22px auto 0;text-align:center;font-size:clamp(16px,1.4vw,19px);font-weight:600;line-height:1.4;color:var(--mute);}
+  .pk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,26px);margin-top:clamp(28px,4vw,52px);}
+  .pk{display:grid;gap:16px;align-content:start;}
+  .pk-media{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;text-align:left;}
+  .pk-img{display:block;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--paper-2);}
+  .pk-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
+  .pk-media:hover .pk-img img{transform:scale(1.04);}
+  .pk-media .bite-mouth{height:110px;top:-46px;right:-8px;}
+  .pk-body{display:grid;gap:10px;justify-items:start;}
+  .pk-body h3{margin:4px 0 0;font-weight:850;font-size:clamp(28px,3vw,42px);letter-spacing:-.05em;line-height:.95;}
+  .pk-body p{margin:0;font-size:16px;line-height:1.45;max-width:38ch;}
+  .pk-price{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:100%;}
+  .pk-price .mono{font-size:11px;color:var(--mute);}
+  .pk-price b{font-weight:800;font-size:19px;letter-spacing:-.03em;}
+  .pk-acts{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  .pk-more{border:0;background:none;padding:6px 0;font:700 15.5px/1.2 var(--display);color:var(--ink);cursor:pointer;text-decoration:none;border-bottom:2px solid var(--accent);}
+  .pk-more:hover{color:var(--accent-ink);}
+  .pk-or .pk-price b{color:var(--accent-ink);}
+  @media (hover:hover) and (prefers-reduced-motion:no-preference){
+    .pk-media.bite-wrap:hover{--b1:52px;--b2:34px;--b3:40px;}
+  }
+  .pkd{padding:0;margin:auto;border:0;background:transparent;color:var(--ink);width:min(1040px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);overflow:visible;}
+  .pkd::backdrop{background:rgba(20,17,16,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+  .pkd[open]{animation:anf-in .45s var(--ease);}
+  .pkd-box{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);background:var(--paper);border-radius:22px;overflow:hidden;max-height:calc(100dvh - 32px);box-shadow:0 30px 80px rgba(0,0,0,.35);}
+  .pkd-img{background:var(--paper-2);min-height:0;}
+  .pkd-img img{width:100%;height:100%;object-fit:cover;display:block;max-height:calc(100dvh - 32px);}
+  .pkd-txt{padding:clamp(24px,3vw,44px);overflow:auto;display:grid;gap:12px;align-content:start;justify-items:start;max-height:calc(100dvh - 32px);}
+  .pkd-txt h2{margin:4px 0 0;font-weight:850;font-size:clamp(34px,4.4vw,56px);letter-spacing:-.055em;line-height:.95;}
+  .pkd-txt > p{margin:0;font-size:17px;line-height:1.45;}
+  .pkd-txt h3{margin:10px 0 0;font-size:11px;color:var(--accent-ink);}
+  .pkd-txt ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;width:100%;}
+  .pkd-txt li{position:relative;padding:9px 0 9px 28px;border-bottom:1px solid var(--line);font-weight:650;font-size:15.5px;}
+  .pkd-txt li::before{content:"";position:absolute;left:4px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--accent);}
+  .pkd-facts{margin:6px 0 4px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;}
+  .pkd-facts div{background:#FFFDF8;border:1px solid var(--line);border-radius:12px;padding:10px 12px;}
+  .pkd-facts dt{font-size:10.5px;color:var(--mute);}
+  .pkd-facts dd{margin:4px 0 0;font-weight:800;font-size:16px;letter-spacing:-.02em;}
+  .anf-paket{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px;}
+  .anf-paket button{border:0;background:none;color:var(--paper);font-size:16px;cursor:pointer;padding:0 0 0 4px;opacity:.7;}
+  @media (max-width:900px){.pk-grid{grid-template-columns:1fr;max-width:520px;margin-inline:auto;}}
+  @media (max-width:820px){
+    .pkd{width:100vw;max-height:100dvh;height:100dvh;margin:0;}
+    .pkd-box{display:block;border-radius:0;height:100dvh;max-height:100dvh;overflow:auto;}
+    .pkd-img img{max-height:62vh;}
+    .pkd-txt{max-height:none;overflow:visible;padding-bottom:60px;}
+    .pkd .anf-x{position:fixed;z-index:3;background:var(--paper);box-shadow:0 4px 14px rgba(0,0,0,.18);}
+  }
   @media (prefers-reduced-motion:no-preference){
     .hero-h .row{animation:rise .85s var(--ease) both;}
     .hero-h .row:nth-child(2){animation-delay:.08s;}
@@ -674,6 +725,7 @@
   <nav class="nav" aria-label="Hauptnavigation">
     <a href="#arbeiten">Arbeiten</a>
     <a href="#leistungen">Leistungen</a>
+    <a href="#pakete">Pakete</a>
     <a href="#reels">Reels</a>
     <a href="#portfolio">Portfolio</a>
     <a href="#ablauf">So läuft's</a>
@@ -689,11 +741,12 @@
 <nav class="mnav" id="mnav" aria-label="Menü" inert>
   <a href="#arbeiten"><small>01</small>Arbeiten</a>
   <a href="#leistungen"><small>02</small>Leistungen</a>
-  <a href="#reels"><small>03</small>Reels</a>
-  <a href="#portfolio"><small>04</small>Portfolio</a>
-  <a href="#ablauf"><small>05</small>So läuft's</a>
-  <a href="#anfrage" data-anfrage><small>06</small>Projekt starten</a>
-  <a href="portal.html"><small>07</small>Kundenportal</a>
+  <a href="#pakete"><small>03</small>Pakete</a>
+  <a href="#reels"><small>04</small>Reels</a>
+  <a href="#portfolio"><small>05</small>Portfolio</a>
+  <a href="#ablauf"><small>06</small>So läuft's</a>
+  <a href="#anfrage" data-anfrage><small>07</small>Projekt starten</a>
+  <a href="portal.html"><small>08</small>Kundenportal</a>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
 
@@ -968,6 +1021,60 @@
     </ol>
   </section>
 
+  <section class="pakete" id="pakete" aria-labelledby="pk-h">
+    <div class="sec-pill"><span class="pill">Unsere &bull; Pakete</span></div>
+    <h2 class="big-h" id="pk-h">Drei Pakete. Ein Biss.</h2>
+    <p class="pk-lead">Für jeden Laden das passende Paket, vom ersten Spatenstich bis zur Kampagne für die ganze Kette. Jedes Paket stellen wir nach dem Erstgespräch auf dich zusammen.</p>
+    <div class="pk-grid">
+      <article class="pk pk-or">
+        <button class="bite-wrap pk-media" type="button" data-paket="opening" aria-label="Bites Opening: Details ansehen"><span class="bite pk-img"><img src="media/paket_opening.webp" alt="Bites Opening als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <div class="pk-body">
+          <span class="pill">Neuer Laden</span>
+          <h3>Bites Opening</h3>
+          <p>Neueröffnung mit Content und Opening-Event. Von der Baustelle bis zur Schlange vor der Tür.</p>
+          <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
+          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites Opening"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="opening">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+        </div>
+      </article>
+      <article class="pk pk-cr">
+        <button class="bite-wrap pk-media" type="button" data-paket="gastro" aria-label="Bites for Gastro: Details ansehen"><span class="bite pk-img"><img src="media/paket_gastro.webp" alt="Bites for Gastro als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <div class="pk-body">
+          <span class="pill">Bestehender Laden</span>
+          <h3>Bites for Gastro</h3>
+          <p>Monatliche Betreuung für Läden, die mehr Gäste, mehr Reichweite und einen Kanal wollen, der endlich läuft.</p>
+          <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
+          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites for Gastro"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="gastro">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+        </div>
+      </article>
+      <article class="pk pk-ink">
+        <button class="bite-wrap pk-media" type="button" data-paket="brands" aria-label="Bites for Brands: Details ansehen"><span class="bite pk-img"><img src="media/paket_brands.webp" alt="Bites for Brands als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <div class="pk-body">
+          <span class="pill">Kette und Marke</span>
+          <h3>Bites for Brands</h3>
+          <p>Kampagnen für Systemgastronomie und Marken. Mit Einkauf, Recht und mehreren Freigabestufen.</p>
+          <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
+          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites for Brands"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="brands">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <dialog class="pkd" id="pkd" aria-labelledby="pkd-h">
+    <div class="pkd-box">
+      <button class="anf-x" type="button" aria-label="Schließen" data-pkd-close>&times;</button>
+      <div class="pkd-img"><img id="pkd-img" src="media/paket_opening_xl.webp" alt="" width="1500" height="1862"></div>
+      <div class="pkd-txt">
+        <span class="pill" id="pkd-tag"></span>
+        <h2 id="pkd-h"></h2>
+        <p id="pkd-line"></p>
+        <h3 class="mono">Was drin ist</h3>
+        <ul id="pkd-list"></ul>
+        <dl class="pkd-facts"><div><dt class="mono">Zeitraum</dt><dd id="pkd-zeit"></dd></div><div><dt class="mono">Preis</dt><dd>auf Anfrage</dd></div></dl>
+        <div class="pk-acts"><button class="btn or" type="button" id="pkd-go" data-anfrage=""><span>Dieses Paket anfragen</span><i class="dot"></i></button><a class="pk-more" href="tel:+4917622733831">Lieber anrufen <span aria-hidden="true">&rarr;</span></a></div>
+      </div>
+    </div>
+  </dialog>
+
   <section class="reels" id="reels">
     <div class="sec-pill"><span class="pill">Aus dem • Schnitt</span></div>
     <h2 class="big-h">Frisch aus der Küche</h2>
@@ -1147,7 +1254,7 @@
       <div class="mail"><small>Lieber direkt anrufen?</small><span class="mail-soon"><a href="tel:+4917622733831">Nader 0176 22733831</a><br><a href="tel:+4917680256378">Tommy 0176 80256378</a></span></div>
     </div>
     <div class="foot-grid">
-      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#wirkung">Haltung</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
+      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Arbeiten</a></li><li><a href="#wirkung">Haltung</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#pakete">Pakete</a></li><li><a href="#reels">Reels</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
       <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
       <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
     </div>
@@ -1167,7 +1274,7 @@
   <div class="anf-box">
     <button class="anf-x" type="button" aria-label="Schließen" data-anf-close>&times;</button>
     <div class="anf-main">
-      <div class="anf-top"><span class="pill">Projekt &bull; starten</span><div class="anf-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div></div>
+      <div class="anf-top"><span class="pill">Projekt &bull; starten</span><span class="anf-paket" id="anf-paket" hidden><span></span><button type="button" aria-label="Paket entfernen" data-anf-unpaket>&times;</button></span><div class="anf-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div></div>
       <form id="anf-form" novalidate>
         <fieldset class="anf-step" data-step="1">
           <legend><h2 id="anf-h">Worum geht's?</h2></legend>
@@ -1329,6 +1436,30 @@
     cnts.forEach(function(c){ ioC.observe(c); });
   }
 
+  // Pakete: Details im Fenster, "Anfragen" nimmt das Paket mit ins Anfrage-Formular
+  var PAKETE = {"opening": {"name": "Bites Opening", "tag": "Neuer Laden", "line": "Neueröffnung mit Content und Opening-Event. Von der Baustelle bis zur Schlange vor der Tür.", "zeit": "10 Wochen vorher bis 4 Wochen danach", "inhalt": ["Konzept und Content-Plan bis zum Opening", "Drehtag mit Reels von Küche, Team und Gerichten", "Teaser-Phase mit Ads vor der Eröffnung", "Pre-Opening und Opening-Event mit Aktion vor Ort", "Influencer und Creator aus unserem Netzwerk", "Nachglühen und Report nach dem Opening"], "thema": "Opening oder Event"}, "gastro": {"name": "Bites for Gastro", "tag": "Bestehender Laden", "line": "Monatliche Betreuung für Läden, die mehr Gäste, mehr Reichweite und einen Kanal wollen, der endlich läuft.", "zeit": "3 Wochen Anlauf, dann monatlich", "inhalt": ["Audit und Strategie für deine Kanäle", "Monatsplan mit Themen, Formaten und Hooks", "Gebündelter Drehtag jeden Monat", "Schnitt, Posting und Community", "Monatsreport mit gemeinsamem Gespräch", "Flexibel verlängern und erweitern"], "thema": "Food Content & Reels"}, "brands": {"name": "Bites for Brands", "tag": "Kette und Marke", "line": "Kampagnen für Systemgastronomie und Marken. Mit Einkauf, Recht und mehreren Freigabestufen.", "zeit": "rund 3 bis 4 Monate", "inhalt": ["Briefing, Treatment und Kalkulation", "Vertrag, Einkauf und Bestellnummer sauber geregelt", "Pre-Production und PPM", "Drehtag mit Crew und Talents", "Postproduktion mit mehreren Freigabestufen", "Auslieferung, Launch und Case"], "thema": "Film Produktion"}};
+  var pkd = d.getElementById('pkd');
+  if (pkd && typeof pkd.showModal === 'function') {
+    d.addEventListener('click', function(e){
+      var t = e.target.closest('[data-paket]');
+      if (t) {
+        var p = PAKETE[t.dataset.paket]; if (!p) return;
+        d.getElementById('pkd-img').src = 'media/paket_' + t.dataset.paket + '_xl.webp';
+        d.getElementById('pkd-img').alt = p.name + ' als Box mit Social-Bites-Logo';
+        d.getElementById('pkd-tag').textContent = p.tag;
+        d.getElementById('pkd-h').textContent = p.name;
+        d.getElementById('pkd-line').textContent = p.line;
+        d.getElementById('pkd-zeit').textContent = p.zeit;
+        d.getElementById('pkd-list').innerHTML = p.inhalt.map(function(x){ var li = d.createElement('li'); li.textContent = x; return li.outerHTML; }).join('');
+        d.getElementById('pkd-go').setAttribute('data-anfrage', p.name);
+        pkd.showModal();
+        return;
+      }
+      if (e.target.closest('[data-pkd-close]') || e.target === pkd) pkd.close();
+      if (e.target.closest('#pkd-go')) pkd.close();
+    });
+  }
+
   // Anfrage: Pop-up mit drei kurzen Schritten, Versand per FormSubmit an unser Postfach
   var anf = d.getElementById('anfrage');
   if (anf && typeof anf.showModal === 'function') {
@@ -1365,17 +1496,28 @@
       err.textContent = ''; return true;
     }
     function summary(){
-      return 'Thema: ' + picked('thema').join(', ') + '\nStart: ' + picked('start').join('') + '\nLaden oder Marke: ' + val('laden') +
+      return (paket ? 'Paket: ' + paket + '\n' : '') + 'Thema: ' + picked('thema').join(', ') + '\nStart: ' + picked('start').join('') + '\nLaden oder Marke: ' + val('laden') +
         (val('nachricht') ? '\nVorhaben: ' + val('nachricht') : '') + '\nName: ' + val('name') + (val('email') ? '\nMail: ' + val('email') : '') +
         (val('telefon') ? '\nTelefon: ' + val('telefon') : '') + '\nRückmeldung: ' + picked('rueckmeldung').join('');
     }
     function waText(who){
       var n = val('name'), l = val('laden'), th = picked('thema');
-      return 'Hi ' + who + ', ' + (n ? 'hier ist ' + n + (l ? ' von ' + l : '') + '. Ich' : 'ich') + ' interessiere mich für ein Projekt mit Social Bites' + (th.length && th[0] !== 'Weiß ich noch nicht' ? ' (' + th.join(', ') + ')' : '') + '.';
+      return 'Hi ' + who + ', ' + (n ? 'hier ist ' + n + (l ? ' von ' + l : '') + '. Ich' : 'ich') + ' interessiere mich für ' + (paket ? 'das Paket ' + paket : 'ein Projekt mit Social Bites') + (!paket && th.length && th[0] !== 'Weiß ich noch nicht' ? ' (' + th.join(', ') + ')' : '') + '.';
     }
     function setWa(){ [].slice.call(anf.querySelectorAll('[data-wa]')).forEach(function(a){ a.href = a.href.split('?')[0] + '?text=' + encodeURIComponent(waText(a.dataset.wa)); }); }
-    function openAnf(){
+    var paket = '', pBadge = d.getElementById('anf-paket');
+    function setPaket(name){
+      paket = name || '';
+      pBadge.hidden = !paket; pBadge.querySelector('span').textContent = paket ? 'Paket: ' + paket : '';
+      if (paket && typeof PAKETE !== 'undefined') {
+        var key = Object.keys(PAKETE).filter(function(k){ return PAKETE[k].name === paket; })[0];
+        var th = key && PAKETE[key].thema;
+        if (th) [].slice.call(form.querySelectorAll('input[name=thema]')).forEach(function(i){ if (i.value === th) i.checked = true; });
+      }
+    }
+    function openAnf(name){
       if (!done.hidden) { form.reset(); form.hidden = false; done.hidden = true; show(0); }
+      if (typeof name === 'string' && name) setPaket(name);
       setWa(); anf.showModal(); if (!form.hidden) show(cur);
       try { history.replaceState(null, '', '#anfrage'); } catch (e) {}
     }
@@ -1383,7 +1525,8 @@
     anf.addEventListener('close', function(){ if (location.hash === '#anfrage') try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} });
     d.addEventListener('click', function(e){
       var t = e.target.closest('[data-anfrage]');
-      if (t) { e.preventDefault(); if (root.classList.contains('menu-open')) { var mb = d.querySelector('.menu-btn'); if (mb) mb.click(); } openAnf(); return; }
+      if (t) { e.preventDefault(); if (root.classList.contains('menu-open')) { var mb = d.querySelector('.menu-btn'); if (mb) mb.click(); } openAnf(t.getAttribute('data-anfrage')); return; }
+      if (e.target.closest('[data-anf-unpaket]')) { setPaket(''); return; }
       if (e.target.closest('[data-anf-close]')) closeAnf();
     });
     anf.addEventListener('click', function(e){ if (e.target === anf) closeAnf(); });
@@ -1414,9 +1557,9 @@
       if (sending || !check(2)) return;
       sending = true; bSend.disabled = true; bSend.querySelector('span').textContent = 'Wird gesendet';
       var data = {
-        'name': val('name'), 'Laden oder Marke': val('laden'), 'Thema': picked('thema').join(', '), 'Start': picked('start').join(''),
+        'name': val('name'), 'Paket': paket || 'kein bestimmtes', 'Laden oder Marke': val('laden'), 'Thema': picked('thema').join(', '), 'Start': picked('start').join(''),
         'Rückmeldung per': picked('rueckmeldung').join(''), 'Telefon': val('telefon') || 'nicht angegeben', 'Vorhaben': val('nachricht') || 'nicht angegeben',
-        '_subject': 'Neue Projekt-Anfrage: ' + val('laden'), '_template': 'table', '_captcha': 'false', '_honey': val('_honey')
+        '_subject': 'Neue Projekt-Anfrage: ' + val('laden') + (paket ? ' (' + paket + ')' : ''), '_template': 'table', '_captcha': 'false', '_honey': val('_honey')
       };
       if (val('email')) {
         data.email = val('email');
