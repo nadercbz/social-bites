@@ -235,6 +235,20 @@
     .filters select{max-width:none;flex:1;min-width:130px;}
     .kan{grid-template-columns:repeat(5,82vw);}
   }
+  /* Konzepte: fertige DIN A4 Pitch Seiten zum Herunterladen */
+  .kzbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px;}
+  .kzs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+  .kz{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;transition:border-color .2s ease,box-shadow .25s var(--ease);}
+  .kz:hover{border-color:var(--ink);box-shadow:5px 5px 0 var(--accent);}
+  .kz .band{padding:14px 16px 13px;display:grid;gap:7px;color:#1E1B1A;}
+  .kz .band .mono{color:#4a3f35;font-size:10px;}
+  .kz .band h3{margin:0;font-weight:850;font-size:21px;letter-spacing:-.04em;line-height:1.06;overflow-wrap:anywhere;}
+  .kz .bd{padding:13px 16px 6px;display:grid;gap:9px;align-content:start;}
+  .kz .bd p{margin:0;font-size:14.5px;line-height:1.35;}
+  .kz ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:var(--mute);}
+  .kz li{padding-left:14px;position:relative;}
+  .kz li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .kz .ft{padding:8px 16px 15px;display:flex;gap:6px;flex-wrap:wrap;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 <link rel="stylesheet" href="theme.css">
@@ -471,7 +485,7 @@ function sigLine(l){
 function leadCard(l,rank){
   var st=S(l.id).s,done=!(st==="neu"||st==="vorgemerkt"),v=openTx[l.id]||null;
   var h='<article class="lc'+(done?" done":"")+'" data-id="'+esc(l.id)+'">'+ring(l,rank)+
-    '<div><div class="hd"><h3 data-open="'+esc(l.id)+'">'+esc(l.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(BR[l.branche]||l.branche)+'</span>'+(l.kiez?'<span class="pill">'+esc(l.kiez)+'</span>':"")+(l._new?'<span class="pill new">Neu</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+((l.quellen||[]).length>1?'<span class="pill">'+new Set((l.quellen||[]).map(function(q){return q.split(":")[0];})).size+' Quellen</span>':"")+'</div></div>'+
+    '<div><div class="hd"><h3 data-open="'+esc(l.id)+'">'+esc(l.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(BR[l.branche]||l.branche)+'</span>'+(l.kiez?'<span class="pill">'+esc(l.kiez)+'</span>':"")+(l._new?'<span class="pill new">Neu</span>':"")+(l.konzept?'<span class="pill ok">Konzept bereit</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+((l.quellen||[]).length>1?'<span class="pill">'+new Set((l.quellen||[]).map(function(q){return q.split(":")[0];})).size+' Quellen</span>':"")+'</div></div>'+
     '<div class="warum">'+(l.warum||[]).filter(function(w){return w.p>0;}).slice(0,5).map(function(w){return '<span>'+esc(w.t)+'<b>+'+w.p+'</b></span>';}).join("")+'</div>'+
     (sigLine(l)?'<p class="sig">'+sigLine(l)+'</p>':"")+
     '<div class="addr">'+(addrLine(l)?'<span>'+esc(addrLine(l))+'</span>':"")+'<a class="btn sm" href="'+esc(mapsOpen(l))+'" target="_blank" rel="noopener"><span class="dot"></span><span>Google Maps</span></a><a class="btn sm" href="'+esc(routeUrl(l))+'" target="_blank" rel="noopener"><span class="dot"></span><span>Route</span></a></div>'+
@@ -479,7 +493,7 @@ function leadCard(l,rank){
     '<div class="acts"><button class="btn or sm" type="button" data-tx="'+esc(l.id)+'"><span class="dot"></span><span>'+(v?"Text schließen":"Text kopieren")+'</span></button>'+
     (st==="neu"?'<button class="btn sm" type="button" data-set="vorgemerkt" data-id="'+esc(l.id)+'"><span class="dot"></span><span>Vormerken</span></button>':"")+
     (st==="neu"||st==="vorgemerkt"?'<button class="btn sm" type="button" data-set="kontaktiert" data-id="'+esc(l.id)+'"><span class="dot"></span><span>Kontaktiert</span></button>':"")+
-    '<span class="sp"></span><button class="btn sm" type="button" data-open="'+esc(l.id)+'"><span class="dot"></span><span>Details</span></button>'+
+    (l.konzept?'<button class="btn sm" type="button" data-kz="'+esc(l.id)+'" title="Fertige DIN A4 Seite als PDF"><span class="dot"></span><span>Konzept PDF</span></button>':"")+'<span class="sp"></span><button class="btn sm" type="button" data-open="'+esc(l.id)+'"><span class="dot"></span><span>Details</span></button>'+
     (st==="neu"||st==="vorgemerkt"?'<button class="btn sm" type="button" data-set="kein_fit" data-id="'+esc(l.id)+'" title="Passt nicht, nicht mehr zeigen"><span class="dot"></span><span>Kein Fit</span></button>':'<button class="btn sm" type="button" data-set="neu" data-id="'+esc(l.id)+'"><span class="dot"></span><span>Zurück auf Neu</span></button>')+'</div>'+
     (v?txPanel(l,v):"")+'</article>';
   return h;
@@ -495,16 +509,16 @@ function txPanel(l,v){
 }
 
 /* ---------- Ansichten ---------- */
-var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["quellen","Quellen"]];
+var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["konzepte","Konzepte"],["quellen","Quellen"]];
 function drawViews(){
-  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?LEADS.filter(function(l){return KAN.indexOf(S(l.id).s)>-1;}).length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
+  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?LEADS.filter(function(l){return KAN.indexOf(S(l.id).s)>-1;}).length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
 }
 function render(onlyMain){
   if(!onlyMain)drawFilters();
   drawViews();
-  $("#filters").hidden=view==="quellen"||view==="pipeline";
+  $("#filters").hidden=view==="quellen"||view==="pipeline"||view==="konzepte";
   var m=$("#main");
-  m.innerHTML=view==="liste"?vListe():view==="karte"?vKarte():view==="pipeline"?vPipeline():view==="quellen"?vQuellen():vHeute();
+  m.innerHTML=view==="liste"?vListe():view==="karte"?vKarte():view==="pipeline"?vPipeline():view==="konzepte"?vKonzepte():view==="quellen"?vQuellen():vHeute();
   if(view==="karte")initMap();
   try{history.replaceState(null,"","#"+view);}catch(e){}
   PREF.view=view;store("sb-akq-prefs",PREF);
@@ -588,6 +602,7 @@ function openDet(id){
   $("#detB").innerHTML=
    '<div class="col"><div class="box"><h4 class="mono">Warum dieser Lead</h4><div style="display:flex;gap:10px;align-items:center">'+ring(l,0)+'<div><b style="font-size:17px;letter-spacing:-.03em">Fit-Score '+(l.score||0)+' von 100</b><div class="meta" style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px"><span class="pill ink">'+esc(BR[l.branche]||"")+'</span>'+(l.kiez?'<span class="pill">'+esc(l.kiez)+'</span>':"")+(l._new?'<span class="pill new">Neu</span>':"")+'</div></div></div><div class="bars">'+(l.warum||[]).map(function(w){return '<div><span>'+esc(w.t)+'</span><b>'+(w.p>0?"+":"")+w.p+'</b><i><span style="width:'+Math.max(4,Math.abs(w.p)/mx*100)+'%;background:'+(w.p<0?"var(--bad)":"var(--accent)")+'"></span></i></div>';}).join("")+'</div></div>'+
    '<div class="box"><h4 class="mono">Signale</h4>'+((l.signale||[]).length?(l.signale||[]).map(function(g){return '<p><b>'+esc(SIG[g.typ]||g.typ)+'</b>'+(g.opening?' · Opening '+esc(fmtD(g.opening))+' ('+esc(ago(g.opening))+')':"")+(g.datum?' · '+esc(fmtD(g.datum)):"")+(g.text?'<br>'+esc(g.text):"")+(g.url?' <a href="'+esc(g.url)+'" target="_blank" rel="noopener" style="color:var(--accent-ink)">Quelle ↗</a>':"")+'</p>';}).join(""):'<p style="color:var(--mute)">Keine besonderen Signale.</p>')+'</div>'+
+   (l.konzept?'<div class="box"><h4 class="mono">Konzept</h4><p><span class="pill or">'+esc(l.konzept.paket)+'</span></p><p>'+esc(l.konzept.zeile)+'</p><p style="color:var(--mute)">'+(l.konzept.ideen||[]).map(esc).join(" · ")+'</p><button class="btn inv sm" type="button" data-kz="'+esc(id)+'"><span class="dot"></span><span>Konzept als PDF laden</span></button></div>':"")+
    '<div class="box"><h4 class="mono">Status und Notiz</h4><div class="stbtns" id="stb">'+STAT.map(function(s){return '<button class="btn sm" type="button" data-set="'+s[0]+'" data-id="'+esc(id)+'" aria-pressed="'+(o.s===s[0])+'"><span class="dot"></span><span>'+s[1]+'</span></button>';}).join("")+'</div><textarea class="note" id="detNote" placeholder="Notiz: Wen gesprochen, was vereinbart, Eindruck?">'+esc(o.note||"")+'</textarea>'+((o.hist||[]).length?'<div class="hist">'+o.hist.slice(-5).reverse().map(function(h){return '<span>'+esc(fmtD(h[0]))+': '+esc(stName(h[1]))+'</span>';}).join("")+'</div>':"")+'</div></div>'+
    '<div class="col"><div class="box"><h4 class="mono">Kontakt und Ort</h4><dl>'+
      '<dt>Ansprechpartner</dt><dd>'+(l.kontakt?esc(l.kontakt)+(l.rolle?" ("+esc(String(l.rolle).split(" ")[0])+")":""):"nicht gefunden")+'</dd>'+
@@ -626,9 +641,95 @@ function exportIt(kind){
   }
 }
 
+/* ---------- Konzepte: fertige DIN A4 Pitch Seiten als PDF ---------- */
+/* Lokal liegen die PDFs im Klartext im Ordner Akquise/pitch/pdf. Auf GitHub liegen sie nur verschlüsselt (akquise/pitch/ID.enc),
+   mit einem Schlüssel aus derselben Passphrase wie die Lead-Daten (fester Salt, damit der tägliche Lauf sie nicht ungültig macht). */
+var PITCH_SALT="SocialBites-Pitch-v1",PITCH_KEY=null;
+var HG_K={gastro:"#F4CDB4",beauty:"#F3C6CF",praxis:"#A9DCDC",kanzlei:"#BBD0F2"};
+function pitchKey(){
+  if(PITCH_KEY)return PITCH_KEY;
+  var pw="";try{pw=sessionStorage.getItem("akq-pw")||"";}catch(e){}
+  if(!pw)return Promise.reject(new Error("Keine Passphrase in dieser Sitzung"));
+  PITCH_KEY=crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]).then(function(km){
+    return crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode(PITCH_SALT),iterations:600000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);});
+  PITCH_KEY.catch(function(){PITCH_KEY=null;});
+  return PITCH_KEY;
+}
+async function pitchBytes(l){
+  if(isLocal()){
+    var r=await fetch("../Akquise/pitch/pdf/"+l.id+".pdf",{cache:"no-store"});
+    if(!r.ok)throw new Error("PDF fehlt im Ordner Akquise/pitch/pdf");
+    return new Uint8Array(await r.arrayBuffer());
+  }
+  var r2=await fetch("akquise/pitch/"+l.id+".enc");
+  if(!r2.ok)throw new Error("Datei liegt noch nicht auf GitHub");
+  var b=new Uint8Array(await r2.arrayBuffer());
+  if(String.fromCharCode(b[0],b[1],b[2],b[3])!=="SBP1")throw new Error("Unbekanntes Dateiformat");
+  var key=await pitchKey();
+  return new Uint8Array(await crypto.subtle.decrypt({name:"AES-GCM",iv:b.slice(4,16)},key,b.slice(16)));
+}
+function saveBlob(name,blob){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);}
+async function pitchDl(id){
+  var l=LEADS.filter(function(x){return x.id===id;})[0];if(!l||!l.konzept)return;
+  toast("Konzept wird geladen");
+  try{saveBlob(l.konzept.datei,new Blob([await pitchBytes(l)],{type:"application/pdf"}));toast("Konzept für "+l.name+" geladen");}
+  catch(e){toast("Konzept ging nicht: "+e.message);}
+}
+var CRC=null;
+function crc32(u){
+  if(!CRC){CRC=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CRC[n]=c>>>0;}}
+  var x=0xFFFFFFFF;for(var i=0;i<u.length;i++)x=CRC[(x^u[i])&255]^(x>>>8);return (x^0xFFFFFFFF)>>>0;
+}
+function makeZip(files){ /* ohne Kompression, PDFs sind schon komprimiert. files: [{name,data}] */
+  var enc=new TextEncoder(),parts=[],cd=[],off=0,d=new Date();
+  var dd=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(),tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  files.forEach(function(f){
+    var nm=enc.encode(f.name),crc=crc32(f.data),n=f.data.length,h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,tm,true);h.setUint16(12,dd,true);
+    h.setUint32(14,crc,true);h.setUint32(18,n,true);h.setUint32(22,n,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer),nm,f.data);
+    var c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,tm,true);c.setUint16(14,dd,true);
+    c.setUint32(16,crc,true);c.setUint32(20,n,true);c.setUint32(24,n,true);c.setUint16(28,nm.length,true);c.setUint32(42,off,true);
+    cd.push(new Uint8Array(c.buffer),nm);
+    off+=30+nm.length+n;
+  });
+  var cdl=cd.reduce(function(a,x){return a+x.length;},0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdl,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(cd,[new Uint8Array(e.buffer)]),{type:"application/zip"});
+}
+async function pitchAll(){
+  var ls=LEADS.filter(function(l){return l.konzept;}).sort(function(a,b){return (b.score||0)-(a.score||0);});
+  if(!ls.length){toast("Keine Konzepte vorhanden");return;}
+  var btn=document.querySelector("[data-kzall]"),lab=btn&&btn.querySelector("span:last-child");
+  try{
+    var files=[];
+    for(var i=0;i<ls.length;i++){
+      if(lab)lab.textContent="Lade "+(i+1)+" von "+ls.length;
+      files.push({name:String(i+1).padStart(2,"0")+"_"+ls[i].konzept.datei,data:await pitchBytes(ls[i])});
+    }
+    saveBlob("Social_Bites_Konzepte_"+new Date().toISOString().slice(0,10)+".zip",makeZip(files));
+    toast(ls.length+" Konzepte als ZIP geladen");
+  }catch(e){toast("ZIP ging nicht: "+e.message);}
+  if(lab)lab.textContent="Alle "+ls.length+" als ZIP laden";
+}
+function vKonzepte(){
+  var ls=LEADS.filter(function(l){return l.konzept;}).sort(function(a,b){return (b.score||0)-(a.score||0);});
+  var h='<h1 class="h2">Konzepte.</h1><p class="lead">Für die '+ls.length+' besten Leads liegt je eine fertige DIN A4 Seite bereit, mit Higgsfield gestaltet und auf den Betrieb zugeschnitten. Ein Klick lädt das PDF. Der Preis steht überall auf Anfrage.</p>';
+  if(!ls.length)return h+'<div class="empty"><b>Noch keine Konzepte.</b><span>Sie entstehen mit Akquise/pitch/pitch_bauen.py.</span></div>';
+  h+='<div class="kzbar"><button class="btn inv" type="button" data-kzall><span class="dot"></span><span>Alle '+ls.length+' als ZIP laden</span></button><span class="mono" style="color:var(--mute)">Einzeln als PDF, A4 hochkant, druckfertig</span></div><div class="kzs">';
+  h+=ls.map(function(l){
+    var k=l.konzept,st=S(l.id).s;
+    return '<article class="kz"><div class="band" style="background:'+(HG_K[k.typ]||"#F4CDB4")+'"><span class="mono">'+esc(BR[l.branche]||"")+(l.kiez?" · "+esc(l.kiez):"")+' · Score '+(l.score||0)+'</span><h3>'+esc(l.name)+'</h3></div>'+
+      '<div class="bd"><div><span class="pill or">'+esc(k.paket)+'</span>'+(st!=="neu"?' <span class="pill">'+esc(stName(st))+'</span>':"")+'</div><p>'+esc(k.zeile)+'</p><ul>'+(k.ideen||[]).map(function(t){return '<li>'+esc(t)+'</li>';}).join("")+'</ul></div>'+
+      '<div class="ft"><button class="btn or sm" type="button" data-kz="'+esc(l.id)+'"><span class="dot"></span><span>PDF laden</span></button><button class="btn sm" type="button" data-open="'+esc(l.id)+'"><span class="dot"></span><span>Details</span></button></div></article>';
+  }).join("")+'</div>';
+  return h;
+}
+
 /* ---------- Klicks ---------- */
 document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-view],[data-open],[data-set],[data-tx],[data-tx2],[data-var],[data-sie],[data-who],[data-copytx],[data-sort],[data-more],[data-pin],[data-export],[data-closedet],[data-dvar],[data-dsie],[data-copydet],[data-copyaddr]");if(!t)return;
+  var t=e.target.closest("[data-view],[data-open],[data-set],[data-tx],[data-tx2],[data-var],[data-sie],[data-who],[data-copytx],[data-sort],[data-more],[data-pin],[data-export],[data-closedet],[data-dvar],[data-dsie],[data-copydet],[data-copyaddr],[data-kz],[data-kzall]");if(!t)return;
   var id=t.getAttribute("data-id");
   if(t.hasAttribute("data-view")){view=t.getAttribute("data-view");render();window.scrollTo(0,0);return;}
   if(t.hasAttribute("data-closedet")){$("#det").close();return;}
@@ -647,6 +748,8 @@ document.addEventListener("click",function(e){
   if(t.hasAttribute("data-dvar")){openTx[id]=t.getAttribute("data-dvar");openDet(id);return;}
   if(t.hasAttribute("data-dsie")){PREF["sie_"+id]=t.getAttribute("data-dsie")==="1";store("sb-akq-prefs",PREF);openDet(id);return;}
   if(t.hasAttribute("data-copydet")){copy($("#ta_det").value,"Text kopiert");return;}
+  if(t.hasAttribute("data-kz")){pitchDl(t.getAttribute("data-kz"));return;}
+  if(t.hasAttribute("data-kzall")){pitchAll();return;}
   if(t.hasAttribute("data-copyaddr")){var la=LEADS.filter(function(l){return l.id===t.getAttribute("data-copyaddr");})[0];copy([la.name,la.adresse||la.strasse,la.plz,"Berlin"].filter(Boolean).join(", "),"Adresse kopiert");return;}
 });
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("#det").open)$("#det").close();});
