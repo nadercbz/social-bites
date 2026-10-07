@@ -525,7 +525,7 @@ function txPanel(l,v){
 /* ---------- Ansichten ---------- */
 var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["events","Events"],["konzepte","Konzepte"],["quellen","Quellen"]];
 function drawViews(){
-  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?allItems().filter(function(l){return KAN.indexOf(S(l.id).s)>-1;}).length:v[0]==="events"?evUpcoming().length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
+  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?allItems().filter(function(l){return KAN.indexOf(stOf(l.id))>-1;}).length:v[0]==="events"?evUpcoming().length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
 }
 function render(onlyMain){
   if(!onlyMain)drawFilters();
@@ -594,7 +594,7 @@ function initMap(){
 function vPipeline(){
   var h='<h1 class="h2">Pipeline.</h1><p class="lead">Von vorgemerkt bis gewonnen. Mit den Pfeilen schiebst du einen Lead weiter, der Export passt in den Tab Pipeline im Social Bites OS.</p><div class="kan">';
   KAN.forEach(function(k,i){
-    var ls=allItems().filter(function(l){return S(l.id).s===k;}).sort(function(a,b){return String(S(b.id).at).localeCompare(String(S(a.id).at));});
+    var ls=allItems().filter(function(l){return stOf(l.id)===k;}).sort(function(a,b){return String(S(b.id).at).localeCompare(String(S(a.id).at));});
     h+='<section class="kcol"><h3>'+stName(k)+'<span>'+ls.length+'</span></h3>'+(ls.map(function(l){
       return '<div class="kc"><b data-open="'+esc(l.id)+'">'+esc(l.name)+'</b><small>'+esc((BR[l.branche]||"")+(l.kiez?" · "+l.kiez:"")+" · Score "+(l.score||0))+'</small>'+(S(l.id).note?'<small style="color:var(--accent-ink)">✎ '+esc(S(l.id).note.slice(0,70))+'</small>':"")+'<div class="mv">'+(i>0?'<button class="btn sm" type="button" data-set="'+KAN[i-1]+'" data-id="'+esc(l.id)+'" aria-label="Zurück">◀</button>':"")+(i<KAN.length-1?'<button class="btn sm" type="button" data-set="'+KAN[i+1]+'" data-id="'+esc(l.id)+'">'+stName(KAN[i+1])+' ▶</button>':"")+'<button class="btn sm" type="button" data-set="verloren" data-id="'+esc(l.id)+'" title="Verloren">✕</button></div></div>';
     }).join("")||'<small style="color:var(--mute);padding:6px">leer</small>')+'</section>';
@@ -648,7 +648,7 @@ function exportIt(kind){
     dl("Social_Bites_Akquise_"+d+".csv","﻿"+r2.join("\n"),"text/csv;charset=utf-8");toast("CSV geladen");
   } else if(kind==="pipeline"){
     var ph={vorgemerkt:"Erstkontakt",kontaktiert:"Erstkontakt",gespraech:"Gespräch",angebot:"Angebot raus",gewonnen:"Gewonnen"},step={vorgemerkt:"Erstkontakt vorbereiten",kontaktiert:"Nachfassen",gespraech:"Angebot vorbereiten",angebot:"Nachfassen",gewonnen:""};
-    var ls=allItems().filter(function(l){return KAN.indexOf(S(l.id).s)>-1;});
+    var ls=allItems().filter(function(l){return KAN.indexOf(stOf(l.id))>-1;});
     if(!ls.length){toast("Noch nichts in der Pipeline");return;}
     var tsv=ls.map(function(l){var s=S(l.id).s,sc=l.score||0;return [l.name,"Kunde",l.kontakt||"","Akquise-Board",sc>=70?"Heiß":sc>=50?"Warm":"Kalt",ph[s],l.branche==="gastro"?"Content":"Content","",step[s],"",PREF.who||"",[(topSig(l)?(SIG[topSig(l).typ]||""):""),S(l.id).note,l.website].filter(Boolean).join(" · ")].join("\t");}).join("\n");
     copy(tsv,ls.length+" Zeilen kopiert. Im Sheet Pipeline in die erste freie Zeile einfügen.");
@@ -659,6 +659,7 @@ function exportIt(kind){
 var EVF=load("sb-akq-evfilter",{q:"",kat:"",gr:"",tage:90,bez:"",kontakt:false,alle:false,sort:"score"});
 var KATN={festival:"Festival",messe:"Messe",konzert:"Konzert",fashion:"Mode",food:"Food",sport:"Sport",business:"Business",kultur:"Kultur",party:"Party",sonstiges:"Sonstiges"};
 var GRN={klein:"Klein",mittel:"Mittel",gross:"Groß",riesig:"Riesig"};
+function stOf(id){return (ST[id]&&ST[id].s)||"neu";}
 function evById(id){return EVS.filter(function(e){return e.id===id;})[0];}
 function evAsLead(e){return {id:e.id,name:e.name,branche:"event",kiez:e.bezirk||"",score:e.score||0,kontakt:e.veranstalter||"",website:e.veranstalter_url||e.url||""};}
 function allItems(){return LEADS.concat(EVS.map(evAsLead));}
@@ -667,7 +668,7 @@ function evUpcoming(){return EVS.filter(function(e){var d=days(evEnd(e));return 
 function evFold(s){return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ß/g,"ss");}
 function evKontakt(e){return !!(e.veranstalter_mail||e.veranstalter_telefon||e.veranstalter_url||e.veranstalter_kontakt);}
 function evOk(e){
-  var f=EVF,d=days(e.start),st=S(e.id).s;
+  var f=EVF,d=days(e.start),st=stOf(e.id);
   if(f.tage&&d!=null&&d>f.tage)return false;
   if(!f.alle&&st!=="neu"&&st!=="vorgemerkt")return false;
   if(f.kat&&e.kategorie!==f.kat)return false;
@@ -723,7 +724,7 @@ function evIcs(id){
   dl("Event_"+e.start+"_"+e.name.replace(/[^A-Za-z0-9]+/g,"_").slice(0,40)+".ics",ics,"text/calendar");toast("Kalendereintrag geladen");
 }
 function evCard(e){
-  var st=S(e.id).s,done=!(st==="neu"||st==="vorgemerkt"),dd=days(e.start);
+  var st=stOf(e.id),done=!(st==="neu"||st==="vorgemerkt"),dd=days(e.start);
   var warum=(e.warum||[]).filter(function(w){return w.p>0;}).slice(0,5).map(function(w){return '<span>'+esc(w.t)+'<b>+'+w.p+'</b></span>';}).join("");
   return '<article class="lc'+(done?" done":"")+'" data-id="'+esc(e.id)+'">'+evDt(e)+
     '<div><div class="hd"><h3 data-open="'+esc(e.id)+'">'+esc(e.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(KATN[e.kategorie]||e.kategorie||"Event")+'</span>'+(evSize(e)?'<span class="pill">'+esc(evSize(e))+'</span>':"")+(e.bezirk?'<span class="pill">'+esc(e.bezirk)+'</span>':"")+(e._new?'<span class="pill new">Neu</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+'<span class="pill'+(dd!=null&&dd<=14?" new":"")+'">'+esc(ago(e.start))+'</span></div></div>'+
@@ -742,7 +743,7 @@ function vEvents(){
   var up=evUpcoming(),list=evList(),f=EVF;
   var opt=function(c,cur,fn){return Object.keys(c).sort().map(function(k){return '<option value="'+esc(k)+'"'+(cur===k?" selected":"")+'>'+esc(fn?fn(k):k)+' ('+c[k]+')</option>';}).join("");};
   var cnt=function(fn){var c={};up.forEach(function(e){var k=fn(e);if(k)c[k]=(c[k]||0)+1;});return c;};
-  var n14=up.filter(function(e){return days(e.start)<=14;}).length,nk=up.filter(evKontakt).length,nv=up.filter(function(e){return S(e.id).s==="vorgemerkt";}).length;
+  var n14=up.filter(function(e){return days(e.start)<=14;}).length,nk=up.filter(evKontakt).length,nv=up.filter(function(e){return stOf(e.id)==="vorgemerkt";}).length;
   var h='<h1 class="h2">Events.</h1><p class="lead">Kommende Veranstaltungen in Berlin, die Foto und Video brauchen könnten. Mit Veranstalter, Kontakt und fertigem Anfrage-Text. Der Agent sucht täglich neu. Je früher du anfragst, desto besser, ideal 2 bis 8 Wochen vorher.</p>';
   h+='<div class="stats"><div class="stat"><span class="mono">Kommende Events</span><b>'+up.length+'</b></div><div class="stat"><span class="mono">In 14 Tagen</span><b>'+n14+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+nk+'</b></div><div class="stat"><span class="mono">Vorgemerkt</span><b>'+nv+'</b></div><div class="stat"><span class="mono">Treffer mit Filter</span><b>'+list.length+'</b></div></div>';
   h+='<div class="evbar"><input type="search" id="evq" placeholder="Suche: Event, Ort, Veranstalter" value="'+esc(f.q)+'" aria-label="Suche">'+
