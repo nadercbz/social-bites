@@ -651,7 +651,10 @@
   .pk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,26px);margin-top:clamp(28px,4vw,52px);}
   .pk{display:grid;gap:16px;align-content:start;}
   .pk-media{display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;text-align:left;}
-  .pk-img{display:block;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--paper-2);}
+  .pk-img{position:relative;display:block;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--paper-2);}
+  .pk-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease,transform .7s var(--ease);pointer-events:none;}
+  .pk-vid.on{opacity:1;}
+  .pk-media:hover .pk-vid{transform:scale(1.04);}
   .pk-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
   .pk-media:hover .pk-img img{transform:scale(1.04);}
   .pk-media .bite-mouth{height:110px;top:-46px;right:-8px;}
@@ -672,7 +675,9 @@
   .pkd::backdrop{background:rgba(20,17,16,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
   .pkd[open]{animation:anf-in .45s var(--ease);}
   .pkd-box{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);background:var(--paper);border-radius:22px;overflow:hidden;max-height:calc(100dvh - 32px);box-shadow:0 30px 80px rgba(0,0,0,.35);}
-  .pkd-img{background:var(--paper-2);min-height:0;}
+  .pkd-img{position:relative;background:var(--paper-2);min-height:0;}
+  .pkd-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;}
+  .pkd-vid.on{opacity:1;}
   .pkd-img img{width:100%;height:100%;object-fit:cover;display:block;max-height:calc(100dvh - 32px);}
   .pkd-txt{padding:clamp(24px,3vw,44px);overflow:auto;display:grid;gap:12px;align-content:start;justify-items:start;max-height:calc(100dvh - 32px);}
   .pkd-txt h2{margin:4px 0 0;font-weight:850;font-size:clamp(34px,4.4vw,56px);letter-spacing:-.055em;line-height:.95;}
@@ -1030,7 +1035,7 @@
     <p class="pk-lead">Für jeden Laden das passende Paket, vom ersten Spatenstich bis zur Kampagne für die ganze Kette. Jedes Paket stellen wir nach dem Erstgespräch auf dich zusammen.</p>
     <div class="pk-grid">
       <article class="pk pk-or">
-        <button class="bite-wrap pk-media" type="button" data-paket="opening" aria-label="Bites Opening: Details ansehen"><span class="bite pk-img"><img src="media/paket_opening.webp" alt="Bites Opening als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <button class="bite-wrap pk-media" type="button" data-paket="opening" aria-label="Bites Opening: Details ansehen"><span class="bite pk-img"><img src="media/paket_opening.webp" alt="Bites Opening als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"><video class="pk-vid" muted loop playsinline preload="none" data-src="media/paket_opening.mp4" aria-hidden="true" tabindex="-1"></video></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
         <div class="pk-body">
           <span class="pill">Neuer Laden</span>
           <h3>Bites Opening</h3>
@@ -1040,7 +1045,7 @@
         </div>
       </article>
       <article class="pk pk-cr">
-        <button class="bite-wrap pk-media" type="button" data-paket="gastro" aria-label="Bites for Gastro: Details ansehen"><span class="bite pk-img"><img src="media/paket_gastro.webp" alt="Bites for Gastro als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <button class="bite-wrap pk-media" type="button" data-paket="gastro" aria-label="Bites for Gastro: Details ansehen"><span class="bite pk-img"><img src="media/paket_gastro.webp" alt="Bites for Gastro als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"><video class="pk-vid" muted loop playsinline preload="none" data-src="media/paket_gastro.mp4" aria-hidden="true" tabindex="-1"></video></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
         <div class="pk-body">
           <span class="pill">Bestehender Laden</span>
           <h3>Bites for Gastro</h3>
@@ -1050,7 +1055,7 @@
         </div>
       </article>
       <article class="pk pk-ink">
-        <button class="bite-wrap pk-media" type="button" data-paket="brands" aria-label="Bites for Brands: Details ansehen"><span class="bite pk-img"><img src="media/paket_brands.webp" alt="Bites for Brands als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
+        <button class="bite-wrap pk-media" type="button" data-paket="brands" aria-label="Bites for Brands: Details ansehen"><span class="bite pk-img"><img src="media/paket_brands.webp" alt="Bites for Brands als Box mit Social-Bites-Logo" width="760" height="943" loading="lazy" decoding="async"><video class="pk-vid" muted loop playsinline preload="none" data-src="media/paket_brands.mp4" aria-hidden="true" tabindex="-1"></video></span><img class="bite-mouth" src="mouth.webp" alt="" width="200" height="383" aria-hidden="true" loading="lazy" decoding="async"></button>
         <div class="pk-body">
           <span class="pill">Kette und Marke</span>
           <h3>Bites for Brands</h3>
@@ -1065,7 +1070,7 @@
   <dialog class="pkd" id="pkd" aria-labelledby="pkd-h">
     <div class="pkd-box">
       <button class="anf-x" type="button" aria-label="Schließen" data-pkd-close>&times;</button>
-      <div class="pkd-img"><img id="pkd-img" src="media/paket_opening_xl.webp" alt="" width="1500" height="1862"></div>
+      <div class="pkd-img"><img id="pkd-img" src="media/paket_opening_xl.webp" alt="" width="1500" height="1862"><video class="pkd-vid" id="pkd-vid" muted loop playsinline aria-hidden="true" tabindex="-1"></video></div>
       <div class="pkd-txt">
         <span class="pill" id="pkd-tag"></span>
         <h2 id="pkd-h"></h2>
@@ -1443,12 +1448,21 @@
   var PAKETE = {"opening": {"name": "Bites Opening", "tag": "Neuer Laden", "line": "Neueröffnung mit Content und Opening-Event. Von der Baustelle bis zur Schlange vor der Tür.", "zeit": "10 Wochen vorher bis 4 Wochen danach", "inhalt": ["Konzept und Content-Plan bis zum Opening", "Drehtag mit Reels von Küche, Team und Gerichten", "Teaser-Phase mit Ads vor der Eröffnung", "Pre-Opening und Opening-Event mit Aktion vor Ort", "Influencer und Creator aus unserem Netzwerk", "Nachglühen und Report nach dem Opening"], "thema": "Opening oder Event"}, "gastro": {"name": "Bites for Gastro", "tag": "Bestehender Laden", "line": "Monatliche Betreuung für Läden, die mehr Gäste, mehr Reichweite und einen Kanal wollen, der endlich läuft.", "zeit": "3 Wochen Anlauf, dann monatlich", "inhalt": ["Audit und Strategie für deine Kanäle", "Monatsplan mit Themen, Formaten und Hooks", "Gebündelter Drehtag jeden Monat", "Schnitt, Posting und Community", "Monatsreport mit gemeinsamem Gespräch", "Flexibel verlängern und erweitern"], "thema": "Food Content & Reels"}, "brands": {"name": "Bites for Brands", "tag": "Kette und Marke", "line": "Kampagnen für Systemgastronomie und Marken. Mit Einkauf, Recht und mehreren Freigabestufen.", "zeit": "rund 3 bis 4 Monate", "inhalt": ["Briefing, Treatment und Kalkulation", "Vertrag, Einkauf und Bestellnummer sauber geregelt", "Pre-Production und PPM", "Drehtag mit Crew und Talents", "Postproduktion mit mehreren Freigabestufen", "Auslieferung, Launch und Case"], "thema": "Film Produktion"}};
   var pkd = d.getElementById('pkd');
   if (pkd && typeof pkd.showModal === 'function') {
+    pkd.addEventListener('close', function(){ var v = d.getElementById('pkd-vid'); if (v) { v.pause(); v.classList.remove('on'); } });
     d.addEventListener('click', function(e){
       var t = e.target.closest('[data-paket]');
       if (t) {
         var p = PAKETE[t.dataset.paket]; if (!p) return;
         d.getElementById('pkd-img').src = 'media/paket_' + t.dataset.paket + '_xl.webp';
         d.getElementById('pkd-img').alt = p.name + ' als Box mit Social-Bites-Logo';
+        var pv = d.getElementById('pkd-vid');
+        pv.classList.remove('on'); pv.pause();
+        if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+          pv.onplaying = function(){ pv.classList.add('on'); };
+          pv.onerror = function(){ pv.classList.remove('on'); };
+          pv.src = 'media/paket_' + t.dataset.paket + '.mp4';
+          var pr = pv.play(); if (pr && pr.catch) pr.catch(function(){});
+        }
         d.getElementById('pkd-tag').textContent = p.tag;
         d.getElementById('pkd-h').textContent = p.name;
         d.getElementById('pkd-line').textContent = p.line;
@@ -1461,6 +1475,21 @@
       if (e.target.closest('[data-pkd-close]') || e.target === pkd) pkd.close();
       if (e.target.closest('#pkd-go')) pkd.close();
     });
+  }
+
+  // Paket-Videos: nur abspielen, solange die Karte im Bild ist (spart Daten und Akku)
+  var pkVids = [].slice.call(d.querySelectorAll('.pk-vid'));
+  if (pkVids.length && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var pkPlay = function(v){
+      if (!v.getAttribute('src')) v.src = v.getAttribute('data-src');
+      v.onplaying = function(){ v.classList.add('on'); };
+      v.onerror = function(){ v.remove(); };
+      var pr = v.play(); if (pr && pr.catch) pr.catch(function(){});
+    };
+    if ('IntersectionObserver' in window) {
+      var pkIo = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) pkPlay(e.target); else e.target.pause(); }); }, {rootMargin: '80px'});
+      pkVids.forEach(function(v){ pkIo.observe(v); });
+    } else { pkVids.forEach(pkPlay); }
   }
 
   // Anfrage: Pop-up mit drei kurzen Schritten, Versand per FormSubmit an unser Postfach
