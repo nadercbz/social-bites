@@ -448,6 +448,7 @@
   <div id="pBody"></div>
 </aside>
 
+<script src="buero/wissen_agenten.js"></script>
 <script>
 try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
 (function(){
@@ -733,6 +734,8 @@ function openPanel(id){
   if(p.boss)h+='<h3>Berichtet an</h3><div class="chips">'+(p.boss==="nader"?chipP("nader")+chipP("tommy"):chipP(p.boss))+'</div>';
   if(reports.length)h+='<h3>Führt</h3><div class="chips">'+reports.map(function(x){return chipP(x.id);}).join("")+'</div>';
   if(p.with&&p.with.length)h+='<h3>Arbeitet eng mit</h3><div class="chips">'+p.with.map(chipP).join("")+'</div>';
+  var wk=(window.SB_WISSEN||{})[id];
+  if(wk&&wk.length)h+='<h3>Weiß aus dem Kampagnen Master Sheet</h3><div class="chips">'+wk.map(function(c){return '<span class="chip" title="'+esc(c.titel)+'">'+esc(c.nr+" "+(c.titel.length>38?c.titel.slice(0,36)+"…":c.titel))+'</span>';}).join("")+'</div><p style="margin:6px 0 0;font-size:13px;color:var(--mute)">Briefing mit allen Inhalten: Team-Bereich, Kampagnen Master Sheet, Ansicht Büro.</p>';
   if(!p.human&&p.ph>state.stage)h+='<div class="pstufe">Kommt mit der Stufe „'+esc(STUFEN[p.ph-1].t)+'“.</div>';
   else if(!p.human&&p.ph===1)h+='<div class="pstufe" style="background:#DDF3E5;color:#17613a">Arbeitet schon heute. Für diese Rolle läuft das System.</div>';
   if(!p.human)h+='<button class="reset" type="button" id="pReset"'+(names[id]?"":" hidden")+'>Originalnamen „'+esc(p.n)+'“ wiederherstellen</button>';

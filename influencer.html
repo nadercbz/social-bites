@@ -248,6 +248,18 @@
   .kz li{padding-left:14px;position:relative;}
   .kz li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
   .kz .ft{padding:8px 16px 15px;display:flex;gap:6px;flex-wrap:wrap;}
+  /* Events: kommende Veranstaltungen, die Foto und Video brauchen könnten */
+  .evbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px;}
+  .evbar input[type=search]{flex:1;min-width:190px;min-height:38px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 11px;background:var(--card);font-size:15px;font-weight:600;}
+  .evbar select{min-height:38px;border:1.5px solid var(--ink);border-radius:8px;padding:4px 9px;background:var(--card);font-weight:650;font-size:14px;max-width:190px;}
+  .evbar input:focus,.evbar select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .dt{display:grid;place-items:center;align-content:center;gap:2px;width:62px;height:66px;border-radius:14px;background:var(--ink);color:var(--paper);text-align:center;flex:none;}
+  .dt b{font-weight:850;font-size:26px;letter-spacing:-.05em;line-height:1;}
+  .dt span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;line-height:1;}
+  .dt.soon{background:var(--accent);color:#1E1B1A;}
+  .evdate{grid-column:2;font-size:14.5px;font-weight:650;margin:0;}
+  .evdate small{color:var(--mute);font-weight:500;font-size:13px;margin-left:4px;}
+  .evdesc{grid-column:2;margin:0;font-size:13.5px;color:var(--mute);}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
   /* Influencer-Datenbank */
   .chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 var(--gutter) 10px;}
@@ -465,7 +477,7 @@ function render(onlyMain){
 }
 function statStrip(list){
   var sum=0,st={},ko=0;list.forEach(function(i){sum+=reach(i);if(i.stadt)st[i.stadt]=1;if(i.kontakt_mail||i.agentur)ko++;});
-  return '<div class="stats"><div class="stat"><span class="mono">Treffer</span><b>'+list.length+'</b></div><div class="stat"><span class="mono">Reichweite gesamt</span><b>'+fmtN(sum)+'</b></div><div class="stat"><span class="mono">Städte</span><b>'+Object.keys(st).length+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+ko+'</b></div><div class="stat"><span class="mono">Auf der Merkliste</span><b>'+list.filter(isStar).length+'</b></div></div>';
+  return '<div class="stats"><div class="stat"><span class="mono">Treffer</span><b>'+list.length+'</b></div><div class="stat"><span class="mono">Summe Follower</span><b>'+fmtN(sum)+'</b></div><div class="stat"><span class="mono">Städte</span><b>'+Object.keys(st).length+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+ko+'</b></div><div class="stat"><span class="mono">Auf der Merkliste</span><b>'+list.filter(isStar).length+'</b></div></div>';
 }
 function sorted(list){
   var key={reach:function(i){return reach(i);},name:function(i){return fold(i.name);},stadt:function(i){return fold(i.stadt||"zzz");},typ:function(i){return ["nano","micro","macro","mega"].indexOf(i.typ);},geprueft:function(i){return i.geprueft||"";}}[sortK];

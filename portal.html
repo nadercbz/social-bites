@@ -898,7 +898,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
@@ -941,7 +941,7 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
@@ -957,6 +957,7 @@ function tGo(v,quiet){
   else if(v==="t-leistungen") h=head("Team","Leistungen","Was wir machen, auf einer Seite. Ohne Preise, darf also auch an Kunden. Zum Drucken oder als PDF: in neuem Tab öffnen und drucken.",'<div class="acts"><a class="btn sm" href="leistungen.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a><button class="btn sm" type="button" data-tview="os-leistungen"><span class="dot"></span><span>Preise im OS</span></button></div>')+'<iframe class="tframe" src="leistungen.html" title="Social Bites Leistungen"></iframe>';
   else if(v==="t-akquise") h=head("Team","Akquise-Board","Jeden Morgen neue Chancen in Berlin: Läden, die bald aufmachen, neue Firmen, Praxen und Kanzleien, dazu kommende Events zum Anfragen. Mit Score, Karte, Kontakt, fertigem Erstkontakt-Text und je einer A4-Konzeptseite für die besten 30 zum Download. Die Daten sind verschlüsselt, die Passphrase kennen nur Nader und Tommy.",'<div class="acts"><a class="btn sm" href="akquise.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="akquise.html" title="Social Bites Akquise-Board"></iframe>';
   else if(v==="t-influencer") h=head("Team","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre, Branche, Plattform und Größe. Mit unseren Listen für Crazy Canes, The Pizzary und Mmaah plus neuer Recherche. Sterne merken Favoriten, Export als CSV. Die Daten sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><a class="btn sm" href="influencer.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="influencer.html" title="Social Bites Influencer-Datenbank"></iframe>';
+  else if(v==="t-wissen") h=head("Team","Kampagnen Master Sheet","Tommys Marketing Wissen aus Videos und Kursen: Gastro Kampagnen, B2B, Branding, Google Ads und KI Suche (GEO), in Kapiteln mit unseren Ideen und Hinweisen. Jedes Kapitel sagt, welcher Mitarbeiter im Büro es kennt, und jeder bekommt sein Briefing. Die Daten sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><a class="btn sm" href="wissen.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="wissen.html" title="Social Bites Kampagnen Master Sheet"></iframe>';
   else if(v==="t-kunden") h=head("Team","Kunden & Belege","Kundenstamm Schritt für Schritt anlegen, auch direkt im Gespräch. Dazu das Rechnungsbuch: was offen ist, was überfällig ist, und Mahnungen in drei Stufen mit Mail-Text. Alles bleibt nur in diesem Browser.",'<div class="acts"><a class="btn sm" href="kunden.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="kunden.html" title="Social Bites Kunden und Belege"></iframe>';
   else if(v==="t-trends") h=head("Kreativ","Trend-Indicator","Jeden Montag neu: virale Videos aus Food und Gastro, Hashtags, Sounds, Google-Suchtrends und die Hooks, die gerade ziehen. Kategorie oben wechseln, Videos merken, Hooks für Kunden bauen.",'<div class="acts"><a class="btn sm" href="trends.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="trends.html" title="Social Bites Trend-Indicator"></iframe>';
   else if(v==="t-galerie") h=head("Kreativ","Galerie & Moodboards","Entwürfe und Ideen als Boards. Herz für Favoriten, Notiz pro Bild, Präsentieren für den großen Bildschirm. Neue Ideen schickst du Claude im Chat.",'<div class="acts"><a class="btn sm" href="galerie.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="galerie.html" title="Social Bites Galerie" allow="fullscreen" allowfullscreen></iframe>';
@@ -973,7 +974,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -986,6 +987,7 @@ function tStart(){
       tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
       tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden und Events in Berlin, täglich frisch, mit Konzept-PDFs.","t-or")+
       tile("t-influencer","Vertrieb","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre und Branche.","t-or")+
+      tile("t-wissen","Wissen","Kampagnen Master Sheet","Marketing Wissen in Kapiteln, mit Briefing für jeden Mitarbeiter.","t-ink")+
       tile("t-kunden","Team","Kunden & Belege","Kundenstamm, offene Rechnungen, Mahnungen.")+
       tile("t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or")+
       tile("t-buero","Team","Büro & Mitarbeiter","28 Agenten in 8 Räumen, mit Skill-Set und Organigramm.","t-or")+

@@ -301,9 +301,9 @@ function ago(iso){var d=days(iso);if(d==null)return "";if(d===0)return "heute";i
 function hostOf(u){try{return new URL(/^https?:/.test(u)?u:"https://"+u).hostname.replace(/^www\./,"");}catch(e){return u;}}
 function webUrl(u){return /^https?:/.test(u)?u:"https://"+u;}
 
-var BR={event:"Event",gastro:"Gastro",praxis:"Praxis & Medizin",kanzlei:"Kanzlei & Beratung",beauty:"Beauty & Wellness",fitness:"Fitness & Sport",handel:"Handel & Concept",sonstige:"Sonstige"};
-var SIE={praxis:1,kanzlei:1};
-var SIG={opening:"Opening-Termin",neu_bei_wolt:"Neu bei Wolt",neu_lieferando:"Neu bei Lieferando",neu_osm:"Neu auf der Karte",neu_gegruendet:"Neu im Handelsregister",stelle_social:"Sucht Social Media",stelle_eroeffnung:"Stellt für Neueröffnung ein",gewerbe_gesuch:"Sucht Gewerbefläche",nachmieter:"Nachmieter gesucht",presse:"In der Presse",gewerbe_angebot:"Fläche wird frei"};
+var BR={event:"Event",gastro:"Gastro",praxis:"Praxis & Medizin",kanzlei:"Kanzlei & Beratung",beauty:"Beauty & Wellness",fitness:"Fitness & Sport",handel:"Handel & Concept",handwerk:"Handwerk & Haustechnik",bau:"Bau & Ausbau",immobilien:"Immobilien",sonstige:"Sonstige"};
+var SIE={praxis:1,kanzlei:1,handwerk:1,bau:1,immobilien:1};
+var SIG={sales_sheet:"Aus dem Sales Sheet",opening:"Opening-Termin",neu_bei_wolt:"Neu bei Wolt",neu_lieferando:"Neu bei Lieferando",neu_osm:"Neu auf der Karte",neu_gegruendet:"Neu im Handelsregister",stelle_social:"Sucht Social Media",stelle_eroeffnung:"Stellt für Neueröffnung ein",gewerbe_gesuch:"Sucht Gewerbefläche",nachmieter:"Nachmieter gesucht",presse:"In der Presse",gewerbe_angebot:"Fläche wird frei"};
 var STAT=[["neu","Neu"],["vorgemerkt","Vorgemerkt"],["kontaktiert","Kontaktiert"],["gespraech","Gespräch"],["angebot","Angebot"],["gewonnen","Gewonnen"],["verloren","Verloren"],["kein_fit","Kein Fit"]];
 var KAN=["vorgemerkt","kontaktiert","gespraech","angebot","gewonnen"];
 function stName(k){return (STAT.filter(function(s){return s[0]===k;})[0]||[0,k])[1];}
@@ -381,7 +381,7 @@ function matches(l){
 }
 function filtered(){return LEADS.filter(matches);}
 function drawFilters(){
-  var brs=Object.keys(BR).filter(function(b){return LEADS.some(function(l){return l.branche===b;});});
+  var brs=Object.keys(BR).filter(function(b){return b!=="event"&&(b!=="sonstige"||LEADS.some(function(l){return l.branche===b;}));});
   var kz=Array.from(new Set(LEADS.map(function(l){return l.kiez;}).filter(Boolean))).sort();
   var sg=Array.from(new Set([].concat.apply([],LEADS.map(function(l){return (l.signale||[]).map(function(g){return g.typ;});}))));
   $("#filters").innerHTML='<div class="seg small" role="group" aria-label="Branche">'+brs.map(function(b){return '<button type="button" data-br="'+b+'" aria-pressed="'+(FIL.br.indexOf(b)>-1)+'">'+esc(BR[b])+'<span class="n">'+LEADS.filter(function(l){return l.branche===b;}).length+'</span></button>';}).join("")+'</div>'+
@@ -428,6 +428,9 @@ function nutzen(l,sie){
     kanzlei:"Wir sind Social Bites, ein Team aus Berlin, das Unternehmen auf Instagram, TikTok und LinkedIn sichtbar macht. Für Kanzleien heißt das: Gesicht zeigen, Rechtsthemen in 30 Sekunden erklären, Mandanten und Nachwuchs gewinnen, ohne dass es nach Werbung aussieht.",
     beauty:"Wir sind Social Bites, ein Team aus Berlin für Content, der Termine füllt: Team, Atmosphäre und Ergebnisse als kurze Reels für TikTok und Instagram, vor Ort gedreht (bei unseren Projekten "+T.reichweite+").",
     fitness:"Wir sind Social Bites, ein Team aus Berlin für Content, der Probetrainings füllt: Community, Training und Trainer als kurze Reels für TikTok und Instagram, vor Ort gedreht (bei unseren Projekten "+T.reichweite+").",
+    handwerk:"Wir sind Social Bites, ein Team aus Berlin, das Handwerksbetriebe auf Instagram und TikTok sichtbar macht. Für Haustechnik und Elektro heißt das: Team und Einsätze zeigen, Projekte vorher und nachher, kurze Tipps in 30 Sekunden. Das bringt Anfragen und hilft bei der Suche nach Azubis und Fachkräften.",
+    bau:"Wir sind Social Bites, ein Team aus Berlin, das Betriebe aus Bau und Ausbau auf Instagram und TikTok sichtbar macht. Für Dachdecker, Maler und Innenausbau heißt das: Baustellen und Ergebnisse in Szene setzen, das Team zeigen, Nachwuchs und neue Aufträge gewinnen.",
+    immobilien:"Wir sind Social Bites, ein Team aus Berlin, das Makler und Immobilienfirmen auf Instagram, TikTok und LinkedIn sichtbar macht. Für Immobilien heißt das: Objekte als Video erlebbar machen, Gesicht zeigen, Vertrauen aufbauen, bevor der erste Termin da ist.",
     handel:"Wir sind Social Bites, ein Team aus Berlin für Content, der Laufkundschaft bringt: Produkte, die Menschen dahinter und der Laden als kurze Reels für TikTok und Instagram, vor Ort gedreht (bei unseren Projekten "+T.reichweite+")."
   };
   return m[l.branche]||m.handel;
@@ -484,6 +487,7 @@ function contactRow(l){
   var a=[];
   if(l.kontakt)a.push('<span class="who">'+esc(l.kontakt)+(l.rolle?' <small style="color:var(--mute);font-weight:500">('+esc(String(l.rolle).split(" ")[0])+')</small>':"")+'</span>');
   if(l.website)a.push('<a href="'+esc(webUrl(l.website))+'" target="_blank" rel="noopener">'+esc(hostOf(l.website))+' ↗</a>');
+  if(l.liefer_url)a.push('<a href="'+esc(l.liefer_url)+'" target="_blank" rel="noopener">'+(/ubereats/.test(l.liefer_url)?"Uber Eats":/lieferando/.test(l.liefer_url)?"Lieferando":"Lieferdienst")+' ↗</a>');
   if(l.instagram)a.push('<a href="https://www.instagram.com/'+esc(l.instagram)+'/" target="_blank" rel="noopener">@'+esc(l.instagram)+' ↗</a>');
   if(l.telefon)a.push('<a href="tel:'+esc(String(l.telefon).replace(/[^\d+]/g,""))+'">'+esc(l.telefon)+'</a>');
   if(l.mail)a.push('<a href="mailto:'+esc(l.mail)+'">'+esc(l.mail)+'</a>');
@@ -499,7 +503,7 @@ function sigLine(l){
 function leadCard(l,rank){
   var st=S(l.id).s,done=!(st==="neu"||st==="vorgemerkt"),v=openTx[l.id]||null;
   var h='<article class="lc'+(done?" done":"")+'" data-id="'+esc(l.id)+'">'+ring(l,rank)+
-    '<div><div class="hd"><h3 data-open="'+esc(l.id)+'">'+esc(l.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(BR[l.branche]||l.branche)+'</span>'+(l.kiez?'<span class="pill">'+esc(l.kiez)+'</span>':"")+(l._new?'<span class="pill new">Neu</span>':"")+(l.konzept?'<span class="pill ok">Konzept bereit</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+((l.quellen||[]).length>1?'<span class="pill">'+new Set((l.quellen||[]).map(function(q){return q.split(":")[0];})).size+' Quellen</span>':"")+'</div></div>'+
+    '<div><div class="hd"><h3 data-open="'+esc(l.id)+'">'+esc(l.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(BR[l.branche]||l.branche)+'</span>'+(l.kiez?'<span class="pill">'+esc(l.kiez)+'</span>':"")+(l._new?'<span class="pill new">Neu</span>':"")+(l.konzept?'<span class="pill ok">Konzept bereit</span>':"")+(l.sheet_angeschrieben?'<span class="pill warn" title="Im Sales Sheet als angeschrieben eingetragen">Angeschrieben laut Sheet</span>':"")+(l.bewertungen!=null?'<span class="pill" title="Bewertungen auf dem Lieferdienst">'+String(l.bewertungen).replace(/\B(?=(\d{3})+(?!\d))/g,".")+' Bewertungen</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+((l.quellen||[]).length>1?'<span class="pill">'+new Set((l.quellen||[]).map(function(q){return q.split(":")[0];})).size+' Quellen</span>':"")+'</div></div>'+
     '<div class="warum">'+(l.warum||[]).filter(function(w){return w.p>0;}).slice(0,5).map(function(w){return '<span>'+esc(w.t)+'<b>+'+w.p+'</b></span>';}).join("")+'</div>'+
     (sigLine(l)?'<p class="sig">'+sigLine(l)+'</p>':"")+
     '<div class="addr">'+(addrLine(l)?'<span>'+esc(addrLine(l))+'</span>':"")+'<a class="btn sm" href="'+esc(mapsOpen(l))+'" target="_blank" rel="noopener"><span class="dot"></span><span>Google Maps</span></a><a class="btn sm" href="'+esc(routeUrl(l))+'" target="_blank" rel="noopener"><span class="dot"></span><span>Route</span></a></div>'+
@@ -619,6 +623,8 @@ function openDet(id){
    (l.konzept?'<div class="box"><h4 class="mono">Konzept</h4><p><span class="pill or">'+esc(l.konzept.paket)+'</span></p><p>'+esc(l.konzept.zeile)+'</p><p style="color:var(--mute)">'+(l.konzept.ideen||[]).map(esc).join(" · ")+'</p><button class="btn inv sm" type="button" data-kz="'+esc(id)+'"><span class="dot"></span><span>Konzept als PDF laden</span></button></div>':"")+
    '<div class="box"><h4 class="mono">Status und Notiz</h4><div class="stbtns" id="stb">'+STAT.map(function(s){return '<button class="btn sm" type="button" data-set="'+s[0]+'" data-id="'+esc(id)+'" aria-pressed="'+(o.s===s[0])+'"><span class="dot"></span><span>'+s[1]+'</span></button>';}).join("")+'</div><textarea class="note" id="detNote" placeholder="Notiz: Wen gesprochen, was vereinbart, Eindruck?">'+esc(o.note||"")+'</textarea>'+((o.hist||[]).length?'<div class="hist">'+o.hist.slice(-5).reverse().map(function(h){return '<span>'+esc(fmtD(h[0]))+': '+esc(stName(h[1]))+'</span>';}).join("")+'</div>':"")+'</div></div>'+
    '<div class="col"><div class="box"><h4 class="mono">Kontakt und Ort</h4><dl>'+
+     (l.sheet_tab?'<dt>Sales Sheet</dt><dd>Tab '+esc(l.sheet_tab)+(l.sheet_social?" · Social Media: "+esc(l.sheet_social):"")+(l.sheet_agentur?" · Agentur: "+esc(l.sheet_agentur):"")+(l.sheet_angeschrieben?" · angeschrieben: "+esc(l.sheet_angeschrieben):"")+'</dd>':"")+
+     (l.liefer_url?'<dt>Lieferdienst</dt><dd><a href="'+esc(l.liefer_url)+'" target="_blank" rel="noopener">'+esc(hostOf(l.liefer_url))+' ↗</a>'+(l.bewertungen!=null?" · "+String(l.bewertungen).replace(/\B(?=(\d{3})+(?!\d))/g,".")+" Bewertungen":"")+'</dd>':"")+
      '<dt>Ansprechpartner</dt><dd>'+(l.kontakt?esc(l.kontakt)+(l.rolle?" ("+esc(String(l.rolle).split(" ")[0])+")":""):"nicht gefunden")+'</dd>'+
      '<dt>Website</dt><dd>'+(l.website?'<a href="'+esc(webUrl(l.website))+'" target="_blank" rel="noopener">'+esc(hostOf(l.website))+' ↗</a>'+(l.impressum?' · <a href="'+esc(l.impressum)+'" target="_blank" rel="noopener">Impressum ↗</a>':""):"nicht gefunden")+'</dd>'+
      '<dt>Instagram</dt><dd>'+(l.instagram?'<a href="https://www.instagram.com/'+esc(l.instagram)+'/" target="_blank" rel="noopener">@'+esc(l.instagram)+' ↗</a>':"nicht gefunden")+'</dd>'+
