@@ -64,6 +64,7 @@
 
   main{padding:18px var(--gutter) 70px;}
   .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+  #kStats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px;}
   .stat b{font-weight:850;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.045em;line-height:1;}
   .stat .mono{color:var(--mute);}
@@ -426,6 +427,7 @@ window.addEventListener("storage",function(e){if(e.key===KK){K=load(KK,[]);rende
 
 /* Formular-Schritte. Feld: [key, label, typ, optionen, voll, platzhalter] */
 var STATUS=[["lead","Lead","or"],["gespraech","Im Gespräch","warn"],["angebot","Angebot raus","warn"],["kunde","Kunde","ok"],["pause","Pausiert",""],["verloren","Verloren",""]];
+var BESTAND="Bestandskunde (vor Social Bites)",VIA_SB="Über Social Bites gewonnen";
 var TYP=[["opening","Bites Opening"],["gastro","Bites for Gastro"],["brands","Bites for Brands"],["sonst","Sonstiges"]];
 var STEPS=[
   {t:"Basis",d:"Wer ist der Kunde? Mehr braucht es zum Speichern nicht.",f:[
@@ -433,7 +435,7 @@ var STEPS=[
     ["typ","Was machen wir mit ihnen?","seg",TYP,1],
     ["status","Status","seg",STATUS.map(function(s){return [s[0],s[1]];}),1],
     ["konzept","Küche und Konzept in einem Satz","text",null,1,"z. B. Neapolitanische Pizza, junges Publikum"],
-    ["quelle","Wie kam der Kontakt?","select",["","Empfehlung","Instagram oder TikTok","Kaltakquise vor Ort","Netzwerk","Event","Website","Sonstiges"],0],
+    ["quelle","Wie kam der Kontakt?","select",["","Bestandskunde (vor Social Bites)","Über Social Bites gewonnen","Empfehlung","Instagram oder TikTok","Kaltakquise vor Ort","Netzwerk","Event","Website","Sonstiges"],0],
     ["bezirk","Bezirk oder Stadt","text",null,0,"z. B. Kreuzberg"]
   ]},
   {t:"Ansprechpartner",d:"Wer entscheidet, wer ist im Alltag dran?",f:[
@@ -501,11 +503,12 @@ function renderK(){
   $("#nK").textContent=K.length;
   var aktiv=K.filter(function(k){return k.status==="kunde";}).length,leads=K.filter(function(k){return ["lead","gespraech","angebot"].indexOf(k.status)>-1;}).length;
   var offenSum=B.filter(function(b){return isInv(b)&&b.status==="offen";}).reduce(function(a,b){return a+offen(b);},0);
-  $("#kStats").innerHTML='<div class="stat"><span class="mono">Kunden gesamt</span><b>'+K.length+'</b></div><div class="stat"><span class="mono">Aktive Kunden</span><b>'+aktiv+'</b></div><div class="stat"><span class="mono">In der Pipeline</span><b>'+leads+'</b></div><div class="stat"><span class="mono">Offen bei Kunden</span><b>'+eur(offenSum)+'</b></div>';
-  var fl=[["alle","Alle"]].concat(STATUS.map(function(s){return [s[0],s[1]];}));
-  $("#kFilter").innerHTML=fl.map(function(f){var n=f[0]==="alle"?K.length:K.filter(function(k){return k.status===f[0];}).length;return (f[0]==="alle"||n)?'<button type="button" data-kfil="'+f[0]+'" aria-pressed="'+(kFil===f[0])+'">'+esc(f[1])+'<span class="n">'+n+'</span></button>':"";}).join("");
+  $("#kStats").innerHTML='<div class="stat"><span class="mono">Kunden gesamt</span><b>'+K.length+'</b></div><div class="stat"><span class="mono">Aktive Kunden</span><b>'+aktiv+'</b></div><div class="stat"><span class="mono">In der Pipeline</span><b>'+leads+'</b></div><div class="stat"><span class="mono">Offen bei Kunden</span><b>'+eur(offenSum)+'</b></div><div class="stat"><span class="mono">Bestand, vor Social Bites</span><b>'+K.filter(function(k){return k.quelle===BESTAND;}).length+'</b></div><div class="stat"><span class="mono">Über Social Bites gewonnen</span><b>'+K.filter(function(k){return k.quelle===VIA_SB;}).length+'</b></div>';
+  var fl=[["alle","Alle"]].concat(STATUS.map(function(s){return [s[0],s[1]];})).concat([["bestand","Bestandskunden"],["viasb","Über Social Bites"]]);
+  var inFil=function(k,f){return f==="alle"||(f==="bestand"?k.quelle===BESTAND:f==="viasb"?k.quelle===VIA_SB:k.status===f);};
+  $("#kFilter").innerHTML=fl.map(function(f){var n=K.filter(function(k){return inFil(k,f[0]);}).length;return (f[0]==="alle"||f[0]==="bestand"||f[0]==="viasb"||n)?'<button type="button" data-kfil="'+f[0]+'" aria-pressed="'+(kFil===f[0])+'">'+esc(f[1])+'<span class="n">'+n+'</span></button>':"";}).join("");
   var q=$("#kq").value.trim().toLowerCase();
-  var list=K.filter(function(k){return (kFil==="alle"||k.status===kFil)&&(!q||Object.keys(k).some(function(x){return typeof k[x]==="string"&&k[x].toLowerCase().indexOf(q)>-1;}));})
+  var list=K.filter(function(k){return inFil(k,kFil)&&(!q||Object.keys(k).some(function(x){return typeof k[x]==="string"&&k[x].toLowerCase().indexOf(q)>-1;}));})
     .sort(function(a,b){return String(b.updated||"").localeCompare(String(a.updated||""));});
   if(!K.length){$("#klist").innerHTML='<div class="empty" style="grid-column:1/-1"><b>Noch keine Kunden gespeichert.</b><span>Leg den ersten an, gern direkt im Gespräch. Nur der Name ist Pflicht, der Rest geht auch später.</span><button class="btn or" type="button" data-newk><span class="dot"></span><span>+ Ersten Kunden anlegen</span></button></div>';return;}
   if(!list.length){$("#klist").innerHTML='<div class="empty" style="grid-column:1/-1">Nichts gefunden.</div>';return;}
@@ -514,7 +517,7 @@ function renderK(){
     var sum=bs.filter(function(b){return isInv(b)&&b.status!=="storniert";}).reduce(function(a,b){return a+num(b.brutto);},0);
     return '<button class="kc" type="button" data-kv="'+esc(k.id)+'"><div class="hd"><h3>'+esc(k.name)+'</h3><span class="pill '+st[2]+'">'+esc(st[1])+'</span></div>'+
       '<div class="who">'+(k.kontakt?esc(k.kontakt)+(k.rolle?", "+esc(k.rolle):""):'<span style="color:var(--mute)">Ansprechpartner fehlt</span>')+'</div>'+
-      '<div class="meta"><span class="pill">'+esc(k.nr||"")+'</span>'+(k.typ?'<span class="pill ink">'+esc(typName(k.typ))+'</span>':"")+(k.bezirk?'<span class="pill">'+esc(k.bezirk)+'</span>':"")+(ov.length?'<span class="pill bad">'+ov.length+' überfällig</span>':"")+'</div>'+
+      '<div class="meta"><span class="pill">'+esc(k.nr||"")+'</span>'+(k.typ?'<span class="pill ink">'+esc(typName(k.typ))+'</span>':"")+(k.bezirk?'<span class="pill">'+esc(k.bezirk)+'</span>':"")+(k.quelle===BESTAND?'<span class="pill" title="Kunde aus unserem Bestand, nicht über Social Bites gewonnen">Bestand</span>':k.quelle===VIA_SB?'<span class="pill ok" title="Über Social Bites gewonnen">Über Social Bites</span>':"")+(ov.length?'<span class="pill bad">'+ov.length+' überfällig</span>':"")+'</div>'+
       '<div class="money"><span>Umsatz <b>'+eur(sum)+'</b></span><span>Offen <b>'+eur(op.reduce(function(a,b){return a+offen(b);},0))+'</b></span></div></button>';
   }).join("");
 }
@@ -850,13 +853,19 @@ $("#bq").addEventListener("input",renderB);
 
 /* Startliste der bisherigen Kunden einmal übernehmen (gelöschte kommen nicht zurück) */
 (function(){
-  var seed=window.KUNDEN_SEED||[],done=load("sb-kunden-seed",{}),added=0,t0=Date.now();
+  var seed=window.KUNDEN_SEED||[],done=load("sb-kunden-seed",{}),added=0,t0=Date.now(),fixed=0;
+  /* Alle Startkunden sind Bestand aus der Zeit vor Social Bites. Schon übernommene Einträge ohne Herkunft bekommen sie nachgetragen. */
+  seed.forEach(function(sd){
+    var nm=sd.name.trim().toLowerCase(),ex=K.filter(function(k){return String(k.name).trim().toLowerCase()===nm&&!k.quelle;})[0];
+    if(ex){ex.quelle=BESTAND;fixed++;}
+  });
+  if(fixed)saveK();
   seed.forEach(function(sd,i){
     if(done[sd.id])return;
     done[sd.id]=1;
     var nm=sd.name.trim().toLowerCase();
     if(K.some(function(k){return String(k.name).trim().toLowerCase()===nm;}))return;
-    var o=Object.assign({form:"du",land:"Deutschland",pay:"14"},sd);
+    var o=Object.assign({form:"du",land:"Deutschland",pay:"14",quelle:BESTAND},sd);
     o.id=uid("k");o.nr=nextKNr();o.created=o.updated=new Date(t0-i*1000).toISOString();
     K.push(o);added++;
   });

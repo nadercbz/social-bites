@@ -1,4 +1,4 @@
-/* Startliste der bisherigen Kunden für den Kundenstamm (kunden.html). Nur Firmenname, Website und Instagram, keine Personendaten.
+/* Startliste der bisherigen Kunden für den Kundenstamm (kunden.html). WICHTIG: Das sind Bestandskunden aus der Zeit vor Social Bites, noch nicht über Social Bites gewonnen. kunden.html markiert sie dafür mit der Herkunft "Bestandskunde (vor Social Bites)". Nur Firmenname, Website und Instagram, keine Personendaten.
    Quellen: Portfolio/Portfolio Tommy/Kunden/KUNDEN.xlsx und die Referenzen auf der Website. Wird beim ersten Öffnen einmal übernommen. */
 window.KUNDEN_SEED=[
   {id:"seed-spreegold",name:"Spreegold",typ:"gastro",status:"kunde",konzept:"Restaurant",web:"https://www.spreegold.com/",insta:"@spreegold.berlin",notiz:"Aus Tommys Kundenliste. Kurzvideo auf der Website."},
