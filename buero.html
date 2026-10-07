@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Büro</title>
+<meta name="description" content="Das Büro von Social Bites: alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set und Hierarchie.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F6F0E3">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Büro: Grundriss mit acht Räumen, Personen am Schreibtisch, Detailfenster mit Skill-Set und umbenennbaren Namen, dazu das Organigramm. */
+  :root{
+    color-scheme:light;
+    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
+    --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0; --green:#22A55A;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img,svg{max-width:100%;display:block;}
+  button,input{font:inherit;color:inherit;}
+  button{cursor:pointer;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:600 14.5px/1.2 var(--display);transition:border-color .2s;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper);}
+  .btn[aria-pressed="true"]:hover{color:var(--ink);}
+  .btn .n{font-family:var(--mono);font-size:11px;opacity:.7;}
+
+  .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px var(--gutter);border-bottom:1px solid var(--line);}
+  .top img{height:46px;width:auto;}
+  .top .ttl{display:flex;flex-direction:column;gap:2px;}
+  .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .embedded .top img{display:none;}
+  .seg{display:inline-flex;gap:0;border:1px solid var(--ink);border-radius:8px;overflow:hidden;}
+  .seg button{border:0;background:transparent;padding:8px 14px;font:700 14px/1.2 var(--display);}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+
+  main{padding:18px var(--gutter) 70px;max-width:1380px;margin:0 auto;}
+  .ctrl{display:grid;gap:12px;margin-bottom:22px;}
+  .ctrl .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .stufen .btn .n{margin-left:2px;}
+  .search{flex:1;min-width:200px;max-width:380px;margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--ink);border-radius:8px;padding:0 10px;}
+  .search input{flex:1;min-width:0;border:0;background:transparent;padding:10px 2px;outline:none;font-size:15px;}
+  .search svg{width:17px;height:17px;flex:none;color:var(--mute);}
+  .info{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;color:var(--mute);}
+  .info b{color:var(--ink);font-weight:750;}
+  .info .legend{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-size:13px;}
+  .legend i{display:inline-block;vertical-align:-3px;margin-right:5px;}
+  .lg-live{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px var(--paper);}
+  .lg-star{width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--accent);display:inline-grid;place-items:center;}
+  .lg-star svg{width:10px;height:10px;fill:currentColor;stroke:none;}
+  .lg-ghost{width:16px;height:16px;border-radius:50%;border:1.5px dashed var(--mute);}
+
+  /* Grundriss */
+  .floor{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:30px 24px;}
+  .room{--floor:#F3EBDA;--acc:#F04A0A;--accI:#B83806;--tx:#1E1B1A;--mu:#6B6357;--ol:#1E1B1A;
+    position:relative;background-color:var(--floor);border:4px solid var(--ol);border-radius:18px;padding:16px 14px 20px;color:var(--tx);
+    box-shadow:0 8px 0 -3px rgba(30,27,26,.1);}
+  .room .door{position:absolute;left:28px;bottom:-4px;width:50px;height:4px;background:var(--paper);border-left:3px solid var(--ol);border-right:3px solid var(--ol);z-index:2;}
+  .rh{display:grid;gap:3px;margin-bottom:12px;padding-right:58px;}
+  .rh .mono{color:var(--accI);}
+  .rh h2{margin:0;font-weight:850;font-size:clamp(22px,2.1vw,30px);letter-spacing:-.045em;line-height:1;}
+  .rh p{margin:3px 0 0;font-size:13.5px;line-height:1.35;color:var(--mu);max-width:48ch;}
+  .prop{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:12px;background:var(--acc);color:#fff;display:grid;place-items:center;box-shadow:0 3px 0 rgba(30,27,26,.3);}
+  .prop svg{width:24px;height:24px;}
+  .seats{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:20px 6px;}
+
+  .r-bruecke{--floor:#F0E4CB;background-image:repeating-linear-gradient(135deg,rgba(30,27,26,.04) 0 2px,transparent 2px 18px);}
+  .r-radar{--floor:#FCE8DA;background-image:linear-gradient(rgba(240,74,10,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(240,74,10,.13) 1px,transparent 1px);background-size:26px 26px;}
+  .r-kueche{--floor:#FFF5D8;--acc:#E8A41C;--accI:#946400;background-image:conic-gradient(rgba(232,164,28,.2) 25%,transparent 0 50%,rgba(232,164,28,.2) 0 75%,transparent 0);background-size:38px 38px;}
+  .r-set{--floor:#E4ECF8;--acc:#2B59A6;--accI:#1D4283;background-image:radial-gradient(circle at 78% 12%,rgba(255,255,255,.85),transparent 48%),repeating-linear-gradient(90deg,rgba(43,89,166,.07) 0 2px,transparent 2px 30px);}
+  .r-post{--floor:#33232D;--acc:#C25AA0;--accI:#E39BCB;--tx:#F6F0E3;--mu:#CDBFAE;background-image:radial-gradient(circle at 20% 0%,rgba(194,90,160,.35),transparent 55%),radial-gradient(circle at 100% 100%,rgba(43,89,166,.28),transparent 50%);}
+  .r-redaktion{--floor:#DDF1F0;--acc:#1B8A8F;--accI:#116468;background-image:repeating-linear-gradient(0deg,rgba(27,138,143,.16) 0 1px,transparent 1px 26px);}
+  .r-kasse{--floor:#E2F0E4;--acc:#1F6B4F;--accI:#17513b;background-image:radial-gradient(rgba(31,107,79,.24) 1.6px,transparent 1.8px);background-size:20px 20px;}
+  .r-maschinen{--floor:#E8E5E0;--acc:#4B6573;--accI:#34505f;overflow:hidden;background-image:repeating-linear-gradient(45deg,rgba(30,27,26,.05) 0 2px,transparent 2px 14px);}
+  .r-maschinen::before{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;background:repeating-linear-gradient(135deg,#E8A41C 0 12px,#1E1B1A 12px 24px);}
+  .r-maschinen .door{display:none;}
+  .r-pool{--floor:transparent;border-style:dashed;border-color:rgba(30,27,26,.45);box-shadow:none;--acc:#6B6357;--accI:#6B6357;}
+  .r-pool .door{display:none;}
+
+  .c-bruecke{grid-column:span 12;} .c-radar{grid-column:span 4;} .c-kueche{grid-column:span 5;} .c-set{grid-column:span 3;}
+  .c-post{grid-column:span 7;} .c-redaktion{grid-column:span 5;} .c-kasse{grid-column:span 4;} .c-maschinen{grid-column:span 3;} .c-pool{grid-column:span 5;}
+  .bz{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px 26px;}
+  .zone{display:grid;gap:12px;align-content:start;}
+  .zone > .mono{color:var(--mu);padding-bottom:6px;border-bottom:1.5px dashed rgba(30,27,26,.3);}
+  .zone + .zone{border-left:1.5px dashed rgba(30,27,26,.3);padding-left:26px;}
+
+  /* Arbeitsplatz */
+  .seat{position:relative;display:grid;justify-items:center;align-content:start;background:none;border:0;padding:4px 2px 2px;border-radius:14px;text-align:center;transition:opacity .25s,filter .25s,transform .25s var(--ease);}
+  .seat:focus-visible{outline-offset:1px;}
+  .avw{position:relative;display:block;width:78px;height:78px;margin-bottom:-13px;z-index:1;transition:transform .35s var(--ease);transform-origin:50% 90%;}
+  .avs{width:100%;height:100%;filter:drop-shadow(0 3px 0 rgba(30,27,26,.22));}
+  .seat:hover .avw,.seat:focus-visible .avw{transform:translateY(-5px) rotate(-4deg);}
+  .star{position:absolute;right:-5px;top:-3px;width:25px;height:25px;border-radius:50%;background:var(--ol);color:var(--acc);display:grid;place-items:center;box-shadow:0 0 0 2px var(--floor);z-index:3;}
+  .star svg{width:14px;height:14px;fill:currentColor;stroke:none;}
+  .live{position:absolute;left:3px;top:8px;width:13px;height:13px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2.5px var(--floor);z-index:3;animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{50%{box-shadow:0 0 0 2.5px var(--floor),0 0 0 7px rgba(34,165,90,.25);}}
+  .desk{position:relative;z-index:2;display:block;width:100%;max-width:116px;height:42px;border-radius:12px 12px 9px 9px;background:linear-gradient(#EBD6AC,#DDBF86);border:2px solid #1E1B1A;box-shadow:0 4px 0 rgba(30,27,26,.3);}
+  .lid{position:absolute;left:50%;top:-9px;width:40px;height:19px;transform:translateX(-50%);background:#1E1B1A;border-radius:6px 6px 2px 2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.2);}
+  .lid::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;background:var(--acc);transform:translate(-50%,-50%);}
+  .ic{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:#1E1B1A;color:#F6F0E3;display:grid;place-items:center;}
+  .ic svg{width:13px;height:13px;}
+  .nm{margin-top:9px;font-weight:800;font-size:15.5px;letter-spacing:-.03em;line-height:1.1;color:var(--tx);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rl{margin-top:3px;color:var(--mu);font-size:9.5px;line-height:1.25;max-width:112px;}
+  .seat.lead .nm{background:var(--tx);color:var(--floor);padding:2px 10px 3px;border-radius:999px;}
+  .seat[aria-pressed="true"]{background:rgba(255,255,255,.55);box-shadow:0 0 0 2.5px var(--acc);}
+  .r-post .seat[aria-pressed="true"]{background:rgba(255,255,255,.1);}
+  .seat.human .avw::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px dashed var(--acc);pointer-events:none;}
+  .seat.ghost{opacity:.5;}
+  .seat.ghost .avs{filter:grayscale(1) opacity(.45);}
+  .seat.ghost .desk{background:transparent;border-style:dashed;border-color:rgba(30,27,26,.4);box-shadow:none;}
+  .r-post .seat.ghost .desk{border-color:rgba(246,240,227,.4);}
+  .seat.ghost .lid,.seat.ghost .ic,.seat.ghost .live{display:none;}
+  .seat.ghost .desk::after{content:"ab Stufe " attr(data-st);position:absolute;inset:0;display:grid;place-items:center;font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mu);}
+  .seat.dim{opacity:.18;filter:saturate(.2);}
+  .seat.hit .avw::before{content:"";position:absolute;inset:-5px;border-radius:50%;border:3px solid var(--accent);animation:ring 1.6s ease-out infinite;}
+  @keyframes ring{from{transform:scale(.92);opacity:1;}to{transform:scale(1.18);opacity:0;}}
+  @media (prefers-reduced-motion:no-preference){
+    .seat{animation:arrive .5s var(--ease) backwards;animation-delay:calc(var(--i,0) * 35ms);}
+    @keyframes arrive{from{opacity:0;transform:translateY(12px) scale(.9);}}
+  }
+
+  /* Pool */
+  .pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+  .pitem{display:flex;align-items:center;gap:9px;background:var(--card);border:1.5px dashed var(--line-2);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14.5px;}
+  .pitem svg{width:20px;height:20px;flex:none;color:var(--accent-ink);}
+
+  /* Skill-Wolke */
+  .cloud{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px clamp(14px,2vw,24px) 22px;}
+  .cloud h2,.orgh{margin:0;font-weight:850;font-size:clamp(24px,2.6vw,34px);letter-spacing:-.045em;line-height:1;}
+  .cloud p{margin:8px 0 14px;color:var(--mute);max-width:70ch;}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--paper);border-radius:999px;padding:5px 11px;font:600 13.5px/1.2 var(--display);}
+  .chip small{font:500 10.5px var(--mono);color:var(--mute);}
+  .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--ink);}
+  .chip[aria-pressed="true"] small{color:var(--ink);}
+  .chip:hover{border-color:var(--accent);}
+  .nof{display:none;margin-left:6px;}
+  .nof.on{display:inline-flex;}
+
+  /* Organigramm */
+  .orgwrap{overflow-x:auto;padding:6px 2px 24px;}
+  .org{min-width:1240px;display:grid;justify-items:center;gap:0;}
+  .o-row{display:flex;gap:14px;justify-content:center;align-items:flex-start;}
+  .vline{width:2px;height:26px;background:var(--ink);}
+  .o-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px;width:100%;position:relative;padding-top:26px;}
+  .o-cols::before{content:"";position:absolute;top:0;left:calc(100% / 14);right:calc(100% / 14);height:2px;background:var(--ink);}
+  .ocol{--acc:#F04A0A;position:relative;display:grid;gap:9px;align-content:start;}
+  .ocol::before{content:"";position:absolute;top:-26px;left:50%;width:2px;height:26px;background:var(--ink);}
+  .otag{justify-self:center;font:500 10.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;background:var(--acc);color:#fff;border-radius:999px;padding:3px 10px;}
+  .ocard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line-2);border-radius:14px;padding:7px 10px 7px 7px;transition:border-color .2s,transform .2s var(--ease),opacity .25s;}
+  .ocard:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .ocard b{display:block;font-weight:800;font-size:15px;letter-spacing:-.03em;line-height:1.1;}
+  .ocard small{display:block;color:var(--mute);font-size:9.5px;margin-top:2px;}
+  .ocard .oav{width:42px;height:42px;flex:none;}
+  .ocard.lead{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--acc);}
+  .ocard.founder{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .ocard.founder small{color:#CDBFAE;}
+  .ocard.stab{border-style:dashed;}
+  .ocard[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2.5px var(--accent);}
+  .ocard.ghost{opacity:.42;border-style:dashed;}
+  .ocard.ghost .avs{filter:grayscale(1);}
+  .ocard.dim{opacity:.18;}
+  .ocard.hit{border-color:var(--accent);}
+  .omem{display:grid;gap:8px;padding-left:14px;border-left:2px solid var(--ink);margin-left:20px;}
+  .omem .ocard{position:relative;}
+  .omem .ocard::before{content:"";position:absolute;left:-16px;top:50%;width:14px;height:2px;background:var(--ink);}
+  .o-note{color:var(--mute);margin:0 0 16px;max-width:66ch;}
+
+  /* Detailfenster */
+  .panel{position:fixed;z-index:50;top:12px;right:12px;bottom:12px;width:min(390px,calc(100vw - 24px));overflow:auto;background:var(--card);border:2px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--accent);padding:20px 20px 24px;animation:slide .35s var(--ease);}
+  @keyframes slide{from{opacity:0;transform:translateX(30px);}}
+  .panel .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);font-size:22px;line-height:1;display:grid;place-items:center;}
+  .panel .x:hover{background:var(--accent);}
+  .phead{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;padding-right:34px;}
+  .pav{width:96px;height:96px;}
+  .phead .mono{color:var(--accent-ink);}
+  #pName{width:100%;border:0;border-bottom:2px dashed var(--line-2);background:transparent;padding:2px 0 3px;margin-top:3px;font:850 30px/1.05 var(--display);letter-spacing:-.05em;outline:none;}
+  #pName:focus{border-bottom-color:var(--accent);}
+  #pName:disabled{border-bottom-color:transparent;}
+  #pRole{margin:4px 0 0;color:var(--mute);font-weight:650;}
+  .panel h3{margin:20px 0 8px;font:500 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);}
+  .panel ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;}
+  .panel li{position:relative;padding-left:20px;line-height:1.38;font-size:15px;}
+  .panel li::before{content:"";position:absolute;left:3px;top:.5em;width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .pchip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--paper);border-radius:999px;padding:3px 11px 3px 4px;font-weight:700;font-size:14px;}
+  .pchip .mini{width:26px;height:26px;}
+  .pchip:hover{border-color:var(--ink);}
+  .pstufe{margin-top:18px;padding:10px 12px;border-radius:12px;background:var(--accent-tint);color:var(--accent-ink);font-weight:650;font-size:14px;}
+  .panel .reset{margin-top:12px;background:none;border:0;padding:0;color:var(--mute);text-decoration:underline;font-size:13.5px;}
+  .hint{color:var(--mute);font-size:13px;margin:10px 0 0;}
+
+  @media (max-width:1100px){
+    .floor{grid-template-columns:repeat(6,minmax(0,1fr));}
+    .c-bruecke,.c-kueche,.c-post,.c-redaktion,.c-pool{grid-column:span 6;}
+    .c-radar,.c-set,.c-kasse,.c-maschinen{grid-column:span 3;}
+  }
+  @media (max-width:760px){
+    .floor{grid-template-columns:minmax(0,1fr);gap:26px;}
+    .floor > .room{grid-column:1/-1!important;}
+    .seats{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:18px 4px;}
+    .avw{width:68px;height:68px;margin-bottom:-11px;}
+    .desk{height:38px;max-width:100px;}
+    .lid{width:36px;height:17px;top:-8px;}
+    .bz{grid-template-columns:minmax(0,1fr);}
+    .zone + .zone{border-left:0;padding-left:0;border-top:1.5px dashed rgba(30,27,26,.3);padding-top:14px;}
+    .search{max-width:none;margin-left:0;flex-basis:100%;}
+    .info .legend{margin-left:0;}
+    .panel{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:80dvh;box-shadow:0 -4px 0 var(--accent),0 12px 40px rgba(0,0,0,.25);}
+    @keyframes slide{from{opacity:0;transform:translateY(40px);}}
+    .phead{grid-template-columns:78px minmax(0,1fr);}
+    .pav{width:78px;height:78px;}
+    #pName{font-size:26px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <mask id="sbBite" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="#fff"/><circle cx="88" cy="16" r="15" fill="#000"/><circle cx="99" cy="37" r="8" fill="#000"/><circle cx="72" cy="4" r="8" fill="#000"/></mask>
+    <clipPath id="sbClip"><circle cx="50" cy="50" r="48"/></clipPath>
+  </defs>
+</svg>
+
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Das Büro</b><span class="mono" id="sub">Mitarbeiter und Agenten</span></div>
+  <div class="acts">
+    <div class="seg" role="group" aria-label="Ansicht">
+      <button type="button" id="tabPlan" aria-pressed="true">Raumplan</button>
+      <button type="button" id="tabOrg" aria-pressed="false">Organigramm</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="ctrl">
+    <div class="row stufen" id="stufen" role="group" aria-label="Ausbaustufe"></div>
+    <div class="row">
+      <div class="info"><span id="count"></span><span id="stext"></span></div>
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Name, Rolle oder Skill suchen" autocomplete="off"></label>
+    </div>
+    <div class="info">
+      <span class="legend">
+        <span><i class="lg-star"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i>Teamlead</span>
+        <span><i class="lg-live"></i>arbeitet schon heute</span>
+        <span><i class="lg-ghost"></i>noch nicht im Büro</span>
+      </span>
+    </div>
+  </div>
+
+  <section id="vPlan">
+    <div class="floor" id="floor"></div>
+    <p class="hint">Person anklicken: Skill-Set ansehen und den Namen ändern. Namen bleiben in diesem Browser gespeichert. <button class="reset" type="button" id="resetAll" style="background:none;border:0;padding:0;color:var(--mute);text-decoration:underline;font-size:13px">Alle Namen zurücksetzen</button></p>
+    <section class="cloud" aria-labelledby="cloudH">
+      <h2 id="cloudH">Skills im Büro</h2>
+      <p>Welche Fähigkeiten gibt es, und wer hat sie? Skill anklicken, dann leuchten die Leute auf, die ihn im Skill-Set haben.</p>
+      <div class="chips" id="cloud"></div>
+      <button class="btn nof" type="button" id="noFilter" style="margin-top:14px"><span class="dot"></span><span>Filter aufheben</span></button>
+    </section>
+  </section>
+
+  <section id="vOrg" hidden>
+    <h2 class="orgh">Organigramm</h2>
+    <p class="o-note">Von oben nach unten: Gründer, Büroleitung, sieben Teams mit je einem Teamlead. Vera sitzt im Stab und prüft alles vor der Freigabe.</p>
+    <div class="orgwrap"><div class="org" id="org"></div></div>
+  </section>
+</main>
+
+<aside class="panel" id="panel" role="dialog" aria-label="Details zur Person" hidden>
+  <button class="x" type="button" id="pClose" aria-label="Schließen">×</button>
+  <div class="phead">
+    <div class="pav" id="pAv"></div>
+    <div>
+      <span class="mono" id="pRoom"></span>
+      <input id="pName" maxlength="22" aria-label="Name" autocomplete="off" spellcheck="false">
+      <p id="pRole"></p>
+    </div>
+  </div>
+  <div id="pBody"></div>
+</aside>
+
+<script>
+try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s);};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+
+/* ---------- Symbole ---------- */
+var IC={
+  flag:'<path d="M6 21V4M6 5h11l-2 4 2 4H6"/>',
+  shield:'<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  radar:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 12l6-6"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  spark:'<path d="M12 3l2 6 6 3-6 3-2 6-2-6-6-3 6-3z"/>',
+  trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+  pen:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
+  palette:'<path d="M12 3a9 9 0 100 18c1.6 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/><circle cx="8" cy="11" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16" cy="10" r="1"/>',
+  frame:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 16l5-4 4 3 3-2 4 3"/>',
+  clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+  users:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-4 3-6 6-6s6 2 6 6M15 14c3 0 6 1 6 5"/>',
+  pin:'<path d="M12 21s7-6 7-12a7 7 0 10-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  film:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14M3 9h5M3 15h5M16 9h5M16 15h5"/>',
+  phone:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',
+  wave:'<path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',
+  play:'<path d="M8 5l11 7-11 7z"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  mega:'<path d="M4 9v6h3l8 4V5L7 9z"/><path d="M18 9a4 4 0 010 6"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+  chart:'<path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/>',
+  coins:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/>',
+  check:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/>',
+  folder:'<path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>',
+  code:'<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 5l-4 14"/>',
+  bolt:'<path d="M13 2L5 13h6l-1 9 8-11h-6z"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  camera:'<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/>',
+  bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 00-4-10z"/>'
+};
+function ico(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||"")+'</svg>';}
+
+/* ---------- Räume ---------- */
+var ROOMS=[
+  {id:"bruecke",nr:"01",team:"Chefetage",name:"Die Brücke",sub:"Chefetage und Büroleitung. Hier laufen alle Fäden zusammen.",ic:"flag",tint:"#F4CDB4",acc:"#F04A0A"},
+  {id:"radar",nr:"02",team:"Wachstum",name:"Der Radar",sub:"Neue Kunden finden, einordnen und ansprechen.",ic:"radar",tint:"#FFC9A8",acc:"#F04A0A"},
+  {id:"kueche",nr:"03",team:"Kreation",name:"Die Testküche",sub:"Konzepte, Hooks, Trends und Bildwelten. Hier wird gekocht, bevor gedreht wird.",ic:"spark",tint:"#FFE29A",acc:"#E8A41C"},
+  {id:"set",nr:"04",team:"Produktion",name:"Das Set",sub:"Planen, buchen, drehen. Vom Drehplan bis zum Opening vor Ort.",ic:"camera",tint:"#BBD0F2",acc:"#2B59A6"},
+  {id:"post",nr:"05",team:"Post",name:"Der Schnittraum",sub:"Schnitt, Ton und Motion. Alle Cutter arbeiten über das DaVinci-MCP.",ic:"film",tint:"#E8B9DA",acc:"#C25AA0"},
+  {id:"redaktion",nr:"06",team:"Social",name:"Die Redaktion",sub:"Posten, Ads, Community und Zahlen.",ic:"mega",tint:"#A9DCDC",acc:"#1B8A8F"},
+  {id:"kasse",nr:"07",team:"Betrieb",name:"Die Kasse",sub:"Angebote, Rechnungen, Projekte und das Archiv.",ic:"coins",tint:"#B5DEC0",acc:"#1F6B4F"},
+  {id:"maschinen",nr:"08",team:"Technik",name:"Der Maschinenraum",sub:"Website, Portal, nächtliche Läufe und KI-Automation für Kunden.",ic:"code",tint:"#CAD3D8",acc:"#4B6573"}
+];
+var ROOM={};ROOMS.forEach(function(r){ROOM[r.id]=r;});
+var POOL=[["Kamera","camera"],["Licht","bulb"],["Ton","mic"],["Talents & Models","users"],["Runner","bolt"]];
+
+/* ---------- Personen ----------
+   id, n Name, r Rolle, room, lead, ph Stufe, sk Haut, hr Haar, st Frisur, bd Bart, gl Brille, ic Symbol, boss, with, skills, tut */
+var P=[
+ {id:"nader",n:"Nader",r:"Gründer",room:"bruecke",human:1,sk:2,hr:0,st:"short",bd:1,ic:"flag",skills:["Kundengespräch","Creative Direction","Vertrauen"],tut:["Führt die Kundengespräche und trifft die letzten Entscheidungen.","Gibt Richtung, Stil und Haltung vor.","Sagt Ja zu allem, was nach außen geht."],with:["tommy","yara"]},
+ {id:"tommy",n:"Tommy",r:"Gründer",room:"bruecke",human:1,sk:1,hr:1,st:"short",bd:0,ic:"flag",skills:["Kundengespräch","Creative Direction","Netzwerk"],tut:["Führt Kundengespräche und hält die Beziehungen.","Bringt Projekte, Kontakte und Ideen ins Büro.","Entscheidet gemeinsam mit Nader über Angebote und Preise."],with:["nader","yara"]},
+ {id:"yara",n:"Yara",r:"Büroleitung",room:"bruecke",ph:1,sk:2,hr:0,st:"long",ic:"flag",boss:"nader",skills:["nader-context","Brain (Orchestrierung)","TimeKeeper","Notion Tagesplanung"],tut:["Schickt Nader und Tommy jeden Morgen das Briefing: neue Leads, offene Rechnungen, Fristen.","Verteilt Aufgaben an die sieben Teamleads und sagt, was Vorrang hat.","Hält die drei Fixpunkte pro Tag im Blick und meldet, wenn etwas hängt."],with:["vera","malik","greta"]},
+ {id:"vera",n:"Vera",r:"Qualität & Recht",room:"bruecke",ph:2,sk:0,hr:4,st:"bun",gl:1,ic:"shield",boss:"yara",skills:["nader-context","CI-Check","Keine Dashes","UWG","DSGVO","Musikrechte"],tut:["Prüft jeden Text, jedes Bild und jedes Video, bevor es rausgeht.","Achtet auf Naders Schreibstil und auf unsere Farben, Schrift und Bildsprache.","Hält Recht im Blick: Werbung per Mail, Datenschutz, Bild- und Musikrechte."],with:["yara","elif","kai"],stab:1},
+
+ {id:"malik",n:"Malik",r:"Head of Growth",room:"radar",lead:1,ph:4,sk:3,hr:0,st:"short",bd:1,ic:"target",boss:"yara",skills:["pricing-strategy","launch-strategy","competitor-alternatives","Pakete & Pipeline"],tut:["Sucht aus dem Akquise-Board die besten Leads des Tages aus.","Ordnet jedem Lead ein Paket und eine Preisidee zu.","Pflegt die Pipeline bis zum Auftrag."],with:["lina","elif","greta"]},
+ {id:"lina",n:"Lina",r:"Lead-Scout",room:"radar",ph:1,sk:0,hr:3,st:"long",ic:"radar",boss:"malik",skills:["DeepScout","Lead-Scoring","Wolt, OSM, Arbeitsagentur","Impressum-Anreicherung"],tut:["Startet jeden Morgen um 06:30 den Akquise-Lauf.","Liest Impressum, Mail, Instagram und Ansprechpartner aus.","Vergibt den Fit-Score und legt das Board verschlüsselt ab."],with:["malik","noor","sasha"]},
+ {id:"elif",n:"Elif",r:"Briefe & Angebote",room:"radar",ph:4,sk:1,hr:1,st:"bun",ic:"mail",boss:"malik",skills:["copywriting","cold-email","EmailCraftsman","Brief und Angebot"],tut:["Schreibt Erstkontakt-Briefe, die zum Lead passen.","Baut Angebotstexte und Follow-ups.","Kalt-Mails nur, wo sie erlaubt sind. Sonst Brief oder Besuch."],with:["malik","vera","imani"]},
+
+ {id:"rafa",n:"Rafa",r:"Creative Director",room:"kueche",lead:1,ph:4,sk:2,hr:1,st:"curly",ic:"spark",boss:"yara",skills:["content-strategy","social-content","marketing-ideas","paid-ads"],tut:["Entwickelt Konzepte und Content-Pläne für jeden Kunden.","Gibt dem Team die kreative Richtung vor.","Entscheidet, welche Hooks und Formate gedreht werden."],with:["noor","kai","selin"]},
+ {id:"noor",n:"Noor",r:"Trend-Scout",room:"kueche",ph:1,sk:3,hr:0,st:"phones",ic:"trend",boss:"rafa",skills:["TrendPulse","Trend-Indicator","Hook-Bibliothek"],tut:["Wertet jeden Montag um 07:00 virale Food-Videos, Hashtags und Sounds aus.","Baut daraus Hooks für Kunden.","Meldet, was diese Woche kippt oder neu hochkommt."],with:["rafa","imani","selin"]},
+ {id:"imani",n:"Imani",r:"Skripte & Hooks",room:"kueche",ph:2,sk:4,hr:0,st:"curly",ic:"pen",boss:"rafa",skills:["copywriting","social-content","GhostWriter","Sprechertext-Workflow"],tut:["Schreibt Skripte, Sprechertexte und Captions.","Baut Hooks für die ersten 2 Sekunden.","Hält den Ton der Kunden und den von Social Bites."],with:["rafa","kai","omar"]},
+ {id:"kenji",n:"Kenji",r:"KI-Visuals",room:"kueche",ph:1,sk:1,hr:0,st:"short",gl:1,ic:"palette",boss:"rafa",skills:["graphic-design","ad-creative","VisionForge","DesignBlueprint","Higgsfield"],tut:["Baut Moodboards und Mockups, zum Beispiel die Paket-Boxen.","Erzeugt KI-Bilder und Thumbnails im Social-Bites-Look.","Pflegt die Galerie: jede Idee wird ein Board."],with:["rafa","frida","milan"]},
+ {id:"frida",n:"Frida",r:"Branding & Print",room:"kueche",ph:4,sk:0,hr:2,st:"beanie",ic:"frame",boss:"rafa",skills:["graphic-design","DesignBlueprint","Print und Folien","Brand Book"],tut:["Gestaltet Logos, Schaufensterfolien, Menükarten und Merch.","Hält das Brand Book aktuell.","Übersetzt die CI auf Ladenfläche und Verpackung."],with:["kenji","ines","vera"]},
+
+ {id:"tarik",n:"Tarik",r:"Producer",room:"set",lead:1,ph:4,sk:2,hr:0,st:"cap",bd:1,ic:"clip",boss:"yara",skills:["Kalkulation","Drehplan und Callsheet","PPM","TimeKeeper"],tut:["Kalkuliert Produktionen und plant den Drehplan.","Bucht Kamera, Licht, Ton, Talents und Runner aus dem Pool.","Hält Budget, Termine und Freigaben zusammen."],with:["greta","sofia","valentina"]},
+ {id:"sofia",n:"Sofia",r:"Talents & Creator",room:"set",ph:4,sk:1,hr:4,st:"long",ic:"users",boss:"tarik",skills:["Influencer-Netzwerk","Creator-Briefings","Barter","Connect-In-Real-Kontakte"],tut:["Findet und briefet Creator, Models und Talents.","Verhandelt Barter: Leistung gegen Essen oder Produkt.","Pflegt das Netzwerk, auch aus dem Event Connect In Real."],with:["tarik","ines","selin"]},
+ {id:"ines",n:"Ines",r:"Opening & Events",room:"set",ph:3,sk:2,hr:2,st:"bun",ic:"pin",boss:"tarik",skills:["launch-strategy","Ablaufplan","Aktion vor Ort","Gästeliste"],tut:["Plant das Opening vom ersten Spatenstich bis zur Schlange vor der Tür.","Baut Aktionen, Ablauf und Gästeliste.","Koordiniert vor Ort mit Laden, Team und Creatorn."],with:["sofia","jamal","rocco"]},
+
+ {id:"mateo",n:"Mateo",r:"Post-Lead & Color",room:"post",lead:1,ph:2,sk:2,hr:1,st:"short",bd:1,gl:1,ic:"film",boss:"yara",skills:["DaVinci Color","LUTs","Timeline-Vorlagen","Abnahme"],tut:["Gibt allen Cuttern den Look vor: dunkel, dicht, Rot, Blau, tiefes Grün, warme Haut.","Gradet die wichtigen Filme selbst.","Nimmt jeden Schnitt ab, bevor er zu Vera geht."],with:["kai","valentina","vera"]},
+ {id:"kai",n:"Kai",r:"Reel-Cutter",room:"post",ph:2,sk:1,hr:4,st:"beanie",ic:"phone",boss:"mateo",skills:["DaVinci-MCP","Clean Plate","Overlay-Untertitel","9:16 Reels"],tut:["Schneidet die monatlichen Food-Reels für Gastro-Kunden.","Hook in den ersten 2 Sekunden, Untertitel als Overlay.","Hält die TikTok-Grenze von 10 MB ein."],with:["imani","mateo","omar"]},
+ {id:"jamal",n:"Jamal",r:"Event-Cutter",room:"post",ph:3,sk:4,hr:0,st:"phones",ic:"wave",boss:"mateo",skills:["DaVinci-MCP","Multicam","Schnitt auf den Beat","Musik und Recap"],tut:["Schneidet Opening- und Event-Videos aus mehreren Kameras.","Liefert vorher einen Teaser und noch am selben Abend den Recap.","Schneidet auf den Beat der Musik."],with:["ines","mateo","omar"]},
+ {id:"valentina",n:"Valentina",r:"Kampagnen-Cutter",room:"post",ph:4,sk:0,hr:1,st:"long",ic:"film",boss:"mateo",skills:["DaVinci-MCP","Cutdowns","Versionen","Freigabe-Links","16:9"],tut:["Schneidet Kampagnen und Imagefilme in 16:9.","Liefert Cutdowns mit 6, 15 und 30 Sekunden.","Führt mehrere Freigaberunden mit dem Kunden."],with:["tarik","mateo","milan"]},
+ {id:"omar",n:"Omar",r:"Ton & Untertitel",room:"post",ph:2,sk:3,hr:0,st:"phones",bd:1,ic:"mic",boss:"mateo",skills:["Whisper","Audio-Enhancement","Untertitel","Voiceover","Higgsfield Voice"],tut:["Macht Ton sauber und holt Regie-Rufe wie Action heraus.","Erstellt Untertitel und Voiceover.","Mischt Musik und Sprache."],with:["kai","jamal","imani"]},
+ {id:"milan",n:"Milan",r:"Motion Design",room:"post",ph:4,sk:0,hr:3,st:"cap",ic:"play",boss:"mateo",skills:["Remotion","Fusion","Higgsfield Video","Titel und Logo-Animation"],tut:["Baut Titel, Logo-Animationen und Erklärvideos.","Erzeugt KI-B-Roll, wenn Material fehlt.","Liefert Motion-Bausteine an die Cutter."],with:["kenji","valentina","mateo"]},
+
+ {id:"selin",n:"Selin",r:"Redaktion & Posting",room:"redaktion",lead:1,ph:2,sk:1,hr:0,st:"long",gl:1,ic:"cal",boss:"yara",skills:["content-strategy","social-content","TikTok-Zeitplaner","YouTube-Upload"],tut:["Führt den Redaktionsplan für uns und unsere Kunden.","Plant Posts per TikTok Studio und Zeitplaner ein.","Lädt täglich auf YouTube hoch."],with:["rafa","rocco","mika"]},
+ {id:"rocco",n:"Rocco",r:"Ads & Teaser",room:"redaktion",ph:3,sk:1,hr:2,st:"short",ic:"mega",boss:"selin",skills:["paid-ads","ad-creative","analytics-tracking"],tut:["Baut Ads und Teaser-Kampagnen vor einem Opening.","Steuert Budgets und testet Anzeigen.","Meldet Kosten pro Ergebnis an Finn."],with:["selin","finn","ines"]},
+ {id:"mika",n:"Mika",r:"Community",room:"redaktion",ph:4,sk:2,hr:3,st:"short",ic:"chat",boss:"selin",skills:["Community-Management","DMs","Google-Bewertungen","EmailCraftsman"],tut:["Beantwortet Kommentare und DMs.","Bittet Gäste um Google-Bewertungen und antwortet darauf.","Meldet Stimmung und Fragen ans Team."],with:["selin","finn","amir"]},
+ {id:"finn",n:"Finn",r:"Zahlen & Reports",room:"redaktion",ph:2,sk:0,hr:4,st:"short",gl:1,ic:"chart",boss:"selin",skills:["analytics-tracking","Monatsreport","Cases","Decks"],tut:["Baut den Monatsreport für jeden Kunden.","Macht aus Zahlen Cases für die Website.","Bereitet Pitch-Decks vor."],with:["rocco","mika","greta"]},
+
+ {id:"greta",n:"Greta",r:"Kasse & Rechnungen",room:"kasse",lead:1,ph:1,sk:0,hr:4,st:"bun",ic:"coins",boss:"yara",skills:["LedgerMind","pricing-strategy","Preisrechner","Kunden und Belege"],tut:["Schreibt Angebote und Rechnungen, 50 zu 50.","Verfolgt offene Posten und schickt Mahnungen in drei Stufen.","Pflegt das OS-Sheet mit den Zahlen."],with:["tarik","malik","amir"]},
+ {id:"amir",n:"Amir",r:"Projektmanager",room:"kasse",ph:1,sk:3,hr:0,st:"short",ic:"check",boss:"greta",skills:["EmailCraftsman","TimeKeeper","Kundenportal","Anfrage-Pop-up"],tut:["Nimmt Anfragen aus dem Pop-up an und antwortet.","Plant Drehtage und Termine.","Pflegt das Kundenportal für jeden Kunden."],with:["greta","tarik","mika"]},
+ {id:"hugo",n:"Hugo",r:"Archiv & Portfolio",room:"kasse",ph:4,sk:0,hr:5,st:"short",bd:1,ic:"folder",boss:"greta",skills:["VaultKeeper","Finder-Tags","Rohmaterial","Portfolio"],tut:["Sortiert Rohmaterial und Projektordner.","Hält die grünen Final-Videos für das Portfolio bereit.","Sorgt dafür, dass jede Datei wiederzufinden ist."],with:["amir","kenji","kai"]},
+
+ {id:"sasha",n:"Sasha",r:"Web & Automation",room:"maschinen",lead:1,ph:1,sk:1,hr:0,st:"beanie",gl:1,ic:"code",boss:"yara",skills:["CodeMaster","site-architecture","analytics-tracking","WatchTower"],tut:["Baut und deployt Website, Portal und Boards.","Wacht über die nächtlichen Läufe und meldet Ausfälle.","Hält Verschlüsselung und Zugänge sauber."],with:["lina","theo","amir"]},
+ {id:"theo",n:"Theo",r:"KI-Automation",room:"maschinen",ph:4,sk:2,hr:1,st:"curly",ic:"bolt",boss:"sasha",skills:["CodeMaster","Automation","Agentic Workflows","Kunden-Setups"],tut:["Baut KI-Automationen für Kunden: Posting, Recherche, Zusammenfassungen.","Richtet digitale Mitarbeiter ein, die rund um die Uhr laufen.","Schult Kunden in den ersten Wochen."],with:["sasha","rafa","malik"]}
+];
+var BY={};P.forEach(function(p){BY[p.id]=p;});
+var AGENTS=P.filter(function(p){return !p.human;});
+var STUFEN=[
+  {n:1,t:"Jetzt",d:"Diese Agenten arbeiten schon heute. Für sie läuft das System."},
+  {n:2,t:"Gastro-Monatskunden",d:"Dazu kommen Reels, Redaktion, Zahlen und Qualitätsprüfung für die ersten Monatskunden."},
+  {n:3,t:"Erstes Opening",d:"Dazu kommen Events, Creator, Event-Schnitt und Ads für ein Opening."},
+  {n:4,t:"Vollausbau",d:"Alle Teams besetzt: Brand-Kunden, Produktion, Branding, Community und KI-Automation."}
+];
+
+/* ---------- Zustand ---------- */
+var KEY="sb-buero-namen-v1";
+var names={};try{names=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){names={};}
+function saveNames(){try{localStorage.setItem(KEY,JSON.stringify(names));}catch(e){}}
+function nameOf(p){return names[p.id]||p.n;}
+var state={stage:4,q:"",skill:"",sel:"",view:"plan"};
+
+/* ---------- Avatar ---------- */
+var SKIN=["#F6D9BE","#E8B88D","#C98E5F","#9A6340","#6B4128"];
+var HAIR=["#1E1B1A","#3B2416","#6B3F22","#B5541B","#D9A441","#9A9488"];
+function avatar(p){
+  var r=ROOM[p.room],skin=SKIN[p.sk||0],h=HAIR[p.hr||0],acc=p.human?"#1E1B1A":r.acc,tint=p.human?"#F8C4A8":r.tint;
+  var back="",front="",st=p.st||"short";
+  var fringe='<path d="M28 46C25 21 75 21 72 46C67 35 60 31 50 31C40 31 33 35 28 46Z" fill="'+h+'"/>';
+  if(st==="short")front=fringe;
+  if(st==="long"){back='<path d="M26 44C22 70 26 90 36 98H64C74 90 78 70 74 44Z" fill="'+h+'"/>';front=fringe;}
+  if(st==="bun"){back='<circle cx="50" cy="17" r="9" fill="'+h+'"/>';front=fringe;}
+  if(st==="curly"){back='<g fill="'+h+'"><circle cx="30" cy="35" r="10"/><circle cx="40" cy="24" r="11"/><circle cx="53" cy="21" r="11"/><circle cx="65" cy="26" r="10"/><circle cx="72" cy="38" r="9"/><circle cx="27" cy="48" r="7"/><circle cx="73" cy="49" r="7"/></g>';front='<path d="M31 41C35 31 65 31 69 41C63 36 37 36 31 41Z" fill="'+h+'"/>';}
+  if(st==="beanie")front='<path d="M26 43C26 15 74 15 74 43Z" fill="#1E1B1A"/><rect x="24" y="38" width="52" height="10" rx="5" fill="'+acc+'"/><circle cx="50" cy="14" r="5.5" fill="'+acc+'"/>';
+  if(st==="cap")front='<path d="M28 42C28 19 72 19 72 42Z" fill="'+acc+'"/><path d="M58 39H88C88 47 72 47 58 44Z" fill="#1E1B1A"/><circle cx="50" cy="21" r="2.6" fill="#1E1B1A"/>';
+  if(st==="phones")front=fringe+'<path d="M25 47C25 13 75 13 75 47" fill="none" stroke="#1E1B1A" stroke-width="4.5"/><rect x="19" y="40" width="10" height="18" rx="5" fill="#1E1B1A"/><rect x="71" y="40" width="10" height="18" rx="5" fill="#1E1B1A"/><circle cx="24" cy="49" r="2" fill="'+acc+'"/><circle cx="76" cy="49" r="2" fill="'+acc+'"/>';
+  var beard=p.bd?'<path d="M29 50C29 73 71 73 71 50C67 62 59 64 50 64C41 64 33 62 29 50Z" fill="'+h+'"/>':"";
+  var mouth=p.bd?'<path d="M44 58Q50 63 56 58" fill="none" stroke="#F6F0E3" stroke-width="2.4" stroke-linecap="round"/>'
+    :((p.id.length%2)?'<path d="M43 55Q50 63 57 55" fill="none" stroke="#1E1B1A" stroke-width="2.6" stroke-linecap="round"/>':'<path d="M43 54Q50 67 57 54Z" fill="#1E1B1A"/><path d="M46 60Q50 63 54 60Q50 58 46 60Z" fill="#E8604A"/>');
+  var glasses=p.gl?'<g fill="rgba(255,255,255,.25)" stroke="#1E1B1A" stroke-width="2.2"><circle cx="42" cy="47" r="7.5"/><circle cx="58" cy="47" r="7.5"/><path d="M49.5 47h1"/></g>':"";
+  return '<svg class="avs" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g mask="url(#sbBite)"><circle cx="50" cy="50" r="48" fill="'+tint+'"/><g clip-path="url(#sbClip)">'
+    +back+'<path d="M12 106C12 77 30 69 50 69s38 8 38 37z" fill="'+acc+'"/><path d="M42 58h16v14c-3 4-13 4-16 0z" fill="'+skin+'"/><path d="M43 71l7 7 7-7" fill="#F6F0E3" opacity=".9"/>'
+    +'<ellipse cx="50" cy="46" rx="21" ry="23" fill="'+skin+'"/>'+beard
+    +'<circle cx="36" cy="54" r="4" fill="#F04A0A" opacity=".16"/><circle cx="64" cy="54" r="4" fill="#F04A0A" opacity=".16"/>'
+    +'<circle cx="42" cy="47" r="2.7" fill="#1E1B1A"/><circle cx="58" cy="47" r="2.7" fill="#1E1B1A"/>'
+    +mouth+glasses+front+'</g></g></svg>';
+}
+
+/* ---------- Bausteine ---------- */
+function seat(p,i){
+  return '<button class="seat'+(p.lead?" lead":"")+(p.human?" human":"")+'" type="button" data-id="'+p.id+'" aria-pressed="false" style="--i:'+i+'">'
+    +'<span class="avw">'+avatar(p)+(p.lead?'<i class="star">'+ico("star")+'</i>':"")+(p.ph===1?'<i class="live" title="arbeitet schon heute"></i>':"")+'</span>'
+    +'<span class="desk"><span class="lid"></span>'+(p.human?"":'<span class="ic">'+ico(p.ic)+'</span>')+'</span>'
+    +'<b class="nm" data-nm="'+p.id+'">'+esc(nameOf(p))+'</b><span class="rl mono">'+esc(p.r)+'</span></button>';
+}
+function roomHead(r){
+  return '<header class="rh"><span class="mono">Raum '+r.nr+' · '+esc(r.team)+'</span><h2>'+esc(r.name)+'</h2><p>'+esc(r.sub)+'</p></header><div class="prop" aria-hidden="true">'+ico(r.ic)+'</div><span class="door" aria-hidden="true"></span>';
+}
+function buildFloor(){
+  var h="",i=0;
+  ROOMS.forEach(function(r){
+    var inRoom=P.filter(function(p){return p.room===r.id;});
+    if(r.id==="bruecke"){
+      var g=inRoom.filter(function(p){return p.human;}),b=inRoom.filter(function(p){return !p.human;});
+      h+='<section class="room r-bruecke c-bruecke">'+roomHead(r)+'<div class="bz"><div class="zone"><span class="mono">Gründer · echte Menschen</span><div class="seats">'+g.map(function(p){return seat(p,i++);}).join("")+'</div></div>'
+        +'<div class="zone"><span class="mono">Büroleitung und Stab · Agenten</span><div class="seats">'+b.map(function(p){return seat(p,i++);}).join("")+'</div></div></div></section>';
+      return;
+    }
+    inRoom.sort(function(a,b){return (b.lead?1:0)-(a.lead?1:0);});
+    h+='<section class="room r-'+r.id+' c-'+r.id+'">'+roomHead(r)+'<div class="seats">'+inRoom.map(function(p){return seat(p,i++);}).join("")+'</div></section>';
+  });
+  h+='<section class="room r-pool c-pool"><header class="rh"><span class="mono">Draußen · Freelancer</span><h2>Der Pool</h2><p>Menschen, keine Agenten. Tarik bucht sie pro Drehtag.</p></header><div class="pool">'
+    +POOL.map(function(x){return '<div class="pitem">'+ico(x[1])+esc(x[0])+'</div>';}).join("")+'</div></section>';
+  $("#floor").innerHTML=h;
+}
+function ocard(p,cls){
+  return '<button class="ocard'+(p.lead?" lead":"")+(p.human?" founder":"")+(p.stab?" stab":"")+(cls?" "+cls:"")+'" type="button" data-id="'+p.id+'" aria-pressed="false">'
+    +'<span class="oav">'+avatar(p)+'</span><span><b data-nm="'+p.id+'">'+esc(nameOf(p))+'</b><small class="mono">'+esc(p.r)+'</small></span></button>';
+}
+function buildOrg(){
+  var cols=ROOMS.filter(function(r){return r.id!=="bruecke";});
+  var h='<div class="o-row">'+ocard(BY.nader)+ocard(BY.tommy)+'</div><div class="vline"></div>'
+    +'<div class="o-row">'+ocard(BY.yara,"lead")+ocard(BY.vera)+'</div><div class="vline"></div>'
+    +'<div class="o-cols">'+cols.map(function(r){
+      var lead=P.filter(function(p){return p.room===r.id&&p.lead;})[0];
+      var mem=P.filter(function(p){return p.room===r.id&&!p.lead;});
+      return '<div class="ocol" style="--acc:'+r.acc+'"><span class="otag">'+esc(r.team)+'</span>'+ocard(lead)+'<div class="omem">'+mem.map(function(m){return ocard(m);}).join("")+'</div></div>';
+    }).join("")+'</div>';
+  $("#org").innerHTML=h;
+}
+function buildCloud(){
+  var c={};AGENTS.forEach(function(p){p.skills.forEach(function(s){(c[s]=c[s]||[]).push(p.id);});});
+  var list=Object.keys(c).sort(function(a,b){return c[b].length-c[a].length||a.localeCompare(b,"de");});
+  $("#cloud").innerHTML=list.map(function(s){return '<button class="chip" type="button" data-skill="'+esc(s)+'" aria-pressed="false">'+esc(s)+' <small>'+c[s].length+'</small></button>';}).join("");
+}
+function buildStufen(){
+  $("#stufen").innerHTML=STUFEN.map(function(s){
+    var n=AGENTS.filter(function(p){return p.ph<=s.n;}).length;
+    return '<button class="btn" type="button" data-stage="'+s.n+'" aria-pressed="'+(state.stage===s.n)+'"><span class="dot"></span><span>'+esc(s.t)+' <span class="n">'+n+'</span></span></button>';
+  }).join("");
+}
+
+/* ---------- Filter und Stufen anwenden ---------- */
+function apply(){
+  var q=state.q.trim().toLowerCase(),sk=state.skill,any=!!(q||sk);
+  document.querySelectorAll(".seat,.ocard").forEach(function(el){
+    var p=BY[el.getAttribute("data-id")];if(!p)return;
+    var ghost=!p.human&&p.ph>state.stage;
+    el.classList.toggle("ghost",ghost);
+    if(ghost)el.setAttribute("data-st",p.ph);
+    var m=true;
+    if(any){
+      var hay=[nameOf(p),p.n,p.r,p.human?"gründer":"",ROOM[p.room].team,ROOM[p.room].name].concat(p.skills||[]).join(" ").toLowerCase();
+      m=(!q||hay.indexOf(q)>=0)&&(!sk||(p.skills||[]).indexOf(sk)>=0);
+    }
+    el.classList.toggle("dim",any&&!m);
+    el.classList.toggle("hit",any&&m);
+    el.setAttribute("aria-pressed",String(state.sel===p.id));
+  });
+  document.querySelectorAll("#stufen [data-stage]").forEach(function(b){b.setAttribute("aria-pressed",String(+b.getAttribute("data-stage")===state.stage));});
+  document.querySelectorAll("#cloud [data-skill]").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-skill")===sk));});
+  $("#noFilter").classList.toggle("on",any);
+  var n=AGENTS.filter(function(p){return p.ph<=state.stage;}).length;
+  $("#count").innerHTML='<b>'+n+' von '+AGENTS.length+'</b> Agenten im Büro, dazu 2 Gründer';
+  $("#stext").textContent=STUFEN[state.stage-1].d;
+  $("#sub").textContent=n+" Agenten · 8 Räume · 2 Gründer";
+}
+
+/* ---------- Detailfenster ---------- */
+function chipP(id){var p=BY[id];return '<button class="pchip" type="button" data-open="'+id+'"><span class="mini">'+avatar(p)+'</span><span data-nm="'+id+'">'+esc(nameOf(p))+'</span></button>';}
+function openPanel(id){
+  var p=BY[id];if(!p)return;
+  state.sel=id;
+  $("#pAv").innerHTML=avatar(p);
+  $("#pRoom").textContent="Raum "+ROOM[p.room].nr+" · "+ROOM[p.room].name;
+  var inp=$("#pName");inp.value=nameOf(p);inp.disabled=!!p.human;inp.setAttribute("data-id",id);
+  $("#pRole").textContent=p.r+(p.lead?" · Teamlead":"");
+  var reports=P.filter(function(x){return x.boss===id;});
+  var h='';
+  h+='<h3>Skill-Set</h3><div class="chips">'+(p.skills||[]).map(function(s){return '<button class="chip" type="button" data-skill="'+esc(s)+'" aria-pressed="false">'+esc(s)+'</button>';}).join("")+'</div>';
+  h+='<h3>Macht konkret</h3><ul>'+(p.tut||[]).map(function(t){return '<li>'+esc(t)+'</li>';}).join("")+'</ul>';
+  if(p.boss)h+='<h3>Berichtet an</h3><div class="chips">'+(p.boss==="nader"?chipP("nader")+chipP("tommy"):chipP(p.boss))+'</div>';
+  if(reports.length)h+='<h3>Führt</h3><div class="chips">'+reports.map(function(x){return chipP(x.id);}).join("")+'</div>';
+  if(p.with&&p.with.length)h+='<h3>Arbeitet eng mit</h3><div class="chips">'+p.with.map(chipP).join("")+'</div>';
+  if(!p.human&&p.ph>state.stage)h+='<div class="pstufe">Kommt mit der Stufe „'+esc(STUFEN[p.ph-1].t)+'“.</div>';
+  else if(!p.human&&p.ph===1)h+='<div class="pstufe" style="background:#DDF3E5;color:#17613a">Arbeitet schon heute. Für diese Rolle läuft das System.</div>';
+  if(!p.human)h+='<button class="reset" type="button" id="pReset"'+(names[id]?"":" hidden")+'>Originalnamen „'+esc(p.n)+'“ wiederherstellen</button>';
+  $("#pBody").innerHTML=h;
+  $("#panel").hidden=false;$("#panel").scrollTop=0;
+  apply();
+}
+function closePanel(){$("#panel").hidden=true;state.sel="";apply();}
+function renameDom(id){
+  var p=BY[id];
+  document.querySelectorAll('[data-nm="'+id+'"]').forEach(function(el){el.textContent=nameOf(p);});
+  var r=$("#pReset");if(r)r.hidden=!names[id];
+}
+
+/* ---------- Ereignisse ---------- */
+function setView(v){
+  state.view=v;
+  $("#vPlan").hidden=v!=="plan";$("#vOrg").hidden=v!=="org";
+  $("#tabPlan").setAttribute("aria-pressed",String(v==="plan"));$("#tabOrg").setAttribute("aria-pressed",String(v==="org"));
+  try{history.replaceState(null,"","#"+v);}catch(e){}
+}
+$("#tabPlan").addEventListener("click",function(){setView("plan");});
+$("#tabOrg").addEventListener("click",function(){setView("org");});
+$("#stufen").addEventListener("click",function(e){var b=e.target.closest("[data-stage]");if(!b)return;state.stage=+b.getAttribute("data-stage");apply();if(state.sel)openPanel(state.sel);});
+$("#q").addEventListener("input",function(){state.q=this.value;apply();});
+$("#noFilter").addEventListener("click",function(){state.q="";state.skill="";$("#q").value="";apply();});
+document.addEventListener("click",function(e){
+  var s=e.target.closest(".seat,.ocard");
+  if(s&&s.getAttribute("data-id")){openPanel(s.getAttribute("data-id"));return;}
+  var o=e.target.closest("[data-open]");if(o){openPanel(o.getAttribute("data-open"));return;}
+  var k=e.target.closest("[data-skill]");
+  if(k){var v=k.getAttribute("data-skill");state.skill=state.skill===v?"":v;if(k.closest("#panel")&&state.skill)closePanel();apply();if(state.skill){var f=document.querySelector(state.view==="plan"?".seat.hit":".ocard.hit");if(f)f.scrollIntoView({behavior:"smooth",block:"center"});}return;}
+  if(e.target.id==="pReset"){var id=$("#pName").getAttribute("data-id");delete names[id];saveNames();$("#pName").value=BY[id].n;renameDom(id);return;}
+});
+$("#pClose").addEventListener("click",closePanel);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("#panel").hidden)closePanel();});
+$("#pName").addEventListener("input",function(){
+  var id=this.getAttribute("data-id"),v=this.value.trim();
+  if(v&&v!==BY[id].n)names[id]=v;else delete names[id];
+  saveNames();renameDom(id);
+});
+$("#resetAll").addEventListener("click",function(){names={};saveNames();P.forEach(function(p){renameDom(p.id);});if(state.sel)$("#pName").value=BY[state.sel].n;});
+
+/* ---------- Start ---------- */
+buildFloor();buildOrg();buildCloud();buildStufen();
+setView((location.hash||"").indexOf("org")>=0?"org":"plan");
+apply();
+})();
+</script>
+</body>
+</html>
