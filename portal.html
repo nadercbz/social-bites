@@ -271,7 +271,28 @@
   .frame-host{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
   .frame-host iframe,.tframe{display:block;width:100%;height:calc(100vh - var(--bar) - 16px);height:calc(100dvh - var(--bar) - 16px);min-height:600px;border:0;background:var(--card);}
   .tframe{border:1px solid var(--line);border-radius:14px;}
-  #team.fr .shell{padding-bottom:10px;}
+  /* Eingebettete Seiten und Sheets: das Fenster füllt die ganze Höhe bis unten, die Seite selbst scrollt nicht. Titel kompakt, Beschreibung ausgeblendet (steht auf der Startseite). */
+  #team.fr .vh{margin-bottom:0;align-items:center;gap:6px 18px;}
+  #team.fr .vh h1{font-size:clamp(22px,2vw,30px);line-height:1;margin:2px 0 0;}
+  #team.fr .vh .mono.hot{margin:0;}
+  #team.fr .vh > div:first-child{display:flex;align-items:baseline;gap:4px 14px;flex-wrap:wrap;}
+  #team.fr .vh > div > p:not(.mono){display:none;}
+  #team.fr .shell{padding-bottom:12px;}
+  @media (min-width:901px){
+    html:has(#team.fr:not([hidden])){overflow:hidden;}
+    #team.fr .shell{height:calc(100vh - var(--bar));height:calc(100dvh - var(--bar));padding-top:12px;align-items:stretch;}
+    #team.fr .side{position:static;align-self:stretch;overflow-y:auto;min-height:0;align-content:start;}
+    #team.fr .tmain{display:flex;flex-direction:column;gap:10px;min-height:0;}
+    #team.fr #tview{flex:none;}
+    #team.fr #tview:has(> iframe.tframe){flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:10px;}
+    #team.fr #tview .vh{flex:none;}
+    #team.fr #tview > iframe.tframe{flex:1 1 auto;height:auto;min-height:0;}
+    #team.fr .frame-host{flex:1 1 auto;min-height:0;display:flex;}
+    #team.fr .frame-host[hidden]{display:none;}
+    #team.fr .frame-host iframe{flex:1;height:auto;min-height:0;}
+    #team.fr #tframenote{margin-top:0;flex:none;display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    #team.fr #tframenote::before{display:none;}
+  }
   .big{padding:0;border:0;margin:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:var(--paper);color:var(--ink);}
   .big[open]{display:grid;grid-template-rows:auto minmax(0,1fr);}
   .big::backdrop{background:rgba(20,17,16,.85);}
@@ -326,6 +347,7 @@
     .tiles,.dlgrid{grid-template-columns:repeat(2,minmax(0,1fr));}
     .folders{grid-template-columns:minmax(0,1fr);}
     .frame-host iframe,.tframe{height:calc(100vh - var(--bar) - 72px);height:calc(100dvh - var(--bar) - 72px);min-height:480px;}
+    #team.fr .frame-host iframe,#team.fr .tframe{height:calc(100vh - var(--bar) - 150px);height:calc(100dvh - var(--bar) - 150px);min-height:360px;}
     .login{grid-template-columns:minmax(0,1fr);}
     .lg-art{min-height:auto;padding-bottom:28px;}
     .lg-art h1{margin-top:40px;}
@@ -449,7 +471,7 @@
     <div class="tmain">
       <main class="view" id="tview" tabindex="-1"></main>
       <div class="frame-host" id="tframe" hidden><iframe id="tsheet" title="Social Bites OS in Google Sheets" allow="clipboard-read; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-      <p class="demo-note" id="tframenote" hidden>Leer, grau oder ein Anmeldefenster? Dann bist du in diesem Browser nicht bei Google angemeldet, das Sheet ist nicht mit deinem Konto geteilt, oder der Browser blockiert eingebettete Google-Inhalte (oft Safari). Dann über "In Google Sheets öffnen" arbeiten.</p>
+      <p class="demo-note" id="tframenote" hidden title="Leer, grau oder ein Anmeldefenster? Dann bist du in diesem Browser nicht bei Google angemeldet, das Sheet ist nicht mit deinem Konto geteilt, oder der Browser blockiert eingebettete Google-Inhalte. Dann über In Google Sheets öffnen arbeiten.">Leer, grau oder ein Anmeldefenster? Dann bist du in diesem Browser nicht bei Google angemeldet, das Sheet ist nicht mit deinem Konto geteilt, oder der Browser blockiert eingebettete Google-Inhalte (oft Safari). Dann über "In Google Sheets öffnen" arbeiten.</p>
     </div>
   </div>
 </div>
@@ -996,11 +1018,11 @@ function tKit(){
     '<section class="card" style="margin-top:14px"><h2>Logo-Entwicklung</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Die Runden vor dem finalen Logo. Favorit und Hauptlogo bleibt der Mund im O.</p><div style="display:grid;gap:12px"><img src="brand/logo-runde-3.webp" alt="Logo-Vorschläge Runde 3" style="border-radius:8px;border:1px solid var(--line)" loading="lazy"><img src="brand/logo-runde-2.webp" alt="Logo-Vorschläge Runde 2" style="border-radius:8px;border:1px solid var(--line);max-width:640px" loading="lazy"></div></section>'+
     '<section class="card" style="margin-top:14px"><h2>Schriften</h2><div class="quick"><a class="btn sm" href="https://fonts.google.com/specimen/Schibsted+Grotesk" target="_blank" rel="noopener"><span class="dot"></span><span>Schibsted Grotesk ↗</span></a><a class="btn sm" href="https://fonts.google.com/specimen/Geist+Mono" target="_blank" rel="noopener"><span class="dot"></span><span>Geist Mono ↗</span></a></div></section>'+
     '<div class="vh" style="margin:28px 0 12px"><div><p class="mono hot">Drive</p><h1 style="font-size:clamp(26px,3vw,38px)">Branding & Asset-Bibliothek</h1><p>Farben & Fonts, Logo & Wortmarke, Musik & Sound-Assets, Templates. Hochladen geht im Drive: Ordner öffnen, Datei reinziehen.</p></div><div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_BRAND)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Im Drive öffnen ↗</span></a></div></div>'+
-    '<iframe class="tframe" style="height:420px;min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_BRAND+'#grid" title="Drive-Ordner Branding"></iframe>';
+    '<iframe class="tframe" style="height:max(520px,calc(100dvh - var(--bar) - 120px));min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_BRAND+'#grid" title="Drive-Ordner Branding"></iframe>';
 }
 function tFiles(){
   return head("Ablage","Dateien im Drive","Alle Ordner von Social Bites. Öffnen und herunterladen geht direkt hier, hochladen im Drive: Ordner öffnen, Datei reinziehen.",'<div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive öffnen und hochladen ↗</span></a></div>')+
-    '<iframe class="tframe" style="height:460px;min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_ROOT+'#list" title="Drive-Ordner Social Bites"></iframe>'+
+    '<iframe class="tframe" style="height:max(520px,calc(100dvh - var(--bar) - 120px));min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_ROOT+'#list" title="Drive-Ordner Social Bites"></iframe>'+
     '<section class="card" style="margin-top:14px"><h2>Ordner direkt öffnen</h2><ul class="folders">'+FOLDERS.map(function(f){return '<li><a href="'+driveUrl(f[1])+'" target="_blank" rel="noopener"><b>'+esc(f[0])+'</b><small>'+esc(f[2])+'</small></a></li>';}).join("")+'</ul></section>'+
     note("Eingebettete Drive-Ordner zeigen nur, was dein angemeldetes Google-Konto sehen darf. Verträge und Rechnungen liegen in 04 und werden nie mit Kunden geteilt.");
 }
