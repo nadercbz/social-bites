@@ -347,7 +347,12 @@
   .tag{font-size:11px;border-radius:999px;padding:5px 9px;border:1.5px solid var(--ink);}
   .tag.off{background:var(--accent);border-color:var(--accent);}
   .tag.both{background:var(--ink);color:var(--paper);}
-  .card video{width:96px;aspect-ratio:9/16;object-fit:cover;border-radius:6px;background:var(--ink);}
+  .card-vid{position:relative;flex:none;width:132px;aspect-ratio:9/16;padding:0;border:0;border-radius:8px;overflow:hidden;background:var(--ink);cursor:pointer;color:var(--paper);}
+  .card-vid video{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+  .card-vid:hover video,.card-vid:focus-visible video{transform:scale(1.05);}
+  .cv-play{position:absolute;left:8px;top:8px;background:var(--accent);color:var(--ink);border-radius:999px;padding:5px 8px;font-size:10px;transition:transform .3s var(--ease);}
+  .card-vid:hover .cv-play{transform:scale(1.08);}
+  .cv-name{position:absolute;left:0;right:0;bottom:0;padding:26px 8px 8px;background:linear-gradient(rgba(20,17,16,0),rgba(20,17,16,.82));font-size:10px;text-align:left;}
   .car-nav{display:flex;gap:8px;padding:16px var(--gutter) 0;}
   .car-nav button{width:42px;height:42px;border-radius:6px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:18px;display:grid;place-items:center;transition:background-color .2s ease,color .2s ease,opacity .2s ease;}
   .car-nav button:hover:not(:disabled){background:var(--accent);}
@@ -898,31 +903,31 @@
         <div><div class="step mono"><b>Schritt 01</b><span>Briefing</span></div>
         <h3>Wir hören zu.</h3>
         <p>Was soll passieren? Mehr Gäste, ein Opening, ein neues Gericht, ein Kanal, der endlich läuft. Erst das Ziel, dann der Content.</p></div>
-        <div class="card-foot"><span class="tag both mono">Online + Offline</span><video data-src="media/menu.mp4" poster="media/menu.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+        <div class="card-foot"><span class="tag both mono">Online + Offline</span><button class="card-vid" type="button" data-play="step_mmaah" aria-label="Mmaah: Video mit Ton abspielen (1:14)"><video data-src="media/ref_step_mmaah_loop.mp4" poster="media/ref_step_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 1:14</span><span class="cv-name mono" aria-hidden="true">Mmaah</span></button></div>
       </article>
       <article class="card">
         <div><div class="step mono"><b>Schritt 02</b><span>Konzept</span></div>
         <h3>Moodboard, Story, Plan.</h3>
         <p>Wir bauen die Geschichte, schreiben die Skripte und legen fest, wie Social Media und echte Aktion vor Ort zusammenspielen.</p></div>
-        <div class="card-foot"><span class="tag both mono">Online + Offline</span><video data-src="media/crispy.mp4" poster="media/crispy.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+        <div class="card-foot"><span class="tag both mono">Online + Offline</span><button class="card-vid" type="button" data-play="step_crazycanes" aria-label="Crazy Canes: Video mit Ton abspielen (0:30)"><video data-src="media/ref_step_crazycanes_loop.mp4" poster="media/ref_step_crazycanes.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:30</span><span class="cv-name mono" aria-hidden="true">Crazy Canes</span></button></div>
       </article>
       <article class="card">
         <div><div class="step mono"><b>Schritt 03</b><span>Dreh</span></div>
         <h3>Shotlist steht, Kamera läuft.</h3>
         <p>Komplette Shotlist für den Tag. Wir drehen bei dir vor Ort, führen Regie und organisieren die Talente vor der Kamera.</p></div>
-        <div class="card-foot"><span class="tag mono">Online</span><video data-src="media/asmr.mp4" poster="media/asmr.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+        <div class="card-foot"><span class="tag mono">Online</span><button class="card-vid" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:50</span><span class="cv-name mono" aria-hidden="true">Zalando × Nike</span></button></div>
       </article>
       <article class="card">
         <div><div class="step mono"><b>Schritt 04</b><span>Schnitt</span></div>
         <h3>Schnitt, Posting, Community.</h3>
         <p>Editing mit Hook in den ersten drei Sekunden. Auf Wunsch posten wir für dich und kümmern uns um Kommentare und Nachrichten.</p></div>
-        <div class="card-foot"><span class="tag mono">Online</span><video data-src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+        <div class="card-foot"><span class="tag mono">Online</span><button class="card-vid" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:53</span><span class="cv-name mono" aria-hidden="true">The Pizzary</span></button></div>
       </article>
       <article class="card">
         <div><div class="step mono"><b>Schritt 05</b><span>Vor Ort</span></div>
         <h3>Aus Views werden Gäste.</h3>
         <p>Opening, Event, Influencer-Abend. Der Moment, in dem Leute vom Handy aufschauen und bei dir vor der Tür stehen.</p></div>
-        <div class="card-foot"><span class="tag off mono">Offline</span><video data-src="media/opening.mp4" poster="media/opening.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div>
+        <div class="card-foot"><span class="tag off mono">Offline</span><button class="card-vid" type="button" data-play="step_vrohstoff" aria-label="Vrohstoff: Video mit Ton abspielen (0:44)"><video data-src="media/ref_step_vrohstoff_loop.mp4" poster="media/ref_step_vrohstoff.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="cv-play mono" aria-hidden="true">&#9654; 0:44</span><span class="cv-name mono" aria-hidden="true">Vrohstoff</span></button></div>
       </article>
     </div>
     <div class="car-nav">
@@ -1082,14 +1087,18 @@
     mmaah:{t:'Mmaah',p:'Instagram',d:'0:36',v:'76.100',u:'https://www.instagram.com/reel/CwBDHYYsfEn/'},
     zalando_nike:{t:'Zalando × Nike',p:'TikTok',d:'0:50',v:'67.400',u:'https://www.tiktok.com/@aleynakuzh/video/7560384846766411030'},
     aldi:{t:'Aldi Nord',p:'Instagram',d:'0:05',v:'26.800',u:'https://www.instagram.com/p/ChfHx-UlQm7/'},
-    wolt:{t:'Wolt',p:'Instagram',d:'0:43',v:'10.100',u:'https://www.instagram.com/reel/CsJYMBOoYdo/'}
+    wolt:{t:'Wolt',p:'Instagram',d:'0:43',v:'10.100',u:'https://www.instagram.com/reel/CsJYMBOoYdo/'},
+    step_mmaah:{t:'Mmaah',p:'Instagram',d:'1:14',u:'https://www.instagram.com/reel/Dbvh3AICSJB/'},
+    step_crazycanes:{t:'Crazy Canes',p:'Instagram',d:'0:30',u:'https://www.instagram.com/p/DdjR4qdiQHX/'},
+    step_pizzary:{t:'The Pizzary',p:'Instagram',d:'0:53',u:'https://www.instagram.com/p/DddwzPsMbJN/'},
+    step_vrohstoff:{t:'Vrohstoff',p:'Instagram',d:'0:44',u:'https://www.instagram.com/p/DbqbCuzNRrM/'}
   };
   var dlg = d.getElementById('player'), pv = d.getElementById('player-video');
   function openRef(k){
     var r = REFS[k]; if (!r) return;
     if (typeof dlg.showModal !== 'function') { window.open(r.u, '_blank', 'noopener'); return; }
     d.getElementById('player-title').textContent = r.t;
-    d.getElementById('player-meta').textContent = r.p + ' · ' + r.d + ' · ' + r.v + ' Views';
+    d.getElementById('player-meta').textContent = r.p + ' · ' + r.d + (r.v ? ' · ' + r.v + ' Views' : '');
     d.getElementById('player-link').href = r.u;
     d.getElementById('player-link-text').textContent = 'Original auf ' + r.p;
     pv.poster = 'media/ref_' + k + '.webp';
