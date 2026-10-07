@@ -249,6 +249,18 @@
   .kz li{padding-left:14px;position:relative;}
   .kz li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
   .kz .ft{padding:8px 16px 15px;display:flex;gap:6px;flex-wrap:wrap;}
+  /* Events: kommende Veranstaltungen, die Foto und Video brauchen könnten */
+  .evbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px;}
+  .evbar input[type=search]{flex:1;min-width:190px;min-height:38px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 11px;background:var(--card);font-size:15px;font-weight:600;}
+  .evbar select{min-height:38px;border:1.5px solid var(--ink);border-radius:8px;padding:4px 9px;background:var(--card);font-weight:650;font-size:14px;max-width:190px;}
+  .evbar input:focus,.evbar select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
+  .dt{display:grid;place-items:center;align-content:center;gap:2px;width:62px;height:66px;border-radius:14px;background:var(--ink);color:var(--paper);text-align:center;flex:none;}
+  .dt b{font-weight:850;font-size:26px;letter-spacing:-.05em;line-height:1;}
+  .dt span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;line-height:1;}
+  .dt.soon{background:var(--accent);color:#1E1B1A;}
+  .evdate{grid-column:2;font-size:14.5px;font-weight:650;margin:0;}
+  .evdate small{color:var(--mute);font-weight:500;font-size:13px;margin-left:4px;}
+  .evdesc{grid-column:2;margin:0;font-size:13.5px;color:var(--mute);}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 <link rel="stylesheet" href="theme.css">
@@ -289,7 +301,7 @@ function ago(iso){var d=days(iso);if(d==null)return "";if(d===0)return "heute";i
 function hostOf(u){try{return new URL(/^https?:/.test(u)?u:"https://"+u).hostname.replace(/^www\./,"");}catch(e){return u;}}
 function webUrl(u){return /^https?:/.test(u)?u:"https://"+u;}
 
-var BR={gastro:"Gastro",praxis:"Praxis & Medizin",kanzlei:"Kanzlei & Beratung",beauty:"Beauty & Wellness",fitness:"Fitness & Sport",handel:"Handel & Concept",sonstige:"Sonstige"};
+var BR={event:"Event",gastro:"Gastro",praxis:"Praxis & Medizin",kanzlei:"Kanzlei & Beratung",beauty:"Beauty & Wellness",fitness:"Fitness & Sport",handel:"Handel & Concept",sonstige:"Sonstige"};
 var SIE={praxis:1,kanzlei:1};
 var SIG={opening:"Opening-Termin",neu_bei_wolt:"Neu bei Wolt",neu_lieferando:"Neu bei Lieferando",neu_osm:"Neu auf der Karte",neu_gegruendet:"Neu im Handelsregister",stelle_social:"Sucht Social Media",stelle_eroeffnung:"Stellt für Neueröffnung ein",gewerbe_gesuch:"Sucht Gewerbefläche",nachmieter:"Nachmieter gesucht",presse:"In der Presse",gewerbe_angebot:"Fläche wird frei"};
 var STAT=[["neu","Neu"],["vorgemerkt","Vorgemerkt"],["kontaktiert","Kontaktiert"],["gespraech","Gespräch"],["angebot","Angebot"],["gewonnen","Gewonnen"],["verloren","Verloren"],["kein_fit","Kein Fit"]];
@@ -298,7 +310,7 @@ function stName(k){return (STAT.filter(function(s){return s[0]===k;})[0]||[0,k])
 function scColor(s){return s>=70?"#F04A0A":s>=50?"#D98324":s>=35?"#8C7B5E":"#B7AE9C";}
 
 var ST=load("sb-akq-state",{}),PREF=load("sb-akq-prefs",{who:"Nader",view:"heute"}),FIL=load("sb-akq-filter",{br:[],kiez:"",sig:"",min:30,q:"",stat:"offen"});
-var DATA=null,LEADS=[],view=(location.hash.slice(1)||PREF.view||"heute"),sortK="score",sortD=-1,shown=60,openTx={};
+var DATA=null,LEADS=[],EVS=[],view=(location.hash.slice(1)||PREF.view||"heute"),sortK="score",sortD=-1,shown=60,openTx={};
 function S(id){return ST[id]||(ST[id]={s:"neu",note:"",hist:[]});}
 function saveST(){store("sb-akq-state",ST);}
 function setStatus(id,s){var o=S(id);if(o.s===s)return;o.s=s;o.at=new Date().toISOString();(o.hist=o.hist||[]).push([o.at,s]);saveST();}
@@ -343,8 +355,10 @@ async function boot(){
 /* ---------- Start ---------- */
 function start(){
   LEADS=(DATA.leads||[]);
+  EVS=(DATA.events||[]);
   var last=PREF.lastVisit||null;PREF.prevVisit=last;PREF.lastVisit=new Date().toISOString();store("sb-akq-prefs",PREF);
   LEADS.forEach(function(l){l._new=!!(last&&l.erstGesehen&&l.erstGesehen>last.slice(0,10));});
+  EVS.forEach(function(e){e._new=!!(last&&e.erstGesehen&&e.erstGesehen>last.slice(0,10));});
   $("#topbar").hidden=false;
   $("#stand").textContent=(DATA.stand?"Stand "+DATA.stand:"")+" · "+LEADS.length+" Leads · täglich neu";
   render();
@@ -509,16 +523,16 @@ function txPanel(l,v){
 }
 
 /* ---------- Ansichten ---------- */
-var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["konzepte","Konzepte"],["quellen","Quellen"]];
+var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["events","Events"],["konzepte","Konzepte"],["quellen","Quellen"]];
 function drawViews(){
-  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?LEADS.filter(function(l){return KAN.indexOf(S(l.id).s)>-1;}).length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
+  $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?allItems().filter(function(l){return KAN.indexOf(S(l.id).s)>-1;}).length:v[0]==="events"?evUpcoming().length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
 }
 function render(onlyMain){
   if(!onlyMain)drawFilters();
   drawViews();
-  $("#filters").hidden=view==="quellen"||view==="pipeline"||view==="konzepte";
+  $("#filters").hidden=view==="quellen"||view==="pipeline"||view==="konzepte"||view==="events";
   var m=$("#main");
-  m.innerHTML=view==="liste"?vListe():view==="karte"?vKarte():view==="pipeline"?vPipeline():view==="konzepte"?vKonzepte():view==="quellen"?vQuellen():vHeute();
+  m.innerHTML=view==="liste"?vListe():view==="karte"?vKarte():view==="pipeline"?vPipeline():view==="konzepte"?vKonzepte():view==="events"?vEvents():view==="quellen"?vQuellen():vHeute();
   if(view==="karte")initMap();
   try{history.replaceState(null,"","#"+view);}catch(e){}
   PREF.view=view;store("sb-akq-prefs",PREF);
@@ -580,7 +594,7 @@ function initMap(){
 function vPipeline(){
   var h='<h1 class="h2">Pipeline.</h1><p class="lead">Von vorgemerkt bis gewonnen. Mit den Pfeilen schiebst du einen Lead weiter, der Export passt in den Tab Pipeline im Social Bites OS.</p><div class="kan">';
   KAN.forEach(function(k,i){
-    var ls=LEADS.filter(function(l){return S(l.id).s===k;}).sort(function(a,b){return String(S(b.id).at).localeCompare(String(S(a.id).at));});
+    var ls=allItems().filter(function(l){return S(l.id).s===k;}).sort(function(a,b){return String(S(b.id).at).localeCompare(String(S(a.id).at));});
     h+='<section class="kcol"><h3>'+stName(k)+'<span>'+ls.length+'</span></h3>'+(ls.map(function(l){
       return '<div class="kc"><b data-open="'+esc(l.id)+'">'+esc(l.name)+'</b><small>'+esc((BR[l.branche]||"")+(l.kiez?" · "+l.kiez:"")+" · Score "+(l.score||0))+'</small>'+(S(l.id).note?'<small style="color:var(--accent-ink)">✎ '+esc(S(l.id).note.slice(0,70))+'</small>':"")+'<div class="mv">'+(i>0?'<button class="btn sm" type="button" data-set="'+KAN[i-1]+'" data-id="'+esc(l.id)+'" aria-label="Zurück">◀</button>':"")+(i<KAN.length-1?'<button class="btn sm" type="button" data-set="'+KAN[i+1]+'" data-id="'+esc(l.id)+'">'+stName(KAN[i+1])+' ▶</button>':"")+'<button class="btn sm" type="button" data-set="verloren" data-id="'+esc(l.id)+'" title="Verloren">✕</button></div></div>';
     }).join("")||'<small style="color:var(--mute);padding:6px">leer</small>')+'</section>';
@@ -634,12 +648,143 @@ function exportIt(kind){
     dl("Social_Bites_Akquise_"+d+".csv","﻿"+r2.join("\n"),"text/csv;charset=utf-8");toast("CSV geladen");
   } else if(kind==="pipeline"){
     var ph={vorgemerkt:"Erstkontakt",kontaktiert:"Erstkontakt",gespraech:"Gespräch",angebot:"Angebot raus",gewonnen:"Gewonnen"},step={vorgemerkt:"Erstkontakt vorbereiten",kontaktiert:"Nachfassen",gespraech:"Angebot vorbereiten",angebot:"Nachfassen",gewonnen:""};
-    var ls=LEADS.filter(function(l){return KAN.indexOf(S(l.id).s)>-1;});
+    var ls=allItems().filter(function(l){return KAN.indexOf(S(l.id).s)>-1;});
     if(!ls.length){toast("Noch nichts in der Pipeline");return;}
     var tsv=ls.map(function(l){var s=S(l.id).s,sc=l.score||0;return [l.name,"Kunde",l.kontakt||"","Akquise-Board",sc>=70?"Heiß":sc>=50?"Warm":"Kalt",ph[s],l.branche==="gastro"?"Content":"Content","",step[s],"",PREF.who||"",[(topSig(l)?(SIG[topSig(l).typ]||""):""),S(l.id).note,l.website].filter(Boolean).join(" · ")].join("\t");}).join("\n");
     copy(tsv,ls.length+" Zeilen kopiert. Im Sheet Pipeline in die erste freie Zeile einfügen.");
   }
 }
+
+/* ---------- Events: kommende Veranstaltungen, die Foto und Video brauchen könnten ---------- */
+var EVF=load("sb-akq-evfilter",{q:"",kat:"",gr:"",tage:90,bez:"",kontakt:false,alle:false,sort:"score"});
+var KATN={festival:"Festival",messe:"Messe",konzert:"Konzert",fashion:"Mode",food:"Food",sport:"Sport",business:"Business",kultur:"Kultur",party:"Party",sonstiges:"Sonstiges"};
+var GRN={klein:"Klein",mittel:"Mittel",gross:"Groß",riesig:"Riesig"};
+function evById(id){return EVS.filter(function(e){return e.id===id;})[0];}
+function evAsLead(e){return {id:e.id,name:e.name,branche:"event",kiez:e.bezirk||"",score:e.score||0,kontakt:e.veranstalter||"",website:e.veranstalter_url||e.url||""};}
+function allItems(){return LEADS.concat(EVS.map(evAsLead));}
+function evEnd(e){return e.ende||e.start;}
+function evUpcoming(){return EVS.filter(function(e){var d=days(evEnd(e));return d!=null&&d>=0;});}
+function evFold(s){return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ß/g,"ss");}
+function evKontakt(e){return !!(e.veranstalter_mail||e.veranstalter_telefon||e.veranstalter_url||e.veranstalter_kontakt);}
+function evOk(e){
+  var f=EVF,d=days(e.start),st=S(e.id).s;
+  if(f.tage&&d!=null&&d>f.tage)return false;
+  if(!f.alle&&st!=="neu"&&st!=="vorgemerkt")return false;
+  if(f.kat&&e.kategorie!==f.kat)return false;
+  if(f.gr&&e.groesse!==f.gr)return false;
+  if(f.bez&&e.bezirk!==f.bez)return false;
+  if(f.kontakt&&!evKontakt(e))return false;
+  if(f.q){var h=evFold([e.name,e.ort,e.bezirk,e.veranstalter,e.beschreibung,e.kategorie].join(" "));if(evFold(f.q).split(/\s+/).some(function(w){return w&&h.indexOf(w)<0;}))return false;}
+  return true;
+}
+function evList(){
+  var l=evUpcoming().filter(evOk);
+  l.sort(function(a,b){return EVF.sort==="score"?((b.score||0)-(a.score||0)||String(a.start).localeCompare(b.start)):(String(a.start).localeCompare(String(b.start))||(b.score||0)-(a.score||0));});
+  return l;
+}
+function evWhen(e){
+  var d=new Date(e.start+"T00:00:00"),wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","");
+  var s=wd+" "+fmtD(e.start);
+  if(e.ende&&e.ende!==e.start)s=wd+" "+fmtD(e.start)+" bis "+new Date(e.ende+"T00:00:00").toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+fmtD(e.ende);
+  return s+(e.uhrzeit?" · "+e.uhrzeit+" Uhr":"");
+}
+function evSize(e){
+  var o=[];if(e.besucher)o.push("ca. "+String(e.besucher).replace(/\B(?=(\d{3})+(?!\d))/g,".")+" Besucher");
+  else if(e.groesse)o.push(GRN[e.groesse]||e.groesse);
+  return o.join(" · ");
+}
+function evDt(e){
+  var d=new Date(e.start+"T00:00:00"),dd=days(e.start),soon=dd!=null&&dd>=0&&dd<=14;
+  return '<div class="dt'+(soon?" soon":"")+'"><b>'+d.getDate()+'</b><span>'+d.toLocaleDateString("de-DE",{month:"short"}).replace(".","")+'</span></div>';
+}
+function evContact(e){
+  var a=[];
+  if(e.veranstalter)a.push('<span class="who">'+esc(e.veranstalter)+'</span>');
+  if(e.veranstalter_kontakt)a.push('<span class="who">'+esc(e.veranstalter_kontakt)+(e.veranstalter_rolle?' <small style="color:var(--mute);font-weight:500">('+esc(String(e.veranstalter_rolle).split(" ")[0])+')</small>':"")+'</span>');
+  if(e.veranstalter_url)a.push('<a href="'+esc(webUrl(e.veranstalter_url))+'" target="_blank" rel="noopener">'+esc(hostOf(e.veranstalter_url))+' ↗</a>');
+  if(e.veranstalter_mail)a.push('<a href="mailto:'+esc(e.veranstalter_mail)+'">'+esc(e.veranstalter_mail)+'</a>');
+  if(e.veranstalter_telefon)a.push('<a href="tel:'+esc(String(e.veranstalter_telefon).replace(/[^\d+]/g,""))+'">'+esc(e.veranstalter_telefon)+'</a>');
+  if(!e.veranstalter_mail&&!e.veranstalter_telefon&&e.veranstalter_url)a.push('<a class="find" href="https://www.google.com/search?q='+encodeURIComponent((e.veranstalter||e.name)+" Presse Kontakt")+'" target="_blank" rel="noopener">Pressekontakt suchen ↗</a>');
+  if(!a.length)a.push('<a class="find" href="https://www.google.com/search?q='+encodeURIComponent(e.name+" Veranstalter Kontakt")+'" target="_blank" rel="noopener">Veranstalter suchen ↗</a>');
+  return a.join("");
+}
+function evText(e){
+  var who=PREF.who||"Nader",T=Object.assign({referenzen:"The Pizzary, Mmaah, Crazy Canes und Vrohstoff"},(DATA.profil&&DATA.profil.texte)||{});
+  var when=fmtD(e.start)+(e.ende&&e.ende!==e.start?" bis "+fmtD(e.ende):""),big=e.besucher?" Bei ca. "+String(e.besucher).replace(/\B(?=(\d{3})+(?!\d))/g,".")+" Besuchern lohnt sich ein Film, der danach weiterläuft.":"";
+  var gr=e.veranstalter_kontakt?"Guten Tag "+e.veranstalter_kontakt+",":"Guten Tag,";
+  return "Betreff: Foto und Video für "+e.name+"\n\n"+gr+"\n\nich habe gesehen, dass "+e.name+" am "+when+(e.ort?" ("+e.ort+")":"")+" stattfindet."+big+"\n\nWir sind Social Bites, ein Team aus Berlin für Event Content: Foto, Aftermovie und Reels noch am selben Abend, damit "+e.name+" auch nach dem Event online weiterläuft. Zuletzt haben wir unter anderem Openings und Kampagnen für "+T.referenzen+" produziert.\n\nFalls Sie noch Unterstützung für Foto und Video suchen, schicken wir gern ein unverbindliches Angebot. Hätten Sie in dieser Woche 10 Minuten für ein kurzes Telefonat?\n\nMit freundlichen Grüßen\n"+who+" von Social Bites\nnadercbz.github.io/social-bites";
+}
+function evIcs(id){
+  var e=evById(id);if(!e)return;
+  var d0=e.start.replace(/-/g,""),de=new Date(evEnd(e)+"T00:00:00");de.setDate(de.getDate()+1);
+  var d1=de.getFullYear()+String(de.getMonth()+1).padStart(2,"0")+String(de.getDate()).padStart(2,"0");
+  var esc2=function(t){return String(t||"").replace(/[\\;,]/g,function(c){return "\\"+c;}).replace(/\n/g,"\\n");};
+  var ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Social Bites//Akquise//DE","BEGIN:VEVENT","UID:"+e.id+"@socialbites","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,""),"DTSTART;VALUE=DATE:"+d0,"DTEND;VALUE=DATE:"+d1,"SUMMARY:"+esc2(e.name),"LOCATION:"+esc2([e.ort,e.adresse].filter(Boolean).join(", ")),"URL:"+(e.url||""),"DESCRIPTION:"+esc2("Event Akquise. Veranstalter: "+(e.veranstalter||"unbekannt")+". "+(e.url||"")),"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  dl("Event_"+e.start+"_"+e.name.replace(/[^A-Za-z0-9]+/g,"_").slice(0,40)+".ics",ics,"text/calendar");toast("Kalendereintrag geladen");
+}
+function evCard(e){
+  var st=S(e.id).s,done=!(st==="neu"||st==="vorgemerkt"),dd=days(e.start);
+  var warum=(e.warum||[]).filter(function(w){return w.p>0;}).slice(0,5).map(function(w){return '<span>'+esc(w.t)+'<b>+'+w.p+'</b></span>';}).join("");
+  return '<article class="lc'+(done?" done":"")+'" data-id="'+esc(e.id)+'">'+evDt(e)+
+    '<div><div class="hd"><h3 data-open="'+esc(e.id)+'">'+esc(e.name)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(KATN[e.kategorie]||e.kategorie||"Event")+'</span>'+(evSize(e)?'<span class="pill">'+esc(evSize(e))+'</span>':"")+(e.bezirk?'<span class="pill">'+esc(e.bezirk)+'</span>':"")+(e._new?'<span class="pill new">Neu</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+'<span class="pill'+(dd!=null&&dd<=14?" new":"")+'">'+esc(ago(e.start))+'</span></div></div>'+
+    '<p class="evdate">'+esc(evWhen(e))+'<small>'+esc([e.ort,e.stadt&&e.stadt!=="Berlin"?e.stadt:""].filter(Boolean).join(", "))+'</small></p>'+
+    (warum?'<div class="warum">'+warum+'</div>':"")+
+    (e.beschreibung?'<p class="evdesc">'+esc(String(e.beschreibung).slice(0,190))+(String(e.beschreibung).length>190?"…":"")+'</p>':"")+
+    '<div class="contact">'+evContact(e)+'</div>'+
+    '<div class="acts"><button class="btn or sm" type="button" data-evtx="'+esc(e.id)+'"><span class="dot"></span><span>Anfrage kopieren</span></button>'+
+    (st==="neu"?'<button class="btn sm" type="button" data-set="vorgemerkt" data-id="'+esc(e.id)+'"><span class="dot"></span><span>Vormerken</span></button>':"")+
+    (st==="neu"||st==="vorgemerkt"?'<button class="btn sm" type="button" data-set="kontaktiert" data-id="'+esc(e.id)+'"><span class="dot"></span><span>Kontaktiert</span></button>':"")+
+    (e.url?'<a class="btn sm" href="'+esc(e.url)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Event-Seite</span></a>':"")+
+    '<span class="sp"></span><button class="btn sm" type="button" data-open="'+esc(e.id)+'"><span class="dot"></span><span>Details</span></button>'+
+    (st==="neu"||st==="vorgemerkt"?'<button class="btn sm" type="button" data-set="kein_fit" data-id="'+esc(e.id)+'" title="Passt nicht, nicht mehr zeigen"><span class="dot"></span><span>Kein Fit</span></button>':'<button class="btn sm" type="button" data-set="neu" data-id="'+esc(e.id)+'"><span class="dot"></span><span>Zurück auf Neu</span></button>')+'</div></article>';
+}
+function vEvents(){
+  var up=evUpcoming(),list=evList(),f=EVF;
+  var opt=function(c,cur,fn){return Object.keys(c).sort().map(function(k){return '<option value="'+esc(k)+'"'+(cur===k?" selected":"")+'>'+esc(fn?fn(k):k)+' ('+c[k]+')</option>';}).join("");};
+  var cnt=function(fn){var c={};up.forEach(function(e){var k=fn(e);if(k)c[k]=(c[k]||0)+1;});return c;};
+  var n14=up.filter(function(e){return days(e.start)<=14;}).length,nk=up.filter(evKontakt).length,nv=up.filter(function(e){return S(e.id).s==="vorgemerkt";}).length;
+  var h='<h1 class="h2">Events.</h1><p class="lead">Kommende Veranstaltungen in Berlin, die Foto und Video brauchen könnten. Mit Veranstalter, Kontakt und fertigem Anfrage-Text. Der Agent sucht täglich neu. Je früher du anfragst, desto besser, ideal 2 bis 8 Wochen vorher.</p>';
+  h+='<div class="stats"><div class="stat"><span class="mono">Kommende Events</span><b>'+up.length+'</b></div><div class="stat"><span class="mono">In 14 Tagen</span><b>'+n14+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+nk+'</b></div><div class="stat"><span class="mono">Vorgemerkt</span><b>'+nv+'</b></div><div class="stat"><span class="mono">Treffer mit Filter</span><b>'+list.length+'</b></div></div>';
+  h+='<div class="evbar"><input type="search" id="evq" placeholder="Suche: Event, Ort, Veranstalter" value="'+esc(f.q)+'" aria-label="Suche">'+
+    '<select id="evtage" aria-label="Zeitraum">'+[[14,"Nächste 14 Tage"],[30,"Nächste 30 Tage"],[60,"Nächste 60 Tage"],[90,"Nächste 90 Tage"],[180,"Nächste 6 Monate"],[0,"Alle"]].map(function(t){return '<option value="'+t[0]+'"'+(+f.tage===t[0]?" selected":"")+'>'+t[1]+'</option>';}).join("")+'</select>'+
+    '<select id="evkat" aria-label="Kategorie"><option value="">Alle Kategorien</option>'+opt(cnt(function(e){return e.kategorie;}),f.kat,function(k){return KATN[k]||k;})+'</select>'+
+    '<select id="evgr" aria-label="Größe"><option value="">Alle Größen</option>'+opt(cnt(function(e){return e.groesse;}),f.gr,function(k){return GRN[k]||k;})+'</select>'+
+    '<select id="evbez" aria-label="Bezirk"><option value="">Ganz Berlin</option>'+opt(cnt(function(e){return e.bezirk;}),f.bez)+'</select>'+
+    '<select id="evsort" aria-label="Sortierung"><option value="datum"'+(f.sort==="datum"?" selected":"")+'>Nach Datum</option><option value="score"'+(f.sort==="score"?" selected":"")+'>Nach Fit</option></select>'+
+    '<label class="chk"><input type="checkbox" id="evkontakt"'+(f.kontakt?" checked":"")+'>mit Kontakt</label><label class="chk"><input type="checkbox" id="evalle"'+(f.alle?" checked":"")+'>Erledigte zeigen</label>'+
+    '<button class="btn sm" type="button" data-evreset><span class="dot"></span><span>Zurücksetzen</span></button></div>';
+  if(!up.length)return h+'<div class="empty"><b>Noch keine Events in den Daten.</b><span>Der tägliche Lauf trägt sie ein. Lokal mit: python3 Akquise/update_leads.py</span></div>';
+  if(!list.length)return h+'<div class="empty"><b>Keine Events mit diesen Filtern.</b><span>Setze den Zeitraum hoch oder die Filter zurück.</span></div>';
+  return h+'<div class="lcards">'+list.slice(0,evShown).map(evCard).join("")+'</div>'+(list.length>evShown?'<button class="btn more" type="button" data-evmore><span class="dot"></span><span>Mehr zeigen ('+(list.length-evShown)+')</span></button>':"");
+}
+var evShown=40;
+function openEv(id){
+  var e=evById(id);if(!e)return;
+  var o=S(id),mx=Math.max.apply(null,(e.warum||[]).map(function(w){return Math.abs(w.p);}).concat([1]));
+  $("#detH").textContent=e.name;
+  $("#detB").innerHTML=
+   '<div class="col"><div class="box"><h4 class="mono">Event</h4><div style="display:flex;gap:12px;align-items:center">'+evDt(e)+'<div><b style="font-size:17px;letter-spacing:-.03em">'+esc(evWhen(e))+'</b><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px"><span class="pill ink">'+esc(KATN[e.kategorie]||e.kategorie||"Event")+'</span>'+(evSize(e)?'<span class="pill">'+esc(evSize(e))+'</span>':"")+'<span class="pill">'+esc(ago(e.start))+'</span></div></div></div>'+
+     '<dl><dt>Ort</dt><dd>'+esc([e.ort,e.adresse].filter(Boolean).join(", ")||"offen")+(e.bezirk?" ("+esc(e.bezirk)+")":"")+'</dd><dt>Fit-Score</dt><dd>'+(e.score||0)+' von 100</dd>'+(e.beschreibung?'<dt>Worum geht es</dt><dd>'+esc(e.beschreibung)+'</dd>':"")+'<dt>Quelle</dt><dd>'+(e.url?'<a href="'+esc(e.url)+'" target="_blank" rel="noopener">'+esc(hostOf(e.url))+' ↗</a>':"")+(e.quelle?" · "+esc(e.quelle):"")+'</dd></dl>'+
+     '<div class="bars">'+(e.warum||[]).map(function(w){return '<div><span>'+esc(w.t)+'</span><b>'+(w.p>0?"+":"")+w.p+'</b><i><span style="width:'+Math.max(4,Math.abs(w.p)/mx*100)+'%;background:'+(w.p<0?"var(--bad)":"var(--accent)")+'"></span></i></div>';}).join("")+'</div>'+
+     '<div style="display:flex;gap:6px;flex-wrap:wrap"><a class="btn sm inv" href="'+esc(mapsOpen({name:e.ort||e.name,adresse:e.adresse,plz:""}))+'" target="_blank" rel="noopener"><span class="dot"></span><span>Google Maps</span></a><button class="btn sm" type="button" data-evics="'+esc(id)+'"><span class="dot"></span><span>In den Kalender (.ics)</span></button></div></div>'+
+   '<div class="box"><h4 class="mono">Status und Notiz</h4><div class="stbtns" id="stb">'+STAT.map(function(s){return '<button class="btn sm" type="button" data-set="'+s[0]+'" data-id="'+esc(id)+'" aria-pressed="'+(o.s===s[0])+'"><span class="dot"></span><span>'+s[1]+'</span></button>';}).join("")+'</div><textarea class="note" id="detNote" placeholder="Notiz: Wen gesprochen, was vereinbart?">'+esc(o.note||"")+'</textarea></div></div>'+
+   '<div class="col"><div class="box"><h4 class="mono">Veranstalter und Kontakt</h4><dl><dt>Veranstalter</dt><dd>'+esc(e.veranstalter||"unbekannt")+'</dd>'+(e.veranstalter_kontakt?'<dt>Ansprechpartner</dt><dd>'+esc(e.veranstalter_kontakt)+(e.veranstalter_rolle?" ("+esc(String(e.veranstalter_rolle).split(" ")[0])+")":"")+'</dd>':"")+'<dt>Website</dt><dd>'+(e.veranstalter_url?'<a href="'+esc(webUrl(e.veranstalter_url))+'" target="_blank" rel="noopener">'+esc(hostOf(e.veranstalter_url))+' ↗</a>'+(e.veranstalter_impressum?' · <a href="'+esc(e.veranstalter_impressum)+'" target="_blank" rel="noopener">Impressum ↗</a>':""):"nicht gefunden")+'</dd><dt>E-Mail</dt><dd>'+(e.veranstalter_mail?'<a href="mailto:'+esc(e.veranstalter_mail)+'">'+esc(e.veranstalter_mail)+'</a>':"nicht gefunden")+'</dd><dt>Telefon</dt><dd>'+(e.veranstalter_telefon?'<a href="tel:'+esc(String(e.veranstalter_telefon).replace(/[^\d+]/g,""))+'">'+esc(e.veranstalter_telefon)+'</a>':"nicht gefunden")+'</dd></dl>'+
+     '<div class="contact">'+evContact(e)+'</div></div>'+
+   '<div class="box"><h4 class="mono">Anfrage-Text</h4><div class="tx" style="border:0;background:none;padding:0"><textarea id="ta_ev" aria-label="Text">'+esc(evText(e))+'</textarea><div class="hint">Ein Event-Veranstalter ist ein Unternehmen: Kalt-E-Mail ist meist unzulässig (UWG § 7). Sicherer sind Kontaktformular, Pressekontakt oder ein Anruf mit mutmaßlicher Einwilligung, dann der Text als Folgemail. Keine Rechtsberatung.</div><div class="tops"><button class="btn inv" type="button" data-evcopy><span class="dot"></span><span>Text kopieren</span></button>'+(e.veranstalter_mail?'<a class="btn" href="mailto:'+esc(e.veranstalter_mail)+'?subject='+encodeURIComponent("Foto und Video für "+e.name)+'" target="_blank"><span class="dot"></span><span>Im Mail-Programm öffnen</span></a>':"")+'</div></div></div></div>';
+  var ta=$("#detNote");ta.addEventListener("input",function(){S(id).note=ta.value;saveST();});
+  var d=$("#det");d.setAttribute("data-id",id);try{d.showModal();}catch(er){d.setAttribute("open","");}
+}
+var evQT;
+document.addEventListener("input",function(e){if(e.target.id==="evq"){clearTimeout(evQT);var v=e.target.value;evQT=setTimeout(function(){EVF.q=v;store("sb-akq-evfilter",EVF);evShown=40;var pos=v.length;render(true);var i=$("#evq");if(i){i.focus();try{i.setSelectionRange(pos,pos);}catch(er){}}},220);}});
+document.addEventListener("change",function(e){
+  var id=e.target.id,map={evkat:"kat",evgr:"gr",evbez:"bez",evsort:"sort"};
+  if(map[id])EVF[map[id]]=e.target.value;
+  else if(id==="evtage")EVF.tage=+e.target.value;
+  else if(id==="evkontakt")EVF.kontakt=e.target.checked;
+  else if(id==="evalle")EVF.alle=e.target.checked;
+  else return;
+  store("sb-akq-evfilter",EVF);evShown=40;render(true);
+});
 
 /* ---------- Konzepte: fertige DIN A4 Pitch Seiten als PDF ---------- */
 /* Lokal liegen die PDFs im Klartext im Ordner Akquise/pitch/pdf. Auf GitHub liegen sie nur verschlüsselt (akquise/pitch/ID.enc),
@@ -729,11 +874,11 @@ function vKonzepte(){
 
 /* ---------- Klicks ---------- */
 document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-view],[data-open],[data-set],[data-tx],[data-tx2],[data-var],[data-sie],[data-who],[data-copytx],[data-sort],[data-more],[data-pin],[data-export],[data-closedet],[data-dvar],[data-dsie],[data-copydet],[data-copyaddr],[data-kz],[data-kzall]");if(!t)return;
+  var t=e.target.closest("[data-view],[data-open],[data-set],[data-tx],[data-tx2],[data-var],[data-sie],[data-who],[data-copytx],[data-sort],[data-more],[data-pin],[data-export],[data-closedet],[data-dvar],[data-dsie],[data-copydet],[data-copyaddr],[data-kz],[data-kzall],[data-evtx],[data-evics],[data-evcopy],[data-evreset],[data-evmore]");if(!t)return;
   var id=t.getAttribute("data-id");
   if(t.hasAttribute("data-view")){view=t.getAttribute("data-view");render();window.scrollTo(0,0);return;}
   if(t.hasAttribute("data-closedet")){$("#det").close();return;}
-  if(t.hasAttribute("data-open")){var o=t.getAttribute("data-open");if(MAP)MAP.closePopup();openDet(o);return;}
+  if(t.hasAttribute("data-open")){var o=t.getAttribute("data-open");if(MAP)MAP.closePopup();if(o.indexOf("ev_")===0)openEv(o);else openDet(o);return;}
   if(t.hasAttribute("data-set")){var s=t.getAttribute("data-set");setStatus(id,s);toast(stName(s));if($("#det").open){var cur=$("#det").getAttribute("data-id");$("#stb").querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-set")===S(cur).s);});}else render();return;}
   if(t.hasAttribute("data-tx")){var k=t.getAttribute("data-tx");if(openTx[k])delete openTx[k];else{openTx[k]=defVar(LEADS.filter(function(l){return l.id===k;})[0]);}render();var c=document.querySelector('[data-id="'+k+'"].lc');if(c&&openTx[k])c.scrollIntoView({block:"nearest"});return;}
   if(t.hasAttribute("data-tx2")){var k2=t.getAttribute("data-tx2"),l2=LEADS.filter(function(l){return l.id===k2;})[0];var sie2=!!SIE[l2.branche];copy(pitch(l2,defVar(l2),sie2),"Text für "+l2.name+" kopiert ("+VARS.filter(function(x){return x[0]===defVar(l2);})[0][1]+")");return;}
@@ -748,6 +893,11 @@ document.addEventListener("click",function(e){
   if(t.hasAttribute("data-dvar")){openTx[id]=t.getAttribute("data-dvar");openDet(id);return;}
   if(t.hasAttribute("data-dsie")){PREF["sie_"+id]=t.getAttribute("data-dsie")==="1";store("sb-akq-prefs",PREF);openDet(id);return;}
   if(t.hasAttribute("data-copydet")){copy($("#ta_det").value,"Text kopiert");return;}
+  if(t.hasAttribute("data-evmore")){evShown+=40;render(true);return;}
+  if(t.hasAttribute("data-evtx")){var ek=t.getAttribute("data-evtx"),ee=evById(ek);if(ee)copy(evText(ee),"Anfrage für "+ee.name+" kopiert");return;}
+  if(t.hasAttribute("data-evics")){evIcs(t.getAttribute("data-evics"));return;}
+  if(t.hasAttribute("data-evcopy")){var et=$("#ta_ev");if(et)copy(et.value,"Text kopiert");return;}
+  if(t.hasAttribute("data-evreset")){EVF={q:"",kat:"",gr:"",tage:90,bez:"",kontakt:false,alle:false,sort:"score"};store("sb-akq-evfilter",EVF);render();return;}
   if(t.hasAttribute("data-kz")){pitchDl(t.getAttribute("data-kz"));return;}
   if(t.hasAttribute("data-kzall")){pitchAll();return;}
   if(t.hasAttribute("data-copyaddr")){var la=LEADS.filter(function(l){return l.id===t.getAttribute("data-copyaddr");})[0];copy([la.name,la.adresse||la.strasse,la.plz,"Berlin"].filter(Boolean).join(", "),"Adresse kopiert");return;}
