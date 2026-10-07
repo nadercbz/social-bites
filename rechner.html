@@ -142,7 +142,7 @@
   dialog.copy textarea{width:100%;height:280px;font-family:var(--mono);font-size:12.5px;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--paper);}
 
   /* Präsentationsmodus: Kundensicht ohne Interna */
-  body.present .pal,body.present .meta,body.present .colbar,body.present .addrow,body.present .c-x,body.present .grip,body.present .c-h,body.present .hide-in-present{display:none!important;}
+  body.present #docAngebot,body.present #docRechnung,body.present .pal,body.present .meta,body.present .colbar,body.present .addrow,body.present .c-x,body.present .grip,body.present .c-h,body.present .hide-in-present{display:none!important;}
   body.present .layout{grid-template-columns:minmax(0,1fr);max-width:1180px;margin:0 auto;}
   body.present .present-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:10px 0 6px;}
   body.present .present-h h1{margin:0;font-weight:800;font-size:clamp(36px,5vw,68px);line-height:.92;letter-spacing:-.05em;}
@@ -193,6 +193,116 @@
     .c-bill select{border:0;background:transparent;-webkit-appearance:none;appearance:none;}
     .sum{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   }
+  /* Angebot und Rechnung */
+  .btn.or{background:var(--accent);border-color:var(--accent);color:var(--ink);}
+  .btn.or:hover,.btn.or:focus-visible{border-color:var(--ink);}
+  dialog.doc{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink);overflow:hidden;}
+  dialog.doc[open]{display:flex;flex-direction:column;}
+  dialog.doc::backdrop{background:rgba(30,27,26,.5);}
+  .doc-bar{display:flex;align-items:center;gap:12px;padding:10px var(--gutter);border-bottom:1px solid var(--line);background:var(--paper-2);flex-wrap:wrap;}
+  .doc-bar b{font-weight:800;font-size:20px;letter-spacing:-.035em;}
+  .doc-bar .doc-hint{color:var(--mute);}
+  .doc-bar .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .doc-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);}
+  .doc-ctrl{overflow:auto;padding:14px var(--gutter);border-right:1px solid var(--line);display:grid;gap:12px;align-content:start;background:var(--card);}
+  .doc-out{overflow:auto;padding:14px var(--gutter) 40px;display:grid;gap:12px;align-content:start;min-width:0;}
+  .seg{display:flex;flex-wrap:wrap;gap:6px;}
+  .seg button{font:650 14px/1 var(--display);padding:9px 12px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;transition:background-color .2s ease,color .2s ease;}
+  .seg button:hover{background:var(--paper-2);}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .dg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;}
+  .dg .f.full{grid-column:1/-1;}
+  .dg .f[hidden]{display:none;}
+  .dg .f input,.dg .f select,.doc-ctrl textarea,.mailbox input,.mailbox textarea{width:100%;min-height:40px;background:var(--paper);border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;font-size:15px;font-weight:600;}
+  .dg .f input:focus,.dg .f select:focus,.doc-ctrl textarea:focus,.mailbox input:focus,.mailbox textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);background:var(--card);}
+  .doc-ctrl textarea{min-height:110px;font-weight:500;line-height:1.4;resize:vertical;}
+  .dgt{margin:8px 0 0;color:var(--accent-ink);padding-top:10px;border-top:1px solid var(--line);}
+  .dgt:first-child{border-top:0;padding-top:0;margin-top:0;}
+  .f small.hint{color:var(--mute);font-size:12.5px;}
+  .row2{display:flex;gap:6px;}
+  .row2 input{flex:1;min-width:0;}
+  .doc-ctrl details{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);}
+  .doc-ctrl summary{cursor:pointer;font-weight:750;}
+  .doc-ctrl details .dg{margin-top:10px;}
+  .doc-ctrl .chk{min-height:36px;}
+  .miss-box{background:var(--accent-tint);border:1px dashed rgba(184,56,6,.5);border-radius:10px;padding:10px 12px;display:grid;gap:8px;}
+  .miss-box .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .miss-box button{font:650 13px/1 var(--display);padding:6px 10px;border-radius:999px;border:1px solid var(--accent-ink);background:var(--card);color:var(--accent-ink);cursor:pointer;}
+  .ok-box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-weight:650;font-size:14.5px;}
+  .filebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;}
+  .filebar code{font-family:var(--mono);font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 8px;word-break:break-all;}
+  .sheetwrap{overflow:hidden;border:1px solid var(--line-2);border-radius:6px;background:#ddd6c4;}
+  .dsheet{width:794px;transform-origin:top left;background:#fff;color:#1E1B1A;padding:50px 56px 38px;min-height:1123px;display:flex;flex-direction:column;font-size:12.5px;line-height:1.45;}
+  .dsheet *{box-sizing:border-box;}
+  .d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
+  .d-logo{height:58px;width:auto;}
+  .d-from{text-align:right;font-size:11.5px;line-height:1.5;color:#3a3532;}
+  .d-mid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;margin-top:34px;align-items:start;}
+  .d-addr{font-size:13.5px;line-height:1.5;}
+  .d-addr small{display:block;font-size:9px;letter-spacing:.02em;color:#6B6357;border-bottom:1px solid #cfc8b8;padding-bottom:3px;margin-bottom:8px;}
+  .d-meta{margin:0;display:grid;gap:3px;font-size:11.5px;}
+  .d-meta div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px;}
+  .d-meta dt{color:#6B6357;}
+  .d-meta dd{margin:0;font-weight:650;}
+  .d-title{margin:34px 0 0;font-weight:800;font-size:30px;line-height:1;letter-spacing:-.045em;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .d-title small{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#B83806;}
+  .d-proj{margin:6px 0 0;font-size:14.5px;font-weight:650;}
+  .d-intro{margin:14px 0 0;max-width:62ch;}
+  .d-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:12.5px;}
+  .d-table th{font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;text-align:left;padding:6px 6px 6px 0;border-bottom:1.5px solid #1E1B1A;}
+  .d-table td{padding:8px 6px 8px 0;border-bottom:1px solid #e3ddcf;vertical-align:top;}
+  .d-table .n{width:26px;color:#6B6357;}
+  .d-table .r{text-align:right;white-space:nowrap;}
+  .d-table td small{display:block;color:#6B6357;font-size:11px;margin-top:1px;}
+  .d-table tr.grp td{padding:12px 0 4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#B83806;border-bottom:0;}
+  .d-table tr{break-inside:avoid;}
+  .d-scope{margin:12px 0 0;font-size:11.5px;color:#3a3532;}
+  .d-scope b{display:block;font-family:var(--mono);font-weight:500;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#6B6357;margin-bottom:4px;}
+  .d-scope ul{margin:0;padding-left:16px;columns:2;column-gap:20px;}
+  .d-tot{margin:16px 0 0 auto;width:310px;display:grid;gap:3px;}
+  .d-tot div{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;}
+  .d-tot div.strong{font-weight:800;padding-top:5px;border-top:1px solid #1E1B1A;}
+  .d-tot div.total{font-weight:800;font-size:15.5px;background:#F04A0A;color:#1E1B1A;padding:8px 10px;border-radius:5px;margin-top:5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .d-pay{margin-top:20px;font-size:12.5px;break-inside:avoid;}
+  .d-pay p{margin:0 0 6px;}
+  .d-bank{margin:0;display:grid;gap:2px;font-size:12px;border-left:3px solid #F04A0A;padding-left:12px;}
+  .d-bank div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px;}
+  .d-bank dt{color:#6B6357;}
+  .d-bank dd{margin:0;font-weight:650;word-break:break-word;}
+  .d-plan{margin:0;padding:0;list-style:none;display:grid;gap:2px;}
+  .d-plan li{display:flex;justify-content:space-between;gap:12px;max-width:430px;}
+  .d-hint{margin:16px 0 0;padding:0;list-style:none;font-size:11.5px;color:#3a3532;display:grid;gap:3px;}
+  .d-hint li{padding-left:12px;position:relative;}
+  .d-hint li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;background:#F04A0A;}
+  .d-sign{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:34px;font-size:11px;color:#6B6357;break-inside:avoid;}
+  .d-sign div{border-top:1px solid #1E1B1A;padding-top:5px;}
+  .d-foot{margin-top:auto;padding-top:26px;}
+  .d-foot div{border-top:1px solid #cfc8b8;padding-top:7px;display:flex;flex-wrap:wrap;gap:2px 16px;font-size:9.5px;color:#6B6357;}
+  mark.miss{background:#FFE2D0;color:#B83806;border-radius:3px;padding:0 3px;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .mailbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;}
+  .mailbox h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.03em;}
+  .mailbox label{color:var(--mute);}
+  .mailbox textarea{min-height:320px;font-weight:500;line-height:1.45;resize:vertical;}
+  .mailbox .acts2{display:flex;gap:8px;flex-wrap:wrap;}
+  #printHost{display:none;}
+  @media (max-width:900px){
+    dialog.doc[open]{display:block;overflow:auto;}
+    .doc-bar{position:sticky;top:0;z-index:5;}
+    .doc-body{display:block;}
+    .doc-ctrl{overflow:visible;border-right:0;border-bottom:1px solid var(--line);}
+    .doc-out{overflow:visible;}
+  }
+  @media (max-width:480px){
+    .dg{grid-template-columns:minmax(0,1fr);}
+    .doc-bar .doc-hint{display:none;}
+  }
+  @media print{
+    body.print-beleg > *:not(#printHost){display:none!important;}
+    body.print-beleg #printHost{display:block!important;}
+    body.print-beleg{background:#fff;}
+    #printHost .dsheet{width:auto!important;min-height:0;padding:0;transform:none!important;box-shadow:none;}
+    #printHost .dsheet{min-height:calc(297mm - 24mm);}
+  }
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
 </style>
 </head>
@@ -202,6 +312,8 @@
   <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
   <div class="ttl"><b>Preisrechner</b><span class="mono">Bausteine rein, Preis raus</span></div>
   <div class="acts">
+    <button class="btn or" type="button" id="docAngebot"><span class="dot"></span><span>Angebot</span></button>
+    <button class="btn or" type="button" id="docRechnung"><span class="dot"></span><span>Rechnung</span></button>
     <button class="btn inv" type="button" id="present"><span class="dot"></span><span>Präsentation</span></button>
     <button class="btn" type="button" id="copy"><span class="dot"></span><span>Als Text kopieren</span></button>
     <button class="btn" type="button" id="print"><span class="dot"></span><span>Drucken</span></button>
@@ -253,6 +365,97 @@
   </main>
 </div>
 
+<dialog class="doc" id="doc" aria-labelledby="docH">
+  <div class="doc-bar">
+    <b id="docH">Angebot und Rechnung</b>
+    <span class="mono doc-hint">Eingaben bleiben nur in diesem Browser</span>
+    <div class="acts">
+      <button class="btn inv" type="button" id="docPrint"><span class="dot"></span><span>Drucken / PDF</span></button>
+      <button class="btn" type="button" id="docClose"><span class="dot"></span><span>Schließen</span></button>
+    </div>
+  </div>
+  <div class="doc-body">
+    <div class="doc-ctrl" id="docCtrl">
+      <div class="seg" role="group" aria-label="Belegart" id="docTypes">
+        <button type="button" data-type="angebot">Angebot</button>
+        <button type="button" data-type="tr1">Teilrechnung 1</button>
+        <button type="button" data-type="tr2">Teilrechnung 2</button>
+        <button type="button" data-type="gesamt">Gesamtrechnung</button>
+        <button type="button" data-type="monat">Monatsrechnung</button>
+      </div>
+
+      <p class="dgt mono">Beleg</p>
+      <div class="dg">
+        <div class="f"><label class="mono" for="d_angNr">Angebotsnummer</label><div class="row2"><input id="d_angNr" data-g="beleg" data-k="angNr" placeholder="SB-001" autocomplete="off"><button class="btn" type="button" id="newNr" title="Nächste freie Nummer"><span class="dot"></span><span>Neu</span></button></div></div>
+        <div class="f" data-for="tr1 tr2 gesamt monat"><label class="mono" for="d_reNr">Rechnungsnummer</label><input id="d_reNr" data-g="beleg" data-k="reNr" placeholder="automatisch" autocomplete="off"></div>
+        <div class="f"><label class="mono" for="d_datum">Datum</label><input id="d_datum" type="date" data-g="beleg" data-k="datum"></div>
+        <div class="f"><label class="mono" for="d_pay">Zahlungsziel in Tagen</label><input id="d_pay" type="number" min="0" data-g="beleg" data-k="pay" placeholder="14"></div>
+        <div class="f" data-for="angebot"><label class="mono" for="d_valid">Angebot gültig, Tage</label><input id="d_valid" type="number" min="1" data-g="beleg" data-k="valid" placeholder="30"></div>
+        <div class="f" data-for="angebot tr1 tr2"><label class="mono" for="d_pct">Teilrechnung 1 in %</label><input id="d_pct" type="number" min="1" max="99" data-g="beleg" data-k="pct" placeholder="50"></div>
+        <div class="f full" data-for="tr1 tr2 gesamt"><label class="mono" for="d_period">Leistungszeitraum</label><input id="d_period" data-g="beleg" data-k="period" placeholder="z. B. 12.10. bis 30.11.2026" autocomplete="off"></div>
+        <div class="f" data-for="monat"><label class="mono" for="d_monat">Abrechnungsmonat</label><input id="d_monat" type="month" data-g="beleg" data-k="monat"></div>
+        <div class="f" data-for="monat"><label class="mono" for="d_monthNo">Monat Nr.</label><input id="d_monthNo" type="number" min="1" data-g="beleg" data-k="monthNo" placeholder="1"></div>
+        <div class="f full"><label class="mono" for="d_projekt">Projekt</label><input id="d_projekt" data-g="beleg" data-k="projekt" placeholder="z. B. Bites Opening" autocomplete="off"></div>
+        <div class="f full" data-for="angebot"><label class="mono" for="d_rechte">Nutzungsrechte (optional)</label><input id="d_rechte" data-g="beleg" data-k="rechte" placeholder="z. B. Social Media und Website, unbefristet" autocomplete="off"></div>
+      </div>
+
+      <p class="dgt mono">Kunde</p>
+      <div class="dg">
+        <div class="f full"><label class="mono" for="d_kunde">Name des Ladens oder der Marke</label><input id="d_kunde" data-g="root" data-k="kunde" autocomplete="off"></div>
+        <div class="f full"><label class="mono" for="d_kontakt">Ansprechpartner, Vor- und Nachname</label><input id="d_kontakt" data-g="cust" data-k="kontakt" autocomplete="off"></div>
+        <div class="f full"><label class="mono" for="d_strasse">Straße und Hausnummer</label><input id="d_strasse" data-g="cust" data-k="strasse" autocomplete="off"></div>
+        <div class="f full"><label class="mono" for="d_ort">PLZ und Ort</label><input id="d_ort" data-g="cust" data-k="ort" autocomplete="off"></div>
+        <div class="f full"><label class="mono" for="d_mail">E-Mail</label><input id="d_mail" type="email" data-g="cust" data-k="mail" autocomplete="off"></div>
+        <div class="f"><label class="mono" for="d_po">Bestellnummer</label><input id="d_po" data-g="cust" data-k="po" autocomplete="off"></div>
+        <div class="f"><label class="mono" for="d_ustid">USt-IdNr. Kunde</label><input id="d_ustid" data-g="cust" data-k="ustid" autocomplete="off"></div>
+        <div class="f full"><label class="mono" for="d_form">Ansprache</label><select id="d_form" data-g="cust" data-k="form"><option value="du">Du</option><option value="sie">Sie</option></select></div>
+      </div>
+
+      <p class="dgt mono">Hinweise im Beleg</p>
+      <div class="f"><label class="mono" for="hintTa" style="display:flex;justify-content:space-between"><span>Eine Zeile pro Punkt</span><button type="button" class="link" id="hintReset" style="font:650 12px var(--display);background:none;border:0;color:var(--accent-ink);text-decoration:underline;cursor:pointer">Standard</button></label><textarea id="hintTa" data-g="beleg" data-k="hint"></textarea></div>
+
+      <details id="firmaBox">
+        <summary>Firmendaten (Rechnungssteller)</summary>
+        <p class="fine" style="margin:8px 0 0">Pflichtangaben für Rechnungen. Bleiben nur in diesem Browser, stehen nicht im Code und nicht auf GitHub. Der Rechnungssteller muss ein rechtlicher Name sein, zum Beispiel dein Einzelunternehmen oder die UG.</p>
+        <div class="dg">
+          <div class="f full"><label class="mono" for="f_name">Firma oder Name laut Anmeldung</label><input id="f_name" data-g="firma" data-k="name" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_strasse">Straße und Hausnummer</label><input id="f_strasse" data-g="firma" data-k="strasse" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_ort">PLZ und Ort</label><input id="f_ort" data-g="firma" data-k="ort" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_mail">E-Mail</label><input id="f_mail" type="email" data-g="firma" data-k="mail" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_tel">Telefon</label><input id="f_tel" data-g="firma" data-k="tel" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_web">Website</label><input id="f_web" data-g="firma" data-k="web" placeholder="social-bites.de" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_steuernr">Steuernummer</label><input id="f_steuernr" data-g="firma" data-k="steuernr" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_ustid">USt-IdNr.</label><input id="f_ustid" data-g="firma" data-k="ustid" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_iban">IBAN</label><input id="f_iban" data-g="firma" data-k="iban" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_bic">BIC</label><input id="f_bic" data-g="firma" data-k="bic" autocomplete="off"></div>
+          <div class="f"><label class="mono" for="f_bank">Bank</label><input id="f_bank" data-g="firma" data-k="bank" autocomplete="off"></div>
+          <div class="f full"><label class="mono" for="f_sender">Dein Name unter Mails</label><input id="f_sender" data-g="firma" data-k="sender" placeholder="z. B. Nader" autocomplete="off"></div>
+          <div class="f full"><label class="chk"><input type="checkbox" data-g="firma" data-k="klein"> Kleinunternehmer (§ 19 UStG), keine Umsatzsteuer</label></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="doc-out">
+      <div id="docMissing"></div>
+      <div class="filebar"><span class="mono" style="color:var(--mute)">Dateiname</span><code id="docFile"></code><button class="btn" type="button" id="copyFile"><span class="dot"></span><span>Kopieren</span></button></div>
+      <div class="sheetwrap" id="sheetWrap"><div class="dsheet" id="dsheet"></div></div>
+      <section class="mailbox" aria-label="Mail-Text">
+        <h3>Text für die Mail</h3>
+        <p class="fine">Passt zu Kunde, Beleg und Betrag. Du kannst ihn anpassen, bei Änderungen oben wird er neu erzeugt. Die PDF hängst du selbst an.</p>
+        <label class="mono" for="mSub">Betreff</label>
+        <input id="mSub" autocomplete="off">
+        <label class="mono" for="mBody">Text</label>
+        <textarea id="mBody"></textarea>
+        <div class="acts2">
+          <button class="btn inv" type="button" id="copyBody"><span class="dot"></span><span>Text kopieren</span></button>
+          <button class="btn" type="button" id="copySub"><span class="dot"></span><span>Betreff kopieren</span></button>
+          <a class="btn" id="mMail" href="#"><span class="dot"></span><span>Im Mail-Programm öffnen</span></a>
+        </div>
+      </section>
+    </div>
+  </div>
+</dialog>
+<div id="printHost" aria-hidden="true"></div>
 <dialog class="copy" id="dlg" aria-labelledby="dlgH"><h3 id="dlgH" style="margin:0 0 6px">Text zum Kopieren</h3><p style="margin:0 0 10px;color:var(--mute)">Kopieren hier mit Cmd+C oder Strg+C.</p><textarea id="dlgTa" readonly></textarea><p style="margin:10px 0 0;text-align:right"><button class="btn inv" type="button" id="dlgX"><span class="dot"></span><span>Schließen</span></button></p></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -406,7 +609,7 @@ function addRow(key,at,qty,price,bill){var r=mkRow(key,qty,price,bill);if(at==nu
 /* Felder oben */
 function syncMeta(){$("#kunde").value=S.kunde;$("#datum").value=S.datum||"";$("#monate").value=S.monate;$("#mwst").checked=!!S.mwst;}
 $("#kunde").addEventListener("input",function(){S.kunde=this.value;save();renderTotals();});
-$("#datum").addEventListener("input",function(){S.datum=this.value;save();renderTotals();});
+$("#datum").addEventListener("input",function(){S.datum=this.value;if(S.beleg&&!S.beleg.datumFix)S.beleg.datum=this.value;save();renderTotals();});
 $("#monate").addEventListener("input",function(){S.monate=this.value;save();renderTotals();});
 $("#mwst").addEventListener("change",function(){S.mwst=this.checked;save();renderTotals();});
 $("#q").addEventListener("input",renderPal);
@@ -517,6 +720,284 @@ $("#copy").addEventListener("click",function(){
 });
 $("#dlgX").addEventListener("click",function(){$("#dlg").close();});
 $("#print").addEventListener("click",function(){try{window.print();}catch(e){toast("Drucken geht hier nicht. Seite in neuem Tab öffnen.");}});
+
+/* Angebot, Rechnung und Mail-Text. Firmendaten bleiben nur in diesem Browser. */
+var FIRMA_KEY="sb-rechner-firma",NR_KEY="sb-rechner-nr";
+var TYPES={angebot:"Angebot",tr1:"Teilrechnung 1",tr2:"Teilrechnung 2",gesamt:"Rechnung",monat:"Rechnung"};
+var HINT_DEFAULT="Mit der Freigabe bestätigst du das Angebot und den Zahlungsplan.\nPro Video sind 2 Korrekturschleifen enthalten.\nFremdkosten wie Ad-Budget, Druck oder Gratis-Essen zahlst du direkt an den Anbieter.\nTermine und Drehtage stimmen wir im Kick-off ab.";
+var FIRMA=load(FIRMA_KEY,{});
+var docType="angebot";
+function fmtD(iso){return iso?String(iso).split("-").reverse().join("."):"";}
+function addDaysIso(iso,n){var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m)return "";var d=new Date(+m[1],+m[2]-1,+m[3]+n);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function monthName(ym){var m=String(ym||"").match(/^(\d{4})-(\d{2})$/);if(!m)return "";return ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"][+m[2]-1]+" "+m[1];}
+function ensureDoc(){
+  if(!S.beleg||typeof S.beleg!=="object")S.beleg={};
+  if(!S.cust||typeof S.cust!=="object")S.cust={form:"du"};
+  var b=S.beleg;
+  if(!b.datum)b.datum=S.datum||today();
+  if(!b.pay)b.pay=14;if(!b.valid)b.valid=30;if(!b.pct)b.pct=50;
+  if(b.hint==null)b.hint=HINT_DEFAULT;
+  if(!b.projekt)b.projekt=guessProject();
+  if(!b.angNr)b.angNr=nextNr();
+}
+function guessProject(){
+  var keys=S.rows.map(function(r){return r.key;});
+  if(keys.indexOf("opening")>-1)return "Bites Opening";
+  if(S.rows.some(function(r){return r.bill==="month";}))return "Bites for Gastro";
+  if(keys.indexOf("contentpausch")>-1)return "Bites for Brands";
+  return "Social Media Content";
+}
+function nextNr(){
+  var n=load(NR_KEY,0);var used={};var all=load(SAVED,{});
+  Object.keys(all).forEach(function(k){var a=all[k].beleg&&all[k].beleg.angNr;if(a)used[a]=1;});
+  if(S.beleg&&S.beleg.angNr)used[S.beleg.angNr]=1;
+  var i=Math.max(1,n+1);while(used["SB-"+String(i).padStart(3,"0")])i++;
+  return "SB-"+String(i).padStart(3,"0");
+}
+function bumpNr(){var m=String(S.beleg.angNr||"").match(/(\d+)\s*$/);if(m){var n=+m[1],cur=load(NR_KEY,0);if(n>cur)store(NR_KEY,n);}}
+function reNr(){
+  var b=S.beleg,base=b.angNr||"SB-000";
+  if(b.reNr)return b.reNr;
+  if(docType==="tr1")return base+"/1";
+  if(docType==="tr2")return base+"/2";
+  if(docType==="monat")return base+"/M"+String(b.monthNo||1).padStart(2,"0");
+  return base+"/R";
+}
+function slugName(s){return String(s||"Kunde").trim().replace(/&/g,"und").replace(/[\/\\:*?"<>|]/g,"").replace(/\s+/g,"_")||"Kunde";}
+function fileName(){
+  var b=S.beleg,k=slugName(S.kunde),ym=(b.datum||today()).slice(0,7),nr=(b.angNr||"SB").replace(/[^\w-]/g,"");
+  if(docType==="angebot")return "Angebot_"+nr+"_"+k+"_"+ym+".pdf";
+  if(docType==="tr1")return "Teilrechnung_1_"+nr+"_"+k+"_"+ym+".pdf";
+  if(docType==="tr2")return "Teilrechnung_2_"+nr+"_"+k+"_"+ym+".pdf";
+  if(docType==="monat")return "Rechnung_"+nr+"-M"+String(b.monthNo||1).padStart(2,"0")+"_"+k+"_"+ym+".pdf";
+  return "Rechnung_"+nr+"_"+k+"_"+ym+".pdf";
+}
+function isInvoice(){return docType!=="angebot";}
+function taxOn(){return !!S.mwst&&!FIRMA.klein;}
+function youForm(){return (S.cust.form||"du")==="sie";}
+
+/* Zahlen je Belegart */
+function docCalc(){
+  var t=calc(),pct=Math.min(99,Math.max(1,numIn(S.beleg.pct)||50))/100,rate=taxOn()?0.19:0;
+  var once=S.rows.filter(function(r){return !r.fremd&&r.bill!=="month";}),month=S.rows.filter(function(r){return !r.fremd&&r.bill==="month";});
+  var o={type:docType,t:t,pct:pct,rate:rate,rows:[],lines:[]};
+  if(docType==="angebot"){o.rows={once:once,month:month};o.net=t.net;}
+  else if(docType==="tr1"||docType==="tr2"){
+    var f=docType==="tr1"?pct:1-pct;
+    o.lines=once.map(function(r){return {name:r.name,qty:numIn(r.qty),unit:r.unit,price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r)*f,note:r.note};});
+    if(month.length){var mSum=month.reduce(function(a,r){return a+rowSum(r);},0)*t.m;o.lines.push({name:"Monatliche Leistungen, "+t.m+(t.m===1?" Monat":" Monate")+" ("+month.map(function(r){return r.name;}).join(", ")+")",qty:1,unit:"Pauschal",price:mSum*f,disc:0,sum:mSum*f});}
+    o.net=o.lines.reduce(function(a,l){return a+l.sum;},0);o.factor=f;o.full=t.net;
+  } else if(docType==="gesamt"){
+    o.lines=once.map(function(r){return {name:r.name,qty:numIn(r.qty),unit:r.unit,price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r),note:r.note};})
+      .concat(month.map(function(r){return {name:r.name+", "+t.m+(t.m===1?" Monat":" Monate"),qty:numIn(r.qty)*t.m,unit:r.unit,price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r)*t.m,note:r.note};}));
+    o.net=o.lines.reduce(function(a,l){return a+l.sum;},0);
+  } else {
+    o.lines=month.map(function(r){return {name:r.name,qty:numIn(r.qty),unit:r.unit,price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r),note:r.note};});
+    o.net=o.lines.reduce(function(a,l){return a+l.sum;},0);
+  }
+  o.tax=o.net*rate;o.gross=o.net+o.tax;
+  o.due=addDaysIso(S.beleg.datum,numIn(S.beleg.pay)||14);
+  o.validUntil=addDaysIso(S.beleg.datum,numIn(S.beleg.valid)||30);
+  return o;
+}
+function miss(v,label){return v&&String(v).trim()?esc(v):'<mark class="miss">'+esc(label)+'</mark>';}
+function missing(){
+  var m=[],need=[["kunde","Kunde",S.kunde],["d_strasse","Kundenadresse",S.cust.strasse],["d_ort","PLZ und Ort Kunde",S.cust.ort]];
+  need=need.concat([["f_strasse","Eure Adresse",FIRMA.strasse],["f_ort","Euer Ort",FIRMA.ort]]);
+  if(isInvoice())need=need.concat([["f_name","Rechnungssteller",FIRMA.name],["f_steuernr","Steuernummer oder USt-IdNr.",FIRMA.steuernr||FIRMA.ustid],["f_iban","IBAN",FIRMA.iban]]);
+  if(docType==="tr1"||docType==="tr2"||docType==="gesamt")need.push(["d_period","Leistungszeitraum",S.beleg.period]);
+  if(docType==="monat")need.push(["d_monat","Abrechnungsmonat",S.beleg.monat]);
+  need.forEach(function(n){if(!n[2]||!String(n[2]).trim())m.push(n);});
+  if(!S.rows.filter(function(r){return !r.fremd;}).length)m.push(["custom","Mindestens ein Baustein",""]);
+  if(docType==="monat"&&!S.rows.some(function(r){return r.bill==="month"&&!r.fremd;}))m.push(["custom","Ein monatlicher Baustein",""]);
+  return m;
+}
+
+/* Beleg als HTML */
+function lineRows(lines){
+  return lines.map(function(l,i){return '<tr><td class="n">'+(i+1)+'</td><td>'+esc(l.name)+(l.note?'<small>'+esc(l.note)+'</small>':"")+'</td><td class="r">'+plain(l.qty)+' '+esc(l.unit)+'</td><td class="r">'+eur(l.price)+'</td>'+(l.disc?'<td class="r">'+plain(l.disc)+' %</td>':'<td class="r"></td>')+'<td class="r"><b>'+eur(l.sum)+'</b></td></tr>';}).join("");
+}
+function docHTML(){
+  var o=docCalc(),b=S.beleg,c=S.cust,F=FIRMA,sie=youForm(),you=sie?"Sie":"du";
+  var title=docType==="angebot"?"Angebot":(docType==="tr1"||docType==="tr2")?"Teilrechnung":"Rechnung";
+  var nr=docType==="angebot"?(b.angNr||""):reNr();
+  var h='<div class="d-head"><img class="d-logo" src="logo_social_bites.webp" alt="Social Bites"><div class="d-from">'+
+    '<b>'+(F.name?esc(F.name):"Social Bites")+'</b><br>'+miss(F.strasse,"Straße")+'<br>'+miss(F.ort,"PLZ Ort")+(F.mail?'<br>'+esc(F.mail):"")+(F.tel?'<br>'+esc(F.tel):"")+'</div></div>';
+  h+='<div class="d-mid"><div class="d-addr"><small>'+esc(F.name||"Social Bites")+(F.strasse?" · "+esc(F.strasse):"")+(F.ort?" · "+esc(F.ort):"")+'</small>'+
+    '<b>'+miss(S.kunde,"Kunde")+'</b><br>'+(c.kontakt?esc(c.kontakt)+'<br>':"")+miss(c.strasse,"Straße")+'<br>'+miss(c.ort,"PLZ Ort")+'</div>'+
+    '<dl class="d-meta">'+(docType==="angebot"?'<div><dt>Angebotsnummer</dt><dd>'+esc(b.angNr||"")+'</dd></div><div><dt>Datum</dt><dd>'+fmtD(b.datum)+'</dd></div><div><dt>Gültig bis</dt><dd>'+fmtD(o.validUntil)+'</dd></div>'
+      :'<div><dt>Rechnungsnummer</dt><dd>'+esc(nr)+'</dd></div><div><dt>Rechnungsdatum</dt><dd>'+fmtD(b.datum)+'</dd></div><div><dt>Angebot</dt><dd>'+esc(b.angNr||"")+'</dd></div>'+
+       (docType==="monat"?'<div><dt>Leistungszeitraum</dt><dd>'+miss(monthName(b.monat),"Monat")+'</dd></div>':'<div><dt>Leistungszeitraum</dt><dd>'+miss(b.period,"Zeitraum")+'</dd></div>')+
+       '<div><dt>Fällig am</dt><dd>'+fmtD(o.due)+'</dd></div>')+
+    (c.po?'<div><dt>Bestellnummer</dt><dd>'+esc(c.po)+'</dd></div>':"")+(c.ustid?'<div><dt>USt-IdNr. Kunde</dt><dd>'+esc(c.ustid)+'</dd></div>':"")+'</dl></div>';
+  h+='<h1 class="d-title">'+title+(docType==="tr1"?' <small>'+Math.round(o.pct*100)+' % bei Auftrag</small>':docType==="tr2"?' <small>Restzahlung '+Math.round((1-o.pct)*100)+' %</small>':docType==="monat"?' <small>Monat '+(b.monthNo||1)+'</small>':"")+'</h1>';
+  h+='<p class="d-proj">'+esc(b.projekt||"")+(S.kunde?" für "+esc(S.kunde):"")+'</p>';
+  if(docType==="angebot"){
+    h+='<p class="d-intro">'+(sie?"Vielen Dank für Ihr Interesse. Hier ist unser Angebot":"Danke für dein Vertrauen. Hier ist unser Angebot")+(S.kunde?" für "+esc(S.kunde):"")+'. Alle Bausteine sind einzeln aufgeführt, '+(sie?"Sie können":"du kannst")+' jeden davon anpassen.</p>';
+    h+='<table class="d-table"><thead><tr><th></th><th>Leistung</th><th class="r">Menge</th><th class="r">Einzelpreis</th><th class="r">Rabatt</th><th class="r">Summe</th></tr></thead><tbody>';
+    if(o.rows.once.length)h+='<tr class="grp"><td colspan="6">Einmalig</td></tr>'+lineRows(o.rows.once.map(function(r){return {name:r.name,qty:numIn(r.qty),unit:r.unit,price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r),note:r.note};}));
+    if(o.rows.month.length)h+='<tr class="grp"><td colspan="6">Monatlich · Laufzeit '+o.t.m+(o.t.m===1?" Monat":" Monate")+'</td></tr>'+lineRows(o.rows.month.map(function(r){return {name:r.name,qty:numIn(r.qty),unit:r.unit+" / Monat",price:numIn(r.price),disc:numIn(r.disc),sum:rowSum(r),note:r.note};}));
+    h+='</tbody></table>';
+    h+='<div class="d-tot">'+(o.rows.once.length?'<div><span>Einmalig netto</span><span>'+eur(o.t.once)+'</span></div>':"")+(o.rows.month.length?'<div><span>Monatlich netto × '+o.t.m+'</span><span>'+eur(o.t.month*o.t.m)+'</span></div>':"")+
+      '<div class="strong"><span>Auftragswert netto</span><span>'+eur(o.net)+'</span></div>'+(taxOn()?'<div><span>zzgl. 19 % MwSt.</span><span>'+eur(o.tax)+'</span></div>':"")+'<div class="total"><span>Gesamt'+(taxOn()?" brutto":"")+'</span><span>'+eur(o.gross)+'</span></div></div>';
+    var g=function(x){return x*(1+o.rate);};
+    h+='<div class="d-pay"><p><b>Zahlungsplan</b></p><ul class="d-plan">'+(o.t.once?'<li><span>'+Math.round(o.pct*100)+' % bei Auftrag</span><span>'+eur(g(o.t.once*o.pct))+'</span></li><li><span>'+Math.round((1-o.pct)*100)+' % nach Abschluss</span><span>'+eur(g(o.t.once*(1-o.pct)))+'</span></li>':"")+(o.t.month?'<li><span>Monatlich zum Monatsanfang</span><span>'+eur(g(o.t.month))+'</span></li>':"")+'<li><span>Zahlungsziel</span><span>'+(numIn(b.pay)||14)+' Tage nach Rechnungsdatum</span></li></ul></div>';
+    var fr=S.rows.filter(function(r){return r.fremd;});
+    var hints=String(b.hint||"").split("\n").map(function(x){return x.trim();}).filter(Boolean);
+    if(b.rechte)hints.unshift("Nutzungsrechte: "+b.rechte+".");
+    if(fr.length)hints.push("Nicht enthalten, zahlst "+you+" direkt: "+fr.map(function(r){return r.name+(rowSum(r)?" (ca. "+eur(rowSum(r))+")":"");}).join(", ")+".");
+    if(FIRMA.klein)hints.push("Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.");
+    if(hints.length)h+='<ul class="d-hint">'+hints.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
+    h+='<div class="d-sign"><div>Ort, Datum</div><div>Unterschrift '+esc(S.kunde||"Kunde")+'</div></div>';
+  } else {
+    var intro=docType==="tr1"?"Teilrechnung "+Math.round(o.pct*100)+" % bei Auftrag gemäß Angebot "+esc(b.angNr||"")+"."
+      :docType==="tr2"?"Restzahlung "+Math.round((1-o.pct)*100)+" % gemäß Angebot "+esc(b.angNr||"")+". Teilrechnung 1 über "+eur(o.full*o.pct*(1+o.rate))+" wurde bereits gestellt."
+      :docType==="monat"?"Monatliche Betreuung gemäß Angebot "+esc(b.angNr||"")+", Monat "+(b.monthNo||1)+"."
+      :"Rechnung gemäß Angebot "+esc(b.angNr||"")+".";
+    h+='<p class="d-intro">'+intro+'</p>';
+    h+='<table class="d-table"><thead><tr><th></th><th>Leistung</th><th class="r">Menge</th><th class="r">Einzelpreis</th><th class="r">Rabatt</th><th class="r">Summe</th></tr></thead><tbody>'+lineRows(o.lines)+'</tbody></table>';
+    if(docType==="tr1"||docType==="tr2")h+='<p class="d-scope"><b>Anteil</b>Positionen anteilig '+Math.round(o.factor*100)+' % vom Auftragswert '+eur(o.full)+' netto.</p>';
+    h+='<div class="d-tot"><div class="strong"><span>Netto</span><span>'+eur(o.net)+'</span></div>'+(taxOn()?'<div><span>zzgl. 19 % MwSt.</span><span>'+eur(o.tax)+'</span></div>':"")+'<div class="total"><span>Rechnungsbetrag</span><span>'+eur(o.gross)+'</span></div></div>';
+    h+='<div class="d-pay"><p>Bitte überweise'+(sie?"n Sie":"")+' <b>'+eur(o.gross)+'</b> bis zum <b>'+fmtD(o.due)+'</b> mit dem Verwendungszweck <b>'+esc(nr)+'</b> auf dieses Konto:</p>'+
+      '<dl class="d-bank"><div><dt>Kontoinhaber</dt><dd>'+miss(F.name,"Firma")+'</dd></div><div><dt>IBAN</dt><dd>'+miss(F.iban,"IBAN")+'</dd></div>'+(F.bic?'<div><dt>BIC</dt><dd>'+esc(F.bic)+'</dd></div>':"")+(F.bank?'<div><dt>Bank</dt><dd>'+esc(F.bank)+'</dd></div>':"")+'</dl></div>';
+    var ih=[];
+    if(FIRMA.klein)ih.push("Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.");
+    if(docType==="tr1")ih.push("Die Restzahlung von "+Math.round((1-o.pct)*100)+" % wird nach Abschluss des Projekts berechnet.");
+    if(ih.length)h+='<ul class="d-hint">'+ih.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
+  }
+  h+='<div class="d-foot"><div><span>'+esc(F.name||"Social Bites")+'</span>'+(F.strasse?'<span>'+esc(F.strasse)+(F.ort?", "+esc(F.ort):"")+'</span>':"")+(F.steuernr?'<span>Steuernummer '+esc(F.steuernr)+'</span>':"")+(F.ustid?'<span>USt-IdNr. '+esc(F.ustid)+'</span>':"")+(F.iban?'<span>IBAN '+esc(F.iban)+'</span>':"")+(F.web?'<span>'+esc(F.web)+'</span>':"")+(F.mail?'<span>'+esc(F.mail)+'</span>':"")+'</div></div>';
+  return h;
+}
+
+/* Mail-Text */
+function mailText(){
+  var o=docCalc(),b=S.beleg,c=S.cust,F=FIRMA,sie=youForm();
+  var first=(c.kontakt||"").trim().split(" ")[0]||"";
+  var hi=sie?("Guten Tag"+(c.kontakt?" "+c.kontakt:"")+","):("Hi"+(first?" "+first:"")+",");
+  var proj=(b.projekt||"euer Projekt")+(S.kunde?" für "+S.kunde:"");
+  var who=F.sender||"Nader",team=F.sender?F.sender+" von Social Bites":"Nader und Tommy von Social Bites";
+  var lines=[],L=function(s){lines.push(s);};
+  var sub="";
+  L(hi);L("");
+  if(docType==="angebot"){
+    sub="Angebot "+(b.angNr||"")+" · "+proj;
+    L(sie?"vielen Dank für das gute Gespräch. Wie besprochen schicken wir Ihnen unser Angebot für "+proj+".":"danke für das gute Gespräch. Wie besprochen kommt hier unser Angebot für "+proj+".");
+    L("");
+    L("Kurz zusammengefasst:");
+    if(o.t.once)L("· Einmalig: "+eur(o.t.once)+" netto");
+    if(o.t.month)L("· Monatlich: "+eur(o.t.month)+" netto, Laufzeit "+o.t.m+(o.t.m===1?" Monat":" Monate"));
+    L("· Gesamt: "+eur(o.gross)+(taxOn()?" inkl. 19 % MwSt.":""));
+    if(o.t.once)L("· Zahlung: "+Math.round(o.pct*100)+" % bei Auftrag, "+Math.round((1-o.pct)*100)+" % nach Abschluss");
+    L("");
+    L("Alle Bausteine stehen einzeln im Angebot im Anhang. Wenn "+(sie?"Sie":"du")+" etwas rausnehmen oder dazunehmen "+(sie?"möchten":"willst")+", sag"+(sie?"en Sie":"")+" einfach Bescheid, dann passen wir es an.");
+    L("");
+    L("Das Angebot gilt bis zum "+fmtD(o.validUntil)+". Sobald "+(sie?"Sie":"du")+" freigeben"+(sie?"":"st")+", legen wir den Kick-off-Termin fest und es geht los.");
+  } else if(docType==="tr1"){
+    sub="Teilrechnung "+reNr()+" · "+proj;
+    L(sie?"vielen Dank für die Freigabe, wir freuen uns auf das Projekt!":"danke für die Freigabe, wir freuen uns auf das Projekt!");
+    L("");
+    L("Im Anhang ist die erste Teilrechnung über "+Math.round(o.pct*100)+" % des Auftragswerts: "+eur(o.gross)+(taxOn()?" inkl. MwSt.":"")+", fällig bis zum "+fmtD(o.due)+". Verwendungszweck: "+reNr()+".");
+    L("");
+    L("Sobald das Geld da ist, starten wir mit dem Konzept. Die Restzahlung von "+Math.round((1-o.pct)*100)+" % kommt erst nach Abschluss.");
+  } else if(docType==="tr2"){
+    sub="Restzahlung "+reNr()+" · "+proj;
+    L((sie?"das Projekt ist abgeschlossen, vielen Dank für die Zusammenarbeit!":"das Projekt ist im Kasten, danke für die Zusammenarbeit!"));
+    L("");
+    L("Im Anhang ist die Restzahlung über "+Math.round((1-o.pct)*100)+" % des Auftragswerts: "+eur(o.gross)+(taxOn()?" inkl. MwSt.":"")+", fällig bis zum "+fmtD(o.due)+". Verwendungszweck: "+reNr()+".");
+    L("");
+    L("Der Abschlussreport mit allen Zahlen kommt in einer separaten Mail. Und wenn "+(sie?"Sie":"du")+" weitermachen "+(sie?"möchten":"willst")+": Wir haben ein Angebot für die laufende Betreuung.");
+  } else if(docType==="monat"){
+    sub="Rechnung "+reNr()+" · "+monthName(b.monat);
+    L("im Anhang ist die Rechnung für "+monthName(b.monat)+": "+eur(o.gross)+(taxOn()?" inkl. MwSt.":"")+", fällig bis zum "+fmtD(o.due)+". Verwendungszweck: "+reNr()+".");
+    L("");
+    L("Der Monatsreport mit Views, Followern und Bewertungen kommt wie immer zum Monatsgespräch.");
+  } else {
+    sub="Rechnung "+reNr()+" · "+proj;
+    L("im Anhang ist die Rechnung für "+proj+": "+eur(o.gross)+(taxOn()?" inkl. MwSt.":"")+", fällig bis zum "+fmtD(o.due)+". Verwendungszweck: "+reNr()+".");
+    L("");
+    L("Danke für die Zusammenarbeit!");
+  }
+  L("");L(sie?"Bei Fragen melden Sie sich gern.":"Bei Fragen meld dich einfach.");L("");L("Viele Grüße");L(team);
+  return {sub:sub,body:lines.join("\n")};
+}
+
+/* Dialog */
+var dlgDoc=$("#doc"),mailTouched=false;
+function setType(t){docType=t;mailTouched=false;document.querySelectorAll("#docTypes button").forEach(function(x){x.setAttribute("aria-pressed",x.getAttribute("data-type")===t?"true":"false");});
+  document.querySelectorAll("[data-for]").forEach(function(el){el.hidden=el.getAttribute("data-for").split(" ").indexOf(t)<0;});
+  renderDoc();}
+function fillCtrl(){
+  document.querySelectorAll("#docCtrl [data-g]").forEach(function(el){
+    var g=el.getAttribute("data-g"),k=el.getAttribute("data-k"),v=g==="root"?S[k]:g==="beleg"?S.beleg[k]:g==="cust"?S.cust[k]:FIRMA[k];
+    if(el.type==="checkbox")el.checked=!!v;else el.value=v==null?"":v;
+  });
+}
+function scaleSheet(){
+  var w=$("#sheetWrap").clientWidth,sc=Math.min(1,w/794),sh=$("#dsheet");
+  sh.style.transform="scale("+sc+")";$("#sheetWrap").style.height=(sh.offsetHeight*sc)+"px";
+}
+function renderDoc(){
+  ensureDoc();
+  var m=missing(),box=$("#docMissing");
+  if(m.length)box.innerHTML='<div class="miss-box"><b>Fehlt noch:</b><div class="chips">'+m.map(function(x){return '<button type="button" data-focus="'+x[0]+'">'+esc(x[1])+'</button>';}).join("")+'</div></div>';
+  else box.innerHTML='<div class="ok-box">Alles da. '+(isInvoice()?"Rechnung":"Angebot")+' kann raus.</div>';
+  $("#dsheet").innerHTML=docHTML();
+  $("#docFile").textContent=fileName();
+  if(!mailTouched){var mt=mailText();$("#mSub").value=mt.sub;$("#mBody").value=mt.body;}
+  var to=S.cust.mail||"";
+  $("#mMail").href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent($("#mSub").value)+"&body="+encodeURIComponent($("#mBody").value);
+  scaleSheet();
+}
+function openDoc(t){
+  ensureDoc();S.beleg.datum=S.beleg.datum||S.datum;save();
+  fillCtrl();
+  try{dlgDoc.showModal();}catch(e){dlgDoc.setAttribute("open","");}
+  setType(t||"angebot");
+  requestAnimationFrame(scaleSheet);
+}
+$("#docAngebot").addEventListener("click",function(){openDoc("angebot");});
+$("#docRechnung").addEventListener("click",function(){openDoc(S.beleg&&S.beleg.tr1Done?"tr2":"tr1");});
+$("#docClose").addEventListener("click",function(){dlgDoc.close();});
+$("#docTypes").addEventListener("click",function(e){var b=e.target.closest("[data-type]");if(b)setType(b.getAttribute("data-type"));});
+function docField(el){
+  var g=el.getAttribute("data-g"),k=el.getAttribute("data-k");if(!g)return;
+  var v=el.type==="checkbox"?el.checked:el.value;
+  if(g==="root"){S[k]=v;if(k==="kunde"){$("#kunde").value=v;renderTotals();}}
+  else if(g==="beleg"){S.beleg[k]=v;if(k==="angNr")bumpNr();if(k==="datum")S.beleg.datumFix=true;}
+  else if(g==="cust")S.cust[k]=v;
+  else{FIRMA[k]=v;store(FIRMA_KEY,FIRMA);}
+  save();mailTouched=false;renderDoc();
+}
+$("#docCtrl").addEventListener("input",function(e){docField(e.target);});
+$("#docCtrl").addEventListener("change",function(e){if(e.target.type==="checkbox"||e.target.tagName==="SELECT")docField(e.target);});
+$("#newNr").addEventListener("click",function(){S.beleg.angNr=nextNr();S.beleg.reNr="";save();fillCtrl();renderDoc();});
+$("#hintReset").addEventListener("click",function(){S.beleg.hint=HINT_DEFAULT;save();fillCtrl();renderDoc();});
+$("#docMissing").addEventListener("click",function(e){
+  var b=e.target.closest("[data-focus]");if(!b)return;var id=b.getAttribute("data-focus");
+  if(id==="custom"){dlgDoc.close();return;}
+  if(id.indexOf("f_")===0)$("#firmaBox").open=true;
+  var el=document.getElementById(id);if(el){el.focus();el.scrollIntoView({block:"center"});}
+});
+["mSub","mBody"].forEach(function(id){$("#"+id).addEventListener("input",function(){mailTouched=true;$("#mMail").href="mailto:"+encodeURIComponent(S.cust.mail||"")+"?subject="+encodeURIComponent($("#mSub").value)+"&body="+encodeURIComponent($("#mBody").value);});});
+function copyTxt(tx,btn,okLabel,defLabel){
+  var lab=btn.querySelector("span:last-child");
+  function fb(){$("#dlgTa").value=tx;try{$("#dlg").showModal();}catch(e){$("#dlg").setAttribute("open","");}$("#dlgTa").select();}
+  try{navigator.clipboard.writeText(tx).then(function(){lab.textContent=okLabel;setTimeout(function(){lab.textContent=defLabel;},1800);},fb);}catch(e){fb();}
+}
+$("#copyBody").addEventListener("click",function(){copyTxt($("#mBody").value,this,"Kopiert","Text kopieren");});
+$("#copySub").addEventListener("click",function(){copyTxt($("#mSub").value,this,"Kopiert","Betreff kopieren");});
+$("#copyFile").addEventListener("click",function(){copyTxt($("#docFile").textContent,this,"Kopiert","Kopieren");});
+$("#docPrint").addEventListener("click",function(){
+  if(docType==="tr1"){S.beleg.tr1Done=true;save();}
+  var host=$("#printHost");host.innerHTML='<div class="dsheet">'+$("#dsheet").innerHTML+'</div>';
+  var oldTitle=document.title;document.title=fileName().replace(/\.pdf$/,"");
+  document.body.classList.add("print-beleg");
+  function done(){document.body.classList.remove("print-beleg");document.title=oldTitle;host.innerHTML="";window.removeEventListener("afterprint",done);}
+  window.addEventListener("afterprint",done);
+  try{window.print();}catch(e){done();toast("Drucken geht hier nicht. Rechner in neuem Tab öffnen.");}
+  setTimeout(done,60000);
+});
+window.addEventListener("resize",function(){if(dlgDoc.open)scaleSheet();});
 
 syncMeta();applyCols();renderPal();renderRows();renderSaved();
 })();
