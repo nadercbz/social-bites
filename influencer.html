@@ -311,7 +311,7 @@
     <div class="seg small views" role="group" aria-label="Ansicht" id="views"></div>
   </div>
 </header>
-<div class="fwrap"><div class="filters" id="filters"></div><div class="chips" id="chips" aria-label="Genres"></div></div>
+<div class="fwrap"><div class="chips" id="mods" aria-label="Fertige Sets"></div><div class="filters" id="filters"></div><div class="chips" id="chips" aria-label="Genres"></div></div>
 
 <main id="main"></main>
 
@@ -343,7 +343,7 @@ var STAT=[["neu","Neu"],["bestand","Bestand"],["zusage","Zusage"],["kontaktiert"
 var AVC={"Food":"#F4CDB4","Restaurant-Tester":"#F4CDB4","Streetfood":"#F4CDB4","Vegan und Vegetarisch":"#CFE6C4","Backen und Rezepte":"#F4CDB4","Café und Kaffee":"#E6D3BE","Bar und Cocktails":"#E3CBE8","Lifestyle":"#F3C6CF","Mode":"#F3C6CF","Beauty":"#F3C6CF","Fitness":"#A9DCDC","Gesundheit":"#A9DCDC","Reisen":"#BBD0F2","Tech":"#BBD0F2","Gaming":"#BBD0F2","Business und Gründer":"#D9D2C3","Finanzen und Krypto":"#D9D2C3","Immobilien":"#D9D2C3","Auto":"#D9D2C3","Comedy und Entertainment":"#F7DDA0","Musik":"#E3CBE8","Events und Nightlife":"#E3CBE8"};
 
 var ST=load("sb-inf-state",{}),PREF=load("sb-inf-prefs",{view:"liste"});
-var F=load("sb-inf-filter",{q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""});
+var F=Object.assign({q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""},load("sb-inf-filter",{}));
 var DATA=null,INF=[],view=(location.hash.slice(1)||PREF.view||"liste"),sortK="reach",sortD=-1,shown=80;
 function S(id){return ST[id]||(ST[id]={});}
 function saveST(){store("sb-inf-state",ST);}
@@ -463,6 +463,22 @@ function updateFilters(){
   set("chips",ch);
 }
 function saveF(){store("sb-inf-filter",F);}
+/* Fertige Influencer-Module: Filter Sets für typische Fälle, dazu eigene Sets, die im Browser gespeichert werden */
+var BASE={q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""};
+var MODS=[
+  ["Gastro Opening Berlin",{stadt:"Berlin",branche:"Gastro",min:10000}],
+  ["Food Micro Creator",{branche:"Gastro",typ:"micro"}],
+  ["Hamburg Food",{stadt:"Hamburg",branche:"Gastro"}],
+  ["München Food",{stadt:"München",branche:"Gastro"}],
+  ["Lifestyle und Beauty",{genres:["Lifestyle","Beauty"],min:10000}],
+  ["Mit Kontakt ab 100 Tsd",{kontakt:true,min:100000}],
+  ["Bereits zugesagt",{status:"zusage"}]
+];
+var MYMODS=load("sb-inf-module",[]);
+function drawMods(){
+  var el=$("#mods");if(!el)return;
+  el.innerHTML='<span class="mono" style="align-self:center;color:var(--mute);margin-right:4px">Fertige Sets</span>'+MODS.concat(MYMODS.map(function(m){return [m[0],m[1],1];})).map(function(m,i){return '<button class="gchip" type="button" data-mod="'+i+'">'+esc(m[0])+(m[2]?" ✎":"")+'</button>';}).join("")+'<button class="gchip" type="button" data-savemod style="border-style:dashed">+ Aktuellen Filter als Set speichern</button>'+(MYMODS.length?'<button class="gchip" type="button" data-delmod style="border-style:dashed">Eigene Sets löschen</button>':"");
+}
 
 /* ---------- Ansichten ---------- */
 var VIEWS=[["liste","Liste"],["karten","Karten"],["merkliste","Merkliste"],["info","Info"]];
@@ -473,7 +489,7 @@ function drawViews(){
 function render(onlyMain){
   if(!onlyMain)updateFilters();
   drawViews();
-  var hideF=view==="info"||view==="merkliste";
+  var hideF=view==="info"||view==="merkliste";$("#mods").hidden=hideF;
   $("#filters").hidden=hideF;$("#chips").hidden=hideF;
   var m=$("#main");
   m.innerHTML=view==="karten"?vKarten():view==="merkliste"?vMerk():view==="info"?vInfo():vListe();
@@ -610,6 +626,7 @@ function start(){
   $("#topbar").hidden=false;
   $("#stand").textContent=INF.length+" Creator · "+Object.keys(counts(INF,function(i){return i.stadt;})).length+" Städte"+(DATA.stand&&DATA.stand!=="lokal"?" · Stand "+DATA.stand:"");
   buildFilters();
+  drawMods();
   render();
 }
 
@@ -628,7 +645,7 @@ document.addEventListener("change",function(e){
   saveF();shown=80;render(false);
 });
 document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-view],[data-open],[data-fav],[data-set],[data-genre],[data-reset],[data-sort],[data-more],[data-export],[data-copy],[data-closedet],[data-coop]");if(!t)return;
+  var t=e.target.closest("[data-view],[data-open],[data-fav],[data-set],[data-genre],[data-reset],[data-sort],[data-more],[data-export],[data-copy],[data-closedet],[data-coop],[data-mod],[data-savemod],[data-delmod]");if(!t)return;
   if(t.hasAttribute("data-view")){view=t.getAttribute("data-view");shown=80;render(true);window.scrollTo(0,0);return;}
   if(t.hasAttribute("data-closedet")){$("#det").close();return;}
   if(t.hasAttribute("data-open")){openDet(t.getAttribute("data-open"));return;}
@@ -636,6 +653,9 @@ document.addEventListener("click",function(e){
   if(t.hasAttribute("data-coop")){var cid=t.getAttribute("data-id");S(cid).coop=t.getAttribute("data-coop");saveST();toast(S(cid).coop?(S(cid).coop==="paid"?"Als Paid markiert":"Als Unpaid markiert"):"Kooperation offen");openDet(cid);return;}
   if(t.hasAttribute("data-set")){var id=t.getAttribute("data-id"),s=t.getAttribute("data-set");S(id).status=s;saveST();toast(stName(s));openDet(id);return;}
   if(t.hasAttribute("data-genre")){var g=t.getAttribute("data-genre"),ix=F.genres.indexOf(g);if(ix>-1)F.genres.splice(ix,1);else F.genres.push(g);saveF();shown=80;render(false);return;}
+  if(t.hasAttribute("data-mod")){var all=MODS.concat(MYMODS),m=all[+t.getAttribute("data-mod")];if(m){F=Object.assign({},BASE,JSON.parse(JSON.stringify(m[1])));saveF();$("#fq").value="";$("#fkontakt").checked=!!F.kontakt;shown=80;view="liste";render(false);toast("Set „"+m[0]+"“: "+filtered().length+" Treffer");}return;}
+  if(t.hasAttribute("data-savemod")){var nm=prompt("Name für dieses Set (zum Beispiel Opening Köln):");if(nm){MYMODS.push([nm.trim(),JSON.parse(JSON.stringify(F))]);store("sb-inf-module",MYMODS);drawMods();toast("Set gespeichert");}return;}
+  if(t.hasAttribute("data-delmod")){if(confirm("Alle eigenen Sets löschen?")){MYMODS=[];store("sb-inf-module",MYMODS);drawMods();}return;}
   if(t.hasAttribute("data-reset")){F={q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""};saveF();$("#fq").value="";$("#fkontakt").checked=false;shown=80;render(false);return;}
   if(t.hasAttribute("data-sort")){var sk=t.getAttribute("data-sort");if(sortK===sk)sortD=-sortD;else{sortK=sk;sortD=sk==="name"||sk==="stadt"?1:-1;}render(true);return;}
   if(t.hasAttribute("data-more")){shown+=100;render(true);return;}

@@ -74,6 +74,12 @@
   .lg-back{font-weight:650;font-size:15px;text-decoration:none;border-bottom:1.5px solid var(--ink);}
   .lg-art h1{margin:auto 0 0;padding-top:12px;font-weight:800;font-size:clamp(52px,7.2vw,112px);line-height:.86;letter-spacing:-.055em;}
   .lg-art p{margin:0;max-width:34ch;font-size:clamp(17px,1.4vw,20px);line-height:1.4;}
+  .lg-phones{align-self:flex-end;display:flex;gap:clamp(8px,1.2vw,16px);margin:8px clamp(8px,3vw,48px) 0 0;flex:none;}
+  .lg-ph{width:clamp(96px,9.5vw,150px);aspect-ratio:9/16;border-radius:18px;border:5px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 26px 50px rgba(30,27,26,.28);}
+  .lg-ph:nth-child(1){transform:rotate(-4deg) translateY(10px);}
+  .lg-ph:nth-child(2){transform:translateY(-14px);}
+  .lg-ph:nth-child(3){transform:rotate(4deg) translateY(10px);}
+  .lg-ph video{width:100%;height:100%;object-fit:cover;}
   .lg-phone{align-self:flex-end;margin:8px clamp(8px,4vw,64px) 0 0;transform:rotate(5deg);width:clamp(140px,13vw,200px);flex:none;aspect-ratio:9/16;border-radius:22px;border:6px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 30px 60px rgba(30,27,26,.28);}
   .lg-phone video{width:100%;height:100%;object-fit:cover;}
   .lg-form-wrap{display:grid;place-items:center;padding:clamp(28px,4vw,56px) var(--gutter);}
@@ -352,6 +358,7 @@
     .lg-art{min-height:auto;padding-bottom:28px;}
     .lg-art h1{margin-top:40px;}
     .lg-phone{display:none;}
+    .lg-phones{display:none;}
     .shell{grid-template-columns:minmax(0,1fr);padding-top:0;}
     .side{position:sticky;top:var(--bar);z-index:30;display:flex;gap:6px;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);background:rgba(254,252,246,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);scrollbar-width:none;}
     .side::-webkit-scrollbar{display:none;}
@@ -398,7 +405,7 @@
       <a class="lg-back" href="index.html">← Zur Website</a>
       <button class="theme-btn" type="button" data-theme-toggle></button>
     </div>
-    <div class="lg-phone" aria-hidden="true"><video src="media/spiral.mp4" poster="media/spiral.webp" muted loop playsinline autoplay preload="metadata"></video></div>
+    <div class="lg-phones" aria-hidden="true"><div class="lg-ph" aria-hidden="true"><video src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline autoplay preload="metadata"></video></div><div class="lg-ph" aria-hidden="true"><video src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline autoplay preload="metadata"></video></div><div class="lg-ph" aria-hidden="true"><video src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline autoplay preload="metadata"></video></div></div>
     <h1 id="lg-h">Dein Projekt.<br>Live.</h1>
     <p>Freigaben, Termine, Dateien und Rechnungen an einem Ort. Kein Suchen mehr in WhatsApp-Verläufen.</p>
   </div>

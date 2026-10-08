@@ -275,6 +275,7 @@
 <div class="toast" id="toast" role="status"></div>
 
 <script src="trends/trends_data.js"></script>
+<script src="kunden_seed.js"></script>
 <script>
 try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
 (function(){
@@ -302,7 +303,7 @@ var CATS=D.cats||[{id:"alle",name:"Alle"}];
 var cat=load("sb-trends-cat",CATS[0].id),tab=(location.hash.slice(1)||"puls");
 var SAVED=load("sb-trends-merk",{});
 function inCat(x){if(cat==="alle")return true;var c=x.cats||(x.cat?[x.cat]:[]);return c.indexOf(cat)>-1;}
-var TABS=[["puls","Überblick"],["videos","Virale Videos"],["tags","Hashtags & Sounds"],["suche","Suchtrends"],["words","Wordings & Hooks"],["merk","Merkliste"]];
+var TABS=[["puls","Überblick"],["videos","Virale Videos"],["tags","Hashtags & Sounds"],["suche","Suchtrends"],["words","Wordings & Hooks"],["kunde","Ideen für Kunden"],["merk","Merkliste"]];
 
 function header(){
   $("#stand").textContent=D.updated?("KW "+(D.week||"")+" · Stand "+new Date(D.updated).toLocaleDateString("de-DE",{day:"numeric",month:"numeric",year:"numeric"})+" · jeden Montag neu"):"Noch keine Daten";
@@ -490,10 +491,50 @@ function merkText(){
 }
 
 /* Rendern */
+/* Ideen für Kunden: aus den Formaten, Hooks und Suchtrends dieser Woche passende Content-Ideen für einen Kunden bauen */
+var KID={sel:"",konzept:"",out:[]};
+function kundenListe(){
+  var l=[],seen={};
+  try{(JSON.parse(localStorage.getItem("sb-kunden"))||[]).forEach(function(k){if(k.name&&!seen[k.name]){seen[k.name]=1;l.push({name:k.name,konzept:k.konzept||"",typ:k.typ||""});}});}catch(e){}
+  (window.KUNDEN_SEED||[]).forEach(function(k){if(!seen[k.name]){seen[k.name]=1;l.push({name:k.name,konzept:k.konzept||"",typ:k.typ||""});}});
+  return l;
+}
+function hashStr(s){var h=7;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function monatsThema(){
+  var m=new Date().getMonth();
+  return [["Neujahr und gute Vorsätze","Winter"],["Valentinstag","Winter"],["Frühlingsstart","Frühling"],["Ostern","Frühling"],["Muttertag und Terrassensaison","Frühling"],["Sommerstart","Sommer"],["Sommerhitze","Sommer"],["Sommerferien","Sommer"],["Herbstkarte","Herbst"],["Herbst und Halloween","Herbst"],["Black Friday und Gemütlichkeit","Winter"],["Weihnachten und Silvester","Winter"]][m];
+}
+function ideenFuer(name,konzept){
+  var fm=(D.formats||[]).filter(inCat).slice(0,12),hk=(D.wordings&&D.wordings.hooks||[]).filter(inCat).slice(0,12),se=(D.searches||[]).filter(inCat).slice(0,6),tg=(D.hashtags||[]).filter(inCat).slice(0,8);
+  var h0=hashStr(name+konzept),mt=monatsThema(),out=[];
+  fm.forEach(function(f,i){
+    var hook=hk.length?hk[(h0+i)%hk.length]:null,tag=tg.length?tg[(h0+i*3)%tg.length]:null;
+    out.push({t:f.name+" bei "+name,x:(f.tip||"").replace(/Kunde/g,name)+(konzept?" Aufhänger: "+konzept+".":"")+(hook?" Hook-Vorbild: „"+hook.text+"“.":"")+(tag?" #"+tag.tag:"")});
+  });
+  out.push({t:mt[0]+" bei "+name,x:"Saisonthema des Monats ("+mt[1]+"): ein Reel, das "+name+" zum Anlass zeigt, mit einem Angebot oder Gericht passend dazu."});
+  se.forEach(function(s,i){if(i<2)out.push({t:"Trend aufgreifen: "+s.term,x:"Suchtrend dieser Woche ("+s.traffic+" Suchen). Eine Verbindung von „"+s.term+"“ zu "+name+" finden und als Kurzvideo drehen, nur wenn es ehrlich passt."});});
+  return out;
+}
+function vKunde(){
+  var L=kundenListe();
+  var h='<h1 class="h2">Ideen für Kunden.</h1><p class="lead">Kunden wählen oder eintippen, auf Ideen erzeugen tippen: Die Vorschläge entstehen aus den Formaten, Hooks, Hashtags und Suchtrends dieser Woche ('+esc(catName())+'). Es sind Anstöße, keine fertigen Skripte.</p>';
+  h+='<div class="card builder" style="display:grid;gap:10px"><label class="mono">Kunde aus dem Kundenstamm</label><select id="kidSel" style="min-height:40px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 10px;background:var(--card);font-weight:650"><option value="">Eigenen Namen eintippen</option>'+L.map(function(k){return '<option value="'+esc(k.name)+'"'+(KID.sel===k.name?" selected":"")+'>'+esc(k.name)+(k.konzept?" · "+esc(k.konzept):"")+'</option>';}).join("")+'</select>'+
+    '<input id="kidName" placeholder="Name des Kunden, z. B. Spreegold" style="min-height:40px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 10px;background:var(--card);font-weight:650" value="'+esc(KID.sel||"")+'"><input id="kidKonzept" placeholder="Konzept in einem Satz (optional)" style="min-height:40px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 10px;background:var(--card);font-weight:650" value="'+esc(KID.konzept)+'">'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn inv" type="button" id="kidGo"><span class="dot"></span><span>Ideen erzeugen</span></button>'+(KID.out.length?'<button class="btn" type="button" id="kidCopy"><span class="dot"></span><span>Alle kopieren</span></button>':"")+'</div></div>';
+  if(KID.out.length)h+='<div class="hooks" style="margin-top:14px">'+KID.out.map(function(o,i){return '<div class="hook"><b>'+esc(o.t)+'</b><small>'+esc(o.x)+'</small><div class="acts"><button class="btn sm" type="button" data-kidc="'+i+'"><span class="dot"></span><span>Kopieren</span></button></div></div>';}).join("")+'</div>';
+  return h;
+}
+document.addEventListener("change",function(e){if(e.target.id==="kidSel"){var k=kundenListe().filter(function(x){return x.name===e.target.value;})[0];KID.sel=e.target.value;if(k){$("#kidName").value=k.name;$("#kidKonzept").value=k.konzept;}}});
+document.addEventListener("click",function(e){
+  var t=e.target.closest("#kidGo,#kidCopy,[data-kidc]");if(!t)return;
+  if(t.id==="kidGo"){var n=$("#kidName").value.trim();if(!n){toast("Bitte einen Kunden wählen oder eintippen");return;}KID.sel=n;KID.konzept=$("#kidKonzept").value.trim();KID.out=ideenFuer(n,KID.konzept);render();return;}
+  if(t.id==="kidCopy"){copy(KID.out.map(function(o){return o.t+"\n"+o.x;}).join("\n\n"),"Alle Ideen kopiert");return;}
+  var i=t.getAttribute("data-kidc");if(i!=null){copy(KID.out[+i].t+"\n"+KID.out[+i].x,"Idee kopiert");}
+});
 function render(){
   header();
   var m=$("#main");
-  m.innerHTML=tab==="videos"?vVideos():tab==="tags"?vTags():tab==="suche"?vSuche():tab==="words"?vWords():tab==="merk"?vMerk():vPuls();
+  m.innerHTML=tab==="videos"?vVideos():tab==="tags"?vTags():tab==="suche"?vSuche():tab==="words"?vWords():tab==="merk"?vMerk():tab==="kunde"?vKunde():vPuls();
   if(tab==="videos")vGrid();
   if(tab==="suche")drawChart();
   if(tab==="words")drawBuilder();
