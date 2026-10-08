@@ -320,6 +320,31 @@
   .tile.t-ink{background:var(--ink);border-color:var(--ink);color:var(--paper);}
   .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(254,254,254,.75);}
   .quick{display:flex;flex-wrap:wrap;gap:8px;}
+  /* Konzepte */
+  .kz-how{display:grid;gap:14px;}
+  .kz-how ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px;counter-reset:kz;}
+  .kz-how li{counter-increment:kz;display:flex;gap:10px;align-items:baseline;font-size:15px;}
+  .kz-how li::before{content:counter(kz,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--accent-ink);flex:none;width:22px;}
+  .kz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px;}
+  .kz-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+  .kz-logo{aspect-ratio:1/1;background:#fff;display:grid;place-items:center;border-bottom:1px solid var(--line);}
+  .kz-logo img{width:86%;height:86%;object-fit:contain;}
+  .kz-logo.none{background:var(--paper-2);font:700 clamp(26px,3vw,40px)/1 var(--head,inherit);letter-spacing:-.03em;padding:20px;text-align:center;color:var(--mute);}
+  .kz-body{padding:16px;display:grid;gap:10px;align-content:start;flex:1;}
+  .kz-body h3{margin:0;font-size:22px;letter-spacing:-.03em;}
+  .kz-meta{display:flex;flex-wrap:wrap;gap:6px;}
+  .kz-body p{margin:0;font-size:14.5px;color:var(--mute);}
+  .kz-cols{display:flex;gap:6px;}
+  .kz-cols i{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(35,35,33,.25);}
+  .kz-bar{height:6px;background:var(--paper-2);border-radius:99px;overflow:hidden;}
+  .kz-bar b{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s ease;}
+  .kz-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+  .kz-panel{border-top:1px solid var(--line);padding:14px 16px;background:var(--paper-2);display:grid;gap:8px;}
+  .kz-panel label{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;cursor:pointer;}
+  .kz-panel label small{display:block;color:var(--mute);font-size:12.5px;}
+  .kz-panel textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:14.5px;background:var(--card);color:var(--ink);resize:vertical;}
+  @media (max-width:1100px){.kz-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media (max-width:700px){.kz-grid{grid-template-columns:1fr;}.kz-how ol{grid-template-columns:1fr;}}
   .dlgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
   .dlc{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
   .dlc .th{aspect-ratio:16/10;display:grid;place-items:center;padding:10%;border-bottom:1px solid var(--line);}
@@ -915,7 +940,7 @@ var OS_TABS=[
 var TNAV=[
   ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
-  ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"]]],
+  ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
   ["Ablage",[["t-dateien","Dateien im Drive"]]]
 ];
@@ -956,7 +981,7 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
@@ -978,6 +1003,7 @@ function tGo(v,quiet){
   else if(v==="t-galerie") h=head("Kreativ","Galerie & Moodboards","Entwürfe und Ideen als Boards. Herz für Favoriten, Notiz pro Bild, Präsentieren für den großen Bildschirm. Neue Ideen schickst du Claude im Chat.",'<div class="acts"><a class="btn sm" href="galerie.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="galerie.html" title="Social Bites Galerie" allow="fullscreen" allowfullscreen></iframe>';
   else if(v==="t-buero") h=head("Team","Büro & Mitarbeiter","Alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set, Hierarchie und Ausbaustufen. Person anklicken, Namen ändern, Skills filtern. Oben zwischen Raumplan und Organigramm wechseln.",'<div class="acts"><a class="btn sm" href="buero.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="buero.html" title="Social Bites Büro"></iframe>';
   else if(v==="t-partner") h=head("Team","Partnerprogramm","Wer uns vermittelt, bekommt Provision und Anteilspunkte im Partner-Pool. Hier verwaltest du Partner, Vermittlungen, Auszahlungen und Vorlagen. Die öffentliche Seite ist noch nicht verlinkt, bis ihr die Konditionen freigebt.",'<div class="acts"><a class="btn sm" href="partner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Öffentliche Seite ↗</span></a><a class="btn sm" href="partner/Social-Bites-Partner-Leitfaden.pdf" target="_blank" rel="noopener"><span class="dot"></span><span>Leitfaden PDF ↗</span></a></div>')+'<iframe class="tframe" src="partner-team.html" title="Social Bites Partnerprogramm"></iframe>';
+  else if(v==="t-konzepte") h=tKonzepte();
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
@@ -989,7 +1015,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -1011,6 +1037,7 @@ function tStart(){
       tile("os-pipeline","Social Bites OS","Pipeline","Kunden und Partner bis zum Auftrag.")+
       tile("t-trends","Kreativ","Trend-Indicator","Was diese Woche in Food und Gastro viral geht.","t-or")+
       tile("t-galerie","Kreativ","Galerie","Moodboards und Entwürfe, gerade: T-Shirt mit Biss.")+
+      tile("t-konzepte","Kreativ","Konzepte","Eigene Konzepte von A bis Z, die wir später Kunden verkaufen.","t-ink")+
       tile("t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.")+
       tile("t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.")+
     '</div>'+
@@ -1039,12 +1066,75 @@ function tKit(){
     '<div class="vh" style="margin:28px 0 12px"><div><p class="mono hot">Drive</p><h1 style="font-size:clamp(26px,3vw,38px)">Branding & Asset-Bibliothek</h1><p>Farben & Fonts, Logo & Wortmarke, Musik & Sound-Assets, Templates. Hochladen geht im Drive: Ordner öffnen, Datei reinziehen.</p></div><div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_BRAND)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Im Drive öffnen ↗</span></a></div></div>'+
     '<iframe class="tframe" style="height:max(520px,calc(100dvh - var(--bar) - 120px));min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_BRAND+'#grid" title="Drive-Ordner Branding"></iframe>';
 }
+var KZ_KEY="sb-konzepte-v1";
+var KZ_CHECK=[
+  ["Idee und Zielgruppe","Wer isst hier, warum läuft es, was ist neu in Berlin"],
+  ["Standort und Fläche","Straße, Laufkundschaft, Größe, grobe Miete"],
+  ["Name und Logo","Namen auf Marken und Domain prüfen, Logo in allen Varianten"],
+  ["CI","Farben, Schrift, Bildsprache, Tonalität, Verpackung"],
+  ["Speisekarte und Rezepte","Gerichte mit Rezepten, Portionen, Bilder"],
+  ["Visualisierung des Stores","Raum, Theke, Schaufenster, Menuboard, Außenwerbung"],
+  ["Kalkulation","Wareneinsatz, Preise, Personal, Break-even"],
+  ["Social Media Plan","Opening Kampagne, Content Serien, Creator, Ads"],
+  ["Website und Bestellwege","Seite, Lieferdienste, Kasse, Kiosk Terminal"],
+  ["Pitch Dokument","PDF für den Kunden mit allem Obigen, Paketpreis"],
+  ["Rechtliches","Genehmigungen, Hygiene, Markenrecht, vorher mit Vera klären"],
+  ["Angebot an den Kunden","Preis fürs Konzept, Umsetzung als Paket, nächste Schritte"]
+];
+var KZ_SEED=[
+  {id:"mochi-mama",name:"Mochi Mama",typ:"Dessert Bar",ort:"Berlin Mitte, Rosenthaler Platz oder Torstraße",idee:"Frisches Mochi Eis, Matcha Drinks und Mochi Donuts. Klein, fotogen und gemacht für TikTok. Wenig Fläche, hohe Marge, Take-away stark.",farben:["#7DA46F","#F4A0B8","#2A2A28","#FFF6EA"],logo:"konzepte/mochi-mama.webp",png:"konzepte/mochi-mama.png"},
+  {id:"feuer-fladen",name:"Feuer & Fladen",typ:"Steinofen Küche",ort:"Berlin Kreuzberg, Bergmannkiez",idee:"Fladen aus dem Steinofen: Pide, Manakish, Khachapuri. Der Teig entsteht vor den Augen der Gäste, das Feuer ist die Show. Mittagstisch und Abend, gut zum Teilen.",farben:["#E8582B","#0E4452","#FFF1DC","#2A2A28"],logo:"konzepte/feuer-fladen.webp",png:"konzepte/feuer-fladen.png"},
+  {id:"bruder-birria",name:"Bruder Birria",typ:"Street Food",ort:"Berlin Neukölln, Weserstraße",idee:"Birria Tacos mit Konsommé zum Tunken. Kurze Karte, starke Videomotive (Käse ziehen, Dip), Abendgeschäft und Lieferung.",farben:["#C21F1F","#1A1A1A","#F6E9D2","#E3A21A"],logo:"konzepte/bruder-birria.webp",png:"konzepte/bruder-birria.png"}
+];
+function kzLoad(){try{var o=JSON.parse(localStorage.getItem(KZ_KEY)||"{}");return {extra:o.extra||[],checks:o.checks||{},notes:o.notes||{},open:o.open||{}};}catch(e){return {extra:[],checks:{},notes:{},open:{}};}}
+function kzSave(o){try{localStorage.setItem(KZ_KEY,JSON.stringify(o));}catch(e){}}
+function kzCard(c,st){
+  var done=KZ_CHECK.filter(function(_,i){return st.checks[c.id]&&st.checks[c.id][i];}).length,pct=Math.round(done/KZ_CHECK.length*100),open=st.open[c.id]||"";
+  var panel="";
+  if(open==="check")panel='<div class="kz-panel">'+KZ_CHECK.map(function(it,i){return '<label><input type="checkbox" data-kzchk="'+c.id+'" data-i="'+i+'"'+((st.checks[c.id]&&st.checks[c.id][i])?" checked":"")+'><span>'+esc(it[0])+'<small>'+esc(it[1])+'</small></span></label>';}).join("")+'</div>';
+  if(open==="note")panel='<div class="kz-panel"><textarea data-kznote="'+c.id+'" placeholder="Gedanken, Rezepte, Ideen für die Einrichtung, Preise …">'+esc(st.notes[c.id]||"")+'</textarea></div>';
+  return '<article class="kz-card">'+
+    (c.logo?'<div class="kz-logo"><img src="'+c.logo+'" alt="Logo '+esc(c.name)+'" loading="lazy"></div>':'<div class="kz-logo none">'+esc(c.name||"Neue Idee")+'</div>')+
+    '<div class="kz-body"><div class="kz-meta"><span class="pill">Idee</span>'+(c.typ?'<span class="pill">'+esc(c.typ)+'</span>':'')+'</div>'+
+    '<h3>'+esc(c.name)+'</h3>'+(c.ort?'<p><b>Standort:</b> '+esc(c.ort)+'</p>':'')+(c.idee?'<p>'+esc(c.idee)+'</p>':'')+
+    (c.farben?'<div class="kz-cols" title="Farbidee">'+c.farben.map(function(f){return '<i style="background:'+f+'"></i>';}).join("")+'</div>':'')+
+    '<div class="kz-bar" title="'+done+' von '+KZ_CHECK.length+' erledigt"><b style="width:'+pct+'%"></b></div><p style="font-size:12.5px">'+done+' von '+KZ_CHECK.length+' Schritten erledigt. Noch kein ausgearbeitetes Konzept.</p>'+
+    '<div class="kz-acts"><button class="btn sm'+(open==="check"?" inv":"")+'" type="button" data-kz="check" data-id="'+c.id+'"><span class="dot"></span><span>Checkliste</span></button>'+
+    '<button class="btn sm'+(open==="note"?" inv":"")+'" type="button" data-kz="note" data-id="'+c.id+'"><span class="dot"></span><span>Notizen</span></button>'+
+    (c.png?'<a class="btn sm" href="'+c.png+'" download><span class="dot"></span><span>Logo laden</span></a>':'')+
+    (c.extra?'<button class="btn sm" type="button" data-kz="del" data-id="'+c.id+'"><span class="dot"></span><span>Löschen</span></button>':'')+
+    '</div></div>'+panel+'</article>';
+}
+function tKonzepte(){
+  var st=kzLoad(),all=KZ_SEED.concat(st.extra.map(function(x){x.extra=true;return x;}));
+  return head("Kreativ","Konzepte","Hier entstehen unsere eigenen Konzepte von A bis Z, die wir später an Kunden verkaufen. Ein Konzept ist ein komplettes Unternehmen auf dem Papier: Name, Logo, CI, Standort, Speisekarte mit Rezepten und die Visualisierung des Stores. Gesammelt wird hier alles, was dazugehört.",'<div class="acts"><button class="btn sm inv" type="button" data-kz="new"><span class="dot"></span><span>Neue Idee anlegen</span></button></div>')+
+    '<section class="card kz-how"><h2>Das gehört zu einem Konzept</h2><ol>'+KZ_CHECK.map(function(it){return '<li><span><b>'+esc(it[0])+'</b>. '+esc(it[1])+'.</span></li>';}).join("")+'</ol>'+
+    '<p class="muted" style="margin:0;font-size:14px">Stand heute: noch kein Konzept ausgearbeitet. Drei Ideen mit Logo liegen zum Start bereit, damit das Thema nicht verloren geht. Namen und Orte sind Platzhalter, vor einer echten Nutzung Markenrecht und Standort prüfen. Haken und Notizen bleiben in diesem Browser.</p></section>'+
+    '<div class="kz-grid">'+all.map(function(c){return kzCard(c,st);}).join("")+'</div>';
+}
 function tFiles(){
   return head("Ablage","Dateien im Drive","Alle Ordner von Social Bites. Öffnen und herunterladen geht direkt hier, hochladen im Drive: Ordner öffnen, Datei reinziehen.",'<div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive öffnen und hochladen ↗</span></a></div>')+
     '<iframe class="tframe" style="height:max(520px,calc(100dvh - var(--bar) - 120px));min-height:0" src="https://drive.google.com/embeddedfolderview?id='+DRIVE_ROOT+'#list" title="Drive-Ordner Social Bites"></iframe>'+
     '<section class="card" style="margin-top:14px"><h2>Ordner direkt öffnen</h2><ul class="folders">'+FOLDERS.map(function(f){return '<li><a href="'+driveUrl(f[1])+'" target="_blank" rel="noopener"><b>'+esc(f[0])+'</b><small>'+esc(f[2])+'</small></a></li>';}).join("")+'</ul></section>'+
     note("Eingebettete Drive-Ordner zeigen nur, was dein angemeldetes Google-Konto sehen darf. Verträge und Rechnungen liegen in 04 und werden nie mit Kunden geteilt.");
 }
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-kz]");if(!b)return;
+  var st=kzLoad(),a=b.getAttribute("data-kz"),id=b.getAttribute("data-id");
+  if(a==="new"){var n=window.prompt("Wie heißt die Idee?");if(!n)return;var o=window.prompt("Wo könnte sie laufen (Stadt, Straße)?")||"";var i=window.prompt("Eine Zeile zur Idee:")||"";st.extra.push({id:"x"+Date.now(),name:n.trim(),ort:o.trim(),idee:i.trim(),typ:"Eigene Idee"});kzSave(st);tGo("t-konzepte",true);return;}
+  if(a==="del"){if(!window.confirm("Diese Idee löschen?"))return;st.extra=st.extra.filter(function(x){return x.id!==id;});kzSave(st);tGo("t-konzepte",true);return;}
+  st.open[id]=st.open[id]===a?"":a;kzSave(st);var y=window.scrollY;tGo("t-konzepte",true);window.scrollTo(0,y);
+});
+document.addEventListener("change",function(e){
+  var c=e.target.closest("[data-kzchk]");if(!c)return;
+  var st=kzLoad(),id=c.getAttribute("data-kzchk");st.checks[id]=st.checks[id]||{};st.checks[id][c.getAttribute("data-i")]=c.checked;kzSave(st);
+  var card=c.closest(".kz-card"),done=card.querySelectorAll("[data-kzchk]:checked").length,tot=KZ_CHECK.length;
+  card.querySelector(".kz-bar b").style.width=Math.round(done/tot*100)+"%";card.querySelector(".kz-body > p:last-of-type").textContent=done+" von "+tot+" Schritten erledigt. Noch kein ausgearbeitetes Konzept.";
+});
+document.addEventListener("input",function(e){
+  var t=e.target.closest("[data-kznote]");if(!t)return;
+  var st=kzLoad();st.notes[t.getAttribute("data-kznote")]=t.value;kzSave(st);
+});
 function enterTeam(){
   $("#login").hidden=true;$("#app").hidden=true;$("#team").hidden=false;
   if(!$("#tside").children.length)tNav();
