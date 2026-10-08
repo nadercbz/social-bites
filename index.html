@@ -991,7 +991,7 @@
       <span class="row">keiner wegscrollt</span>
     </h1>
     <div class="hero-foot">
-      <p class="hero-sub">Social Media für Unternehmer, Marken und Gastro aus Berlin.<br><span class="hot">Über 100 Millionen organische Views auf TikTok und Instagram.</span></p>
+      <p class="hero-sub">Social Media für Unternehmer, Marken und Gastro aus Berlin.<br><span class="hot">Über 500 Millionen organische Views auf TikTok und Instagram.</span></p>
       <div class="trust">
         <div class="trust-label">
           <img src="mouth.webp" alt="" width="200" height="383" decoding="async">
@@ -1510,7 +1510,7 @@
       </div>
     </div>
     <ul class="foot-nums">
-      <li><b>100 Mio+</b><span>organische Views auf TikTok und Instagram</span></li>
+      <li><b>500 Mio+</b><span>organische Views auf TikTok und Instagram</span></li>
       <li><b>60+</b><span>Kunden und Projekte</span></li>
       <li><b>500</b><span>Gratis-Pizzen beim Opening für The Pizzary</span></li>
     </ul>
@@ -1982,13 +1982,14 @@
   });
 
 
-  // Pitch-Video: PITCH_SRC eintragen (zum Beispiel media/pitch.mp4), dann läuft das Video in der Kino-Ansicht
-  var PITCH_SRC = 'media/ref_zalando_nike.mp4';  // Platzhalter, bis das Pitch-Video da ist
+  // Pitch-Video (Stand 09.10.2026): Querformat und Hochformat, je nach Fenster. Quelle der Dateien: Projects/56_Social Bite/Pitch/
+  var PITCH_WIDE = 'media/pitch.mp4', PITCH_TALL = 'media/pitch_9x16.mp4', PITCH_POSTER = 'media/pitch_poster.webp';
   var pd = d.getElementById('pitchd'), pst = d.getElementById('pitchd-stage');
-  function pitchClose(){ var v = pst.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } pst.innerHTML = ''; if (pd.open) pd.close(); }
+  function pitchClose(){ var v = pst.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } pst.innerHTML = ''; pst.style.cssText = ''; if (pd.open) pd.close(); }
   d.getElementById('pitch-open').addEventListener('click', function(){
-    if (PITCH_SRC) { pst.innerHTML = '<video src="' + PITCH_SRC + '" controls autoplay playsinline></video>'; }
-    else { pst.innerHTML = '<p>Unser Pitch-Video kommt in Kürze. Bis dahin: erzähl uns von deinem Projekt.</p>'; }
+    var tall = window.matchMedia && matchMedia('(max-aspect-ratio: 1/1)').matches;
+    pst.style.cssText = tall ? 'aspect-ratio:9/16;width:min(92vw,calc(78dvh * 9 / 16));' : '';
+    pst.innerHTML = '<video src="' + (tall ? PITCH_TALL : PITCH_WIDE) + '" poster="' + PITCH_POSTER + '" controls autoplay playsinline></video>';
     pd.showModal();
   });
   d.getElementById('pitchd-x').addEventListener('click', pitchClose);
