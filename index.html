@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
 <script>document.documentElement.classList.add('js');</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Social Bites","description":"Food Content, Openings und Branding für Gastro und Marken. Social Media für Gastro und Unternehmen aus Berlin.","areaServed":"Berlin","address":{"@type":"PostalAddress","addressLocality":"Berlin","addressCountry":"DE"}}</script>
 <style>
@@ -37,6 +37,7 @@
     --accent-ink:#B83806;
     --accent-tint:#FFE2D0;
     --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --head:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
     --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --gutter:clamp(16px,3vw,40px);
     --ease:cubic-bezier(.2,.7,.2,1);
@@ -785,6 +786,11 @@
     .js .win-rows{overflow-x:auto;}
     *,*::before,*::after{transition-duration:.01ms !important;}
   }
+
+  /* Headlines: Inter Tight Bold, eng gesetzt (Vorbild shortscut: GT Standard Bold, minus 4 Prozent, Zeilenhöhe 0,9) */
+  h1,h2,h3,.hero-h,.big-h,.p-name,.pm-name,.contact h2,.foot-top h2,.pitch-cap b,.stat b,.foot-nums b{font-family:var(--head);font-weight:700;letter-spacing:-.04em;}
+  .hero-h,.big-h,.contact h2,.foot-top h2{line-height:.9;}
+  .pm-name,.p-name{line-height:.95;}
 </style>
 <link rel="stylesheet" href="theme.css">
 <script src="i18n_en.js" defer></script>
