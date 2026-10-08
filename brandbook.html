@@ -239,6 +239,34 @@
     *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
     html{scroll-behavior:auto;}
   }
+
+  /* Videos und Skripte: Einträge klappen auf, neue Skripte kommen oben dazu */
+  .sk{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:14px;overflow:hidden;}
+  .sk[open]{border-color:var(--ink);}
+  .sk > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:16px 18px;}
+  .sk > summary::-webkit-details-marker{display:none;}
+  .sk > summary b{font-weight:800;font-size:clamp(20px,2.2vw,28px);letter-spacing:-.04em;line-height:1.05;}
+  .sk > summary .mono{color:var(--accent-ink);}
+  .sk > summary .chev{font-size:22px;color:var(--accent-ink);transition:transform .25s;}
+  .sk[open] > summary .chev{transform:rotate(90deg);}
+  .sk-body{padding:4px 18px 20px;display:grid;gap:14px;}
+  .sk-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;}
+  .sk-meta div{background:var(--paper-2);border-radius:10px;padding:9px 11px;font-size:14px;}
+  .sk-meta .mono{display:block;color:var(--mute);margin-bottom:3px;}
+  .sk-phil{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  @media (max-width:760px){.sk-phil{grid-template-columns:1fr;}}
+  .sk-phil div{background:var(--ink);color:var(--paper);border-radius:12px;padding:14px;font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.25;}
+  .sk-phil div i{display:block;font:500 11px var(--mono);color:var(--accent);margin-bottom:6px;font-style:normal;}
+  .sk-sc{display:grid;grid-template-columns:96px minmax(0,1fr);gap:6px 16px;border-top:1px solid var(--line);padding-top:14px;}
+  @media (max-width:640px){.sk-sc{grid-template-columns:1fr;}}
+  .sk-sc .t{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);}
+  .sk-sc .t b{display:block;font-size:26px;color:var(--ink);font-family:var(--display);letter-spacing:-.04em;}
+  .sk-sc h4{margin:0 0 4px;font-size:18px;letter-spacing:-.03em;}
+  .sk-sc .bild{color:var(--mute);font-size:14.5px;margin:0 0 8px;}
+  .sk-sc q{display:block;quotes:none;background:var(--accent-tint);border-radius:10px;padding:10px 12px;font-weight:650;font-size:16px;line-height:1.4;}
+  .sk h5{margin:6px 0 4px;font:600 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);}
+  .sk ul.l{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px;}
+  .sk .acts{display:flex;gap:8px;flex-wrap:wrap;}
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -267,7 +295,8 @@
     <a href="#bild"><span>06</span>Bild und Video</a>
     <a href="#elemente"><span>07</span>Elemente</a>
     <a href="#anwendungen"><span>08</span>Anwendungen</a>
-    <a href="#downloads"><span>09</span>Downloads</a>
+    <a href="#skripte"><span>09</span>Videos und Skripte</a>
+    <a href="#downloads"><span>10</span>Downloads</a>
   </nav>
 
   <main>
@@ -415,8 +444,14 @@
       </div>
     </section>
 
+    <section class="ch" id="skripte">
+      <div class="ch-h"><span class="mono">09</span><h2>Videos und Skripte</h2></div>
+      <p class="lead">Unsere Videos fangen hier an: Skripte, Haltung und Bildideen. Das Kapitel wächst mit jedem neuen Video. Neue Skripte werden oben als Eintrag in der Liste ergänzt, die älteren bleiben darunter stehen.</p>
+      <div id="skripteList"></div>
+    </section>
+
     <section class="ch" id="downloads">
-      <div class="ch-h"><span class="mono">09</span><h2>Downloads</h2></div>
+      <div class="ch-h"><span class="mono">10</span><h2>Downloads</h2></div>
       <p class="lead">Alles für den Alltag. Weitere Vorlagen und Rohdateien liegen im Drive-Ordner Branding &amp; Asset-Bibliothek.</p>
       <ul class="dl">
         <li><span class="th" style="background:repeating-conic-gradient(#e7e1d4 0 25%,#FFFFFF 0 50%) 0 0/12px 12px"><img src="brand/social-bites-logo.png" alt="" loading="lazy"></span><div><b>Logo, freigestellt</b><small>PNG, 1580 × 1422, durchsichtiger Hintergrund</small></div><a class="btn" href="brand/social-bites-logo.png" download><span class="dot"></span><span>Laden</span></a></li>
@@ -447,7 +482,7 @@
   </main>
 </div>
 
-<footer class="foot"><span>Social Bites, Berlin · Brand Book Version 1.0, Oktober 2026</span><a href="index.html" target="_top">Website</a><a href="portal.html" target="_top">Kundenportal</a></footer>
+<footer class="foot"><span>Social Bites, Berlin · Brand Book Version 1.1, Oktober 2026</span><a href="index.html" target="_top">Website</a><a href="portal.html" target="_top">Kundenportal</a></footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -481,6 +516,34 @@
     var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){Object.keys(links).forEach(function(k){links[k].removeAttribute("aria-current");});var a=links[en.target.id];if(a)a.setAttribute("aria-current","true");}});},{rootMargin:"-45% 0px -50% 0px"});
     document.querySelectorAll(".ch").forEach(function(s){io.observe(s);});
   }
+})();
+</script>
+<script>
+/* Videos und Skripte: neue Skripte als Objekt OBEN in SKRIPTE ergänzen (id, titel, stand, status, dauer, ton, grundlage, philosophie[], szenen[{n,titel,zeit,bild,text}], alternativen[], kurz, ausgelassen, offen[], datei). */
+var SKRIPTE=[{"id": "pitch-v3", "titel": "Pitch Video: Menschen folgen Menschen", "stand": "09.10.2026", "status": "Skript freigegeben, Video wird mit dieser Fassung neu gebaut", "dauer": "ca. 2 Minuten, Kurzfassung ca. 75 Sekunden", "ton": "Wir Form, Stimme Grady (Higgsfield, ElevenLabs), Nader als Gesicht im Bild, keine Gedankenstriche", "grundlage": "Naders Projektskript und die Haltung aus dem Kampagnen Master Sheet (A5, A6, 2, 3, 7, 8, 9, 13, 15). Es geht um jeden Unternehmer und jede Marke, nicht nur um Läden.", "philosophie": ["Menschen folgen Menschen, nicht Logos. (A6)", "Wir verkaufen ein Gefühl, nicht ein Produkt. Niemand soll merken, dass ihm etwas verkauft wird. (A5, 8, 13)", "Es zählt nicht der Klick, sondern wer wirklich wiederkommt. (7, 15)"], "szenen": [{"n": 1, "titel": "Hook", "zeit": "0:00 bis 0:14", "bild": "Nader steht an wechselnden Orten (Store, Büro, Set, Straße), geht auf die Kamera zu und verschwindet im Objektiv. Transition als Wipe an den nächsten Ort. Dazu schnelle Clips, am Ende der Zähler auf 500+.", "text": "Niemand folgt einem Logo. Menschen folgen Menschen. Das ist der Grund, warum wir über 500 Millionen Views gebaut haben. Nicht aus einem Büro, sondern von Sets, aus Unternehmen und aus dem echten Leben, mitten aus Berlin. Wir sind Social Bites, und wir nehmen dich mit."}, {"n": 2, "titel": "Was wir glauben", "zeit": "0:14 bis 0:26", "bild": "Nader, kurzer Blick in die Kamera, dann Montage aus Gesichtern, Händen, Teams, Kunden und Gründern. Kein Produktfoto, immer Menschen.", "text": "Wir verkaufen kein Produkt. Wir verkaufen ein Gefühl. Niemand kauft wegen einer Liste von Eigenschaften, sondern weil er dazugehören will. Und wir bauen das, wozu Menschen zurückkommen. Für jeden Unternehmer und für jede Marke."}, {"n": 3, "titel": "Entstehung: Mmaah", "zeit": "0:26 bis 0:40", "bild": "Nader im Mmaah Store, Transition durch die Kamera. Franchise Aufbau, Content Clips, Opening Szenen.", "text": "Bei Mmaah waren wir von Anfang an dabei. Wir haben den ganzen Franchise Prozess mitgebaut, von der ersten Idee bis zur Marke mit eigenem Gefühl. Dazu Content für Social Media, für die Website und für alles, was sonst noch anfällt. Und mehrere Openings gestalten wir mit."}, {"n": 4, "titel": "Eine Szene entsteht: Mian Market", "zeit": "0:40 bis 0:52", "bild": "Nader im Laden, Opening Szenen, Influencer und Künstler vor Ort, Schlange vor der Tür, Zähler oder Balken nach oben.", "text": "Bei Mian Market haben wir das komplette Opening organisiert. Influencer und Künstler geholt, damit vom ersten Tag an etwas los ist. Und der erste Monat ist komplett durch die Decke gegangen."}, {"n": 5, "titel": "Alles aus einer Hand: The Pizzary", "zeit": "0:52 bis 1:12", "bild": "Nader neben dem Terminal (kurzer Cut, jedes Mal). Außenwerbung, Foto und Video Shooting, Opening Event, Gäste, Influencer, Social Media Kanal.", "text": "Bei The Pizzary haben wir die Terminals eingerichtet. Die Fotos und Videos dafür selbst gedreht. Die Außenwerbung gemacht. Das Opening Event organisiert und zahlreiche Influencer eingeladen. Und wir kümmern uns bis heute um den Social Media Kanal. Damit alles läuft."}, {"n": 6, "titel": "Dranbleiben: Spreegold und 44 Chicken", "zeit": "1:12 bis 1:22", "bild": "Schnelle Content Clips im Kalender Look, Nader zwischen zwei Locations mit Transition.", "text": "Ein Start ist ein Knall. Danach zählt der Rhythmus. Für Spreegold und 44 Chicken erstellen wir Monat für Monat Content, damit die Leute dranbleiben und wiederkommen."}, {"n": 7, "titel": "Die großen Namen", "zeit": "1:22 bis 1:40", "bild": "Nader sitzt im Burger King und schaut in die Kamera, Transition. Wolt Kamerabilder. Schneller Block mit Aldi, ESN, Nike und House of Sweets. Zuletzt Spreequell: Nader öffnet die Flasche, trinkt, schaut in die Kamera, Tarantino Zoom.", "text": "Für Burger King haben wir Social Media Content gedreht. Für Wolt, den großen Lieferdienst aus Berlin, standen wir hinter der Kamera. Dazu Aldi, ESN, Nike, House of Sweets. Und auch für Spreequell haben wir Content produziert."}, {"n": 8, "titel": "Die Menschen dahinter", "zeit": "1:40 bis 1:48", "bild": "Instagram Beiträge der Creator, Musikvideos (KORB, Heavens, Wolltest Du), Künstler und Influencer vor Ort.", "text": "Weil Menschen Menschen folgen, haben wir eine Reihe von extrem starken Künstlern und Influencern an unserer Seite."}, {"n": 9, "titel": "Und noch viel mehr", "zeit": "1:48 bis 2:02", "bild": "Liste, die sich blitzschnell aufbaut, jede Leistung mit einer Mini Szene. Dazwischen Wipe durch das Logo.", "text": "Das sind schon einige Bereiche, aber wir machen noch viel mehr. Für Gastro, Fashion, Food, Sport und Dienstleister, für Gründer und für große Marken. Virale Kurzvideos, Fotos und Drohnenaufnahmen, Konzepte und Skripte, Werbefilme, Musikvideos und Eventfilme. Logo und Corporate Identity, Druck, Verpackung, Beklebung und digitale Displays. Meta und TikTok Ads, Websites und Apps, SEO und KI Suche, KI Automation. Neue Produkte mitentwickeln, Aktionen und Gimmicks, die Aufmerksamkeit machen, und auf Anfrage auch Bewertungen, Treueprogramme, lokale Kooperationen und PR."}, {"n": 10, "titel": "Schluss", "zeit": "2:02 bis 2:20", "bild": "Das 3D Logo, dann die Endkarte. Nader geht noch einmal durch eine Tür, diesmal auf den Zuschauer zu.", "text": "Wir versprechen keine Wunder. Wir liefern Arbeit, die man sieht. Eine Crew, ein Ansprechpartner, alles abgedeckt. Egal ob Gründer oder Marke: Du gibst uns deine Idee, wir kümmern uns um den Rest, und dein Kopf bleibt frei für das, was du am besten kannst. Social Bites. Lass uns reden."}], "alternativen": ["Produktfotos verkaufen nichts. Menschen verkaufen. Wir zeigen dir, wie.", "Über 500 Millionen Views. Und wir waren bei den meisten selbst dabei, mit der Kamera in der Hand.", "Eine Marke ist kein Logo. Eine Marke ist ein Gefühl. Wir bauen das Gefühl."], "kurz": "Szenen 1, 2 (gekürzt), 4, 5, 7 und 10. Aufzählung in Szene 9 auf fünf Begriffe gekürzt.", "ausgelassen": "Zahlen und Beispiele aus dem Master Sheet, die als unbelegte Notizen gekennzeichnet sind (zum Beispiel \"SEO bringt 6 mal mehr Kunden\", \"jede Sekunde kostet 10 Prozent\", Maskottchen Videos mit 1 Million Aufrufen). Keine ROAS oder ROI Garantien (Haltung aus A6: wir sagen keine Garantien zu). Kein Gewinnspiel oder Glücksspiel Hinweis, kein Heilversprechen.", "offen": ["Passt \"Wir versprechen keine Wunder. Wir liefern Arbeit, die man sieht.\" als Schluss oder soll er wärmer klingen?", "\"und auf Anfrage auch Bewertungen, Treueprogramme, lokale Kooperationen und PR\" stammt aus dem Bereich \"Im Ausbau\" der Leistungen. Drin lassen oder streichen?", "Dauer: 2 Minuten ist lang für eine Startseite, ideal als Langfassung plus 75 Sekunden Kurzfassung. Beides bauen?"], "datei": "brand/Social-Bites-Pitch-Skript.md"}];
+(function(){
+  var host=document.getElementById("skripteList");if(!host)return;
+  function esc(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  host.innerHTML=SKRIPTE.map(function(k,idx){
+    var h='<details class="sk" id="sk-'+esc(k.id)+'"'+(idx===0?" open":"")+'><summary><div><span class="mono">Skript · Stand '+esc(k.stand)+'</span><br><b>'+esc(k.titel)+'</b></div><span class="chev" aria-hidden="true">›</span></summary><div class="sk-body">';
+    h+='<div class="sk-meta"><div><span class="mono">Status</span>'+esc(k.status)+'</div><div><span class="mono">Länge</span>'+esc(k.dauer)+'</div><div><span class="mono">Ton</span>'+esc(k.ton)+'</div><div><span class="mono">Grundlage</span>'+esc(k.grundlage)+'</div></div>';
+    if(k.philosophie&&k.philosophie.length)h+='<div><h5>Rote Linie</h5><div class="sk-phil">'+k.philosophie.map(function(p,i){return '<div><i>0'+(i+1)+'</i>'+esc(p)+'</div>';}).join("")+'</div></div>';
+    h+='<div><h5>Szenen</h5>'+k.szenen.map(function(z){return '<div class="sk-sc"><div class="t"><b>'+z.n+'</b>'+esc(z.zeit)+'</div><div><h4>'+esc(z.titel)+'</h4><p class="bild">'+esc(z.bild)+'</p><q>'+esc(z.text)+'</q></div></div>';}).join("")+'</div>';
+    if(k.alternativen&&k.alternativen.length)h+='<div><h5>Hook Alternativen</h5><ul class="l">'+k.alternativen.map(function(a){return '<li>'+esc(a)+'</li>';}).join("")+'</ul></div>';
+    if(k.kurz)h+='<div><h5>Kurzfassung</h5><p style="margin:0">'+esc(k.kurz)+'</p></div>';
+    if(k.ausgelassen)h+='<div><h5>Bewusst nicht drin</h5><p style="margin:0">'+esc(k.ausgelassen)+'</p></div>';
+    if(k.offen&&k.offen.length)h+='<div><h5>Noch offen</h5><ul class="l">'+k.offen.map(function(a){return '<li>'+esc(a)+'</li>';}).join("")+'</ul></div>';
+    h+='<div class="acts"><button class="btn sm" type="button" data-copy="'+idx+'"><span class="dot"></span><span>Sprechertext kopieren</span></button>'+(k.datei?'<a class="btn sm" href="'+esc(k.datei)+'" download><span class="dot"></span><span>Skript als Datei</span></a>':"")+'</div>';
+    return h+'</div></details>';
+  }).join("");
+  host.addEventListener("click",function(e){
+    var b=e.target.closest("[data-copy]");if(!b)return;
+    var k=SKRIPTE[+b.getAttribute("data-copy")],txt=k.szenen.map(function(z){return z.n+". "+z.titel+"\n"+z.text;}).join("\n\n");
+    var lbl=b.querySelector("span:last-child");
+    function done(){lbl.textContent="Kopiert";setTimeout(function(){lbl.textContent="Sprechertext kopieren";},1600);}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,function(){window.prompt("Zum Kopieren:",txt);});else window.prompt("Zum Kopieren:",txt);
+  });
+  if(location.hash&&location.hash.indexOf("#sk-")===0){var t=document.querySelector(location.hash);if(t){t.open=true;}}
 })();
 </script>
 </body>
