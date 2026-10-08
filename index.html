@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Noto+Sans+Arabic:wght@500;700&family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
 <script>document.documentElement.classList.add('js');</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Social Bites","description":"Social Media Content, Openings und Branding für Unternehmer, Marken und Gastro aus Berlin.","areaServed":"Berlin","address":{"@type":"PostalAddress","addressLocality":"Berlin","addressCountry":"DE"}}</script>
 <style>
@@ -639,6 +639,35 @@
   .testi-card blockquote{margin:0;font-weight:700;font-size:clamp(18px,1.7vw,22px);letter-spacing:-.03em;line-height:1.25;}
   .testi-card cite{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);}
   .lang-btn{font:800 12px/1 var(--mono);letter-spacing:.04em;width:auto;min-width:40px;padding:0 10px;}
+  /* Sprachwahl und fester Projekt-starten-Knopf (immer oben rechts, damit jeder Scroll ein Lead werden kann) */
+  .lang{position:relative;}
+  .lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:70;list-style:none;margin:0;padding:6px;min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px -16px rgba(35,35,33,.45);display:none;}
+  .lang.open .lang-menu{display:block;}
+  .lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border:0;background:none;border-radius:8px;font:600 15px/1.2 var(--display);color:var(--ink);cursor:pointer;text-align:left;}
+  .lang-menu button b{font:700 11px/1 var(--mono);width:26px;color:var(--mute);}
+  .lang-menu button:hover,.lang-menu button:focus-visible{background:var(--paper-2);outline:none;}
+  .lang-menu button[aria-checked="true"]{color:var(--accent-ink);}
+  .lang-menu button[aria-checked="true"] b{color:var(--accent-ink);}
+  .head-actions{padding-right:172px;}
+  .cta-fixed{position:fixed;top:8px;right:8px;z-index:62;display:inline-flex;align-items:center;gap:9px;padding:11px 16px 11px 18px;border-radius:9px;background:var(--accent);color:#232321;font:700 15px/1 var(--display);letter-spacing:-.01em;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(242,106,33,.8);transition:background-color .25s ease,color .25s ease,transform .3s var(--ease);}
+  .cta-fixed i{width:7px;height:7px;border-radius:50%;background:#232321;transition:transform .35s var(--ease);}
+  .cta-fixed:hover,.cta-fixed:focus-visible{background:var(--accent-ink);color:#FEFDFA;}
+  .cta-fixed:hover i,.cta-fixed:focus-visible i{background:#FEFDFA;transform:scale(1.5);}
+  .cta-fixed::after{content:"";position:absolute;inset:-4px;border-radius:12px;border:2px solid var(--accent);opacity:0;animation:ctaPulse 3.2s ease-out 2s infinite;pointer-events:none;}
+  @keyframes ctaPulse{0%{opacity:.7;transform:scale(.96);}70%,100%{opacity:0;transform:scale(1.08);}}
+  .menu-open .cta-fixed{display:none;}
+  @media (max-width:900px){
+    .site-head.is-hidden{transform:none;}
+    .head-actions{padding-right:0;}
+    .menu-btn{margin-left:118px;}
+    .cta-fixed{top:11px;right:58px;padding:10px 12px;font-size:13px;}
+    .lang-menu{right:-60px;}
+  }
+  @media (prefers-reduced-motion:reduce){.cta-fixed::after{animation:none;}}
+  html.lang-ar :is(h1,h2,h3,h4,p,li,span,a,button,label,small,dd,dt,b,em){unicode-bidi:plaintext;}
+  html.lang-ar body{font-family:var(--display),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;}
+  html.lang-ar :is(h1,h2,h3,h4,.hero-h,.big-h){font-family:var(--head),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;letter-spacing:0;}
+
   .pf-tall{--h:clamp(320px,36vw,460px);}
   .pf-links{--h:clamp(150px,16vw,190px);}
   .pf-link{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;width:clamp(200px,20vw,250px);height:var(--h);padding:16px;border-radius:14px;background:var(--ink);color:var(--paper);text-decoration:none;position:relative;flex:none;transition:transform .3s var(--ease);}
@@ -839,7 +868,8 @@
   .card-vid{border:0;}
 </style>
 <link rel="stylesheet" href="theme.css">
-<script src="i18n_en.js" defer></script>
+<script src="i18n_data.js" defer></script>
+<script src="i18n.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#arbeiten">Zum Inhalt springen</a>
@@ -854,14 +884,14 @@
     <a href="#ablauf">So läuft's</a>
   </nav>
   <div class="head-actions">
-    <button class="theme-btn lang-btn" type="button" id="lang-btn" aria-label="Switch to English">EN</button>
+    <div class="lang" id="lang"><button class="theme-btn lang-btn" type="button" id="lang-cur" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="Sprache wählen">DE</button><ul class="lang-menu" id="lang-menu" role="menu"></ul></div>
     <button class="theme-btn" type="button" data-theme-toggle></button>
     <a class="portal-link" href="portal.html"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Kundenportal</span></a>
-    <a class="btn" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a>
     <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
   <div class="progress" aria-hidden="true"></div>
 </header>
+<a class="cta-fixed" href="#anfrage" data-anfrage id="cta-fixed"><span>Projekt starten</span><i aria-hidden="true"></i></a>
 
 <nav class="mnav" id="mnav" aria-label="Menü" inert>
   <a href="#arbeiten"><small>01</small>Projekte</a>
@@ -1997,7 +2027,7 @@
     var tile = d.getElementById('pitch-open'), veil = d.getElementById('pitch-veil');
     if (!tile || !veil || !window.matchMedia || !matchMedia('(hover:hover)').matches) return;
     var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '', cap = null;
-    var CAP = {de: ['Dein Business. Sichtbar', 'Drück Play.'], en: ['Your business. Visible', 'Press play.']};
+    var CAP = {de: ['Dein Business. Sichtbar', 'Drück Play.']};
     function lift(){
       if (lifted || Date.now() - tDrop < 350) return;
       clearTimeout(timer);
@@ -2020,7 +2050,7 @@
       void clone.offsetWidth;
       clone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc.toFixed(3) + ')';
       veil.classList.add('on');
-      var ct = CAP[d.documentElement.lang === 'en' ? 'en' : 'de'];
+      var ct = CAP.de;
       if (cap) cap.remove();
       cap = d.createElement('div'); cap.className = 'pitch-cap'; cap.setAttribute('aria-hidden', 'true');
       cap.innerHTML = '<b>' + ct[0] + '<i>.</i></b><span>' + ct[1] + '</span>';
@@ -2089,11 +2119,13 @@
 
   // Berlin-Uhr
   var clock = d.getElementById('clock');
-  var fmt = new Intl.DateTimeFormat('de-DE', {timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', weekday: 'long', day: 'numeric', month: 'long'});
   function tick(){
-    var p = {}; fmt.formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
-    clock.textContent = p.hour + ':' + p.minute + ' Uhr, ' + p.weekday + ', ' + p.day + '. ' + p.month;
+    var loc = (window.sbLang && sbLang.locale()) || 'de-DE', de = loc === 'de-DE';
+    var f = new Intl.DateTimeFormat(loc, {timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', weekday: 'long', day: 'numeric', month: 'long'}), p = {};
+    f.formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    clock.textContent = p.hour + ':' + p.minute + (de ? ' Uhr' : '') + ', ' + p.weekday + ', ' + p.day + (de ? '. ' : ' ') + p.month;
   }
+  d.addEventListener('sblang', tick);
   tick(); setInterval(tick, 15000);
 })();
 </script>

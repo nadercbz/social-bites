@@ -1,7 +1,7 @@
 /* Hell und Dunkel für alle Seiten von Social Bites.
    Einstellung in localStorage "sb-theme": "auto" (folgt dem Gerät), "light" oder "dark".
    Alle Seiten laden dieses Skript im <head>, damit nichts aufblitzt. Eingebettete Seiten (Portal) folgen
-   dem Umschalter über das storage-Ereignis. Knöpfe mit data-theme-toggle schalten durch: hell, dunkel, auto. */
+   dem Umschalter über das storage-Ereignis. Knöpfe mit data-theme-toggle schalten zwischen hell und dunkel um (nur zwei Zustände). Solange noch nichts gewählt wurde, folgt die Seite dem Gerät. */
 (function () {
   "use strict";
   var K = "sb-theme", root = document.documentElement;
@@ -34,17 +34,17 @@
   }
 
   function ui() {
-    var m = mode(), btns = document.querySelectorAll("[data-theme-toggle]");
+    var m = eff(mode()), btns = document.querySelectorAll("[data-theme-toggle]");
     for (var i = 0; i < btns.length; i++) {
       var b = btns[i];
-      b.setAttribute("data-mode", m);
-      b.setAttribute("aria-label", "Darstellung: " + LBL[m] + ". Klicken zum Wechseln");
-      b.setAttribute("title", "Darstellung: " + LBL[m]);
+      if (b.getAttribute("data-mode") !== m) { b.setAttribute("data-mode", m); b.setAttribute("aria-pressed", m === "dark" ? "true" : "false"); }
+      var al = "Darstellung: " + LBL[m] + ". Klicken zum Wechseln";
+      if (b.getAttribute("aria-label") !== al) { b.setAttribute("aria-label", al); b.setAttribute("title", "Darstellung: " + LBL[m]); }
       var ic = b.querySelector(".tt-ic");
       if (!ic) { ic = document.createElement("span"); ic.className = "tt-ic"; b.insertBefore(ic, b.firstChild); }
-      ic.innerHTML = ICONS[m];
+      if (ic.getAttribute("data-m") !== m) { ic.innerHTML = ICONS[m]; ic.setAttribute("data-m", m); }
       var tx = b.querySelector(".tt-tx");
-      if (tx) tx.textContent = LBL[m];
+      if (tx && tx.textContent !== LBL[m]) tx.textContent = LBL[m];
     }
   }
 
@@ -59,7 +59,7 @@
   }
 
   function set(m) { try { localStorage.setItem(K, m); } catch (e) {} apply(); }
-  function next() { var m = mode(); set(m === "light" ? "dark" : m === "dark" ? "auto" : "light"); }
+  function next() { set(eff(mode()) === "dark" ? "light" : "dark"); }
 
   apply();
 
