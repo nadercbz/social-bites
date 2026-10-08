@@ -343,12 +343,13 @@ var STAT=[["neu","Neu"],["bestand","Bestand"],["zusage","Zusage"],["kontaktiert"
 var AVC={"Food":"#F4CDB4","Restaurant-Tester":"#F4CDB4","Streetfood":"#F4CDB4","Vegan und Vegetarisch":"#CFE6C4","Backen und Rezepte":"#F4CDB4","Café und Kaffee":"#E6D3BE","Bar und Cocktails":"#E3CBE8","Lifestyle":"#F3C6CF","Mode":"#F3C6CF","Beauty":"#F3C6CF","Fitness":"#A9DCDC","Gesundheit":"#A9DCDC","Reisen":"#BBD0F2","Tech":"#BBD0F2","Gaming":"#BBD0F2","Business und Gründer":"#D9D2C3","Finanzen und Krypto":"#D9D2C3","Immobilien":"#D9D2C3","Auto":"#D9D2C3","Comedy und Entertainment":"#F7DDA0","Musik":"#E3CBE8","Events und Nightlife":"#E3CBE8"};
 
 var ST=load("sb-inf-state",{}),PREF=load("sb-inf-prefs",{view:"liste"});
-var F=load("sb-inf-filter",{q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false});
+var F=load("sb-inf-filter",{q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""});
 var DATA=null,INF=[],view=(location.hash.slice(1)||PREF.view||"liste"),sortK="reach",sortD=-1,shown=80;
 function S(id){return ST[id]||(ST[id]={});}
 function saveST(){store("sb-inf-state",ST);}
 function stat(i){return (ST[i.id]&&ST[i.id].status)||i.status||"neu";}
 function stName(k){return (STAT.filter(function(s){return s[0]===k;})[0]||[0,k])[1];}
+function coopOf(i){return (ST[i.id]&&ST[i.id].coop)||"";}
 function isStar(i){return !!(ST[i.id]&&ST[i.id].star);}
 
 /* ---------- Daten laden: lokal Klartext, sonst verschlüsselt ---------- */
@@ -422,6 +423,7 @@ function ok(i,f,skip){
   if(skip!=="projekt"&&f.projekt&&(i.projekte||[]).indexOf(f.projekt)<0)return false;
   if(skip!=="min"&&f.min&&reach(i)<f.min)return false;
   if(skip!=="kontakt"&&f.kontakt&&!(i.kontakt_mail||i.agentur))return false;
+  if(skip!=="coop"&&f.coop){var c=coopOf(i);if(f.coop==="offen"?c:c!==f.coop)return false;}
   return true;
 }
 function filtered(skip){return INF.filter(function(i){return ok(i,F,skip);});}
@@ -435,7 +437,7 @@ function buildFilters(){
   $("#filters").innerHTML='<input type="search" id="fq" placeholder="Suche: Name, Handle, Nische, Agentur" aria-label="Suche">'+
     '<select id="fstadt" class="wide" aria-label="Stadt"></select><select id="fbl" aria-label="Bundesland"></select><select id="fbranche" class="wide" aria-label="Branche"></select>'+
     '<select id="fplat" aria-label="Plattform"></select><select id="ftyp" aria-label="Größe"></select><select id="fmin" aria-label="Mindestreichweite"></select>'+
-    '<select id="fstatus" aria-label="Status"></select><select id="fprojekt" class="wide" aria-label="Projekt"></select>'+
+    '<select id="fcoop" aria-label="Kooperation"></select><select id="fstatus" aria-label="Status"></select><select id="fprojekt" class="wide" aria-label="Projekt"></select>'+
     '<label class="chk"><input type="checkbox" id="fkontakt">mit Kontakt</label><button class="btn sm" type="button" data-reset><span class="dot"></span><span>Zurücksetzen</span></button>';
   $("#fq").value=F.q;$("#fkontakt").checked=!!F.kontakt;
 }
@@ -450,6 +452,8 @@ function updateFilters(){
   var ct=counts(filtered("typ"),function(i){return i.typ;});
   set("ftyp",'<option value="">Alle Größen</option>'+Object.keys(TYP).map(function(k){return '<option value="'+k+'"'+(F.typ===k?" selected":"")+'>'+TYP[k]+' '+TYPH[k]+' ('+(ct[k]||0)+')</option>';}).join(""));
   set("fmin",[[0,"Reichweite egal"],[5000,"ab 5 Tsd"],[10000,"ab 10 Tsd"],[50000,"ab 50 Tsd"],[100000,"ab 100 Tsd"],[500000,"ab 500 Tsd"],[1000000,"ab 1 Mio"]].map(function(m){return '<option value="'+m[0]+'"'+(F.min===m[0]?" selected":"")+'>'+m[1]+'</option>';}).join(""));
+  var cc=counts(filtered("coop"),function(i){return coopOf(i)||"offen";});
+  set("fcoop",'<option value="">Bezahlt und unbezahlt</option>'+[["paid","Bezahlt (Paid)"],["unpaid","Unbezahlt (Unpaid)"],["offen","Noch nicht eingeordnet"]].map(function(o){return '<option value="'+o[0]+'"'+(F.coop===o[0]?" selected":"")+'>'+o[1]+' ('+(cc[o[0]]||0)+')</option>';}).join(""));
   var cs=counts(filtered("status"),function(i){return stat(i);});
   set("fstatus",'<option value="">Alle Status</option>'+STAT.map(function(s){return '<option value="'+s[0]+'"'+(F.status===s[0]?" selected":"")+'>'+s[1]+' ('+(cs[s[0]]||0)+')</option>';}).join(""));
   set("fprojekt",opts("fprojekt","Alle Projekte",counts(filtered("projekt"),function(i){return i.projekte;}),F.projekt,true));
@@ -491,21 +495,26 @@ function toolbar(list){
 function vListe(){
   var list=sorted(filtered());
   var h='<h1 class="h2">Alle Influencer.</h1><p class="lead">'+list.length+' von '+INF.length+' Creatorn. Filter oben kombinieren, Spaltenköpfe sortieren, Klick auf den Namen zeigt alles, der Stern merkt vor. Follower stehen mit dem Stand ihrer Quelle da.</p>'+statStrip(list)+toolbar(list);
-  var cols=[["name","Name"],["stadt","Stadt"],["","Genres"],["typ","Größe"],["reach","Reichweite"],["","Kontakt"],["","Status"]];
+  var cols=[["name","Name"],["stadt","Stadt"],["","Genres"],["typ","Größe"],["reach","Reichweite"],["","Kooperation"],["","Kontakt"],["","Status"]];
   h+='<div class="tbl-wrap"><table class="lt"><thead><tr><th></th>'+cols.map(function(c){return '<th'+(c[0]?' data-sort="'+c[0]+'"':"")+(sortK===c[0]?' aria-sort="'+(sortD<0?"descending":"ascending")+'"':"")+'>'+c[1]+'</th>';}).join("")+'</tr></thead><tbody>';
   h+=list.slice(0,shown).map(function(i){
     var rp=reachPlat(i),kt=i.kontakt_mail?'<a href="mailto:'+esc(i.kontakt_mail)+'">'+esc(i.kontakt_mail)+'</a>':(i.agentur?esc(i.agentur):"");
-    return '<tr><td><button class="fav" type="button" data-fav="'+esc(i.id)+'" aria-pressed="'+isStar(i)+'" aria-label="Merken">★</button></td><td class="nm" data-open="'+esc(i.id)+'">'+esc(i.name)+'<small>'+handleLinks(i,true)+'</small></td><td>'+esc(i.stadt||"")+(i.stadt&&i.bundesland&&i.bundesland!==i.stadt?'<small style="display:block;color:var(--mute);font-size:12px">'+esc(i.bundesland)+'</small>':"")+'</td><td>'+(i.genres||[]).slice(0,2).map(function(g){return '<span class="pill" style="margin:1px 3px 1px 0">'+esc(g)+'</span>';}).join("")+((i.genres||[]).length>2?'<span class="pill">+'+((i.genres||[]).length-2)+'</span>':"")+'</td><td>'+(i.typ?'<span class="pill sz">'+TYP[i.typ]+'</span>':"")+'</td><td class="num">'+(reach(i)?fmtN(reach(i))+'<small>'+(PLAT[rp]||"")+(i.follower_stand?" · "+esc(i.follower_stand):"")+'</small>':'<span style="color:var(--mute);font-weight:500">offen</span>')+'</td><td style="font-size:13px">'+kt+'</td><td>'+(stat(i)==="neu"?"":'<span class="pill or">'+stName(stat(i))+'</span>')+warnPills(i)+'</td></tr>';
+    return '<tr><td><button class="fav" type="button" data-fav="'+esc(i.id)+'" aria-pressed="'+isStar(i)+'" aria-label="Merken">★</button></td><td class="nm" data-open="'+esc(i.id)+'">'+esc(i.name)+'<small>'+handleLinks(i,true)+'</small></td><td>'+esc(i.stadt||"")+(i.stadt&&i.bundesland&&i.bundesland!==i.stadt?'<small style="display:block;color:var(--mute);font-size:12px">'+esc(i.bundesland)+'</small>':"")+'</td><td>'+(i.genres||[]).slice(0,2).map(function(g){return '<span class="pill" style="margin:1px 3px 1px 0">'+esc(g)+'</span>';}).join("")+((i.genres||[]).length>2?'<span class="pill">+'+((i.genres||[]).length-2)+'</span>':"")+'</td><td>'+(i.typ?'<span class="pill sz">'+TYP[i.typ]+'</span>':"")+'</td><td class="num">'+(reach(i)?fmtN(reach(i))+'<small>'+(PLAT[rp]||"")+(i.follower_stand?" · "+esc(i.follower_stand):"")+'</small>':'<span style="color:var(--mute);font-weight:500">offen</span>')+'</td><td>'+coopCell(i)+'</td><td style="font-size:13px">'+kt+'</td><td>'+(stat(i)==="neu"?"":'<span class="pill or">'+stName(stat(i))+'</span>')+warnPills(i)+'</td></tr>';
   }).join("")+'</tbody></table></div>';
   if(list.length>shown)h+='<button class="btn more" type="button" data-more><span class="dot"></span><span>Mehr zeigen ('+(list.length-shown)+')</span></button>';
   if(!list.length)h+='<div class="empty"><b>Keine Treffer mit diesen Filtern.</b><span>Lockere die Filter oder setze sie zurück.</span></div>';
   return h;
 }
+function coopCell(i){
+  var o=ST[i.id]||{},c=o.coop;
+  if(!c)return '<span style="color:var(--mute);font-size:13px">offen</span>';
+  return '<span class="pill '+(c==="paid"?"or":"")+'">'+(c==="paid"?"Paid":"Unpaid")+'</span>'+(o.kosten?'<small style="display:block;font-size:12px;color:var(--mute)">'+esc(o.kosten)+'</small>':"");
+}
 function card(i){
   var rp=reachPlat(i);
   return '<article class="ic"><div class="top2"><div class="av" style="background:'+avColor(i)+'">'+esc(initials(i.name))+'</div><div class="hd"><h3 data-open="'+esc(i.id)+'">'+esc(i.name)+'</h3><small>'+esc([i.stadt,i.bundesland&&i.bundesland!==i.stadt?i.bundesland:""].filter(Boolean).join(", ")||"Stadt offen")+'</small></div><span style="flex:1"></span><button class="fav" type="button" data-fav="'+esc(i.id)+'" aria-pressed="'+isStar(i)+'" aria-label="Merken">★</button></div>'+
     '<div class="num">'+(reach(i)?fmtN(reach(i)):"offen")+'<small>'+(reach(i)?(PLAT[rp]||"")+(i.follower_stand?" · "+esc(i.follower_stand):""):"keine Zahl in der Quelle")+'</small></div>'+
-    '<div class="gn">'+(i.typ?'<span class="pill sz">'+TYP[i.typ]+'</span>':"")+(i.genres||[]).slice(0,3).map(function(g){return '<span class="pill">'+esc(g)+'</span>';}).join("")+(stat(i)!=="neu"?'<span class="pill or">'+stName(stat(i))+'</span>':"")+warnPills(i)+'</div>'+
+    '<div class="gn">'+(i.typ?'<span class="pill sz">'+TYP[i.typ]+'</span>':"")+(i.genres||[]).slice(0,3).map(function(g){return '<span class="pill">'+esc(g)+'</span>';}).join("")+(stat(i)!=="neu"?'<span class="pill or">'+stName(stat(i))+'</span>':"")+(coopOf(i)?'<span class="pill">'+(coopOf(i)==="paid"?"Paid":"Unpaid")+(S(i.id).kosten?" · "+esc(S(i.id).kosten):"")+'</span>':"")+warnPills(i)+'</div>'+
     (i.nische?'<p style="margin:0;font-size:13.5px;color:var(--mute)">'+esc(i.nische)+'</p>':"")+
     '<div class="contact" style="grid-column:auto">'+(handleLinks(i)||'<span class="none">kein Handle</span>')+'</div>'+
     '<div class="acts"><button class="btn sm or" type="button" data-open="'+esc(i.id)+'"><span class="dot"></span><span>Details</span></button>'+(i.kontakt_mail?'<button class="btn sm" type="button" data-copy="'+esc(i.kontakt_mail)+'"><span class="dot"></span><span>Mail kopieren</span></button>':"")+'</div></article>';
@@ -554,6 +563,7 @@ function openDet(id){
      (i.nische?'<dt>Nische</dt><dd>'+esc(i.nische)+'</dd>':"")+
      (i.sprache?'<dt>Sprache</dt><dd>'+esc(i.sprache)+'</dd>':"")+
      '<dt>Projekte</dt><dd>'+((i.projekte||[]).map(esc).join("<br>")||"noch keine")+'</dd></dl></div>'+
+     '<div class="box"><h4 class="mono">Kooperation und Kosten</h4><div class="stbtns" id="coopb"><button class="btn sm" type="button" data-coop="paid" data-id="'+esc(id)+'" aria-pressed="'+(o.coop==="paid")+'"><span class="dot"></span><span>Bezahlt (Paid)</span></button><button class="btn sm" type="button" data-coop="unpaid" data-id="'+esc(id)+'" aria-pressed="'+(o.coop==="unpaid")+'"><span class="dot"></span><span>Unbezahlt (Unpaid)</span></button><button class="btn sm" type="button" data-coop="" data-id="'+esc(id)+'" aria-pressed="'+(!o.coop)+'"><span class="dot"></span><span>Offen</span></button></div><label style="font-size:13px;color:var(--mute)">Kosten pro Beitrag oder Paket</label><input class="note" id="detKosten" style="min-height:40px" placeholder="z. B. 350 € pro Reel" value="'+esc(o.kosten||"")+'"><label style="font-size:13px;color:var(--mute)">Link zum besten Content Beispiel</label><input class="note" id="detLink" style="min-height:40px" placeholder="https://www.instagram.com/reel/..." value="'+esc(o.link||"")+'">'+(o.link?'<a class="btn sm" href="'+esc(o.link)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Beispiel öffnen ↗</span></a>':"")+'</div>'+
      '<div class="box"><h4 class="mono">Status und Notiz</h4><div class="stbtns">'+STAT.map(function(s){return '<button class="btn sm" type="button" data-set="'+s[0]+'" data-id="'+esc(id)+'" aria-pressed="'+(stat(i)===s[0])+'"><span class="dot"></span><span>'+s[1]+'</span></button>';}).join("")+'</div><textarea class="note" id="detNote" placeholder="Notiz: Wen gesprochen, Preisvorstellung, Eindruck?">'+esc(o.note||"")+'</textarea><div><button class="fav" type="button" data-fav="'+esc(id)+'" aria-pressed="'+isStar(i)+'" style="font-size:15px;color:inherit">★ <span style="font-family:var(--display);font-weight:650">'+(isStar(i)?"Auf der Merkliste":"Auf die Merkliste")+'</span></button></div></div></div>'+
    '<div class="col"><div class="box"><h4 class="mono">Kanäle und Kontakt</h4><dl>'+
      '<dt>Instagram</dt><dd>'+(i.instagram?'<a href="'+esc(igUrl(i.instagram))+'" target="_blank" rel="noopener">@'+esc(i.instagram)+' ↗</a>':"offen")+'</dd>'+
@@ -568,6 +578,8 @@ function openDet(id){
      ((i.tags||[]).length?'<div style="display:flex;gap:5px;flex-wrap:wrap">'+i.tags.map(function(t){return '<span class="pill">'+esc(t)+'</span>';}).join("")+'</div>':"")+
      '<dl><dt>Geprüft</dt><dd>'+(i.geprueft?esc(fmtD(i.geprueft)):"nicht in der Quelle gesehen")+'</dd><dt>Quellen</dt><dd>'+((i.quelle_url||[]).map(function(u){return /^https?:/.test(u)?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(u.replace(/^https?:\/\/(www\.)?/,"").slice(0,60))+' ↗</a>':esc(u.replace(/^datei:/,"Liste: "));}).join("<br>")||"keine")+'</dd></dl></div></div>';
   var ta=$("#detNote");ta.addEventListener("input",function(){S(id).note=ta.value;saveST();});
+  $("#detKosten").addEventListener("input",function(){S(id).kosten=this.value;saveST();});
+  $("#detLink").addEventListener("change",function(){S(id).link=this.value.trim();saveST();openDet(id);});
   var d=$("#det");d.setAttribute("data-id",id);try{d.showModal();}catch(e){d.setAttribute("open","");}
 }
 $("#det").addEventListener("close",function(){render(true);});
@@ -580,7 +592,7 @@ function exportIt(kind){
   var star=/-star$/.test(kind),base=kind.replace(/-star$/,""),list=sorted(star?INF.filter(isStar):filtered()),d=new Date().toISOString().slice(0,10);
   if(!list.length){toast("Nichts zu exportieren");return;}
   if(base==="csv"){
-    var rows=["Name;Instagram;TikTok;YouTube;Stadt;Bundesland;Genres;Follower Instagram;Follower TikTok;Follower YouTube;Stand;Größe;Kontakt;Agentur;Status;Projekte;Notiz;Quelle"].concat(list.map(function(i){return [i.name,i.instagram,i.tiktok,i.youtube,i.stadt,i.bundesland,(i.genres||[]).join(", "),i.follower_instagram,i.follower_tiktok,i.follower_youtube,i.follower_stand,i.typ?TYP[i.typ]:"",i.kontakt_mail,i.agentur,stName(stat(i)),(i.projekte||[]).join(" | "),(S(i.id).note||i.notiz||""),(i.quelle_url||[])[0]].map(q).join(";");}));
+    var rows=["Name;Instagram;TikTok;YouTube;Stadt;Bundesland;Genres;Follower Instagram;Follower TikTok;Follower YouTube;Stand;Größe;Kontakt;Agentur;Status;Kooperation;Kosten;Content Beispiel;Projekte;Notiz;Quelle"].concat(list.map(function(i){return [i.name,i.instagram,i.tiktok,i.youtube,i.stadt,i.bundesland,(i.genres||[]).join(", "),i.follower_instagram,i.follower_tiktok,i.follower_youtube,i.follower_stand,i.typ?TYP[i.typ]:"",i.kontakt_mail,i.agentur,stName(stat(i)),coopOf(i)==="paid"?"Paid":coopOf(i)==="unpaid"?"Unpaid":"",S(i.id).kosten||"",S(i.id).link||"",(i.projekte||[]).join(" | "),(S(i.id).note||i.notiz||""),(i.quelle_url||[])[0]].map(q).join(";");}));
     dl("Social_Bites_Influencer_"+(star?"Merkliste_":"")+d+".csv","﻿"+rows.join("\n"),"text/csv;charset=utf-8");toast(list.length+" Zeilen als CSV geladen");
   } else if(base==="handles"){
     var hs=list.filter(function(i){return i.instagram;}).slice(0,400).map(function(i){return "@"+i.instagram;});
@@ -608,7 +620,7 @@ document.addEventListener("input",function(e){
 });
 document.addEventListener("change",function(e){
   var id=e.target.id,v=e.target.value;
-  var map={fstadt:"stadt",fbl:"bl",fbranche:"branche",fplat:"plat",ftyp:"typ",fstatus:"status",fprojekt:"projekt"};
+  var map={fstadt:"stadt",fbl:"bl",fbranche:"branche",fplat:"plat",ftyp:"typ",fstatus:"status",fprojekt:"projekt",fcoop:"coop"};
   if(map[id]){F[map[id]]=v;}
   else if(id==="fmin"){F.min=+v;}
   else if(id==="fkontakt"){F.kontakt=e.target.checked;}
@@ -616,14 +628,15 @@ document.addEventListener("change",function(e){
   saveF();shown=80;render(false);
 });
 document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-view],[data-open],[data-fav],[data-set],[data-genre],[data-reset],[data-sort],[data-more],[data-export],[data-copy],[data-closedet]");if(!t)return;
+  var t=e.target.closest("[data-view],[data-open],[data-fav],[data-set],[data-genre],[data-reset],[data-sort],[data-more],[data-export],[data-copy],[data-closedet],[data-coop]");if(!t)return;
   if(t.hasAttribute("data-view")){view=t.getAttribute("data-view");shown=80;render(true);window.scrollTo(0,0);return;}
   if(t.hasAttribute("data-closedet")){$("#det").close();return;}
   if(t.hasAttribute("data-open")){openDet(t.getAttribute("data-open"));return;}
   if(t.hasAttribute("data-fav")){var sid=t.getAttribute("data-fav"),o=S(sid);o.star=!o.star;saveST();toast(o.star?"Auf der Merkliste":"Von der Merkliste genommen");if($("#det").open){openDet(sid);}else{var y=window.scrollY;render(true);window.scrollTo(0,y);}return;}
+  if(t.hasAttribute("data-coop")){var cid=t.getAttribute("data-id");S(cid).coop=t.getAttribute("data-coop");saveST();toast(S(cid).coop?(S(cid).coop==="paid"?"Als Paid markiert":"Als Unpaid markiert"):"Kooperation offen");openDet(cid);return;}
   if(t.hasAttribute("data-set")){var id=t.getAttribute("data-id"),s=t.getAttribute("data-set");S(id).status=s;saveST();toast(stName(s));openDet(id);return;}
   if(t.hasAttribute("data-genre")){var g=t.getAttribute("data-genre"),ix=F.genres.indexOf(g);if(ix>-1)F.genres.splice(ix,1);else F.genres.push(g);saveF();shown=80;render(false);return;}
-  if(t.hasAttribute("data-reset")){F={q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false};saveF();$("#fq").value="";$("#fkontakt").checked=false;shown=80;render(false);return;}
+  if(t.hasAttribute("data-reset")){F={q:"",stadt:"",bl:"",genres:[],branche:"",plat:"",typ:"",status:"",projekt:"",min:0,kontakt:false,coop:""};saveF();$("#fq").value="";$("#fkontakt").checked=false;shown=80;render(false);return;}
   if(t.hasAttribute("data-sort")){var sk=t.getAttribute("data-sort");if(sortK===sk)sortD=-sortD;else{sortK=sk;sortD=sk==="name"||sk==="stadt"?1:-1;}render(true);return;}
   if(t.hasAttribute("data-more")){shown+=100;render(true);return;}
   if(t.hasAttribute("data-export")){exportIt(t.getAttribute("data-export"));return;}
