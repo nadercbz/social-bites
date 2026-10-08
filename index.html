@@ -382,8 +382,8 @@
   .copy{margin-left:10px;font-size:11px;background:none;border:1.5px solid var(--ink);border-radius:999px;padding:5px 9px;cursor:pointer;vertical-align:middle;transition:background-color .2s ease;}
   .copy:hover{background:var(--accent);border-color:var(--accent);}
   /* Footer: dunkel, Logo fährt beim Hereinscrollen mit Parallax hoch */
-  .foot{--ink:#F8F5F0;--paper:#17140F;--mute:#A89F90;--line:rgba(248,245,240,.18);background:var(--paper);color:var(--ink);position:relative;overflow:hidden;}
-  :root[data-theme="dark"] .foot{--paper:#0E0C0B;}
+  .foot{--ink:#F8F5F0;--paper:#120F0A;--mute:#A89F90;--line:rgba(248,245,240,.18);background:var(--paper);color:var(--ink);position:relative;overflow:hidden;}
+  :root[data-theme="dark"] .foot{--paper:#120F0A;}
   .foot-in{padding:clamp(56px,7vw,100px) var(--gutter) 0;display:grid;gap:clamp(36px,5vw,64px);}
   .foot-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
   .foot-top h2{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.92;font-size:clamp(44px,8vw,128px);}
@@ -400,7 +400,7 @@
   .foot-grid a:hover{color:var(--accent);}
   .soon{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin-left:6px;}
   .clock{font-variant-numeric:tabular-nums;color:var(--mute);font-size:14px;margin-top:6px;}
-  .foot-wm{width:100%;max-width:min(520px,70vw);margin:0 auto;aspect-ratio:900/806;background:url(logo_social_bites_cream.webp) center/contain no-repeat;transform:translateY(calc((1 - var(--foot-p,1)) * 26%));will-change:transform;}
+  .foot-wm{width:100%;max-width:min(860px,94vw);margin:0 auto;aspect-ratio:2400/1792;background:url(media/logo3d.webp) center/contain no-repeat;-webkit-mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,#000 70%,transparent 100%);mask-image:radial-gradient(ellipse 62% 62% at 50% 50%,#000 70%,transparent 100%);transform:translateY(calc((1 - var(--foot-p,1)) * 18%));will-change:transform;}
   .foot-bar{padding:16px 0 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mute);}
   .foot-bar a:hover{color:var(--ink);}
 
