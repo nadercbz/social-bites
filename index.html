@@ -538,6 +538,30 @@
   .wirk-cta{margin:clamp(26px,3.4vw,44px) 0 0;display:flex;gap:14px 22px;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:clamp(18px,1.8vw,24px);letter-spacing:-.03em;}
   @media (max-width:900px){.wirk-bs{grid-template-columns:repeat(2,minmax(0,1fr));}}
   @media (max-width:640px){.wirk-mv{grid-template-columns:1fr;}.wirk-bs{grid-template-columns:1fr;}.wirk-stats li > span{font-size:9.5px;}}
+
+  /* Pitch-Video: Platzhalter-Karte, vergrößert sich beim Drüberfahren, öffnet die Kino-Ansicht */
+  .pitch-wrap{display:flex;justify-content:center;margin:clamp(22px,3vw,40px) 0 0;}
+  .pitch{position:relative;display:flex;align-items:center;gap:16px;width:min(560px,100%);aspect-ratio:16/6;padding:0 clamp(18px,3vw,32px);border:0;border-radius:18px;overflow:hidden;background:#1E1B1A;color:#F6F0E3;cursor:pointer;text-align:left;font:inherit;transition:transform .5s var(--ease),box-shadow .5s var(--ease);box-shadow:0 18px 40px -22px rgba(30,27,26,.6);}
+  .pitch:hover,.pitch:focus-visible{transform:scale(1.07);box-shadow:0 34px 70px -26px rgba(30,27,26,.7);}
+  .pitch-bg{position:absolute;inset:0;background:radial-gradient(120% 140% at 85% 20%,rgba(240,74,10,.55),transparent 55%),linear-gradient(135deg,#1E1B1A,#2b2522);}
+  .pitch-bg::after{content:"";position:absolute;inset:0;background-image:var(--dots);background-size:7px 7px;opacity:.5;}
+  .pitch-play{position:relative;flex:none;width:clamp(48px,6vw,64px);height:clamp(48px,6vw,64px);border-radius:50%;background:#F04A0A;color:#1E1B1A;display:grid;place-items:center;font-size:20px;padding-left:4px;}
+  .pitch-txt{position:relative;display:grid;gap:4px;}
+  .pitch-txt b{color:#F6F0E3;font-weight:800;font-size:clamp(18px,2vw,26px);letter-spacing:-.04em;line-height:1.05;}
+  .pitch-txt .mono{color:rgba(246,240,227,.7);font-size:11px;}
+  .pitchd{border:0;padding:0;width:100vw;max-width:none;height:100dvh;max-height:none;background:rgba(10,8,7,.94);color:#F6F0E3;}
+  .pitchd[open]{display:grid;place-items:center;}
+  .pitchd::backdrop{background:#000;}
+  .pitchd-box{width:min(1100px,92vw);display:grid;gap:18px;justify-items:center;}
+  .pitchd-stage{width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#111;display:grid;place-items:center;box-shadow:0 40px 120px rgba(0,0,0,.7);}
+  .pitchd-stage video{width:100%;height:100%;object-fit:contain;background:#000;}
+  .pitchd-stage p{margin:0;padding:24px;text-align:center;font-size:clamp(16px,2vw,22px);font-weight:650;max-width:34ch;color:rgba(246,240,227,.85);}
+  .pitchd-x{position:absolute;right:18px;top:14px;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(246,240,227,.5);background:transparent;color:#F6F0E3;font-size:24px;cursor:pointer;}
+  .testi{padding:clamp(60px,8vw,110px) var(--gutter);}
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:28px;}
+  .testi-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:grid;gap:14px;align-content:space-between;}
+  .testi-card blockquote{margin:0;font-weight:700;font-size:clamp(18px,1.7vw,22px);letter-spacing:-.03em;line-height:1.25;}
+  .testi-card cite{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);}
   .pf-tall{--h:clamp(320px,36vw,460px);}
   .pf-links{--h:clamp(150px,16vw,190px);}
   .pf-link{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;width:clamp(200px,20vw,250px);height:var(--h);padding:16px;border-radius:14px;background:var(--ink);color:var(--paper);text-decoration:none;position:relative;flex:none;transition:transform .3s var(--ease);}
@@ -772,6 +796,13 @@
       <span class="row">Content <span class="tile"><video data-src="media/tile_zalando.mp4" poster="media/tile_zalando.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
+    <div class="pitch-wrap">
+      <button class="pitch" type="button" id="pitch-open" aria-label="Pitch-Video ansehen">
+        <span class="pitch-bg" aria-hidden="true"></span>
+        <span class="pitch-play" aria-hidden="true">&#9654;</span>
+        <span class="pitch-txt"><b>Unser Pitch in 40 Sekunden</b><span class="mono">Video ansehen</span></span>
+      </button>
+    </div>
     <div class="hero-foot">
       <p class="hero-sub">Social Media für Gastro und Unternehmen aus Berlin.<br><span class="hot">Über 100 Millionen organische Views auf TikTok und Instagram.</span></p>
       <div class="trust">
@@ -791,7 +822,7 @@
   <section class="projects" id="arbeiten">
     <div class="sec-pill"><span class="pill">Unser • Reel</span></div>
     <h2 class="big-h">Projekte<sup>(13)</sup></h2>
-    <p class="lede">Views sind nett. Was zählt: wer vorbeikommt, wer bestellt, wer wiederkommt.</p>
+    <p class="lede">Selected work. Real brands, real reach, real guests.</p>
 
     <div class="pj">
       <article class="project">
@@ -1298,6 +1329,21 @@
   </section>
 </main>
 
+
+<dialog class="pitchd" id="pitchd" aria-label="Pitch-Video">
+  <button class="pitchd-x" type="button" id="pitchd-x" aria-label="Schließen">&times;</button>
+  <div class="pitchd-box">
+    <div class="pitchd-stage" id="pitchd-stage"></div>
+    <a class="btn" href="#anfrage" data-anfrage id="pitchd-cta"><span>Projekt starten</span><i class="dot"></i></a>
+  </div>
+</dialog>
+
+<section class="testi" id="testimonials" hidden>
+  <div class="sec-pill"><span class="pill">Das sagen • Kunden</span></div>
+  <h2 class="big-h">Stimmen.</h2>
+  <div class="testi-grid" id="testi-grid"></div>
+</section>
+
 <footer>
   <div class="foot-bar mono">
     <span>Website Version 2.0</span>
@@ -1749,6 +1795,27 @@
     stopPlayer();
     if (!d.hidden) live.forEach(play);
   });
+
+
+  // Pitch-Video: PITCH_SRC eintragen (zum Beispiel media/pitch.mp4), dann läuft das Video in der Kino-Ansicht
+  var PITCH_SRC = '';
+  var pd = d.getElementById('pitchd'), pst = d.getElementById('pitchd-stage');
+  function pitchClose(){ var v = pst.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } pst.innerHTML = ''; if (pd.open) pd.close(); }
+  d.getElementById('pitch-open').addEventListener('click', function(){
+    if (PITCH_SRC) { pst.innerHTML = '<video src="' + PITCH_SRC + '" controls autoplay playsinline></video>'; }
+    else { pst.innerHTML = '<p>Unser Pitch-Video kommt in Kürze. Bis dahin: erzähl uns von deinem Projekt.</p>'; }
+    pd.showModal();
+  });
+  d.getElementById('pitchd-x').addEventListener('click', pitchClose);
+  pd.addEventListener('click', function(e){ if (e.target === pd) pitchClose(); });
+  pd.addEventListener('cancel', function(){ var v = pst.querySelector('video'); if (v) v.pause(); });
+  d.getElementById('pitchd-cta').addEventListener('click', pitchClose);
+  // Kundenstimmen: nur echte Zitate eintragen, solange die Liste leer ist, bleibt der Abschnitt unsichtbar
+  var TESTIMONIALS = [];  // {text:'...', name:'Vorname Nachname', rolle:'Laden, Ort'}
+  if (TESTIMONIALS.length) {
+    d.getElementById('testi-grid').innerHTML = TESTIMONIALS.map(function(t){ return '<figure class="testi-card"><blockquote>&bdquo;' + t.text + '&ldquo;</blockquote><cite>' + t.name + (t.rolle ? ' &middot; ' + t.rolle : '') + '</cite></figure>'; }).join('');
+    d.getElementById('testimonials').hidden = false;
+  }
 
   // Mail kopieren
   var copy = d.getElementById('copy');
