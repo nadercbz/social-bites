@@ -245,6 +245,26 @@
   .cap{position:absolute;z-index:2;left:14px;bottom:12px;font-size:11px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 10px;}
 
 
+  /* Hero Panels: Handy Mockup, das beim Scrollen aus der Schräge aufrichtet, daneben steht der Kunde */
+  .pmod .panel.hero-panel{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(22px,3.4vw,52px);min-height:min(86vh,820px);perspective:1200px;}
+  .pm-3d{will-change:transform;transform-origin:50% 60%;transform:perspective(1200px) rotateX(var(--rx,0deg)) scale(var(--sc,1));}
+  .pm-frame{position:relative;width:clamp(190px,17vw,272px);aspect-ratio:9/19.5;border-radius:2.5rem;border:1px solid var(--line);background:var(--paper-2);padding:.35rem;box-shadow:0 10px 20px rgba(35,35,33,.16),0 40px 60px -20px rgba(35,35,33,.38);}
+  .pm-btn{position:absolute;width:3px;background:rgba(35,35,33,.28);}
+  .pm-btn.b1{left:-2px;top:16%;height:28px;border-radius:2px 0 0 2px;}
+  .pm-btn.b2{left:-2px;top:24%;height:44px;border-radius:2px 0 0 2px;}
+  .pm-btn.b3{right:-2px;top:22%;height:56px;border-radius:0 2px 2px 0;}
+  .pm-screen{position:relative;width:100%;height:100%;border-radius:2.15rem;overflow:hidden;background:#000;box-shadow:inset 0 0 0 1px rgba(35,35,33,.12);}
+  .pm-island{position:absolute;left:50%;top:.5rem;z-index:3;width:30%;height:1.05rem;transform:translateX(-50%);border-radius:99px;background:#000;}
+  .pmod .pm-screen .phone{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;border-radius:0;box-shadow:none;transform:none;border:0;}
+  .pmod .pm-screen .phone .play{top:2rem;}
+  .pm-who{flex:1 1 220px;max-width:340px;display:grid;gap:10px;align-content:center;}
+  .pm-who-k{font-size:11px;color:var(--accent-ink);}
+  .pm-who h4{margin:0;font-size:clamp(30px,3.6vw,52px);line-height:.95;letter-spacing:-.045em;}
+  .pm-who-stat{margin:0;font:500 12px/1.3 var(--mono);color:var(--mute);}
+  .pm-who-stat b{color:var(--accent-ink);font-weight:700;}
+  .pm-who-desc{margin:0;color:var(--mute);font-weight:600;font-size:15px;}
+  @media (max-width:900px){.pmod .panel.hero-panel{min-height:0;}.pm-who{max-width:none;flex-basis:100%;}}
+  @media (prefers-reduced-motion:reduce){.pm-3d{transform:none !important;}}
   /* Projekte als vier Module: links klebt die Übersicht mit mehreren Projekten, rechts laufen die Clips */
   .pjm{display:grid;gap:clamp(70px,9vw,130px);margin-top:clamp(50px,7vw,90px);}
   .pmod{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);}
@@ -1159,20 +1179,11 @@
         </div>
         </div>
         <div class="p-media">
-          <div data-pm="zalando-x-nike" class="panel" style="--pbg:#1B1715;--pdot:#7A3A14">
-            <button class="phone solo ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button>
-            <span class="cap mono">Zalando × Nike · TikTok</span>
-          </div>
+          <div data-pm="zalando-x-nike" class="panel hero-panel" style="--pbg:#1B1715;--pdot:#7A3A14"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Zalando × Nike</h4><p class="pm-who-stat"><b>67.400</b> Views auf TikTok</p><p class="pm-who-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p><div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span></div><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div></div>
         
-          <div data-pm="spreequell" class="panel" style="--pbg:#0A5F70;--pdot:#1798B0">
-            <button class="phone solo ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button>
-            <span class="cap mono">Spreequell · Reel</span>
-          </div>
+          <div data-pm="spreequell" class="panel hero-panel" style="--pbg:#0A5F70;--pdot:#1798B0"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Spreequell</h4><p class="pm-who-stat"><b>173.000</b> Views auf Instagram</p><p class="pm-who-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p><div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span></div><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div></div>
         
-          <div data-pm="crazy-canes" class="panel" style="--pbg:#8A1B1B;--pdot:#C42E2E">
-            <button class="phone solo ref" type="button" data-play="crazycanes_dina" aria-label="Crazy Canes mit Dina: Video mit Ton abspielen (0:30)"><video data-src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button>
-            <span class="cap mono">Crazy Canes · Reel</span>
-          </div>
+          <div data-pm="crazy-canes" class="panel hero-panel" style="--pbg:#8A1B1B;--pdot:#C42E2E"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="crazycanes_dina" aria-label="Crazy Canes mit Dina: Video mit Ton abspielen (0:30)"><video data-src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Crazy Canes</h4><p class="pm-who-stat"><b>0:30</b> Reel mit Dina</p><p class="pm-who-desc">Reel für Crazy Canes mit Dina: Chicken, Sauce und Crunch im Mittelpunkt.</p><div class="p-chips"><span class="pill">Reel</span><span class="pill">Chicken-Konzept</span></div></div></div>
         </div>
       </article>
 
@@ -2192,6 +2203,25 @@
     function place(){ nodes.forEach(function(n){ if (mq.matches) set.appendChild(n); else acts.insertBefore(n, anchor); }); }
     if (mq.addEventListener) mq.addEventListener('change', place); else if (mq.addListener) mq.addListener(place);
     place();
+  })();
+  // Handy Mockups in den Hero Panels: starten nach hinten gekippt und richten sich beim Hochscrollen auf (wie PhoneScrollHero)
+  (function(){
+    var ph = [].slice.call(d.querySelectorAll('.pm-3d'));
+    if (!ph.length || (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches)) return;
+    var raf = 0, TILT = 24;
+    function update(){
+      raf = 0;
+      var vh = window.innerHeight;
+      ph.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        var p = Math.min(1, Math.max(0, (vh * 0.95 - r.top) / (vh * 0.7)));
+        el.style.setProperty('--rx', (TILT * (1 - p)).toFixed(2) + 'deg');
+        el.style.setProperty('--sc', (0.93 + 0.07 * p).toFixed(3));
+      });
+    }
+    window.addEventListener('scroll', function(){ if (!raf) raf = requestAnimationFrame(update); }, {passive: true});
+    window.addEventListener('resize', update);
+    update();
   })();
 
   // Berlin-Uhr
