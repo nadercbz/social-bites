@@ -149,7 +149,9 @@
   }
   .tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   .hero-foot{margin-top:clamp(40px,7vw,90px);text-align:center;}
-  .hero-sub{font-size:clamp(15px,1.3vw,18px);font-weight:600;margin:0 auto;max-width:44ch;}
+  .hero-sub{font-size:clamp(15px,1.3vw,18px);font-weight:600;margin:0 auto;max-width:62ch;}
+  .hero-sub .hot{display:block;}
+  @media (max-width:760px){.hero-sub{font-size:clamp(12.5px,3.5vw,15px);}}
   .trust{margin-top:28px;border-top:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:16px 0 20px;overflow:hidden;}
   .trust-label{display:flex;align-items:center;gap:12px;flex:none;padding-right:20px;border-right:1px solid var(--line);}
   .trust-label img{height:38px;width:auto;transform:rotate(-10deg);}
@@ -361,7 +363,7 @@
   .car-nav button:disabled{opacity:.35;cursor:default;}
 
   /* Kontakt und Abschluss */
-  .contact{padding:clamp(80px,10vw,140px) var(--gutter) 40px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px;align-items:end;}
+  .contact{padding:clamp(80px,10vw,140px) var(--gutter) clamp(60px,8vw,110px);display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:end;}
   .contact h2{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.95;font-size:clamp(44px,7.4vw,112px);text-wrap:balance;}
   .contact h2 .btn{font-size:clamp(15px,1.4vw,19px);vertical-align:middle;padding:8px 16px 8px 8px;margin-left:.15em;}
   .contact h2 .btn video{width:34px;height:34px;border-radius:4px;object-fit:cover;}
@@ -370,16 +372,28 @@
   .mail .mail-soon{font-weight:700;font-size:clamp(18px,1.8vw,22px);}
   .copy{margin-left:10px;font-size:11px;background:none;border:1.5px solid var(--ink);border-radius:999px;padding:5px 9px;cursor:pointer;vertical-align:middle;transition:background-color .2s ease;}
   .copy:hover{background:var(--accent);border-color:var(--accent);}
-  .foot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;font-weight:600;}
+  /* Footer: dunkel, Logo fährt beim Hereinscrollen mit Parallax hoch */
+  .foot{--ink:#F8F5F0;--paper:#17140F;--mute:#A89F90;--line:rgba(248,245,240,.18);background:var(--paper);color:var(--ink);position:relative;overflow:hidden;}
+  :root[data-theme="dark"] .foot{--paper:#0E0C0B;}
+  .foot-in{padding:clamp(56px,7vw,100px) var(--gutter) 0;display:grid;gap:clamp(36px,5vw,64px);}
+  .foot-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+  .foot-top h2{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.92;font-size:clamp(44px,8vw,128px);}
+  .foot-cta{display:flex;gap:10px;flex-wrap:wrap;}
+  .foot .btn:not(.inv){background:transparent;color:var(--ink);border-color:rgba(248,245,240,.45);}
+  .foot .btn:not(.inv) .dot{background:var(--accent);}
+  .foot .btn:not(.inv):hover,.foot .btn:not(.inv):focus-visible{color:#17140F;border-color:var(--ink);}
+  .foot-nums{list-style:none;margin:0;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+  .foot-nums b{display:block;font-weight:800;font-size:clamp(30px,4vw,56px);letter-spacing:-.05em;line-height:1;color:var(--accent);}
+  .foot-nums span{display:block;margin-top:8px;font-size:14px;color:var(--mute);max-width:26ch;}
+  .foot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;font-weight:600;}
   .foot-grid h3{margin:0 0 12px;font-size:11px;color:var(--mute);font-weight:500;}
   .foot-grid ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:17px;}
-  .foot-grid a:hover{color:var(--accent-ink);}
+  .foot-grid a:hover{color:var(--accent);}
   .soon{font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin-left:6px;}
   .clock{font-variant-numeric:tabular-nums;color:var(--mute);font-size:14px;margin-top:6px;}
-  .foot-bar{margin:50px var(--gutter) 0;padding:16px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mute);}
+  .foot-wm{width:100%;max-width:min(520px,70vw);margin:0 auto;aspect-ratio:900/806;background:url(logo_social_bites_cream.webp) center/contain no-repeat;transform:translateY(calc((1 - var(--foot-p,1)) * 26%));will-change:transform;}
+  .foot-bar{padding:16px 0 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--mute);}
   .foot-bar a:hover{color:var(--ink);}
-  .foot-logo{padding:30px var(--gutter) 44px;}
-  .foot-logo img{width:100%;max-width:720px;height:auto;margin:0 auto;}
 
   /* Player für die Referenzvideos */
   html:has(.player[open]){overflow:hidden;}
@@ -420,6 +434,7 @@
     .trust{flex-direction:column;align-items:stretch;}
     .trust-label{border-right:none;padding-right:0;}
     .foot-grid{grid-template-columns:1fr 1fr;}
+    .foot-nums{grid-template-columns:1fr;}
     .phone:nth-child(3){display:none;}
     .panel{min-height:320px;}
   }
@@ -541,7 +556,13 @@
 
   /* Pitch-Video: die Kachel in der Headline wird beim Drüberfahren groß, Klick öffnet das Video im eigenen Fenster */
   .hero-tile{border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;vertical-align:baseline;z-index:1;transition:transform .55s var(--ease),box-shadow .55s var(--ease);}
-  .hero-tile:hover,.hero-tile:focus-visible{transform:rotate(0) scale(2.3);z-index:20;box-shadow:0 .25em .6em rgba(30,27,26,.45);outline:none;}
+  .hero-tile:hover,.hero-tile:focus-visible{outline:none;}
+  /* Mouseover: Video fährt in die Bildschirmmitte, wird etwa doppelt so groß, der Rest dahinter wird dunkel, unscharf und glasig */
+  .pitch-veil{position:fixed;inset:0;z-index:58;background:rgba(14,12,11,.5);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);opacity:0;pointer-events:none;transition:opacity .45s var(--ease);}
+  .pitch-veil.on{opacity:1;}
+  .pitch-clone{position:fixed;z-index:60;margin:0;padding:0;border:0;overflow:hidden;cursor:pointer;background:#1E1B1A center/cover no-repeat;box-shadow:0 .4em 1.4em rgba(0,0,0,.55);transition:transform .55s var(--ease);will-change:transform;}
+  .pitch-clone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .pitch-clone .ht-play{opacity:1;transform:scale(1);font-size:13px;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;}
   .ht-play{position:absolute;left:50%;top:50%;width:.34em;height:.34em;margin:-.17em 0 0 -.17em;border-radius:50%;background:#F04A0A;color:#1E1B1A;display:grid;place-items:center;font-size:.14em;line-height:1;padding-left:.02em;opacity:0;transform:scale(.6);transition:opacity .3s ease,transform .4s var(--ease);}
   .ht-play{font-size:.13em;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;}
   .hero-tile:hover .ht-play,.hero-tile:focus-visible .ht-play{opacity:1;transform:scale(1);}
@@ -787,6 +808,8 @@
   <a href="portal.html"><small>07</small>Kundenportal</a>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
+
+<div class="pitch-veil" id="pitch-veil" aria-hidden="true"></div>
 
 <main id="top">
   <section class="hero">
@@ -1112,7 +1135,7 @@
         <p>Autonome Workflows, die dich entlasten und mit deinen Firmenwerten eigenständig für dein Unternehmen arbeiten. Für deinen Fall eingerichtet.</p>
       </li>
       <li class="svc">
-        <h3>Flächen <span class="nw">Beratung<sup>(07)</sup></span></h3>
+        <h3>Flächen <span class="tile"><video data-src="media/svc_flaechen.mp4" poster="media/svc_flaechen.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">Beratung<sup>(07)</sup></span></h3>
         <p>Beratung bei der Suche nach Geschäfts- und Store-Flächen, als Beratungsleistung gegen Gebühr. Direkt verbunden mit dem Marketing zum Start.</p>
       </li>
     </ol>
@@ -1178,8 +1201,8 @@
   <section class="pf" id="portfolio" aria-labelledby="pf-h">
     <div class="sec-pill"><span class="pill">Film &bull; Foto &bull; Musik</span></div>
     <h2 class="big-h" id="pf-h">Mehr als Food.</h2>
-    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube, Food-Fotografie, Kampagnen und Reels für Kunden, Events und Blicke hinter die Kamera. Das bringt unser Kollektiv mit an den Tisch.</p>
-    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a><a class="pf-tab" href="#pf-food">Food<sup>8</sup></a><a class="pf-tab" href="#pf-kampagnen">Kampagnen &amp; Reels<sup>10</sup></a><a class="pf-tab" href="#pf-influencer">Influencer &amp; Artists<sup>9</sup></a></nav>
+    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube und Influencer-Kooperationen. Das bringt unser Kollektiv mit an den Tisch.</p>
+    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a><a class="pf-tab" href="#pf-influencer">Influencer &amp; Artists<sup>9</sup></a></nav>
     <div class="pf-rows">
       <div class="pf-row" id="pf-werbung">
         <div class="pf-row-h"><div><h3>Commercials</h3><span class="mono">3 Filme · 1 Clip · 7 Fotos</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Commercials: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Commercials: weiter">&rarr;</button></div></div>
@@ -1210,34 +1233,6 @@
           <figure class="pf-card pf-loop pf-169"><video data-src="media/pf/mv_corridor.mp4" poster="media/pf/mv_corridor.webp" muted loop playsinline preload="none" aria-label="Ausschnitt aus einem Musikvideo: Szene im Hotelflur"></video><figcaption class="pf-ov"><span class="mono">Ausschnitt</span></figcaption></figure>
           <figure class="pf-card pf-loop pf-169"><video data-src="media/pf/mv_veil.mp4" poster="media/pf/mv_veil.webp" muted loop playsinline preload="none" aria-label="Ausschnitt aus einem Musikvideo: Frau im weißen Mantel"></video><figcaption class="pf-ov"><span class="mono">Ausschnitt</span></figcaption></figure>
           <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/mv_tunnel_xl.webp" data-cap="Tänzerin in einem Tunnel, Still aus einem Musikvideo" aria-label="Foto vergrößern: Tänzerin in einem Tunnel, Still aus einem Musikvideo"><img src="media/pf/mv_tunnel.webp" alt="Tänzerin in einem Tunnel, Still aus einem Musikvideo" width="900" height="600" loading="lazy" decoding="async"></button>
-        </div>
-      </div>
-      <div class="pf-row" id="pf-food">
-        <div class="pf-row-h"><div><h3>Food</h3><span class="mono">8 Fotos</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Food: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Food: weiter">&rarr;</button></div></div>
-        <div class="pf-strip" tabindex="0" aria-label="Food">
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/707" data-full="media/pf/food_burger_xl.webp" data-cap="Burger mit Süßkartoffel-Pommes" aria-label="Foto vergrößern: Burger mit Süßkartoffel-Pommes"><img src="media/pf/food_burger.webp" alt="Burger mit Süßkartoffel-Pommes" width="900" height="707" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/food_sushi_xl.webp" data-cap="Sushi-Platte auf Schiefer" aria-label="Foto vergrößern: Sushi-Platte auf Schiefer"><img src="media/pf/food_sushi.webp" alt="Sushi-Platte auf Schiefer" width="900" height="600" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:600/900" data-full="media/pf/food_pho_xl.webp" data-cap="Pho mit Chili, Limette und Kräutern" aria-label="Foto vergrößern: Pho mit Chili, Limette und Kräutern"><img src="media/pf/food_pho.webp" alt="Pho mit Chili, Limette und Kräutern" width="600" height="900" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/food_bao_1_xl.webp" data-cap="Bao-Burger in Bambuskörben" aria-label="Foto vergrößern: Bao-Burger in Bambuskörben"><img src="media/pf/food_bao_1.webp" alt="Bao-Burger in Bambuskörben" width="900" height="600" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/food_poke_xl.webp" data-cap="Poke Bowl mit Avocado und Edamame" aria-label="Foto vergrößern: Poke Bowl mit Avocado und Edamame"><img src="media/pf/food_poke.webp" alt="Poke Bowl mit Avocado und Edamame" width="900" height="600" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:601/900" data-full="media/pf/food_rolls_xl.webp" data-cap="Sommerrollen mit Garnelen" aria-label="Foto vergrößern: Sommerrollen mit Garnelen"><img src="media/pf/food_rolls.webp" alt="Sommerrollen mit Garnelen" width="601" height="900" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/707" data-full="media/pf/food_blackbun_xl.webp" data-cap="Black-Bun-Burger in der Box" aria-label="Foto vergrößern: Black-Bun-Burger in der Box"><img src="media/pf/food_blackbun.webp" alt="Black-Bun-Burger in der Box" width="900" height="707" loading="lazy" decoding="async"></button>
-          <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/food_bao_2_xl.webp" data-cap="Bao und Fries im Bambuskorb" aria-label="Foto vergrößern: Bao und Fries im Bambuskorb"><img src="media/pf/food_bao_2.webp" alt="Bao und Fries im Bambuskorb" width="900" height="600" loading="lazy" decoding="async"></button>
-        </div>
-      </div>
-      <div class="pf-row" id="pf-kampagnen">
-        <div class="pf-row-h"><div><h3>Kampagnen &amp; Reels</h3><span class="mono">10 Videos mit Ton</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Kampagnen &amp; Reels: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Kampagnen &amp; Reels: weiter">&rarr;</button></div></div>
-        <div class="pf-strip pf-tall" tabindex="0" aria-label="Kampagnen &amp; Reels">
-          <button class="pf-card pf-ref" type="button" data-play="kampagne_lifestyle" style="aspect-ratio:9/16" aria-label="Kampagne Lifestyle, Kampagne: Video mit Ton abspielen (0:29)"><video data-src="media/ref_kampagne_lifestyle_loop.mp4" poster="media/ref_kampagne_lifestyle.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:29</span><span class="pf-ov"><b>Kampagne Lifestyle</b><span class="mono">Kampagne</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="kampagne_street" style="aspect-ratio:9/16" aria-label="Kampagne Street, Kampagne: Video mit Ton abspielen (0:44)"><video data-src="media/ref_kampagne_street_loop.mp4" poster="media/ref_kampagne_street.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:44</span><span class="pf-ov"><b>Kampagne Street</b><span class="mono">Kampagne</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="c44_vorstellung" style="aspect-ratio:9/16" aria-label="44 Chicken, Vorstellung: Video mit Ton abspielen (0:44)"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:44</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Vorstellung</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="c44_sandwich" style="aspect-ratio:9/16" aria-label="44 Chicken, Sandwich für 5 €: Video mit Ton abspielen (0:17)"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:17</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Sandwich für 5 €</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="c44_bowls" style="aspect-ratio:9/16" aria-label="44 Chicken, Bowls und Chicken: Video mit Ton abspielen (0:14)"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:14</span><span class="pf-ov"><b>44 Chicken</b><span class="mono">Bowls und Chicken</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="spreegold" style="aspect-ratio:9/16" aria-label="Spreegold, Restaurant: Video mit Ton abspielen (0:28)"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:28</span><span class="pf-ov"><b>Spreegold</b><span class="mono">Restaurant</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="wild_thai" style="aspect-ratio:9/16" aria-label="Wild Chicken, Thai Fried Chicken: Video mit Ton abspielen (0:36)"><video data-src="media/ref_wild_thai_loop.mp4" poster="media/ref_wild_thai.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:36</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Thai Fried Chicken</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="wild_probe" style="aspect-ratio:9/16" aria-label="Wild Chicken, Geschmackstest: Video mit Ton abspielen (0:32)"><video data-src="media/ref_wild_probe_loop.mp4" poster="media/ref_wild_probe.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:32</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Geschmackstest</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="wild_team" style="aspect-ratio:9/16" aria-label="Wild Chicken, Das Team: Video mit Ton abspielen (0:24)"><video data-src="media/ref_wild_team_loop.mp4" poster="media/ref_wild_team.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 0:24</span><span class="pf-ov"><b>Wild Chicken</b><span class="mono">Das Team</span></span></button>
-          <button class="pf-card pf-ref" type="button" data-play="frank_dube" style="aspect-ratio:9/16" aria-label="Frank Dube, Barber: Video mit Ton abspielen (1:34)"><video data-src="media/ref_frank_dube_loop.mp4" poster="media/ref_frank_dube.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="pf-play mono" aria-hidden="true">&#9654; 1:34</span><span class="pf-ov"><b>Frank Dube</b><span class="mono">Barber</span></span></button>
         </div>
       </div>
       <div class="pf-row" id="pf-influencer">
@@ -1309,16 +1304,17 @@
     </div>
   </section>
 
+  <section class="testi" id="testimonials" hidden>
+  <div class="sec-pill"><span class="pill">Das sagen • Kunden</span></div>
+  <h2 class="big-h">Stimmen.</h2>
+  <div class="testi-grid" id="testi-grid"></div>
+</section>
+
   <section class="contact" id="kontakt">
     <div>
       <h2>Content, den Leute sehen wollen <a class="btn" href="portal.html"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span>Kundenportal ansehen</span><i class="dot"></i></a></h2>
       <div class="mail"><small>Kostenloses Erstgespräch: Ziele und Umfang festlegen, ersten Drehtag planen.</small><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
       <div class="mail"><small>Lieber direkt anrufen?</small><span class="mail-soon"><a href="tel:+4917622733831">Nader 0176 22733831</a><br><a href="tel:+4917680256378">Tommy 0176 80256378</a></span></div>
-    </div>
-    <div class="foot-grid">
-      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Projekte</a></li><li><a href="#wirkung">Haltung</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#pakete">Pakete</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
-      <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
-      <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
     </div>
   </section>
 </main>
@@ -1332,19 +1328,35 @@
   </div>
 </dialog>
 
-<section class="testi" id="testimonials" hidden>
-  <div class="sec-pill"><span class="pill">Das sagen • Kunden</span></div>
-  <h2 class="big-h">Stimmen.</h2>
-  <div class="testi-grid" id="testi-grid"></div>
-</section>
 
-<footer>
-  <div class="foot-bar mono">
-    <span>Website Version 2.0</span>
-    <a href="#top">Nach oben &#8593;</a>
-    <span>&copy; 2026 Social Bites. Alle Rechte vorbehalten.</span>
+
+<footer class="foot" id="foot">
+  <div class="foot-in">
+    <div class="foot-top">
+      <h2>Dein Laden.<br>Unser Content.</h2>
+      <div class="foot-cta">
+        <a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a>
+        <a class="btn" href="portal.html"><span>Kundenportal</span><i class="dot"></i></a>
+      </div>
+    </div>
+    <ul class="foot-nums">
+      <li><b>100 Mio+</b><span>organische Views auf TikTok und Instagram</span></li>
+      <li><b>60+</b><span>Kunden und Projekte</span></li>
+      <li><b>500</b><span>Gratis-Pizzen beim Opening für The Pizzary</span></li>
+    </ul>
+    <div class="foot-grid">
+      <div><h3 class="mono">Navigation</h3><ul><li><a href="#top">Start</a></li><li><a href="#arbeiten">Projekte</a></li><li><a href="#leistungen">Leistungen</a></li><li><a href="#pakete">Pakete</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#ablauf">So läuft's</a></li><li><a href="portal.html">Kundenportal</a></li></ul></div>
+      <div><h3 class="mono">Direkt erreichen</h3><ul><li><a href="tel:+4917622733831">Nader 0176 22733831</a></li><li><a href="tel:+4917680256378">Tommy 0176 80256378</a></li><li><a href="#anfrage" data-anfrage>Anfrage senden</a></li></ul></div>
+      <div><h3 class="mono">Socials</h3><ul><li>Instagram<span class="soon">bald</span></li><li>TikTok<span class="soon">bald</span></li><li>LinkedIn<span class="soon">bald</span></li></ul></div>
+      <div><h3 class="mono">Hauptquartier</h3><ul><li>Berlin, Deutschland</li></ul><div class="clock" id="clock">Berlin</div></div>
+    </div>
+    <div class="foot-wm" id="foot-wm" role="img" aria-label="Social Bites"></div>
+    <div class="foot-bar mono">
+      <span>Website Version 2.0</span>
+      <a href="#top">Nach oben &#8593;</a>
+      <span>&copy; 2026 Social Bites. Alle Rechte vorbehalten.</span>
+    </div>
   </div>
-  <div class="foot-logo"><img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806" loading="lazy" decoding="async"></div>
 </footer>
 
 <dialog class="anf" id="anfrage" aria-labelledby="anf-h">
@@ -1903,6 +1915,67 @@
       if (e.key === 'ArrowRight') pfStep(1); else if (e.key === 'ArrowLeft') pfStep(-1);
     });
   }
+
+  // Footer: Logo fährt beim Hereinscrollen mit Parallax hoch
+  (function(){
+    var foot = d.getElementById('foot'); if (!foot) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches, raf = 0;
+    function update(){
+      raf = 0;
+      var r = foot.getBoundingClientRect();
+      var p = reduce ? 1 : Math.min(1, Math.max(0, (window.innerHeight - r.top) / Math.max(r.height, 1)));
+      foot.style.setProperty('--foot-p', p.toFixed(3));
+    }
+    window.addEventListener('scroll', function(){ if (!raf) raf = requestAnimationFrame(update); }, {passive: true});
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // Hero-Kachel: bei Mouseover in die Bildschirmmitte, doppelt so groß, Hintergrund glasig
+  (function(){
+    var tile = d.getElementById('pitch-open'), veil = d.getElementById('pitch-veil');
+    if (!tile || !veil || !window.matchMedia || !matchMedia('(hover:hover)').matches) return;
+    var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '';
+    function lift(){
+      if (lifted || Date.now() - tDrop < 350) return;
+      clearTimeout(timer);
+      if (clone) clone.remove();
+      var cs = getComputedStyle(tile), r = tile.getBoundingClientRect();
+      var w = tile.offsetWidth, h = tile.offsetHeight, cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var v = tile.querySelector('video'), src = v && (v.currentSrc || v.dataset.src);
+      clone = d.createElement('div'); clone.className = 'pitch-clone';
+      clone.style.cssText = 'left:' + (cx - w / 2) + 'px;top:' + (cy - h / 2) + 'px;width:' + w + 'px;height:' + h + 'px;border-radius:' + cs.borderRadius + ';' + (v && v.poster ? 'background-image:url(' + v.poster + ');' : '');
+      home = cs.transform === 'none' ? '' : cs.transform;
+      clone.style.transform = home || 'none';
+      clone.innerHTML = (src ? '<video src="' + src + '" muted loop playsinline autoplay></video>' : '') + '<span class="ht-play" aria-hidden="true">&#9654;</span>';
+      d.body.appendChild(clone);
+      var cv = clone.querySelector('video'); if (cv) { var pp = cv.play(); if (pp && pp.catch) pp.catch(function(){}); }
+      clone.addEventListener('click', function(){ drop(); tile.click(); });
+      tile.style.visibility = 'hidden';
+      var sc = Math.min(2, (window.innerWidth * 0.8) / w, (window.innerHeight * 0.8) / h);
+      var dx = window.innerWidth / 2 - cx, dy = window.innerHeight / 2 - cy;
+      void clone.offsetWidth;
+      clone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc.toFixed(3) + ')';
+      veil.classList.add('on');
+      lifted = true; tLift = Date.now();
+    }
+    function drop(){
+      if (!lifted) return;
+      lifted = false; tDrop = Date.now();
+      veil.classList.remove('on');
+      var c = clone; if (c) c.style.transform = home || 'none';
+      timer = setTimeout(function(){ tile.style.visibility = ''; if (c) c.remove(); if (clone === c) clone = null; }, 560);
+    }
+    tile.addEventListener('mouseenter', lift);
+    tile.addEventListener('focus', lift); tile.addEventListener('blur', drop);
+    // Die Kachel wandert unter dem Mauszeiger weg: erst loslassen, wenn die Maus nach der Fahrt die große Kachel verlässt
+    d.addEventListener('mousemove', function(e){
+      if (!lifted || Date.now() - tLift < 700 || d.activeElement === tile) return;
+      var r = clone ? clone.getBoundingClientRect() : tile.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) drop();
+    });
+    window.addEventListener('scroll', function(){ drop(); }, {passive: true});
+  })();
 
   // Berlin-Uhr
   var clock = d.getElementById('clock');
