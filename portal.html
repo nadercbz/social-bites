@@ -8,7 +8,7 @@
 <meta name="description" content="Kundenportal von Social Bites: Freigaben, Termine, Dateien, Rechnungen und Zahlen zu deinem Projekt.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#FEFDFA">
+<meta name="theme-color" content="#FEFEFE">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   /* Layout: Login als geteilte Fläche (Orange mit Clip, Key White mit Formular). Danach App mit Seitenleiste links und Inhalt rechts, auf dem Handy Reiter oben. */
   :root{
     color-scheme:light;
-    --paper:#FEFDFA;
+    --paper:#FEFEFE;
     --paper-2:#E3EAE0;
     --card:#FFFFFF;
     --ink:#232321;
@@ -33,7 +33,7 @@
     --gutter:clamp(16px,3vw,40px);
     --bar:72px;
     --ease:cubic-bezier(.2,.7,.2,1);
-    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .30 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain:none; --grain-papier:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .30 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     --dots:radial-gradient(rgba(35,35,33,.16) 1px,transparent 1.3px);
   }
   *,*::before,*::after{box-sizing:border-box;}
@@ -101,7 +101,7 @@
   @keyframes shake{20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(3px);}}
 
   /* App */
-  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;gap:14px;min-height:var(--bar);padding:8px var(--gutter);background:rgba(254,253,250,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;gap:14px;min-height:var(--bar);padding:8px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
   .bar-logo img{height:50px;width:auto;}
   .bar-label{color:var(--mute);border-left:1px solid var(--line-2);padding-left:14px;}
   .client{display:flex;align-items:center;gap:10px;min-width:0;}
@@ -318,7 +318,7 @@
   .tile.t-or{background:var(--accent);border-color:var(--accent);}
   .tile.t-or span:last-child,.tile.t-or .mono{color:var(--ink);}
   .tile.t-ink{background:var(--ink);border-color:var(--ink);color:var(--paper);}
-  .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(254,253,250,.75);}
+  .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(254,254,254,.75);}
   .quick{display:flex;flex-wrap:wrap;gap:8px;}
   .dlgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
   .dlc{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
@@ -360,7 +360,7 @@
     .lg-phone{display:none;}
     .lg-phones{display:none;}
     .shell{grid-template-columns:minmax(0,1fr);padding-top:0;}
-    .side{position:sticky;top:var(--bar);z-index:30;display:flex;gap:6px;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);background:rgba(254,253,250,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);scrollbar-width:none;}
+    .side{position:sticky;top:var(--bar);z-index:30;display:flex;gap:6px;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);scrollbar-width:none;}
     .side::-webkit-scrollbar{display:none;}
     .nav-b{width:auto;flex:none;padding:8px 12px;font-size:15px;border-color:var(--line);background:rgba(255,253,248,.6);}
     .side-foot{display:none;}
@@ -940,7 +940,7 @@ var KIT=[
   ["brand/social-bites-profilbild.png","Profilbild","PNG, 1080 × 1080",""],
   ["og.jpg","Teilen-Bild","JPG, 1200 × 630",""]
 ];
-var KITCOL=[["Key White","#FEFDFA"],["Charcoal","#232321"],["Key Orange","#F26A21"],["Mint Green","#E3EAE0"],["Deep Orange","#C4490F"],["Orange Tint","#FDE3D2"],["Stone","#6C6F68"]];
+var KITCOL=[["Key White","#FEFEFE"],["Charcoal","#232321"],["Key Orange","#F26A21"],["Mint Green","#E3EAE0"],["Deep Orange","#C4490F"],["Orange Tint","#FDE3D2"],["Stone","#6C6F68"]];
 var TCUR="t-start", sheetTools=false, sheetGid=null;
 function tNav(){
   $("#tside").innerHTML=TNAV.map(function(g){

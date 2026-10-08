@@ -6,7 +6,7 @@
   "use strict";
   var K = "sb-theme", root = document.documentElement;
   var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-  var LOGOS = [["logo_social_bites.webp", "logo_social_bites_dark.webp"], ["media/logo_sb.webp", "media/logo_sb_dark.webp"]];
+  var LOGOS = [["media/logo_a.webp", "media/logo_a_dark.webp"], ["logo_social_bites.webp", "logo_social_bites_dark.webp"], ["media/logo_sb.webp", "media/logo_sb_dark.webp"]];
   var embedded = false;
   try { embedded = window.self !== window.top; } catch (e) { embedded = true; }
 
@@ -54,7 +54,7 @@
     root.setAttribute("data-mode", m);
     root.style.colorScheme = e;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : "#FEFDFA");
+    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : "#FEFEFE");
     if (document.body) { swapLogos(); ui(); }
   }
 

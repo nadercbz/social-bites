@@ -8,7 +8,7 @@
 <meta name="description" content="Preisrechner von Social Bites: Bausteine wählen, Preis vor Ort mit dem Kunden berechnen.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#FEFDFA">
+<meta name="theme-color" content="#FEFEFE">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,14 +17,14 @@
   /* Layout: links die Baustein-Palette, rechts die Kalkulation mit Zeilen und Summen. Präsentationsmodus blendet alles Interne aus. */
   :root{
     color-scheme:light;
-    --paper:#FEFDFA; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --paper:#FEFEFE; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
     --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
     --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
     --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
     --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --gutter:clamp(16px,2.6vw,36px);
     --ease:cubic-bezier(.2,.7,.2,1);
-    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .30 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain:none; --grain-papier:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .30 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   *,*::before,*::after{box-sizing:border-box;}
   [hidden]{display:none!important;}
@@ -44,7 +44,7 @@
   .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
   .btn.armed{border-color:var(--accent-ink);color:var(--accent-ink);}
 
-  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,253,250,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   .top img{height:46px;width:auto;}
   .top .ttl{display:flex;flex-direction:column;gap:2px;}
   .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
@@ -122,10 +122,10 @@
   .sum{background:var(--ink);color:var(--paper);border-radius:14px;padding:clamp(16px,2vw,24px);display:grid;gap:6px;}
   .sum .ln{display:flex;justify-content:space-between;gap:12px;font-size:15.5px;align-items:baseline;}
   .sum .ln span:last-child{font-weight:700;white-space:nowrap;}
-  .sum .ln.sub{color:rgba(254,253,250,.7);font-size:14px;}
-  .sum hr{border:0;border-top:1px solid rgba(254,253,250,.2);margin:6px 0;width:100%;}
+  .sum .ln.sub{color:rgba(254,254,254,.7);font-size:14px;}
+  .sum hr{border:0;border-top:1px solid rgba(254,254,254,.2);margin:6px 0;width:100%;}
   .sum .big{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;}
-  .sum .big span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(254,253,250,.75);}
+  .sum .big span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(254,254,254,.75);}
   .sum .big b{font-weight:800;font-size:clamp(30px,3.6vw,48px);letter-spacing:-.045em;line-height:1;}
   .sum .big.or b{color:var(--accent);}
   .side{display:grid;gap:14px;align-content:start;}
