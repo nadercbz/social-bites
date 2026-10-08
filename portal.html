@@ -462,6 +462,9 @@
   .sb-user .lb2 b{font-size:13px;font-weight:750;}
   .sb-user .lb2 small{font-size:11.5px;color:var(--mute);}
   .cockpit-sky{margin-top:14px;}
+  .mem{display:flex;gap:8px;align-items:center;font-size:14px;margin:8px 0;cursor:pointer;}
+  #teamBox .hint{margin:8px 0 0;font-size:13px;color:var(--mute);}
+  #teamBox .link{display:block;margin-top:8px;font-size:13px;}
   .cockpit-sky .muted{margin:2px 0 12px;font-size:14px;}
   @media (max-width:900px){
     #team .shell{grid-template-columns:minmax(0,1fr);}
@@ -508,6 +511,13 @@
         <p><b>Demo-Zugang</b> für den Beispielkunden Teig &amp; Tomate:</p>
         <p>Benutzer <code>teigundtomate</code> · Passwort <code>biss2026</code></p>
         <button class="btn sm" type="button" id="fillDemo"><span class="dot"></span><span>Demo-Zugang einsetzen</span></button>
+      </div>
+      <div class="demo-box" id="teamBox" hidden>
+        <p><b>Zum Testen:</b> Nach dem ersten Login merkt sich dieser Browser den Team-Zugang, danach reicht ein Klick.</p>
+        <label class="mem"><input type="checkbox" id="teamMem" checked> Zugang in diesem Browser merken</label>
+        <button class="btn sm" type="button" id="fillTeam"><span class="dot"></span><span>Team-Zugang einsetzen</span></button>
+        <button class="link" type="button" id="forgetTeam" hidden>Gemerkten Zugang vergessen</button>
+        <p class="hint" id="teamHint"></p>
       </div>
       <p class="fine">Das ist eine Demo mit Beispieldaten. Echte Kunden bekommen ihren eigenen Zugang beim Kick-off. Diese Seite schickt nichts an einen Server, alles bleibt in deinem Browser.</p>
     </form>
@@ -708,8 +718,18 @@ document.querySelectorAll("[data-lgtab]").forEach(function(b){b.addEventListener
   var intern=b.getAttribute("data-lgtab")==="intern";
   document.querySelectorAll("[data-lgtab]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
   $("#lgKicker").textContent=intern?"Interner Bereich":"Kundenportal";$("#lgTitle").textContent=intern?"Team-Login":"Einloggen";
-  $("#demoBox").hidden=intern;$("#loginErr").textContent="";$("#loginUser").focus();
+  $("#demoBox").hidden=intern;$("#teamBox").hidden=!intern;$("#loginErr").textContent="";teamBoxRefresh();$("#loginUser").focus();
 });});
+/* Team-Zugang merken (nur in diesem Browser, localStorage). Im Code steht weiterhin kein Passwort, nur die Prüfsummen. */
+var TKEY="sb-team-zugang";
+function teamSaved(){try{var o=JSON.parse(localStorage.getItem(TKEY));return o&&o.u&&o.p?o:null;}catch(e){return null;}}
+function teamBoxRefresh(){
+  var o=teamSaved(),b=$("#fillTeam"),h=$("#teamHint");
+  b.disabled=!o;$("#forgetTeam").hidden=!o;
+  h.textContent=o?"Gemerkt für "+o.u+". Ein Klick füllt Benutzername und Passwort aus, danach nur noch Einloggen.":"Noch nichts gemerkt. Einmal normal einloggen, Haken lassen, dann ist es da.";
+}
+$("#fillTeam").addEventListener("click",function(){var o=teamSaved();if(!o)return;$("#loginUser").value=o.u;$("#loginPass").value=o.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
+$("#forgetTeam").addEventListener("click",function(){try{localStorage.removeItem(TKEY);}catch(e){}teamBoxRefresh();toast("Gemerkten Zugang vergessen.");});
 $("#fillDemo").addEventListener("click",function(){$("#loginUser").value=CRED.u;$("#loginPass").value=CRED.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
 $("#loginForm").addEventListener("submit",function(e){
   e.preventDefault();
@@ -717,7 +737,9 @@ $("#loginForm").addEventListener("submit",function(e){
   if(!u||!p){err.textContent="Bitte Benutzername und Passwort eingeben.";return;}
   if(u===CRED.u&&p===CRED.p){err.textContent="";setAuth("1");enter();return;}
   isTeam(u,p).then(function(ok){
-    if(ok){err.textContent="";setAuth("team");enterTeam();return;}
+    if(ok){err.textContent="";setAuth("team");
+      try{if($("#teamMem").checked)localStorage.setItem(TKEY,JSON.stringify({u:u,p:p}));}catch(e){}
+      enterTeam();return;}
     err.textContent="Benutzername oder Passwort stimmt nicht. Für die Demo: Demo-Zugang einsetzen.";
     f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");
   });
