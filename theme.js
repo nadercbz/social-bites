@@ -54,7 +54,7 @@
     root.setAttribute("data-mode", m);
     root.style.colorScheme = e;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : "#F6F0E3");
+    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : "#FEFCF6");
     if (document.body) { swapLogos(); ui(); }
   }
 

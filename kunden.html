@@ -8,7 +8,7 @@
 <meta name="description" content="Kundenstamm, Rechnungsbuch und Mahnungen von Social Bites.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#F6F0E3">
+<meta name="theme-color" content="#FEFCF6">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
   /* Zwei Bereiche: Kunden (Stammdaten, Formular in Schritten) und Belege (Rechnungsbuch, Mahnungen). Alles liegt nur im Browser (localStorage), nie im Code. */
   :root{
     color-scheme:light;
-    --paper:#F6F0E3; --paper-2:#EDE4D0; --card:#FFFDF8; --ink:#1E1B1A; --mute:#6B6357;
+    --paper:#FEFCF6; --paper-2:#F2EEE2; --card:#FFFFFF; --ink:#1E1B1A; --mute:#6B6357;
     --line:rgba(30,27,26,.14); --line-2:rgba(30,27,26,.3);
     --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
     --ok:#1F7A4D; --ok-tint:#DDF1E4; --warn:#9A6400; --warn-tint:#FFF0C9; --bad:#B42318; --bad-tint:#FDE3DF;
@@ -49,7 +49,7 @@
   .btn.danger{color:var(--bad);}
   .btn:disabled{opacity:.45;cursor:not-allowed;}
 
-  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(246,240,227,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,252,246,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   .top img{height:46px;width:auto;}
   .top .ttl{display:flex;flex-direction:column;gap:2px;}
   .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
