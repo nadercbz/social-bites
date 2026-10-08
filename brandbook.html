@@ -8,7 +8,7 @@
 <meta name="description" content="CI Brand Book von Social Bites: Logo, Farben, Schrift, Sprache, Bildsprache, Elemente und Downloads.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#FBFAF6">
+<meta name="theme-color" content="#FEFDFA">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,14 +18,14 @@
   /* Layout: oranges Deckblatt, darunter Kapitel 01 bis 09 mit klebendem Inhaltsverzeichnis links. Eine CI, ein Look. */
   :root{
     color-scheme:light;
-    --paper:#FBFAF6; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --paper:#FEFDFA; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
     --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
     --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
     --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
     --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --gutter:clamp(16px,3vw,40px);
     --ease:cubic-bezier(.2,.7,.2,1);
-    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .30 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     --dots:radial-gradient(rgba(35,35,33,.16) 1px,transparent 1.3px);
   }
   *,*::before,*::after{box-sizing:border-box;}
@@ -441,7 +441,7 @@
 (function(){
   "use strict";
   var COLORS=[
-    {n:"Key White",h:"#FBFAF6",rgb:"251 250 246",cmyk:"nur digital (Papier weiß)",use:"Grundfarbe: Hintergrund aller Seiten",dark:false},
+    {n:"Key White",h:"#FEFDFA",rgb:"254 253 250",cmyk:"nur digital (Papier weiß)",use:"Grundfarbe: Hintergrund aller Seiten",dark:false},
     {n:"Charcoal",h:"#232321",rgb:"35 35 33",cmyk:"0 0 0 95 (Schrift 100)",use:"Schriftfarbe, Logo, dunkle Flächen. Große Flächen im Druck 40 30 30 100",dark:true},
     {n:"Key Orange",h:"#F26A21",rgb:"242 106 33",cmyk:"0 70 95 0",use:"Akzent- und Markierungsfarbe: Flächen, Knöpfe, Punkte, große Headlines, Zahlen",dark:false},
     {n:"Mint Green",h:"#E3EAE0",rgb:"227 234 224",cmyk:"nur digital",use:"Leise zweite Fläche: Abschnitte, Karten, Felder",dark:false},
@@ -452,7 +452,7 @@
   ];
   var sw=document.getElementById("swatches");
   sw.innerHTML=COLORS.map(function(c){
-    return '<div class="sw"><div class="chip" style="background:'+c.h+';color:'+(c.dark?'#FBFAF6':'#232321')+'"><b>'+c.n+'</b></div>'+
+    return '<div class="sw"><div class="chip" style="background:'+c.h+';color:'+(c.dark?'#FEFDFA':'#232321')+'"><b>'+c.n+'</b></div>'+
       '<dl><dt>HEX</dt><dd><button class="hex" type="button" data-copy="'+c.h+'">'+c.h+'</button></dd><dt>RGB</dt><dd>'+c.rgb+'</dd><dt>CMYK</dt><dd>'+c.cmyk+'</dd></dl>'+
       '<p class="use">'+c.use+'</p></div>';
   }).join("");
