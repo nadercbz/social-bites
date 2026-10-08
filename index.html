@@ -566,10 +566,15 @@
   .hero-tile{border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;vertical-align:baseline;z-index:1;transition:transform .55s var(--ease),box-shadow .55s var(--ease);}
   .hero-tile:hover,.hero-tile:focus-visible{outline:none;}
   /* Mouseover: Video fährt in die Bildschirmmitte, wird etwa doppelt so groß, der Rest dahinter wird dunkel, unscharf und glasig */
-  .pitch-veil{position:fixed;inset:0;z-index:58;background:rgba(14,12,11,.5);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);opacity:0;pointer-events:none;transition:opacity .45s var(--ease);}
+  .pitch-veil{position:fixed;inset:0;z-index:58;background:rgba(10,8,7,.78);-webkit-backdrop-filter:blur(22px) saturate(1.1);backdrop-filter:blur(22px) saturate(1.1);opacity:0;pointer-events:none;transition:opacity .45s var(--ease);}
   .pitch-veil.on{opacity:1;}
   .pitch-clone{position:fixed;z-index:60;margin:0;padding:0;border:0;overflow:hidden;cursor:pointer;background:#1E1B1A center/cover no-repeat;box-shadow:0 .4em 1.4em rgba(0,0,0,.55);transition:transform .55s var(--ease);will-change:transform;}
   .pitch-clone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .pitch-cap{position:fixed;z-index:61;left:50%;width:min(86vw,560px);text-align:center;color:#F8F5F0;pointer-events:none;opacity:0;transform:translate(-50%,10px);transition:opacity .45s ease .25s,transform .6s var(--ease) .25s;}
+  .pitch-cap.on{opacity:1;transform:translate(-50%,0);}
+  .pitch-cap b{display:block;font-weight:800;letter-spacing:-.04em;line-height:1;font-size:clamp(28px,3.4vw,46px);}
+  .pitch-cap b i{font-style:normal;color:#F04A0A;}
+  .pitch-cap span{display:block;margin-top:10px;text-wrap:balance;font-weight:600;font-size:clamp(15px,1.3vw,18px);color:rgba(248,245,240,.78);}
   .pitch-clone .ht-play{opacity:1;transform:scale(1);font-size:13px;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;}
   .ht-play{position:absolute;left:50%;top:50%;width:.34em;height:.34em;margin:-.17em 0 0 -.17em;border-radius:50%;background:#F04A0A;color:#1E1B1A;display:grid;place-items:center;font-size:.14em;line-height:1;padding-left:.02em;opacity:0;transform:scale(.6);transition:opacity .3s ease,transform .4s var(--ease);}
   .ht-play{font-size:.13em;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;}
@@ -1930,13 +1935,15 @@
   (function(){
     var tile = d.getElementById('pitch-open'), veil = d.getElementById('pitch-veil');
     if (!tile || !veil || !window.matchMedia || !matchMedia('(hover:hover)').matches) return;
-    var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '';
+    var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '', cap = null;
+    var CAP = {de: ['Klick mich an', 'Kurz reinschauen, dann weißt du, wer wir sind und was wir für deinen Laden holen.'], en: ['Click me', 'A quick look and you know who we are and what we bring to your venue.']};
     function lift(){
       if (lifted || Date.now() - tDrop < 350) return;
       clearTimeout(timer);
       if (clone) clone.remove();
       var cs = getComputedStyle(tile), r = tile.getBoundingClientRect();
       var w = tile.offsetWidth, h = tile.offsetHeight, cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      if (w < 20 || h < 20) return;
       var v = tile.querySelector('video'), src = v && (v.currentSrc || v.dataset.src);
       clone = d.createElement('div'); clone.className = 'pitch-clone';
       clone.style.cssText = 'left:' + (cx - w / 2) + 'px;top:' + (cy - h / 2) + 'px;width:' + w + 'px;height:' + h + 'px;border-radius:' + cs.borderRadius + ';' + (v && v.poster ? 'background-image:url(' + v.poster + ');' : '');
@@ -1952,12 +1959,20 @@
       void clone.offsetWidth;
       clone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc.toFixed(3) + ')';
       veil.classList.add('on');
+      var ct = CAP[d.documentElement.lang === 'en' ? 'en' : 'de'];
+      if (cap) cap.remove();
+      cap = d.createElement('div'); cap.className = 'pitch-cap'; cap.setAttribute('aria-hidden', 'true');
+      cap.innerHTML = '<b>' + ct[0] + '<i>.</i></b><span>' + ct[1] + '</span>';
+      cap.style.top = (window.innerHeight / 2 + h * sc / 2 + 30) + 'px';
+      d.body.appendChild(cap);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ if (cap) cap.classList.add('on'); }); });
       lifted = true; tLift = Date.now();
     }
     function drop(){
       if (!lifted) return;
       lifted = false; tDrop = Date.now();
       veil.classList.remove('on');
+      var cp = cap; cap = null; if (cp) { cp.classList.remove('on'); setTimeout(function(){ cp.remove(); }, 450); }
       var c = clone; if (c) c.style.transform = home || 'none';
       timer = setTimeout(function(){ tile.style.visibility = ''; if (c) c.remove(); if (clone === c) clone = null; }, 560);
     }
