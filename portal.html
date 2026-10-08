@@ -1038,6 +1038,7 @@ var TNAV=[
   ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"]]],
+  ["Produktion",[["t-callsheet","Call Sheet"],["t-release","Model Release"]]],
   ["Labor",[["t-labor","Labor"],["t-builder","Ablauf-Builder"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
   ["Ablage",[["t-dateien","Dateien im Drive"]]]
@@ -1090,6 +1091,8 @@ var TIC={
   "t-trends":'<path d="m4 16 5-5 3.5 3.5L20 7M15 7h5v5"/>',
   "t-galerie":'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 18 5-5 3 3 3-3 4 4"/>',
   "t-konzepte":'<path d="M9 18h6M10 21h4M12 3.5a6 6 0 0 0-3.5 10.9c.6.5 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.4 1-1.9A6 6 0 0 0 12 3.5Z"/>',
+  "t-callsheet":'<rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 17.5h4"/>',
+  "t-release":'<path d="M6 3.5h8l4 4V20.5H6Z"/><path d="M14 3.5v4h4M9 17c1.5-3 2.5-3 3-1s1.5 1 3-1"/>',
   "t-labor":'<path d="M9.5 4h5M10.5 4v5.5L5.2 18a1.8 1.8 0 0 0 1.6 2.7h10.4a1.8 1.8 0 0 0 1.6-2.7L13.5 9.5V4"/><path d="M8 15h8"/>',
   "t-builder":'<rect x="4" y="5" width="9" height="3.2" rx="1.6"/><rect x="8" y="10.4" width="12" height="3.2" rx="1.6"/><rect x="6" y="15.8" width="8" height="3.2" rx="1.6"/>',
   "t-brandbook":'<path d="M12 4a8 8 0 1 0 0 16c1.2 0 1.8-.9 1.4-2-.4-1 .3-2 1.4-2H17a3 3 0 0 0 3-3A8 8 0 0 0 12 4Z"/><circle cx="8" cy="11" r=".9"/><circle cx="11" cy="7.8" r=".9"/><circle cx="15" cy="8.5" r=".9"/>',
@@ -1151,7 +1154,7 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   requestAnimationFrame(movePill);
@@ -1175,6 +1178,8 @@ function tGo(v,quiet){
   else if(v==="t-buero") h=head("Team","Büro & Mitarbeiter","Alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set, Hierarchie und Ausbaustufen. Person anklicken, Namen ändern, Skills filtern. Oben zwischen Raumplan und Organigramm wechseln.",'<div class="acts"><a class="btn sm" href="buero.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="buero.html" title="Social Bites Büro"></iframe>';
   else if(v==="t-partner") h=head("Team","Partnerprogramm","Wer uns vermittelt, bekommt Provision und Anteilspunkte im Partner-Pool. Hier verwaltest du Partner, Vermittlungen, Auszahlungen und Vorlagen. Die öffentliche Seite ist noch nicht verlinkt, bis ihr die Konditionen freigebt.",'<div class="acts"><a class="btn sm" href="partner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Öffentliche Seite ↗</span></a><a class="btn sm" href="partner/Social-Bites-Partner-Leitfaden.pdf" target="_blank" rel="noopener"><span class="dot"></span><span>Leitfaden PDF ↗</span></a></div>')+'<iframe class="tframe" src="partner-team.html" title="Social Bites Partnerprogramm"></iframe>';
   else if(v==="t-konzepte") h=tKonzepte();
+  else if(v==="t-callsheet") h=head("Produktion","Call Sheet Generator","Für jeden Drehtag: Projekt, Ort, Zeitplan, Crew und Talents eintragen, rechts entsteht das A4 Blatt. Als PDF drucken oder als Text in die Gruppe kopieren. Alles bleibt nur in diesem Browser.",'<div class="acts"><a class="btn sm" href="callsheet.html" target="_blank" rel="noopener"><span class="dot"></span><span>Eigenes Fenster ↗</span></a></div>')+'<iframe class="tframe" src="callsheet.html" title="Social Bites Call Sheet Generator"></iframe>';
+  else if(v==="t-release") h=head("Produktion","Model Release Generator","Einwilligung für Fotos, Video und Ton: ausfüllen, Nutzung festlegen, direkt auf dem Bildschirm unterschreiben lassen und als PDF drucken. Auf Deutsch oder Englisch. Vorlage, bitte rechtlich prüfen lassen.",'<div class="acts"><a class="btn sm" href="modelrelease.html" target="_blank" rel="noopener"><span class="dot"></span><span>Eigenes Fenster ↗</span></a></div>')+'<iframe class="tframe" src="modelrelease.html" title="Social Bites Model Release Generator"></iframe>';
   else if(v==="t-labor") h=head("Labor","Ablauf als 3D Maschine","Hier setzt du den Ablauf der Dienstleistung für einen Kunden zusammen und siehst ihn als Maschine. Vorlage wählen oder Bausteine einzeln an und aus schalten. Ein Auftrag fährt durch alle Stationen, Station anklicken zeigt, was dort passiert. Ziehen dreht, Scrollen zoomt.")+'<div id="labHost"></div>';
   else if(v==="t-builder") h=head("Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer pro Kunde als Zeitachse. Vorlage wählen, Tage anpassen, Vorgänger festlegen. Der Plan zeigt, wie lange etwas dauert, was parallel läuft und welche Kette das Ende bestimmt. Unten lässt sich der Verlauf abspielen und scrubben.")+'<div id="bldHost"></div>';
   else if(v==="t-brandkit") h=tKit();
@@ -1189,7 +1194,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -1213,6 +1218,8 @@ function tStart(){
       tile("t-trends","Kreativ","Trend-Indicator","Was diese Woche in Food und Gastro viral geht.","t-or")+
       tile("t-galerie","Kreativ","Galerie","Moodboards und Entwürfe, gerade: T-Shirt mit Biss.")+
       tile("t-konzepte","Kreativ","Konzepte","Eigene Konzepte von A bis Z, die wir später Kunden verkaufen.","t-ink")+
+      tile("t-callsheet","Produktion","Call Sheet","Drehtag planen: Zeitplan, Crew, Ort. Als PDF drucken.","t-or")+
+      tile("t-release","Produktion","Model Release","Einwilligung für Bild und Video, mit Unterschrift am Bildschirm.","t-ink")+
       tile("t-labor","Labor","Labor","Den Ablauf für einen Kunden als 3D Maschine zusammenbauen.","t-or")+
       tile("t-builder","Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer als Zeitachse.","t-ink")+
       tile("t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.")+

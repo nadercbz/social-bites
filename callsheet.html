@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Call Sheet Generator</title>
+<meta name="description" content="Call Sheets für Drehtage von Social Bites: ausfüllen, ansehen, als PDF drucken.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Call Sheet Generator: links ausfüllen, rechts das A4 Blatt. Alles bleibt nur im Browser (localStorage), nichts geht an einen Server. */
+  :root{
+    color-scheme:light;
+    --paper:#FEFEFE; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
+    --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
+    --ok:#1F7A4D; --bad:#B42318;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --grain:none;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-weight:700;font-size:14px;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.sm{padding:6px 10px;font-size:13px;}
+  .btn.danger{color:var(--bad);}
+  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:42px;width:auto;}
+  .top .ttl b{display:block;font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .embedded .top img{display:none;}
+  .wrap{display:grid;grid-template-columns:minmax(320px,460px) minmax(0,1fr);gap:clamp(14px,2vw,28px);padding:18px var(--gutter) 60px;align-items:start;}
+  @media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr);}}
+  .form{display:grid;gap:12px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;}
+  .card h2{margin:0 0 10px;font-size:15px;letter-spacing:-.02em;}
+  .g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .fld{display:grid;gap:4px;font-size:13px;color:var(--mute);}
+  .fld span{font-weight:650;}
+  .fld input,.fld textarea,.fld select{width:100%;padding:9px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);font-size:15px;color:var(--ink);}
+  .fld textarea{min-height:70px;resize:vertical;}
+  .full{grid-column:1/-1;}
+  .rows{display:grid;gap:8px;}
+  .rw{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:6px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px;}
+  .rw.c4{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 78px auto;}
+  .rw input{padding:7px 8px;border:1px solid var(--line-2);border-radius:8px;font-size:14px;width:100%;min-width:0;background:var(--card);}
+  .rw .sub{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  .x{border:0;background:transparent;font-size:20px;cursor:pointer;color:var(--mute);padding:2px 8px;}
+  .x:hover{color:var(--bad);}
+  .hint{font-size:12.5px;color:var(--mute);margin:6px 0 0;}
+  .chk{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer;}
+  .saved{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .saved select{padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);max-width:260px;}
+
+  /* Vorschau */
+  .stage{position:sticky;top:78px;min-width:0;}
+  @media (max-width:980px){.stage{position:static;}}
+  .scale{width:100%;overflow:hidden;}
+  .sheet{width:210mm;min-height:297mm;background:#fff;color:#232321;padding:12mm 13mm;box-shadow:0 18px 50px -20px rgba(35,35,33,.45);border:1px solid var(--line);transform-origin:top left;font-size:10.5pt;line-height:1.35;}
+  .sheet h1{margin:0;font-size:34pt;line-height:.95;letter-spacing:-.045em;font-weight:800;}
+  .sheet .hd{display:flex;align-items:center;gap:14px;justify-content:space-between;border-bottom:3px solid #232321;padding-bottom:8px;}
+  .sheet .hd img{height:42px;width:auto;}
+  .sheet .hd .r{text-align:right;}
+  .sheet .big{font-size:22pt;font-weight:800;letter-spacing:-.04em;}
+  .sheet .orange{color:#F26A21;}
+  .sheet .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;}
+  .sheet .box{border:1.5px solid #232321;border-radius:8px;padding:6px 8px;min-height:44px;}
+  .sheet .box.hot{background:#F26A21;color:#fff;border-color:#F26A21;}
+  .sheet .box .k{font:500 7.5pt/1.2 'Geist Mono',ui-monospace,monospace;letter-spacing:.07em;text-transform:uppercase;opacity:.75;}
+  .sheet .box .v{font-weight:800;font-size:12pt;letter-spacing:-.02em;white-space:pre-line;}
+  .sheet h3{margin:14px 0 5px;font:700 8.5pt/1 'Geist Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;}
+  .sheet h3:before{content:"";display:inline-block;width:8px;height:8px;background:#F26A21;margin-right:7px;}
+  .sheet table{width:100%;border-collapse:collapse;font-size:9.5pt;}
+  .sheet th{background:#232321;color:#fff;text-align:left;padding:4px 6px;font:500 7.5pt/1.2 'Geist Mono',ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;}
+  .sheet td{padding:4px 6px;border-bottom:1px solid #d5d5d0;vertical-align:top;}
+  .sheet td.t{font-weight:800;white-space:nowrap;}
+  .sheet .txt{white-space:pre-line;font-size:9.8pt;}
+  .sheet .foot{margin-top:14px;padding-top:7px;border-top:1.5px solid #232321;display:flex;justify-content:space-between;font-size:8.5pt;color:#555;}
+  .sheet .note{background:#FDE3D2;border-radius:8px;padding:6px 9px;font-weight:700;margin-top:10px;}
+  .sheet .empty{color:#9a9a94;font-style:italic;}
+  @media print{
+    @page{size:A4;margin:0;}
+    html,body{background:#fff!important;}
+    .top,.form{display:none!important;}
+    .wrap{display:block;padding:0;}
+    .stage{position:static;}
+    .scale{height:auto!important;overflow:visible;}
+    .sheet{transform:none!important;box-shadow:none;border:0;width:210mm;min-height:297mm;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Call Sheet Generator</b><span class="mono">Für Drehtage. Bleibt nur in diesem Browser.</span></div>
+  <div class="acts">
+    <button class="btn sm" type="button" id="bExample">Beispieldaten einsetzen</button>
+    <button class="btn sm" type="button" id="bCopy">Als Text kopieren</button>
+    <button class="btn sm inv" type="button" id="bPrint">Als PDF drucken</button>
+  </div>
+</header>
+<div class="wrap">
+  <div class="form" id="form">
+    <section class="card">
+      <h2>Gespeicherte Call Sheets</h2>
+      <div class="saved"><select id="sel" aria-label="Call Sheet wählen"></select><button class="btn sm" type="button" id="bNew">Neu</button><button class="btn sm" type="button" id="bDup">Duplizieren</button><button class="btn sm danger" type="button" id="bDel">Löschen</button></div>
+      <p class="hint">Jede Änderung wird sofort in diesem Browser gespeichert.</p>
+    </section>
+    <section class="card">
+      <h2>Projekt</h2>
+      <div class="g2">
+        <label class="fld full"><span>Titel des Drehs</span><input data-k="titel" type="text" placeholder="z. B. Opening Reel Pizzary"></label>
+        <label class="fld"><span>Kunde</span><input data-k="kunde" type="text"></label>
+        <label class="fld"><span>Projekt</span><input data-k="projekt" type="text" placeholder="z. B. Bites Opening"></label>
+        <label class="fld"><span>Drehtag</span><input data-k="datum" type="date"></label>
+        <label class="fld"><span>Drehtag Nr.</span><input data-k="tagnr" type="text" placeholder="1 von 2"></label>
+        <label class="fld"><span>Crew Call</span><input data-k="call" type="time"></label>
+        <label class="fld"><span>Wrap (Ende)</span><input data-k="wrap" type="time"></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Ort</h2>
+      <div class="g2">
+        <label class="fld full"><span>Drehort</span><input data-k="ort" type="text" placeholder="Name des Ortes"></label>
+        <label class="fld full"><span>Adresse</span><input data-k="adresse" type="text" placeholder="Straße, PLZ Berlin"></label>
+        <label class="fld"><span>Parken und Anfahrt</span><textarea data-k="anfahrt" placeholder="Parkplatz, U-Bahn, Zugang"></textarea></label>
+        <label class="fld"><span>Wetter und Licht</span><textarea data-k="wetter" placeholder="z. B. 18 Grad, Sonnenuntergang 19:42"></textarea></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Kontakt</h2>
+      <div class="g2">
+        <label class="fld"><span>Ansprechpartner Produktion</span><input data-k="prodname" type="text"></label>
+        <label class="fld"><span>Telefon</span><input data-k="prodtel" type="tel"></label>
+        <label class="fld"><span>Ansprechpartner vor Ort (Kunde)</span><input data-k="kontaktname" type="text"></label>
+        <label class="fld"><span>Telefon</span><input data-k="kontakttel" type="tel"></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Zeitplan</h2>
+      <div class="rows" id="rowsPlan"></div>
+      <p style="margin:10px 0 0"><button class="btn sm" type="button" data-add="plan">+ Zeile</button></p>
+      <p class="hint">Wird nach Uhrzeit sortiert.</p>
+    </section>
+    <section class="card">
+      <h2>Crew</h2>
+      <div class="rows" id="rowsCrew"></div>
+      <p style="margin:10px 0 0"><button class="btn sm" type="button" data-add="crew">+ Person</button></p>
+    </section>
+    <section class="card">
+      <h2>Cast und Talents</h2>
+      <div class="rows" id="rowsCast"></div>
+      <p style="margin:10px 0 0"><button class="btn sm" type="button" data-add="cast">+ Person</button></p>
+      <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="releaseHinweis"> Hinweis aufs Blatt: Model Release unterschrieben mitbringen</label>
+    </section>
+    <section class="card">
+      <h2>Ausrüstung und Organisation</h2>
+      <div class="g2">
+        <label class="fld full"><span>Equipment</span><textarea data-k="equipment" placeholder="Kamera, Objektive, Licht, Ton, Gimbal, Drohne"></textarea></label>
+        <label class="fld full"><span>Requisiten, Outfits, Produkte</span><textarea data-k="props"></textarea></label>
+        <label class="fld"><span>Verpflegung</span><textarea data-k="essen"></textarea></label>
+        <label class="fld"><span>Hinweise</span><textarea data-k="hinweise" placeholder="Drehgenehmigung, Hausregeln, Dresscode"></textarea></label>
+        <label class="fld full"><span>Notfall (nächstes Krankenhaus, Notruf 112)</span><input data-k="notfall" type="text"></label>
+      </div>
+    </section>
+  </div>
+  <div class="stage"><div class="scale" id="scale"><div class="sheet" id="sheet"></div></div></div>
+</div>
+<script>
+(function(){
+"use strict";
+var KEY="sb-callsheet-v1";
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function uid(){return "c"+Math.random().toString(36).slice(2,8);}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+if(window.self!==window.top)document.documentElement.classList.add("embedded");
+
+function blank(){return {id:uid(),titel:"",kunde:"",projekt:"",datum:today(),tagnr:"",call:"",wrap:"",ort:"",adresse:"",anfahrt:"",wetter:"",prodname:"Nader Ait-Laouad",prodtel:"",kontaktname:"",kontakttel:"",equipment:"",props:"",essen:"",hinweise:"",notfall:"",releaseHinweis:true,
+  plan:[{t:"",w:"",o:"",p:""}],crew:[{n:"",r:"",c:"",tel:""}],cast:[{n:"",r:"",c:"",tel:""}]};}
+function example(){return {id:uid(),titel:"Beispiel: Opening Reel",kunde:"Beispiel Restaurant",projekt:"Bites Opening",datum:today(),tagnr:"1 von 1",call:"09:00",wrap:"17:00",ort:"Beispiel Restaurant",adresse:"Musterstraße 1, 10115 Berlin",anfahrt:"Parken im Hof nach Absprache, U-Bahn 3 Minuten Fußweg",wetter:"Innen und Außen, Tageslicht ab 8:30",prodname:"Nader Ait-Laouad",prodtel:"",kontaktname:"",kontakttel:"",equipment:"Kamera, 2 Objektive, Gimbal, LED Licht, Funkstrecken",props:"Gerichte, Outfits der Crew, Giveaways",essen:"Kaffee ab 8:30, Mittagessen im Laden",hinweise:"Bitte bequeme Schuhe und dunkle Kleidung ohne Logos",notfall:"Notruf 112, nächstes Krankenhaus: bitte eintragen",releaseHinweis:true,
+  plan:[{t:"09:00",w:"Crew Call, Aufbau",o:"Beispiel Restaurant",p:"Crew"},{t:"10:00",w:"Interview und Gerichte",o:"Küche",p:"Nader, Team"},{t:"12:30",w:"Mittagspause",o:"Gastraum",p:"Alle"},{t:"13:30",w:"Reels mit Talents",o:"Gastraum und draußen",p:"Talents, Crew"},{t:"16:30",w:"B-Roll, Detailaufnahmen",o:"Laden",p:"Crew"},{t:"17:00",w:"Wrap",o:"",p:""}],
+  crew:[{n:"Name",r:"Regie, Kamera",c:"08:30",tel:""},{n:"Name",r:"Ton, Licht",c:"09:00",tel:""}],cast:[{n:"Name",r:"Talent",c:"13:00",tel:""}]};}
+
+var S=null,data;
+try{data=JSON.parse(localStorage.getItem(KEY));}catch(e){data=null;}
+if(!data||!data.sheets||!data.sheets.length){var b0=blank();data={sheets:[b0],cur:b0.id};}
+function cur(){return data.sheets.filter(function(x){return x.id===data.cur;})[0]||data.sheets[0];}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+
+var df=new Intl.DateTimeFormat("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+function parse(iso){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso||"");return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+function val(x){return x&&String(x).trim()?esc(x):'<span class="empty">offen</span>';}
+function sortPlan(a){return a.slice().sort(function(x,y){return String(x.t||"99:99").localeCompare(String(y.t||"99:99"));});}
+
+function sheetHtml(s){
+  var d=parse(s.datum),dt=d?df.format(d):"";
+  var h='<div class="hd"><img src="logo_social_bites.webp" alt="Social Bites"><div class="r"><div class="mono" style="font-size:8pt">Social Bites · Berlin</div><div class="big">'+esc(dt||"Datum offen")+'</div></div></div>';
+  h+='<h1 style="margin-top:12px">Call <span class="orange">Sheet</span></h1>';
+  h+='<div style="font-size:14pt;font-weight:800;letter-spacing:-.03em;margin-top:4px">'+val(s.titel)+'</div>';
+  h+='<div style="color:#555;margin-top:2px">'+[s.kunde,s.projekt,s.tagnr?("Drehtag "+s.tagnr):""].filter(Boolean).map(esc).join(" · ")+'</div>';
+  h+='<div class="grid">'+
+    '<div class="box hot"><div class="k">Crew Call</div><div class="v" style="font-size:20pt">'+(s.call?esc(s.call):"offen")+'</div></div>'+
+    '<div class="box"><div class="k">Wrap</div><div class="v" style="font-size:20pt">'+(s.wrap?esc(s.wrap):"offen")+'</div></div>'+
+    '<div class="box"><div class="k">Wetter und Licht</div><div class="v" style="font-size:10pt;font-weight:650">'+(s.wetter?esc(s.wetter):"offen")+'</div></div>'+
+    '<div class="box" style="grid-column:span 2"><div class="k">Drehort</div><div class="v">'+val(s.ort)+'</div><div style="font-size:10pt">'+esc(s.adresse||"")+'</div></div>'+
+    '<div class="box"><div class="k">Parken und Anfahrt</div><div class="v" style="font-size:9.5pt;font-weight:650">'+(s.anfahrt?esc(s.anfahrt):"offen")+'</div></div>'+
+    '<div class="box"><div class="k">Produktion</div><div class="v" style="font-size:11pt">'+val(s.prodname)+'</div><div style="font-size:10pt">'+esc(s.prodtel||"")+'</div></div>'+
+    '<div class="box"><div class="k">Ansprechpartner vor Ort</div><div class="v" style="font-size:11pt">'+val(s.kontaktname)+'</div><div style="font-size:10pt">'+esc(s.kontakttel||"")+'</div></div>'+
+    '<div class="box"><div class="k">Notfall</div><div class="v" style="font-size:9.5pt;font-weight:650">'+(s.notfall?esc(s.notfall):"Notruf 112")+'</div></div></div>';
+  var pl=sortPlan(s.plan).filter(function(r){return r.t||r.w||r.o||r.p;});
+  h+='<h3>Zeitplan</h3>';
+  h+=pl.length?'<table><thead><tr><th style="width:52px">Zeit</th><th>Was</th><th style="width:25%">Wo</th><th style="width:22%">Wer</th></tr></thead><tbody>'+pl.map(function(r){return '<tr><td class="t">'+esc(r.t)+'</td><td>'+esc(r.w)+'</td><td>'+esc(r.o)+'</td><td>'+esc(r.p)+'</td></tr>';}).join("")+'</tbody></table>':'<div class="empty">Noch kein Zeitplan.</div>';
+  function people(arr,title){
+    var a=arr.filter(function(r){return r.n||r.r||r.c||r.tel;});
+    if(!a.length)return "";
+    return '<h3>'+title+'</h3><table><thead><tr><th>Name</th><th>Rolle</th><th style="width:60px">Call</th><th style="width:26%">Telefon</th></tr></thead><tbody>'+a.map(function(r){return '<tr><td><b>'+esc(r.n)+'</b></td><td>'+esc(r.r)+'</td><td class="t">'+esc(r.c)+'</td><td>'+esc(r.tel)+'</td></tr>';}).join("")+'</tbody></table>';
+  }
+  h+=people(s.crew,"Crew")+people(s.cast,"Cast und Talents");
+  function blockT(t,x){return x&&x.trim()?'<h3>'+t+'</h3><div class="txt">'+esc(x)+'</div>':"";}
+  h+=blockT("Equipment",s.equipment)+blockT("Requisiten, Outfits, Produkte",s.props)+blockT("Verpflegung",s.essen)+blockT("Hinweise",s.hinweise);
+  if(s.releaseHinweis)h+='<div class="note">Bitte Model Release unterschrieben mitbringen. Ohne unterschriebenes Release können wir Aufnahmen nicht verwenden.</div>';
+  h+='<div class="foot"><span>Social Bites · Berlin</span><span>Stand '+esc(new Date().toLocaleDateString("de-DE"))+'</span></div>';
+  return h;
+}
+
+function fit(){
+  var sc=$("#scale"),sh=$("#sheet");
+  var w=sc.clientWidth,base=sh.offsetWidth||794;
+  var k=Math.min(1,w/base);
+  sh.style.transform="scale("+k+")";
+  sc.style.height=(sh.offsetHeight*k)+"px";
+}
+function renderSheet(){$("#sheet").innerHTML=sheetHtml(S);fit();}
+
+var LISTS={plan:{box:"#rowsPlan",f:["t","w","o","p"],ph:["Zeit","Was","Wo","Wer"]},crew:{box:"#rowsCrew"},cast:{box:"#rowsCast"}};
+function drawLists(){
+  $("#rowsPlan").innerHTML=S.plan.map(function(r,i){return '<div class="rw" style="grid-template-columns:84px minmax(0,1fr) auto" data-l="plan" data-i="'+i+'"><input type="time" data-f="t" value="'+esc(r.t)+'" aria-label="Zeit"><input type="text" data-f="w" value="'+esc(r.w)+'" placeholder="Was" aria-label="Was"><button class="x" type="button" data-rm="plan" data-i="'+i+'" aria-label="Zeile löschen">×</button><div class="sub"><input type="text" data-f="o" value="'+esc(r.o)+'" placeholder="Wo" aria-label="Wo"><input type="text" data-f="p" value="'+esc(r.p)+'" placeholder="Wer" aria-label="Wer"></div></div>';}).join("");
+  ["crew","cast"].forEach(function(k){
+    $(LISTS[k].box).innerHTML=S[k].map(function(r,i){return '<div class="rw c4" data-l="'+k+'" data-i="'+i+'"><input type="text" data-f="n" value="'+esc(r.n)+'" placeholder="Name" aria-label="Name"><input type="text" data-f="r" value="'+esc(r.r)+'" placeholder="Rolle" aria-label="Rolle"><input type="time" data-f="c" value="'+esc(r.c)+'" aria-label="Call"><button class="x" type="button" data-rm="'+k+'" data-i="'+i+'" aria-label="Person löschen">×</button><div class="sub"><input type="tel" data-f="tel" value="'+esc(r.tel)+'" placeholder="Telefon" aria-label="Telefon"></div></div>';}).join("");
+  });
+}
+function fillForm(){
+  [].forEach.call(document.querySelectorAll("[data-k]"),function(el){var k=el.getAttribute("data-k");if(el.type==="checkbox")el.checked=!!S[k];else el.value=S[k]||"";});
+  drawLists();
+  var sel=$("#sel");sel.innerHTML=data.sheets.map(function(x){return '<option value="'+x.id+'"'+(x.id===S.id?" selected":"")+'>'+esc((x.datum||"")+" · "+(x.titel||x.kunde||"Ohne Titel"))+'</option>';}).join("");
+}
+function load(){S=cur();fillForm();renderSheet();}
+
+$("#form").addEventListener("input",function(e){
+  var el=e.target,k=el.getAttribute("data-k");
+  if(k){S[k]=el.type==="checkbox"?el.checked:el.value;}
+  else if(el.getAttribute("data-f")){var row=el.closest("[data-l]");S[row.getAttribute("data-l")][+row.getAttribute("data-i")][el.getAttribute("data-f")]=el.value;}
+  else return;
+  save();renderSheet();
+  if(k==="titel"||k==="kunde"||k==="datum"){var o=$("#sel").selectedOptions[0];if(o)o.textContent=(S.datum||"")+" · "+(S.titel||S.kunde||"Ohne Titel");}
+});
+$("#form").addEventListener("change",function(e){if(e.target.type==="checkbox"&&e.target.getAttribute("data-k")){S[e.target.getAttribute("data-k")]=e.target.checked;save();renderSheet();}});
+$("#form").addEventListener("click",function(e){
+  var a=e.target.closest("[data-add]"),r=e.target.closest("[data-rm]");
+  if(a){var k=a.getAttribute("data-add");S[k].push(k==="plan"?{t:"",w:"",o:"",p:""}:{n:"",r:"",c:"",tel:""});save();drawLists();renderSheet();}
+  if(r){var kk=r.getAttribute("data-rm");S[kk].splice(+r.getAttribute("data-i"),1);if(!S[kk].length)S[kk].push(kk==="plan"?{t:"",w:"",o:"",p:""}:{n:"",r:"",c:"",tel:""});save();drawLists();renderSheet();}
+});
+$("#sel").addEventListener("change",function(){data.cur=this.value;save();load();});
+$("#bNew").addEventListener("click",function(){var n=blank();data.sheets.push(n);data.cur=n.id;save();load();});
+$("#bDup").addEventListener("click",function(){var c=JSON.parse(JSON.stringify(S));c.id=uid();c.titel=(S.titel||"Call Sheet")+" Kopie";data.sheets.push(c);data.cur=c.id;save();load();});
+$("#bDel").addEventListener("click",function(){if(!window.confirm("Dieses Call Sheet löschen?"))return;data.sheets=data.sheets.filter(function(x){return x.id!==S.id;});if(!data.sheets.length)data.sheets.push(blank());data.cur=data.sheets[0].id;save();load();});
+$("#bExample").addEventListener("click",function(){if(!window.confirm("Beispieldaten einsetzen? Das ersetzt die Felder dieses Blatts."))return;var e=example();e.id=S.id;var i=data.sheets.indexOf(S);data.sheets[i]=e;save();load();});
+$("#bPrint").addEventListener("click",function(){window.print();});
+$("#bCopy").addEventListener("click",function(){
+  var s=S,L=["CALL SHEET: "+(s.titel||""),[s.kunde,s.projekt].filter(Boolean).join(" · "),"Datum: "+(parse(s.datum)?df.format(parse(s.datum)):""),"Crew Call: "+s.call+"   Wrap: "+s.wrap,"Ort: "+[s.ort,s.adresse].filter(Boolean).join(", "),"Anfahrt: "+s.anfahrt,"Produktion: "+s.prodname+" "+s.prodtel,"Vor Ort: "+s.kontaktname+" "+s.kontakttel,"","ZEITPLAN"];
+  sortPlan(s.plan).forEach(function(r){if(r.t||r.w)L.push(r.t+"  "+r.w+(r.o?" ("+r.o+")":"")+(r.p?" · "+r.p:""));});
+  L.push("","CREW");s.crew.forEach(function(r){if(r.n)L.push(r.n+", "+r.r+", Call "+r.c+" "+r.tel);});
+  L.push("","CAST");s.cast.forEach(function(r){if(r.n)L.push(r.n+", "+r.r+", Call "+r.c+" "+r.tel);});
+  if(s.equipment)L.push("","EQUIPMENT",s.equipment);if(s.props)L.push("","REQUISITEN",s.props);if(s.essen)L.push("","VERPFLEGUNG",s.essen);if(s.hinweise)L.push("","HINWEISE",s.hinweise);
+  var txt=L.join("\n"),b=this;
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){b.textContent="Kopiert";setTimeout(function(){b.textContent="Als Text kopieren";},1500);},function(){window.prompt("Zum Kopieren:",txt);});
+});
+window.addEventListener("resize",fit);
+if(window.ResizeObserver)new ResizeObserver(fit).observe($("#scale"));
+load();
+})();
+</script>
+</body>
+</html>

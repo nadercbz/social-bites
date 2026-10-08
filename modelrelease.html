@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Model Release Generator</title>
+<meta name="description" content="Model Release für Drehs von Social Bites: ausfüllen, unterschreiben lassen, als PDF drucken.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Model Release Generator: links ausfüllen, rechts die Einwilligung als A4 Blatt, Unterschrift direkt auf dem Bildschirm. Daten bleiben nur in diesem Browser. */
+  :root{
+    color-scheme:light;
+    --paper:#FEFEFE; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
+    --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
+    --ok:#1F7A4D; --bad:#B42318; --warn:#9A6400; --warn-tint:#FFF0C9;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --grain:none;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-weight:700;font-size:14px;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.sm{padding:6px 10px;font-size:13px;}
+  .btn.danger{color:var(--bad);}
+  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:42px;width:auto;}
+  .top .ttl b{display:block;font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .embedded .top img{display:none;}
+  .wrap{display:grid;grid-template-columns:minmax(320px,460px) minmax(0,1fr);gap:clamp(14px,2vw,28px);padding:18px var(--gutter) 60px;align-items:start;}
+  @media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr);}}
+  .form{display:grid;gap:12px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;}
+  .card h2{margin:0 0 10px;font-size:15px;letter-spacing:-.02em;}
+  .g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .fld{display:grid;gap:4px;font-size:13px;color:var(--mute);}
+  .fld span{font-weight:650;}
+  .fld input,.fld textarea,.fld select{width:100%;padding:9px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);font-size:15px;color:var(--ink);}
+  .fld textarea{min-height:64px;resize:vertical;}
+  .full{grid-column:1/-1;}
+  .checks{display:flex;flex-wrap:wrap;gap:6px 14px;}
+  .chk{display:flex;gap:7px;align-items:center;font-size:14px;cursor:pointer;}
+  .hint{font-size:12.5px;color:var(--mute);margin:6px 0 0;}
+  .warnbox{background:var(--warn-tint);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.4;}
+  .warnbox b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+  .saved{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .saved select{padding:8px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);max-width:260px;}
+  .seg{display:inline-flex;gap:6px;}
+  .seg button{font:650 14px/1 var(--display);padding:8px 13px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .sig{display:grid;gap:6px;}
+  .sig canvas{width:100%;height:120px;border:1.5px dashed var(--line-2);border-radius:12px;background:#fff;touch-action:none;cursor:crosshair;}
+  .sig .bar{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:13px;color:var(--mute);}
+
+  .stage{min-width:0;}
+  .scale{width:100%;overflow:hidden;}
+  .sheet{width:210mm;min-height:297mm;background:#fff;color:#232321;padding:13mm 15mm;box-shadow:0 18px 50px -20px rgba(35,35,33,.45);border:1px solid var(--line);transform-origin:top left;font-size:9.6pt;line-height:1.38;}
+  .sheet .hd{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:3px solid #232321;padding-bottom:8px;}
+  .sheet .hd img{height:40px;width:auto;}
+  .sheet h1{margin:10px 0 2px;font-size:19pt;line-height:1.05;letter-spacing:-.035em;font-weight:800;}
+  .sheet h1 i{font-style:normal;color:#F26A21;}
+  .sheet .sub{color:#555;font-size:9pt;}
+  .sheet .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px;}
+  .sheet .party{border:1.5px solid #232321;border-radius:8px;padding:6px 9px;}
+  .sheet .party .k{font:500 7.5pt/1.2 'Geist Mono',ui-monospace,monospace;letter-spacing:.07em;text-transform:uppercase;color:#6C6F68;}
+  .sheet .party div.v{font-weight:700;white-space:pre-line;}
+  .sheet h3{margin:11px 0 3px;font:700 8.3pt/1.2 'Geist Mono',ui-monospace,monospace;letter-spacing:.07em;text-transform:uppercase;}
+  .sheet h3:before{content:"";display:inline-block;width:7px;height:7px;background:#F26A21;margin-right:6px;}
+  .sheet p{margin:0 0 4px;}
+  .sheet .empty{color:#9a9a94;font-style:italic;}
+  .sheet .sigs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px;break-inside:avoid;}
+  .sheet .sg{min-height:78px;border-bottom:1.5px solid #232321;display:flex;align-items:flex-end;}
+  .sheet .sg img{max-height:70px;max-width:100%;display:block;}
+  .sheet .sgl{font-size:8.3pt;color:#555;margin-top:3px;}
+  .sheet .foot{margin-top:12px;padding-top:6px;border-top:1.5px solid #232321;display:flex;justify-content:space-between;font-size:8pt;color:#666;}
+  @media print{
+    @page{size:A4;margin:0;}
+    html,body{background:#fff!important;}
+    .top,.form{display:none!important;}
+    .wrap{display:block;padding:0;}
+    .scale{height:auto!important;overflow:visible;}
+    .sheet{transform:none!important;box-shadow:none;border:0;width:210mm;min-height:297mm;}
+  }
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Model Release Generator</b><span class="mono">Einwilligung für Bild, Video und Ton. Bleibt nur in diesem Browser.</span></div>
+  <div class="acts">
+    <div class="seg" role="group" aria-label="Sprache"><button type="button" data-lang="de" aria-pressed="true">Deutsch</button><button type="button" data-lang="en" aria-pressed="false">English</button></div>
+    <button class="btn sm" type="button" id="bExample">Beispieldaten einsetzen</button>
+    <button class="btn sm inv" type="button" id="bPrint">Als PDF drucken</button>
+  </div>
+</header>
+<div class="wrap">
+  <div class="form" id="form">
+    <div class="warnbox"><b>Vorlage, keine Rechtsberatung</b>Bitte den Text einmal von Vera oder einer Anwältin bzw. einem Anwalt prüfen lassen, bevor er mit echten Models eingesetzt wird. Besonders Vergütung, Dauer und Widerruf.</div>
+    <section class="card">
+      <h2>Gespeicherte Releases</h2>
+      <div class="saved"><select id="sel" aria-label="Release wählen"></select><button class="btn sm" type="button" id="bNew">Neu</button><button class="btn sm" type="button" id="bDup">Duplizieren</button><button class="btn sm danger" type="button" id="bDel">Löschen</button></div>
+      <p class="hint">Enthält persönliche Daten. Alles liegt nur in diesem Browser. Fertige PDFs bitte in der Kundenakte im Drive ablegen und hier löschen.</p>
+    </section>
+    <section class="card">
+      <h2>Produktion</h2>
+      <div class="g2">
+        <label class="fld full"><span>Firma und Ansprechpartner</span><input data-k="prod" type="text"></label>
+        <label class="fld full"><span>Anschrift</span><input data-k="prodAdr" type="text" placeholder="Straße, PLZ Berlin"></label>
+        <label class="fld full"><span>E-Mail für Widerruf und Fragen</span><input data-k="prodMail" type="email"></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Projekt</h2>
+      <div class="g2">
+        <label class="fld full"><span>Projekt und Titel</span><input data-k="projekt" type="text" placeholder="z. B. Opening Reel"></label>
+        <label class="fld full"><span>Auftraggeber (Kunde)</span><input data-k="kunde" type="text"></label>
+        <label class="fld"><span>Drehtag</span><input data-k="datum" type="date"></label>
+        <label class="fld"><span>Drehort</span><input data-k="ort" type="text"></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Model</h2>
+      <div class="g2">
+        <label class="fld full"><span>Vor- und Nachname</span><input data-k="mName" type="text"></label>
+        <label class="fld full"><span>Anschrift</span><input data-k="mAdr" type="text"></label>
+        <label class="fld"><span>Geburtsdatum</span><input data-k="mGeb" type="date"></label>
+        <label class="fld"><span>E-Mail oder Telefon</span><input data-k="mKontakt" type="text"></label>
+        <label class="fld full"><span>Instagram oder TikTok (optional)</span><input data-k="mHandle" type="text" placeholder="@name"></label>
+      </div>
+      <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="minder"> Das Model ist unter 18 (Erziehungsberechtigte unterschreiben)</label>
+      <div class="g2" id="guard" style="margin-top:10px" hidden>
+        <label class="fld full"><span>Erziehungsberechtigte(r), Name</span><input data-k="gName" type="text"></label>
+        <label class="fld full"><span>Anschrift (falls anders)</span><input data-k="gAdr" type="text"></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Aufnahmen und Nutzung</h2>
+      <p class="hint" style="margin:0 0 6px">Art der Aufnahmen</p>
+      <div class="checks" data-g="art">
+        <label class="chk"><input type="checkbox" data-opt="art:foto"> Fotos</label>
+        <label class="chk"><input type="checkbox" data-opt="art:video"> Video</label>
+        <label class="chk"><input type="checkbox" data-opt="art:ton"> Ton und Stimme</label>
+      </div>
+      <p class="hint" style="margin:12px 0 6px">Wo dürfen die Aufnahmen genutzt werden?</p>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-opt="med:social"> Social Media (Instagram, TikTok, YouTube)</label>
+        <label class="chk"><input type="checkbox" data-opt="med:web"> Websites</label>
+        <label class="chk"><input type="checkbox" data-opt="med:ads"> Bezahlte Werbung (Ads)</label>
+        <label class="chk"><input type="checkbox" data-opt="med:print"> Print und Außenwerbung</label>
+        <label class="chk"><input type="checkbox" data-opt="med:tv"> TV und Kino</label>
+        <label class="chk"><input type="checkbox" data-opt="med:presse"> Presse und Events</label>
+        <label class="chk"><input type="checkbox" data-opt="med:intern"> Interne Präsentation und Portfolio</label>
+      </div>
+      <div class="g2" style="margin-top:12px">
+        <label class="fld"><span>Gebiet</span><select data-k="gebiet"><option value="welt">Weltweit</option><option value="eu">Europäische Union</option><option value="de">Deutschland</option></select></label>
+        <label class="fld"><span>Dauer</span><select data-k="dauer"><option value="unbefristet">Unbefristet</option><option value="1">1 Jahr</option><option value="2">2 Jahre</option><option value="3">3 Jahre</option><option value="5">5 Jahre</option></select></label>
+      </div>
+      <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="bearb"> Bearbeitung erlaubt (Schnitt, Farbe, Retusche, Text und Musik)</label>
+    </section>
+    <section class="card">
+      <h2>Vergütung und Nennung</h2>
+      <div class="g2">
+        <label class="fld"><span>Vergütung</span><select data-k="verg"><option value="keine">Keine Vergütung</option><option value="geld">Pauschale in Euro</option><option value="sach">Sachleistung</option></select></label>
+        <label class="fld" id="vergBox" hidden><span id="vergLbl">Betrag oder Leistung</span><input data-k="vergText" type="text"></label>
+      </div>
+      <label class="chk" style="margin-top:10px"><input type="checkbox" data-k="nennung"> Namensnennung oder Verlinkung des Profils gewünscht</label>
+    </section>
+    <section class="card">
+      <h2>Unterschriften</h2>
+      <div class="g2" style="margin-bottom:10px">
+        <label class="fld"><span>Ort</span><input data-k="sOrt" type="text" placeholder="Berlin"></label>
+        <label class="fld"><span>Datum</span><input data-k="sDatum" type="date"></label>
+      </div>
+      <div class="sig" id="sigModel"><canvas data-sig="model" aria-label="Unterschrift Model"></canvas><div class="bar"><span>Unterschrift Model</span><button class="btn sm" type="button" data-clear="model">Löschen</button></div></div>
+      <div class="sig" id="sigGuard" style="margin-top:10px" hidden><canvas data-sig="guard" aria-label="Unterschrift Erziehungsberechtigte"></canvas><div class="bar"><span>Unterschrift Erziehungsberechtigte(r)</span><button class="btn sm" type="button" data-clear="guard">Löschen</button></div></div>
+      <div class="sig" id="sigProd" style="margin-top:10px"><canvas data-sig="prod" aria-label="Unterschrift Produktion"></canvas><div class="bar"><span>Unterschrift Produktion</span><button class="btn sm" type="button" data-clear="prod">Löschen</button></div></div>
+      <p class="hint">Mit Finger oder Maus direkt auf dem Bildschirm unterschreiben. Alternativ das Blatt ohne Unterschrift ausdrucken und von Hand unterschreiben lassen.</p>
+    </section>
+  </div>
+  <div class="stage"><div class="scale" id="scale"><div class="sheet" id="sheet"></div></div></div>
+</div>
+<script>
+(function(){
+"use strict";
+var KEY="sb-modelrelease-v1";
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function uid(){return "m"+Math.random().toString(36).slice(2,8);}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+if(window.self!==window.top)document.documentElement.classList.add("embedded");
+
+function blank(){return {id:uid(),lang:"de",prod:"Social Bites, Nader Ait-Laouad und Tommy Hein",prodAdr:"",prodMail:"",projekt:"",kunde:"",datum:today(),ort:"",mName:"",mAdr:"",mGeb:"",mKontakt:"",mHandle:"",minder:false,gName:"",gAdr:"",
+  art:{foto:true,video:true,ton:true},med:{social:true,web:true,ads:false,print:false,tv:false,presse:false,intern:true},gebiet:"welt",dauer:"unbefristet",bearb:true,verg:"keine",vergText:"",nennung:false,sOrt:"Berlin",sDatum:today(),sig:{model:"",guard:"",prod:""}};}
+function example(){var b=blank();b.projekt="Beispiel: Opening Reel";b.kunde="Beispiel Restaurant";b.ort="Berlin";b.mName="Beispiel Model";b.mAdr="Musterstraße 1, 10115 Berlin";b.mGeb="1999-05-12";b.mKontakt="beispiel@example.com";b.mHandle="@beispielmodel";b.prodAdr="Berlin";b.prodMail="";b.nennung=true;b.verg="sach";b.vergText="Essen und Getränke am Drehtag";return b;}
+
+var data,S;
+try{data=JSON.parse(localStorage.getItem(KEY));}catch(e){data=null;}
+if(!data||!data.items||!data.items.length){var b0=blank();data={items:[b0],cur:b0.id};}
+function cur(){return data.items.filter(function(x){return x.id===data.cur;})[0]||data.items[0];}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+
+var dfl={de:new Intl.DateTimeFormat("de-DE",{day:"numeric",month:"long",year:"numeric"}),en:new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"long",year:"numeric"})};
+function fd(iso,l){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso||"");return m?dfl[l].format(new Date(+m[1],+m[2]-1,+m[3])):"";}
+function v(x){return x&&String(x).trim()?esc(x):'<span class="empty">offen</span>';}
+
+var TX={
+ de:{title:"Model Release",sub:"Einwilligung zur Anfertigung und Nutzung von Foto-, Video- und Tonaufnahmen (§§ 22, 23 KUG, Art. 6 und 7 DSGVO)",prod:"Produktion",model:"Model",proj:"Projekt",dob:"geboren am",art:{foto:"Fotos",video:"Videos",ton:"Tonaufnahmen"},
+  med:{social:"Social Media (z. B. Instagram, TikTok, YouTube)",web:"Websites",ads:"bezahlte Werbung (Ads)",print:"Print und Außenwerbung",tv:"TV und Kino",presse:"Presse und Events",intern:"interne Präsentation und Portfolio der Produktion"},
+  gebiet:{welt:"weltweit",eu:"in der Europäischen Union",de:"in Deutschland"},dauer:function(d){return d==="unbefristet"?"zeitlich unbefristet":"für "+d+(d==="1"?" Jahr":" Jahre")+" ab dem Drehtag";},
+  paras:function(s,x){
+   var art=x.art.join(", ")||"Aufnahmen",med=x.med.join(", ")||"die vereinbarten Medien";
+   var P=[];
+   P.push(["§ 1 Aufnahmen","Das Model erlaubt der Produktion, am "+(fd(s.datum,"de")||"Drehtag")+(s.ort?" in "+esc(s.ort):"")+" "+art+" von seiner Person anzufertigen. Die Aufnahmen entstehen für das Projekt "+(s.projekt?"„"+esc(s.projekt)+"“":"der Produktion")+(s.kunde?" im Auftrag von "+esc(s.kunde):"")+"."]);
+   P.push(["§ 2 Nutzung","Die Produktion darf die Aufnahmen, auch in Ausschnitten, nutzen. Erlaubte Bereiche: "+med+". Die Nutzung gilt "+x.gebiet+" und "+x.dauer+". Sie umfasst auch die Weitergabe an den Auftraggeber und an Partner der Produktion (zum Beispiel Creator, Plattformen und Dienstleister), soweit sie die Aufnahmen im Rahmen dieser Einwilligung nutzen."]);
+   P.push(["§ 3 Bearbeitung",s.bearb?"Das Model ist einverstanden, dass die Aufnahmen geschnitten, farblich bearbeitet, retuschiert und mit Text, Musik und Grafiken kombiniert werden. Eine entstellende oder ehrverletzende Darstellung ist ausgeschlossen.":"Die Aufnahmen dürfen nur unverändert genutzt werden. Technisch notwendiges Zuschneiden, Farbanpassung und Untertitel sind erlaubt."]);
+   P.push(["§ 4 Rechte an den Aufnahmen","Die Urheber- und Nutzungsrechte an den Aufnahmen liegen bei der Produktion. Das Model bestätigt, dass dieser Einwilligung keine Rechte Dritter entgegenstehen, zum Beispiel Exklusivverträge mit Agenturen oder Marken."]);
+   P.push(["§ 5 Vergütung",s.verg==="keine"?"Das Model erhält für diese Einwilligung keine Vergütung. Alle Ansprüche sind damit abgegolten.":(s.verg==="geld"?"Das Model erhält eine Pauschale von "+v(s.vergText)+". Mit der Zahlung sind alle Ansprüche abgegolten.":"Das Model erhält folgende Sachleistung: "+v(s.vergText)+". Mit der Leistung sind alle Ansprüche abgegolten.")]);
+   P.push(["§ 6 Namensnennung",s.nennung?"Die Produktion darf das Profil des Models "+(s.mHandle?"("+esc(s.mHandle)+") ":"")+"nennen oder verlinken. Eine Pflicht dazu besteht nicht.":"Eine Namensnennung oder Verlinkung ist nicht gewünscht."]);
+   P.push(["§ 7 Freiwilligkeit und Widerruf","Die Einwilligung ist freiwillig. Das Model kann sie nach Art. 7 Abs. 3 DSGVO jederzeit mit Wirkung für die Zukunft widerrufen, formlos per E-Mail an "+(s.prodMail?esc(s.prodMail):"die Produktion")+". Die Produktion entfernt die Aufnahmen dann im zumutbaren Rahmen von ihren eigenen Kanälen. Bereits abgeschlossene Nutzungen, zum Beispiel gedruckte Materialien, und Kopien Dritter sind davon nicht betroffen. Das Recht beider Seiten zur Kündigung aus wichtigem Grund bleibt unberührt."]);
+   P.push(["§ 8 Datenschutz","Verantwortlich für die Verarbeitung der Daten ist die Produktion. Die Daten des Models werden nur zur Abwicklung des Projekts und zum Nachweis dieser Einwilligung gespeichert. Das Model hat das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit sowie das Recht auf Beschwerde bei der Berliner Beauftragten für Datenschutz und Informationsfreiheit."]);
+   P.push(["§ 9 Sonstiges","Änderungen bedürfen der Textform. Ist eine Bestimmung unwirksam, bleibt der Rest wirksam."]);
+   return P;},
+  minder:"Das Model ist minderjährig. Die Erziehungsberechtigten stimmen dieser Einwilligung zu und bestätigen, dass sie zur Erteilung berechtigt sind.",
+  sigModel:"Unterschrift Model",sigGuard:"Unterschrift Erziehungsberechtigte(r)",sigProd:"Unterschrift Produktion",ortDat:"Ort, Datum",foot:"Social Bites · Berlin"},
+ en:{title:"Model Release",sub:"Consent to the recording and use of photo, video and audio (Sections 22 and 23 KUG, Art. 6 and 7 GDPR)",prod:"Production",model:"Model",proj:"Project",dob:"born on",art:{foto:"photos",video:"videos",ton:"audio recordings"},
+  med:{social:"social media (e.g. Instagram, TikTok, YouTube)",web:"websites",ads:"paid advertising",print:"print and outdoor advertising",tv:"TV and cinema",presse:"press and events",intern:"internal presentation and the production's portfolio"},
+  gebiet:{welt:"worldwide",eu:"in the European Union",de:"in Germany"},dauer:function(d){return d==="unbefristet"?"without time limit":"for "+d+(d==="1"?" year":" years")+" from the day of the shoot";},
+  paras:function(s,x){
+   var art=x.art.join(", ")||"recordings",med=x.med.join(", ")||"the agreed media";
+   var P=[];
+   P.push(["§ 1 Recordings","The model allows the production to make "+art+" of their person on "+(fd(s.datum,"en")||"the shooting day")+(s.ort?" in "+esc(s.ort):"")+". The recordings are made for the project "+(s.projekt?"“"+esc(s.projekt)+"”":"of the production")+(s.kunde?" on behalf of "+esc(s.kunde):"")+"."]);
+   P.push(["§ 2 Use","The production may use the recordings, also in excerpts, in the following media: "+med+". The use applies "+x.gebiet+" and "+x.dauer+". It includes passing the recordings to the client and to partners of the production (for example creators, platforms and service providers) as far as they use them within this consent."]);
+   P.push(["§ 3 Editing",s.bearb?"The model agrees that the recordings may be cut, colour graded, retouched and combined with text, music and graphics. Any distorting or defamatory presentation is excluded.":"The recordings may only be used unedited. Technically necessary cropping, colour adjustment and subtitles are allowed."]);
+   P.push(["§ 4 Rights in the recordings","Copyright and rights of use in the recordings belong to the production. The model confirms that no third-party rights conflict with this consent, for example exclusive contracts with agencies or brands."]);
+   P.push(["§ 5 Payment",s.verg==="keine"?"The model receives no payment for this consent. All claims are settled with it.":(s.verg==="geld"?"The model receives a flat fee of "+v(s.vergText)+". All claims are settled with the payment.":"The model receives the following benefit in kind: "+v(s.vergText)+". All claims are settled with it.")]);
+   P.push(["§ 6 Credit",s.nennung?"The production may name or link the model's profile "+(s.mHandle?"("+esc(s.mHandle)+") ":"")+"but is not obliged to.":"No credit or link is wanted."]);
+   P.push(["§ 7 Voluntariness and withdrawal","The consent is voluntary. The model may withdraw it at any time with effect for the future under Art. 7(3) GDPR, informally by e-mail to "+(s.prodMail?esc(s.prodMail):"the production")+". The production will then remove the recordings from its own channels to a reasonable extent. Uses already completed, for example printed materials, and copies held by third parties are not affected. Both sides keep the right to terminate for good cause."]);
+   P.push(["§ 8 Data protection","The production is responsible for processing the data. The model's data is stored only to run the project and to prove this consent. The model has the right of access, rectification, erasure, restriction of processing and data portability, and the right to lodge a complaint with the Berlin Commissioner for Data Protection and Freedom of Information."]);
+   P.push(["§ 9 Miscellaneous","Changes require text form. If a provision is invalid, the rest remains valid."]);
+   return P;},
+  minder:"The model is a minor. The legal guardians agree to this consent and confirm that they are entitled to give it.",
+  sigModel:"Signature of the model",sigGuard:"Signature of legal guardian",sigProd:"Signature of the production",ortDat:"Place, date",foot:"Social Bites · Berlin"}
+};
+
+function sheetHtml(s){
+  var l=s.lang,T=TX[l];
+  var x={art:Object.keys(T.art).filter(function(k){return s.art[k];}).map(function(k){return T.art[k];}),med:Object.keys(T.med).filter(function(k){return s.med[k];}).map(function(k){return T.med[k];}),gebiet:T.gebiet[s.gebiet],dauer:T.dauer(s.dauer)};
+  var h='<div class="hd"><img src="logo_social_bites.webp" alt="Social Bites"><div class="mono" style="font-size:8pt">Social Bites · Berlin</div></div>';
+  h+='<h1>'+T.title+' <i>·</i> '+esc(s.projekt||"")+'</h1><div class="sub">'+T.sub+'</div>';
+  h+='<div class="two"><div class="party"><div class="k">'+T.prod+'</div><div class="v">'+v(s.prod)+(s.prodAdr?"\n"+esc(s.prodAdr):"")+(s.prodMail?"\n"+esc(s.prodMail):"")+'</div></div>'+
+     '<div class="party"><div class="k">'+T.model+'</div><div class="v">'+v(s.mName)+(s.mGeb?"\n"+T.dob+" "+esc(fd(s.mGeb,l)):"")+(s.mAdr?"\n"+esc(s.mAdr):"")+(s.mKontakt?"\n"+esc(s.mKontakt):"")+'</div></div></div>';
+  TX[l].paras(s,x).forEach(function(p){h+='<h3>'+p[0]+'</h3><p>'+p[1]+'</p>';});
+  if(s.minder)h+='<h3>'+(l==="de"?"Minderjährige":"Minors")+'</h3><p>'+T.minder+(s.gName?" ("+esc(s.gName)+(s.gAdr?", "+esc(s.gAdr):"")+")":"")+'</p>';
+  var place=(s.sOrt?esc(s.sOrt):"")+(s.sOrt&&s.sDatum?", ":"")+(s.sDatum?esc(fd(s.sDatum,l)):"");
+  function sg(id,label,name){return '<div><div class="sg">'+(s.sig[id]?'<img src="'+s.sig[id]+'" alt="">':"")+'</div><div class="sgl">'+label+(name?" · "+esc(name):"")+'</div></div>';}
+  h+='<div class="sigs"><div><div class="sg" style="min-height:30px;border-bottom:0;align-items:flex-start;font-weight:700">'+(place||"&nbsp;")+'</div><div class="sgl">'+T.ortDat+'</div></div><div></div>'+sg("model",T.sigModel,s.mName)+(s.minder?sg("guard",T.sigGuard,s.gName):"<div></div>")+sg("prod",T.sigProd,"")+'<div></div></div>';
+  h+='<div class="foot"><span>'+T.foot+'</span><span>'+esc(new Date().toLocaleDateString(l==="de"?"de-DE":"en-GB"))+'</span></div>';
+  return h;
+}
+function fit(){var sc=$("#scale"),sh=$("#sheet");var w=sc.clientWidth,base=sh.offsetWidth||794;var k=Math.min(1,w/base);sh.style.transform="scale("+k+")";sc.style.height=(sh.offsetHeight*k)+"px";}
+function renderSheet(){$("#sheet").innerHTML=sheetHtml(S);fit();}
+
+function fillForm(){
+  [].forEach.call(document.querySelectorAll("[data-k]"),function(el){var k=el.getAttribute("data-k");if(el.type==="checkbox")el.checked=!!S[k];else el.value=S[k]||"";});
+  [].forEach.call(document.querySelectorAll("[data-opt]"),function(el){var p=el.getAttribute("data-opt").split(":");el.checked=!!S[p[0]][p[1]];});
+  [].forEach.call(document.querySelectorAll("[data-lang]"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-lang")===S.lang));});
+  syncVis();
+  var sel=$("#sel");sel.innerHTML=data.items.map(function(x){return '<option value="'+x.id+'"'+(x.id===S.id?" selected":"")+'>'+esc((x.mName||"Ohne Namen")+" · "+(x.projekt||"Ohne Projekt"))+'</option>';}).join("");
+  drawSigs();
+}
+function syncVis(){
+  $("#guard").hidden=!S.minder;$("#sigGuard").hidden=!S.minder;
+  $("#vergBox").hidden=S.verg==="keine";$("#vergLbl").textContent=S.verg==="geld"?"Betrag in Euro":"Sachleistung";
+}
+
+// Unterschrift Felder
+var pads={};
+function setupPad(c){
+  var id=c.getAttribute("data-sig"),ctx=c.getContext("2d"),drawing=false,last=null;
+  function size(){var r=c.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);if(c.width!==Math.round(r.width*dpr)){c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineWidth=2.2;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#232321";}
+  function pos(e){var r=c.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+  c.addEventListener("pointerdown",function(e){size();drawing=true;last=pos(e);c.setPointerCapture(e.pointerId);ctx.beginPath();ctx.moveTo(last[0],last[1]);ctx.lineTo(last[0]+.01,last[1]+.01);ctx.stroke();});
+  c.addEventListener("pointermove",function(e){if(!drawing)return;var p=pos(e);ctx.beginPath();ctx.moveTo(last[0],last[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();last=p;});
+  function end(){if(!drawing)return;drawing=false;S.sig[id]=c.toDataURL("image/png");save();renderSheet();}
+  c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);
+  pads[id]={c:c,redraw:function(){size();ctx.clearRect(0,0,c.width,c.height);if(S.sig[id]){var im=new Image();im.onload=function(){var r=c.getBoundingClientRect();ctx.drawImage(im,0,0,r.width,r.height);};im.src=S.sig[id];}}};
+}
+[].forEach.call(document.querySelectorAll("canvas[data-sig]"),setupPad);
+function drawSigs(){Object.keys(pads).forEach(function(k){pads[k].redraw();});}
+
+function load(){S=cur();if(!S.sig)S.sig={model:"",guard:"",prod:""};fillForm();renderSheet();setTimeout(drawSigs,50);}
+$("#form").addEventListener("input",function(e){
+  var el=e.target,k=el.getAttribute("data-k");if(!k)return;
+  S[k]=el.type==="checkbox"?el.checked:el.value;save();syncVis();renderSheet();
+  if(k==="mName"||k==="projekt"){var o=$("#sel").selectedOptions[0];if(o)o.textContent=(S.mName||"Ohne Namen")+" · "+(S.projekt||"Ohne Projekt");}
+});
+$("#form").addEventListener("change",function(e){
+  var el=e.target,k=el.getAttribute("data-k"),o=el.getAttribute("data-opt");
+  if(o){var p=o.split(":");S[p[0]][p[1]]=el.checked;save();renderSheet();return;}
+  if(k){S[k]=el.type==="checkbox"?el.checked:el.value;save();syncVis();renderSheet();if(k==="minder")setTimeout(drawSigs,30);}
+});
+$("#form").addEventListener("click",function(e){var b=e.target.closest("[data-clear]");if(!b)return;var id=b.getAttribute("data-clear");S.sig[id]="";save();pads[id].redraw();renderSheet();});
+[].forEach.call(document.querySelectorAll("[data-lang]"),function(b){b.addEventListener("click",function(){S.lang=b.getAttribute("data-lang");save();fillForm();renderSheet();});});
+$("#sel").addEventListener("change",function(){data.cur=this.value;save();load();});
+$("#bNew").addEventListener("click",function(){var n=blank();data.items.push(n);data.cur=n.id;save();load();});
+$("#bDup").addEventListener("click",function(){var c=JSON.parse(JSON.stringify(S));c.id=uid();c.sig={model:"",guard:"",prod:""};c.mName="";c.mAdr="";c.mGeb="";c.mKontakt="";c.mHandle="";data.items.push(c);data.cur=c.id;save();load();});
+$("#bDel").addEventListener("click",function(){if(!window.confirm("Dieses Release löschen? Name und Unterschrift sind danach weg."))return;data.items=data.items.filter(function(x){return x.id!==S.id;});if(!data.items.length)data.items.push(blank());data.cur=data.items[0].id;save();load();});
+$("#bExample").addEventListener("click",function(){if(!window.confirm("Beispieldaten einsetzen? Das ersetzt die Felder dieses Releases."))return;var e=example();e.id=S.id;data.items[data.items.indexOf(S)]=e;save();load();});
+$("#bPrint").addEventListener("click",function(){window.print();});
+window.addEventListener("resize",function(){fit();setTimeout(drawSigs,30);});
+if(window.ResizeObserver)new ResizeObserver(fit).observe($("#scale"));
+load();
+})();
+</script>
+</body>
+</html>
