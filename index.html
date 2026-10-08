@@ -2131,7 +2131,7 @@
       es.forEach(function(e){
         var v = e.target;
         if (e.isIntersecting) {
-          if (!v.getAttribute('src')) v.src = 'media/fig_' + v.dataset.fig + (safari ? '.mov' : '.webm');
+          if (!v.getAttribute('src')) v.src = 'media/fig_' + v.dataset.fig + (safari ? '_hevc.mp4' : '.webm');
           var p = v.play(); if (p && p.catch) p.catch(function(){});
         } else if (v.getAttribute('src')) v.pause();
       });
