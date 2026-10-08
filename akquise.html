@@ -310,7 +310,7 @@ function stName(k){return (STAT.filter(function(s){return s[0]===k;})[0]||[0,k])
 function scColor(s){return s>=70?"#F04A0A":s>=50?"#D98324":s>=35?"#8C7B5E":"#B7AE9C";}
 
 var ST=load("sb-akq-state",{}),PREF=load("sb-akq-prefs",{who:"Nader",view:"heute"}),FIL=load("sb-akq-filter",{br:[],kiez:"",sig:"",min:30,q:"",stat:"offen"});
-var DATA=null,LEADS=[],EVS=[],view=(location.hash.slice(1)||PREF.view||"heute"),sortK="score",sortD=-1,shown=60,openTx={};
+var DATA=null,LEADS=[],EVS=[],view=(location.hash.slice(1)||"pipeline"),sortK="score",sortD=-1,shown=60,openTx={};
 function S(id){return ST[id]||(ST[id]={s:"neu",note:"",hist:[]});}
 function saveST(){store("sb-akq-state",ST);}
 function setStatus(id,s){var o=S(id);if(o.s===s)return;o.s=s;o.at=new Date().toISOString();(o.hist=o.hist||[]).push([o.at,s]);saveST();}
@@ -527,7 +527,7 @@ function txPanel(l,v){
 }
 
 /* ---------- Ansichten ---------- */
-var VIEWS=[["heute","Heute"],["liste","Liste"],["karte","Karte"],["pipeline","Pipeline"],["events","Events"],["konzepte","Konzepte"],["quellen","Quellen"]];
+var VIEWS=[["pipeline","Pipeline"],["heute","Heute"],["liste","Liste"],["karte","Karte"],["events","Events"],["konzepte","Konzepte"],["quellen","Quellen"]];
 function drawViews(){
   $("#views").innerHTML=VIEWS.map(function(v){var n=v[0]==="pipeline"?allItems().filter(function(l){return KAN.indexOf(stOf(l.id))>-1;}).length:v[0]==="events"?evUpcoming().length:v[0]==="karte"?filtered().filter(function(l){return l.lat;}).length:v[0]==="konzepte"?LEADS.filter(function(l){return l.konzept;}).length:null;return '<button type="button" data-view="'+v[0]+'" aria-pressed="'+(view===v[0])+'">'+v[1]+(n!=null?'<span class="n">'+n+'</span>':"")+'</button>';}).join("");
 }
