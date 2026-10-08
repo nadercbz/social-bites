@@ -604,14 +604,14 @@ var AUTH="sb-portal-auth";
 function authMode(){try{return sessionStorage.getItem(AUTH)||"";}catch(e){return authed.mem||"";}}
 function authed(){return authMode()==="1";}
 function setAuth(v){try{if(v)sessionStorage.setItem(AUTH,v);else sessionStorage.removeItem(AUTH);}catch(e){}authed.mem=v||"";}
-/* Team-Zugang: nur die SHA-256-Prüfsumme von "benutzer:passwort" steht im Code */
-var TEAM_HASH="eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab";
+/* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
+var TEAM_HASHES=["eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab","e0a93f7716e0bc692b6526ff5339a1300589cca771fd365ef3460f6070756a78","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5"];  /* bisheriger Zugang, nader, tommy */
 function isTeam(u,p){
   try{
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
     return crypto.subtle.digest("SHA-256",new TextEncoder().encode(u+":"+p)).then(function(b){
       var hex=Array.prototype.map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,"0");}).join("");
-      return hex===TEAM_HASH;
+      return TEAM_HASHES.indexOf(hex)>-1;
     },function(){return false;});
   }catch(e){return Promise.resolve(false);}
 }
