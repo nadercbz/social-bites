@@ -16,15 +16,15 @@
   /* Layout: ein A4-Blatt auf Papier-Grund, druckbar. CI Social Bites. */
   :root{
     color-scheme:light;
-    --paper:#F8F5F0; --paper-2:#EFEBE4; --card:#FFFFFF; --ink:#1E1B1A; --mute:#6B6357;
-    --line:rgba(30,27,26,.14); --accent:#F04A0A; --accent-ink:#B83806; --accent-tint:#FFE2D0;
+    --paper:#FBFAF6; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --line:rgba(35,35,33,.14); --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
     --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
     --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--paper-2);color:var(--ink);font-family:var(--display);font-weight:500;-webkit-font-smoothing:antialiased;display:flex;justify-content:center;padding:clamp(20px,5vw,56px) 16px;padding-block:clamp(20px,5vw,56px);}
   img{max-width:100%;height:auto;display:block;}
-  .sheet{width:100%;max-width:794px;background:var(--card);box-shadow:0 30px 70px -30px rgba(30,27,26,.35),0 2px 6px rgba(30,27,26,.08);padding:clamp(28px,7vw,68px) clamp(22px,7vw,64px) clamp(36px,6vw,56px);}
+  .sheet{width:100%;max-width:794px;background:var(--card);box-shadow:0 30px 70px -30px rgba(35,35,33,.35),0 2px 6px rgba(35,35,33,.08);padding:clamp(28px,7vw,68px) clamp(22px,7vw,64px) clamp(36px,6vw,56px);}
   .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;}
   header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;border-bottom:1.5px solid var(--ink);padding-bottom:22px;margin-bottom:26px;}
   header .eyebrow{color:var(--accent-ink);margin:0 0 12px;}
@@ -49,7 +49,7 @@
   li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--accent);}
   .partner{border-left:3px solid var(--accent);padding-left:18px;display:grid;gap:6px;max-width:60ch;}
   .partner li::before{background:var(--ink);}
-  .ausbau{background:var(--accent-tint);border:1px dashed rgba(184,56,6,.45);border-radius:10px;padding:20px 22px;}
+  .ausbau{background:var(--accent-tint);border:1px dashed rgba(196,73,15,.45);border-radius:10px;padding:20px 22px;}
   .ausbau .note{margin-top:0;color:#6b3a1f;}
   .ausbau ul{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;}
   .ausbau li::before{background:transparent;border:1.5px solid var(--accent-ink);width:7px;height:7px;top:.55em;}
@@ -138,7 +138,7 @@
   </section>
 
   <section class="ausbau">
-    <div class="sh" style="border-color:rgba(184,56,6,.3)"><span class="mono tag">C</span><h2>Im Ausbau</h2></div>
+    <div class="sh" style="border-color:rgba(196,73,15,.3)"><span class="mono tag">C</span><h2>Im Ausbau</h2></div>
     <p class="note">Bauen wir gerade auf. Auf Anfrage schon möglich.</p>
     <ul>
       <li>Bewertungsmanagement und Kundensupport</li>

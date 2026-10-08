@@ -8,33 +8,33 @@
 <meta name="description" content="Kundenportal von Social Bites: Freigaben, Termine, Dateien, Rechnungen und Zahlen zu deinem Projekt.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#F8F5F0">
+<meta name="theme-color" content="#FBFAF6">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-  /* Layout: Login als geteilte Fläche (Orange mit Clip, Creme mit Formular). Danach App mit Seitenleiste links und Inhalt rechts, auf dem Handy Reiter oben. */
+  /* Layout: Login als geteilte Fläche (Orange mit Clip, Key White mit Formular). Danach App mit Seitenleiste links und Inhalt rechts, auf dem Handy Reiter oben. */
   :root{
     color-scheme:light;
-    --paper:#F8F5F0;
-    --paper-2:#EFEBE4;
+    --paper:#FBFAF6;
+    --paper-2:#E3EAE0;
     --card:#FFFFFF;
-    --ink:#1E1B1A;
-    --mute:#6B6357;
-    --line:rgba(30,27,26,.14);
-    --line-2:rgba(30,27,26,.3);
-    --accent:#F04A0A;
-    --accent-ink:#B83806;
-    --accent-tint:#FFE2D0;
+    --ink:#232321;
+    --mute:#6C6F68;
+    --line:rgba(35,35,33,.14);
+    --line-2:rgba(35,35,33,.3);
+    --accent:#F26A21;
+    --accent-ink:#C4490F;
+    --accent-tint:#FDE3D2;
     --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
     --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --gutter:clamp(16px,3vw,40px);
     --bar:72px;
     --ease:cubic-bezier(.2,.7,.2,1);
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .42 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    --dots:radial-gradient(rgba(30,27,26,.16) 1px,transparent 1.3px);
+    --dots:radial-gradient(rgba(35,35,33,.16) 1px,transparent 1.3px);
   }
   *,*::before,*::after{box-sizing:border-box;}
   [hidden]{display:none!important;}
@@ -75,12 +75,12 @@
   .lg-art h1{margin:auto 0 0;padding-top:12px;font-weight:800;font-size:clamp(52px,7.2vw,112px);line-height:.86;letter-spacing:-.055em;}
   .lg-art p{margin:0;max-width:34ch;font-size:clamp(17px,1.4vw,20px);line-height:1.4;}
   .lg-phones{align-self:flex-end;display:flex;gap:clamp(8px,1.2vw,16px);margin:8px clamp(8px,3vw,48px) 0 0;flex:none;}
-  .lg-ph{width:clamp(96px,9.5vw,150px);aspect-ratio:9/16;border-radius:18px;border:5px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 26px 50px rgba(30,27,26,.28);}
+  .lg-ph{width:clamp(96px,9.5vw,150px);aspect-ratio:9/16;border-radius:18px;border:5px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 26px 50px rgba(35,35,33,.28);}
   .lg-ph:nth-child(1){transform:rotate(-4deg) translateY(10px);}
   .lg-ph:nth-child(2){transform:translateY(-14px);}
   .lg-ph:nth-child(3){transform:rotate(4deg) translateY(10px);}
   .lg-ph video{width:100%;height:100%;object-fit:cover;}
-  .lg-phone{align-self:flex-end;margin:8px clamp(8px,4vw,64px) 0 0;transform:rotate(5deg);width:clamp(140px,13vw,200px);flex:none;aspect-ratio:9/16;border-radius:22px;border:6px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 30px 60px rgba(30,27,26,.28);}
+  .lg-phone{align-self:flex-end;margin:8px clamp(8px,4vw,64px) 0 0;transform:rotate(5deg);width:clamp(140px,13vw,200px);flex:none;aspect-ratio:9/16;border-radius:22px;border:6px solid var(--ink);overflow:hidden;background:var(--ink);box-shadow:0 30px 60px rgba(35,35,33,.28);}
   .lg-phone video{width:100%;height:100%;object-fit:cover;}
   .lg-form-wrap{display:grid;place-items:center;padding:clamp(28px,4vw,56px) var(--gutter);}
   .lg-form{width:min(420px,100%);display:grid;gap:8px;}
@@ -101,7 +101,7 @@
   @keyframes shake{20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(3px);}}
 
   /* App */
-  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;gap:14px;min-height:var(--bar);padding:8px var(--gutter);background:rgba(248,245,240,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;gap:14px;min-height:var(--bar);padding:8px var(--gutter);background:rgba(251,250,246,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
   .bar-logo img{height:50px;width:auto;}
   .bar-label{color:var(--mute);border-left:1px solid var(--line-2);padding-left:14px;}
   .client{display:flex;align-items:center;gap:10px;min-width:0;}
@@ -141,8 +141,8 @@
   .track li.now::before{background:linear-gradient(90deg,var(--accent) 50%,var(--line-2) 50%);}
   .track .pt{position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:grid;place-items:center;font-size:11px;font-weight:800;}
   .track .done .pt{background:var(--ink);color:var(--paper);}
-  .track .now .pt{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 0 rgba(240,74,10,.5);animation:pulse 2s infinite;}
-  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(240,74,10,0);}100%{box-shadow:0 0 0 0 rgba(240,74,10,0);}}
+  .track .now .pt{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 0 rgba(242,106,33,.5);animation:pulse 2s infinite;}
+  @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(242,106,33,0);}100%{box-shadow:0 0 0 0 rgba(242,106,33,0);}}
   .track b{display:block;font-size:14px;font-weight:750;line-height:1.2;letter-spacing:-.02em;}
   .track span{display:block;margin-top:4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--mute);text-transform:uppercase;}
   .track .now b{color:var(--accent-ink);}
@@ -203,7 +203,7 @@
   .need li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;background:var(--paper);border:1px solid var(--line);border-radius:8px;}
   .need .ck{width:24px;height:24px;border-radius:6px;border:1.75px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:14px;}
   .need li.done .ck{background:var(--accent);border-color:var(--accent);}
-  .need li.done b{text-decoration:line-through;text-decoration-color:rgba(184,56,6,.55);color:var(--mute);}
+  .need li.done b{text-decoration:line-through;text-decoration-color:rgba(196,73,15,.55);color:var(--mute);}
   .need b{display:block;font-weight:700;font-size:15px;}
   .need small{color:var(--mute);font-size:13px;}
   .drop{margin-top:14px;border:2px dashed var(--line-2);border-radius:12px;padding:26px 16px;text-align:center;background:var(--paper);transition:border-color .2s ease,background-color .2s ease;cursor:pointer;}
@@ -253,7 +253,7 @@
   .compose .btn{min-height:52px;}
 
   dialog.dlg{border:1.5px solid var(--ink);border-radius:16px;padding:0;background:var(--card);color:var(--ink);width:min(680px,calc(100vw - 32px));max-height:calc(100vh - 48px);}
-  dialog.dlg::backdrop{background:rgba(30,27,26,.5);}
+  dialog.dlg::backdrop{background:rgba(35,35,33,.5);}
   .dlg-in{padding:clamp(18px,3vw,32px);}
   .dlg-x{position:absolute;right:12px;top:12px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--paper-2);cursor:pointer;font-size:18px;line-height:1;}
   .invoice{font-size:14.5px;}
@@ -309,7 +309,7 @@
   @media (max-width:640px){.big-bar .mono{display:none;}}
   .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   .toggle{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:650;cursor:pointer;padding:8px 4px;}
-  .toggle input{accent-color:#F04A0A;width:18px;height:18px;margin:0;}
+  .toggle input{accent-color:#F26A21;width:18px;height:18px;margin:0;}
   .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
   .tile{appearance:none;text-align:left;display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;min-height:150px;transition:border-color .2s ease,transform .3s var(--ease);}
   .tile:hover,.tile:focus-visible{border-color:var(--accent);transform:translateY(-2px);}
@@ -318,7 +318,7 @@
   .tile.t-or{background:var(--accent);border-color:var(--accent);}
   .tile.t-or span:last-child,.tile.t-or .mono{color:var(--ink);}
   .tile.t-ink{background:var(--ink);border-color:var(--ink);color:var(--paper);}
-  .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(246,240,227,.75);}
+  .tile.t-ink span:last-child,.tile.t-ink .mono{color:rgba(251,250,246,.75);}
   .quick{display:flex;flex-wrap:wrap;gap:8px;}
   .dlgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
   .dlc{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
@@ -328,7 +328,7 @@
   .dlc .tx{padding:12px;display:grid;gap:8px;}
   .dlc .tx b{font-weight:750;font-size:15.5px;}
   .dlc .tx small{color:var(--mute);font-size:13px;}
-  .checker{background:repeating-conic-gradient(#e7e1d4 0 25%,#fffdf8 0 50%) 0 0/14px 14px;}
+  .checker{background:repeating-conic-gradient(#e7e1d4 0 25%,#FFFFFF 0 50%) 0 0/14px 14px;}
   .chips{display:flex;flex-wrap:wrap;gap:8px;}
   .chipc{appearance:none;display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;cursor:pointer;font-weight:650;font-size:14px;}
   .chipc i{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:block;}
@@ -360,7 +360,7 @@
     .lg-phone{display:none;}
     .lg-phones{display:none;}
     .shell{grid-template-columns:minmax(0,1fr);padding-top:0;}
-    .side{position:sticky;top:var(--bar);z-index:30;display:flex;gap:6px;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);background:rgba(248,245,240,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);scrollbar-width:none;}
+    .side{position:sticky;top:var(--bar);z-index:30;display:flex;gap:6px;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);background:rgba(251,250,246,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);scrollbar-width:none;}
     .side::-webkit-scrollbar{display:none;}
     .nav-b{width:auto;flex:none;padding:8px 12px;font-size:15px;border-color:var(--line);background:rgba(255,253,248,.6);}
     .side-foot{display:none;}
@@ -711,7 +711,7 @@ function spark(a){
   var pts=a.map(function(v,i){return [i*step,hh-4-(v/mx)*(hh-10)];});
   var d=pts.map(function(p,i){return (i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1);}).join("");
   var last=pts[pts.length-1];
-  return '<svg viewBox="0 0 '+w+' '+hh+'" width="100%" height="'+hh+'" role="img" aria-label="Verlauf der Views"><path d="'+d+' L'+w+','+hh+' L0,'+hh+' Z" fill="#FFE2D0"/><path d="'+d+'" fill="none" stroke="#F04A0A" stroke-width="2.5" stroke-linejoin="round"/><circle cx="'+last[0]+'" cy="'+last[1]+'" r="4" fill="#1E1B1A"/></svg>';
+  return '<svg viewBox="0 0 '+w+' '+hh+'" width="100%" height="'+hh+'" role="img" aria-label="Verlauf der Views"><path d="'+d+' L'+w+','+hh+' L0,'+hh+' Z" fill="#FDE3D2"/><path d="'+d+'" fill="none" stroke="#F26A21" stroke-width="2.5" stroke-linejoin="round"/><circle cx="'+last[0]+'" cy="'+last[1]+'" r="4" fill="#232321"/></svg>';
 }
 
 function vReels(){
@@ -940,7 +940,7 @@ var KIT=[
   ["brand/social-bites-profilbild.png","Profilbild","PNG, 1080 × 1080",""],
   ["og.jpg","Teilen-Bild","JPG, 1200 × 630",""]
 ];
-var KITCOL=[["Orange","#F04A0A"],["Creme","#F6F0E3"],["Tinte","#1E1B1A"],["Orange dunkel","#B83806"],["Papier","#EDE4D0"],["Grau","#6B6357"],["Pfirsich","#FFE2D0"]];
+var KITCOL=[["Key White","#FBFAF6"],["Charcoal","#232321"],["Key Orange","#F26A21"],["Mint Green","#E3EAE0"],["Deep Orange","#C4490F"],["Orange Tint","#FDE3D2"],["Stone","#6C6F68"]];
 var TCUR="t-start", sheetTools=false, sheetGid=null;
 function tNav(){
   $("#tside").innerHTML=TNAV.map(function(g){
@@ -1033,7 +1033,7 @@ function tKit(){
   return head("Marke","Brand-Kit & Logos","Logos zum Laden, Farben zum Kopieren, Schriften zum Installieren. Alles Weitere liegt im Drive unter Branding.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a></div>')+
     '<div class="dlgrid">'+dl+'</div>'+
     '<section class="card" style="margin-top:14px"><h2>Farben</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Klick kopiert den Farbcode.</p><div class="chips">'+col+'</div></section>'+
-    '<section class="card" style="margin-top:14px"><h2>Visitenkarten</h2><div style="display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:center" class="vk"><img src="brand/visitenkarte-vorderseite.jpg" alt="Vorderseite der Visitenkarte" style="border-radius:8px;box-shadow:0 8px 20px rgba(30,27,26,.18)" loading="lazy"><div><p style="margin:0 0 8px;font-size:15px">85 × 55 mm für WIRmachenDRUCK. Vorne Orange mit Logo, hinten Name, Co-Founder, Telefon und QR-Code. Mail und Website kommen dazu, sobald die Domain steht.</p><p class="muted" style="margin:0 0 12px;font-size:14px">Die Druck-PDFs enthalten eure Handynummern und liegen deshalb nicht auf dieser öffentlichen Seite, sondern im Drive unter Branding › Visitenkarten.</p><a class="btn sm" href="'+driveUrl("1P06BnIA8vzMnrqSxw1bnB87TSsqQtyfi")+'" target="_blank" rel="noopener"><span class="dot"></span><span>Druck-PDFs im Drive ↗</span></a></div></div></section>'+
+    '<section class="card" style="margin-top:14px"><h2>Visitenkarten</h2><div style="display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:center" class="vk"><img src="brand/visitenkarte-vorderseite.jpg" alt="Vorderseite der Visitenkarte" style="border-radius:8px;box-shadow:0 8px 20px rgba(35,35,33,.18)" loading="lazy"><div><p style="margin:0 0 8px;font-size:15px">85 × 55 mm für WIRmachenDRUCK. Vorne Orange mit Logo, hinten Name, Co-Founder, Telefon und QR-Code. Mail und Website kommen dazu, sobald die Domain steht.</p><p class="muted" style="margin:0 0 12px;font-size:14px">Die Druck-PDFs enthalten eure Handynummern und liegen deshalb nicht auf dieser öffentlichen Seite, sondern im Drive unter Branding › Visitenkarten.</p><a class="btn sm" href="'+driveUrl("1P06BnIA8vzMnrqSxw1bnB87TSsqQtyfi")+'" target="_blank" rel="noopener"><span class="dot"></span><span>Druck-PDFs im Drive ↗</span></a></div></div></section>'+
     '<section class="card" style="margin-top:14px"><h2>Logo-Entwicklung</h2><p class="muted" style="margin:-4px 0 12px;font-size:14px">Die Runden vor dem finalen Logo. Favorit und Hauptlogo bleibt der Mund im O.</p><div style="display:grid;gap:12px"><img src="brand/logo-runde-3.webp" alt="Logo-Vorschläge Runde 3" style="border-radius:8px;border:1px solid var(--line)" loading="lazy"><img src="brand/logo-runde-2.webp" alt="Logo-Vorschläge Runde 2" style="border-radius:8px;border:1px solid var(--line);max-width:640px" loading="lazy"></div></section>'+
     '<section class="card" style="margin-top:14px"><h2>Schriften</h2><div class="quick"><a class="btn sm" href="https://fonts.google.com/specimen/Schibsted+Grotesk" target="_blank" rel="noopener"><span class="dot"></span><span>Schibsted Grotesk ↗</span></a><a class="btn sm" href="https://fonts.google.com/specimen/Geist+Mono" target="_blank" rel="noopener"><span class="dot"></span><span>Geist Mono ↗</span></a></div></section>'+
     '<div class="vh" style="margin:28px 0 12px"><div><p class="mono hot">Drive</p><h1 style="font-size:clamp(26px,3vw,38px)">Branding & Asset-Bibliothek</h1><p>Farben & Fonts, Logo & Wortmarke, Musik & Sound-Assets, Templates. Hochladen geht im Drive: Ordner öffnen, Datei reinziehen.</p></div><div class="acts"><a class="btn sm" href="'+driveUrl(DRIVE_BRAND)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Im Drive öffnen ↗</span></a></div></div>'+
