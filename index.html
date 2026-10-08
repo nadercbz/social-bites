@@ -230,23 +230,31 @@
   .wide{position:relative;z-index:1;width:min(100%,520px);aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:3px solid var(--ink);background:var(--ink);}
   .cap{position:absolute;z-index:2;left:14px;bottom:12px;font-size:11px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 10px;}
 
-  /* Ab Tablet quer: links klebt der Text und wechselt, rechts laufen die Clips */
+
+  /* Projekte als vier Module: links klebt die Übersicht mit mehreren Projekten, rechts laufen die Clips */
+  .pjm{display:grid;gap:clamp(70px,9vw,130px);margin-top:clamp(50px,7vw,90px);}
+  .pmod{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);}
+  .pm-side{display:flex;flex-direction:column;gap:14px;align-self:start;}
+  .pm-item{border-top:1px solid var(--line);padding-top:14px;transition:opacity .4s ease;}
+  .pm-name{margin:0;display:flex;align-items:baseline;gap:10px 14px;flex-wrap:wrap;font-weight:800;letter-spacing:-.045em;line-height:1;font-size:clamp(28px,3.4vw,50px);}
+  .pm-stat{font-family:var(--mono);font-weight:500;letter-spacing:0;font-size:12px;color:var(--mute);}
+  .pm-stat b{color:var(--accent-ink);font-weight:700;}
+  .pm-stat2{margin:6px 0 0;font-family:var(--mono);font-size:12px;color:var(--mute);}
+  .pm-stat2 b{color:var(--accent-ink);}
+  .pm-desc{margin:10px 0 12px;color:var(--mute);font-weight:600;max-width:46ch;font-size:clamp(14px,1.15vw,17px);}
+  .pm-more .p-chips{margin-bottom:10px;}
+  .pm-item{cursor:default;}
   @media (min-width:901px){
-    .js .pj{
-      display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:repeat(9,auto);
-      column-gap:clamp(24px,4vw,64px);row-gap:clamp(48px,7vw,96px);margin-top:clamp(60px,8vw,110px);
-    }
-    .js .project{display:contents;}
-    .js .p-info{
-      grid-column:1;grid-row:1 / -1;top:clamp(120px,17vh,150px);
-      opacity:0;visibility:hidden;transform:translateY(30px);
-      transition:opacity .3s ease,transform .5s var(--ease),visibility 0s .3s;
-    }
-    .js .p-info.is-past{transform:translateY(-30px);}
-    .js .p-info.is-active{opacity:1;visibility:visible;transform:none;transition:opacity .45s ease .14s,transform .65s var(--ease) .14s,visibility 0s;}
-    .js .p-media{grid-column:2;transition:filter .5s ease,opacity .5s ease;}
-    .js .p-media:not(.is-active){filter:grayscale(1);opacity:.42;}
+    .pm-side{position:sticky;top:clamp(96px,13vh,120px);}
+    .js .pm-item:not(.is-active){opacity:.5;cursor:pointer;}
+    .js .pm-item:not(.is-active):hover{opacity:.85;}
+    .js .pm-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease);}
+    .js .pm-more>div{overflow:hidden;min-height:0;}
+    .js .pm-item.is-active .pm-more{grid-template-rows:1fr;}
+    .js .pmod .panel{transition:opacity .5s ease,filter .5s ease;}
+    .js .pmod .panel:not(.is-active){opacity:.55;filter:saturate(.55);}
   }
+  @media (max-width:900px){.pmod{grid-template-columns:1fr;}.pm-side{gap:18px;}}
 
   /* Prinzip-Block mit Bissspur */
   .manifest-wrap{padding:clamp(40px,6vw,80px) var(--gutter) 30px;}
@@ -841,220 +849,120 @@
     <h2 class="big-h">Projekte<sup>(13)</sup></h2>
     <p class="lede">Selected work. Real brands, real reach, real guests.</p>
 
-    <div class="pj">
-      <article class="project">
-        <div class="p-info is-active">
-          <div class="p-kicker mono"><i></i>01 / 13 · TikTok · Food</div>
-          <h3 class="p-name">Burger King</h3>
-          <p class="p-desc">Ein Trend, eine Crew, ein Restaurant. Tanz-Video mitten im Burger King, gedreht für den TikTok-Kanal von Burger King Deutschland.</p>
-          <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Food Content</span></div>
-          <div class="stats"><div class="stat"><b>4,7 Mio</b><span>Views auf TikTok</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="burgerking"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.tiktok.com/@burgerkingde/video/7212568313107434758" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
+    <div class="pjm">
+
+      <article class="pmod">
+        <div class="pm-side">
+          <div class="p-kicker mono"><i></i>01 / 04 · Burger King · Wolt · Aldi Nord · ESN</div>
+        <div class="pm-item" data-k="burger-king">
+          <h3 class="pm-name">Burger King<span class="pm-stat"><b>4,7 Mio</b> Views auf TikTok</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Ein Trend, eine Crew, ein Restaurant. Tanz-Video mitten im Burger King, gedreht für den TikTok-Kanal von Burger King Deutschland.</p>
+            <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Food Content</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.tiktok.com/@burgerkingde/video/7212568313107434758" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
         </div>
-        <div class="p-media is-active">
-          <div class="panel fire">
+        <div class="pm-item" data-k="wolt">
+          <h3 class="pm-name">Wolt<span class="pm-stat"><b>10.100</b> Views auf Instagram</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Tulpen von Blume 2000, per Wolt nach Hause geliefert. Reel mit Untertiteln Wort für Wort.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/reel/CsJYMBOoYdo/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="aldi-nord">
+          <h3 class="pm-name">Aldi Nord<span class="pm-stat"><b>26.800</b> Views auf Instagram</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">POV: Du musst vor der Gamescom noch schnell zu Aldi. Freier Fall über die Karte bis zum GG Market.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Gamescom</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="esn">
+          <h3 class="pm-name">ESN<span class="pm-stat"><b>200.000</b> Views auf Instagram</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Mit ESN bei der Mr. Olympia. Athleten, Backstage und die riesigen Billboards, geschnitten als Reel für Instagram.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/reel/CmPNFWbs6o-/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        </div>
+        <div class="p-media">
+          <div data-pm="burger-king" class="panel fire">
             <button class="phone solo ref" type="button" data-play="burgerking" aria-label="Burger King: Video mit Ton abspielen (0:27)"><video data-src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button>
             <span class="cap mono">Burger King · TikTok</span>
           </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>02 / 13 · Chicken-Konzept · Reel</div>
-          <h3 class="p-name">Crazy Canes</h3>
-          <p class="p-desc">Reel für Crazy Canes mit Dina: Chicken, Sauce und Crunch im Mittelpunkt.</p>
-          <div class="p-chips"><span class="pill">Reel</span><span class="pill">Chicken-Konzept</span></div>
-          <div class="stats"><div class="stat"><b>0:30</b><span>Reel mit Dina</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="crazycanes_dina"><span>Video ansehen</span><i class="dot"></i></button></div>
-        </div>
-        <div class="p-media">
-          <div class="panel fire">
-            <button class="phone solo ref" type="button" data-play="crazycanes_dina" aria-label="Crazy Canes mit Dina: Video mit Ton abspielen (0:30)"><video data-src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button>
-            <span class="cap mono">Crazy Canes · Reel</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>03 / 13 · Food-Franchise · Instagram</div>
-          <h3 class="p-name">Mmaah</h3>
-          <p class="p-desc">Food-Challenge bei Mmaah KBBQ: Schaffst du beide, zahlst du nix. Ein Reel, das Hunger macht und zum Mitmachen einlädt.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Food-Challenge</span></div>
-          <div class="stats"><div class="stat"><b>76.100</b><span>Views auf Instagram</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="mmaah"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CwBDHYYsfEn/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel sand">
-            <button class="phone ref" type="button" data-play="mmaah" aria-label="Mmaah KBBQ Challenge: Video mit Ton abspielen (0:36)"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:36</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_1" aria-label="Mmaah Reel 1: Video mit Ton abspielen (0:30)"><video data-src="media/ref_mmaah3_1_loop.mp4" poster="media/ref_mmaah3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_2" aria-label="Mmaah Reel 2: Video mit Ton abspielen (0:29)"><video data-src="media/ref_mmaah3_2_loop.mp4" poster="media/ref_mmaah3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:29</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_3" aria-label="Mmaah Reel 3: Video mit Ton abspielen (0:22)"><video data-src="media/ref_mmaah3_3_loop.mp4" poster="media/ref_mmaah3_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:22</span></button>
-            <span class="cap mono">Mmaah · KBBQ und Reels 1 bis 3</span>
-          </div>
-          <div class="panel tint">
-            <button class="phone ref" type="button" data-play="mmaah3_4" aria-label="Mmaah Reel 4: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_4_loop.mp4" poster="media/ref_mmaah3_4.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_5" aria-label="Mmaah Reel 5: Video mit Ton abspielen (0:19)"><video data-src="media/ref_mmaah3_5_loop.mp4" poster="media/ref_mmaah3_5.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:19</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_6" aria-label="Mmaah Reel 6: Video mit Ton abspielen (0:14)"><video data-src="media/ref_mmaah3_6_loop.mp4" poster="media/ref_mmaah3_6.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:14</span></button>
-            <button class="phone ref" type="button" data-play="mmaah3_7" aria-label="Mmaah Reel 7: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_7_loop.mp4" poster="media/ref_mmaah3_7.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button>
-            <span class="cap mono">Mmaah · Reels 4 bis 7</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>04 / 13 · Instagram · Gamescom</div>
-          <h3 class="p-name">Aldi Nord</h3>
-          <p class="p-desc">POV: Du musst vor der Gamescom noch schnell zu Aldi. Freier Fall über die Karte bis zum GG Market.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Gamescom</span></div>
-          <div class="stats"><div class="stat"><b>26.800</b><span>Views auf Instagram</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="aldi"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel tint">
-            <button class="phone solo ref" type="button" data-play="aldi" aria-label="Aldi Nord: Video mit Ton abspielen (0:05)"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:05</span></button>
-            <span class="cap mono">Aldi Nord · Instagram</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>05 / 13 · Instagram · Reel</div>
-          <h3 class="p-name">Wolt</h3>
-          <p class="p-desc">Tulpen von Blume 2000, per Wolt nach Hause geliefert. Reel mit Untertiteln Wort für Wort.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
-          <div class="stats"><div class="stat"><b>10.100</b><span>Views auf Instagram</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="wolt"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CsJYMBOoYdo/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel sand">
+        
+          <div data-pm="wolt" class="panel sand">
             <button class="phone ref" type="button" data-play="wolt" aria-label="Wolt Reel 1: Video mit Ton abspielen (0:43)"><video data-src="media/ref_wolt_loop.mp4" poster="media/ref_wolt.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:43</span></button>
             <button class="phone ref" type="button" data-play="wolt_1" aria-label="Wolt Reel 2: Video mit Ton abspielen (0:48)"><video data-src="media/ref_wolt_1_loop.mp4" poster="media/ref_wolt_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:48</span></button>
             <span class="cap mono">Wolt · Reels</span>
           </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>06 / 13 · Gastro · Berlin</div>
-          <h3 class="p-name">The Pizzary</h3>
-          <p class="p-desc">Neueröffnung von null auf Schlange vor der Tür. Umbau als Serie, Food-Reels jeden Tag, und am Opening 500 Pizzen gratis. Im Netz angekündigt, vor Ort eingelöst.</p>
-          <div class="p-chips"><span class="pill">Opening-Event</span><span class="pill">Reels</span><span class="pill">Dreh &amp; Schnitt</span></div>
-          <div class="stats"><div class="stat"><b>500</b><span>Gratis-Pizzen zur Neueröffnung</span></div><div class="stat"><b>28.08.</b><span>Opening-Tag, wochenlang angeteasert</span></div></div>
-          
-        </div>
-        <div class="p-media">
-          <div class="panel tint">
-            <button class="phone ref" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:53</span></button>
-            <button class="phone ref" type="button" data-play="pizzary3_1" aria-label="The Pizzary: Video mit Ton abspielen (0:07)"><video data-src="media/ref_pizzary3_1_loop.mp4" poster="media/ref_pizzary3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:07</span></button>
-            <button class="phone ref" type="button" data-play="pizzary3_2" aria-label="The Pizzary: Video mit Ton abspielen (0:10)"><video data-src="media/ref_pizzary3_2_loop.mp4" poster="media/ref_pizzary3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:10</span></button>
-            <span class="cap mono">Opening · Food · Reels</span>
+        
+          <div data-pm="aldi-nord" class="panel tint">
+            <button class="phone solo ref" type="button" data-play="aldi" aria-label="Aldi Nord: Video mit Ton abspielen (0:05)"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:05</span></button>
+            <span class="cap mono">Aldi Nord · Instagram</span>
           </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>07 / 13 · Instagram · Reel</div>
-          <h3 class="p-name">Spreequell</h3>
-          <p class="p-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span></div>
-          <div class="stats"><div class="stat"><b>173.000</b><span>Views auf Instagram</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="spreequell"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel tint">
-            <button class="phone solo ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button>
-            <span class="cap mono">Spreequell · Reel</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>08 / 13 · TikTok · Fashion</div>
-          <h3 class="p-name">Zalando × Nike</h3>
-          <p class="p-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p>
-          <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span></div>
-          <div class="stats"><div class="stat"><b>67.400</b><span>Views auf TikTok</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="zalando_nike"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel dark">
-            <button class="phone solo ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button>
-            <span class="cap mono">Zalando × Nike · TikTok</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>09 / 13 · Instagram · Kurzvideos</div>
-          <h3 class="p-name">44 Chicken</h3>
-          <p class="p-desc">Kurzvideos für 44 Chicken: die Vorstellung, Bowls und Chicken, und das Sandwich für 5 €.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Kurzvideos</span></div>
-          <div class="stats"><div class="stat"><b>3</b><span>Kurzvideos in der Auswahl</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="c44_vorstellung"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/44chkn/" target="_blank" rel="noopener">44 Chicken auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel fire">
-            <button class="phone ref" type="button" data-play="c44_vorstellung" aria-label="44 Chicken: Video mit Ton abspielen (0:44)"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:44</span></button>
-            <button class="phone ref" type="button" data-play="c44_bowls" aria-label="44 Chicken: Video mit Ton abspielen (0:14)"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:14</span></button>
-            <button class="phone ref" type="button" data-play="c44_sandwich" aria-label="44 Chicken: Video mit Ton abspielen (0:17)"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:17</span></button>
-            <span class="cap mono">44 Chicken · Kurzvideos</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>10 / 13 · Restaurant · Kurzvideo</div>
-          <h3 class="p-name">Spreegold</h3>
-          <p class="p-desc">Kurzvideo für das Restaurant Spreegold.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Restaurant</span></div>
-          <div class="stats"><div class="stat"><b>0:28</b><span>Kurzvideo für Spreegold</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="spreegold"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/spreegold.berlin/" target="_blank" rel="noopener">Spreegold auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel tint">
-            <button class="phone solo ref" type="button" data-play="spreegold" aria-label="Spreegold: Video mit Ton abspielen (0:28)"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:28</span></button>
-            <span class="cap mono">Spreegold · Kurzvideo</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>11 / 13 · Instagram · Reel</div>
-          <h3 class="p-name">ESN</h3>
-          <p class="p-desc">Mit ESN bei der Mr. Olympia. Athleten, Backstage und die riesigen Billboards, geschnitten als Reel für Instagram.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
-          <div class="stats"><div class="stat"><b>200.000</b><span>Views auf Instagram</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="esn"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/reel/CmPNFWbs6o-/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-        </div>
-        <div class="p-media">
-          <div class="panel dark">
+        
+          <div data-pm="esn" class="panel dark">
             <button class="phone solo ref" type="button" data-play="esn" aria-label="ESN: Video mit Ton abspielen (0:52)"><video data-src="media/ref_esn_loop.mp4" poster="media/ref_esn.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:52</span></button>
             <span class="cap mono">ESN · Reel</span>
           </div>
         </div>
       </article>
 
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>12 / 13 · Instagram · Reels</div>
-          <h3 class="p-name">Mian Market</h3>
-          <p class="p-desc">Reels für den Mian Market: Produkte, Atmosphäre und der Laden in kurzen, direkten Clips.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reels</span></div>
-          <div class="stats"><div class="stat"><b>3</b><span>Reels in der Auswahl</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="mian_3"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/p/DHlOsjptVjE/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+      <article class="pmod">
+        <div class="pm-side">
+          <div class="p-kicker mono"><i></i>02 / 04 · Mmaah · 44 Chicken · Mian Market</div>
+        <div class="pm-item" data-k="mmaah">
+          <h3 class="pm-name">Mmaah<span class="pm-stat"><b>76.100</b> Views auf Instagram</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Food-Challenge bei Mmaah KBBQ: Schaffst du beide, zahlst du nix. Ein Reel, das Hunger macht und zum Mitmachen einlädt.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Food-Challenge</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/reel/CwBDHYYsfEn/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="44-chicken">
+          <h3 class="pm-name">44 Chicken<span class="pm-stat"><b>3</b> Kurzvideos in der Auswahl</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Kurzvideos für 44 Chicken: die Vorstellung, Bowls und Chicken, und das Sandwich für 5 €.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Kurzvideos</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/44chkn/" target="_blank" rel="noopener">44 Chicken auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="mian-market">
+          <h3 class="pm-name">Mian Market<span class="pm-stat"><b>3</b> Reels in der Auswahl</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Reels für den Mian Market: Produkte, Atmosphäre und der Laden in kurzen, direkten Clips.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reels</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/p/DHlOsjptVjE/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
         </div>
         <div class="p-media">
-          <div class="panel sand">
+          <div data-pm="mmaah" class="panel sand">
+            <button class="phone ref" type="button" data-play="mmaah" aria-label="Mmaah KBBQ Challenge: Video mit Ton abspielen (0:36)"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:36</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_1" aria-label="Mmaah Reel 1: Video mit Ton abspielen (0:30)"><video data-src="media/ref_mmaah3_1_loop.mp4" poster="media/ref_mmaah3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_2" aria-label="Mmaah Reel 2: Video mit Ton abspielen (0:29)"><video data-src="media/ref_mmaah3_2_loop.mp4" poster="media/ref_mmaah3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:29</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_3" aria-label="Mmaah Reel 3: Video mit Ton abspielen (0:22)"><video data-src="media/ref_mmaah3_3_loop.mp4" poster="media/ref_mmaah3_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:22</span></button>
+            <span class="cap mono">Mmaah · KBBQ und Reels 1 bis 3</span>
+          </div>
+          <div data-pm="mmaah" class="panel tint">
+            <button class="phone ref" type="button" data-play="mmaah3_4" aria-label="Mmaah Reel 4: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_4_loop.mp4" poster="media/ref_mmaah3_4.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_5" aria-label="Mmaah Reel 5: Video mit Ton abspielen (0:19)"><video data-src="media/ref_mmaah3_5_loop.mp4" poster="media/ref_mmaah3_5.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:19</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_6" aria-label="Mmaah Reel 6: Video mit Ton abspielen (0:14)"><video data-src="media/ref_mmaah3_6_loop.mp4" poster="media/ref_mmaah3_6.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:14</span></button>
+            <button class="phone ref" type="button" data-play="mmaah3_7" aria-label="Mmaah Reel 7: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_7_loop.mp4" poster="media/ref_mmaah3_7.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button>
+            <span class="cap mono">Mmaah · Reels 4 bis 7</span>
+          </div>
+        
+          <div data-pm="44-chicken" class="panel fire">
+            <button class="phone ref" type="button" data-play="c44_vorstellung" aria-label="44 Chicken: Video mit Ton abspielen (0:44)"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:44</span></button>
+            <button class="phone ref" type="button" data-play="c44_bowls" aria-label="44 Chicken: Video mit Ton abspielen (0:14)"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:14</span></button>
+            <button class="phone ref" type="button" data-play="c44_sandwich" aria-label="44 Chicken: Video mit Ton abspielen (0:17)"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:17</span></button>
+            <span class="cap mono">44 Chicken · Kurzvideos</span>
+          </div>
+        
+          <div data-pm="mian-market" class="panel sand">
             <button class="phone ref" type="button" data-play="mian_market" aria-label="Mian Market: Video mit Ton abspielen (0:04)"><video data-src="media/ref_mian_market_loop.mp4" poster="media/ref_mian_market.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:04</span></button>
             <button class="phone ref" type="button" data-play="mian_1" aria-label="Mian Market: Video mit Ton abspielen (0:09)"><video data-src="media/ref_mian_1_loop.mp4" poster="media/ref_mian_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:09</span></button>
             <button class="phone ref" type="button" data-play="mian_3" aria-label="Mian Market: Video mit Ton abspielen (0:27)"><video data-src="media/ref_mian_3_loop.mp4" poster="media/ref_mian_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button>
@@ -1063,24 +971,102 @@
         </div>
       </article>
 
-      <article class="project">
-        <div class="p-info">
-          <div class="p-kicker mono"><i></i>13 / 13 · Instagram · Reel</div>
-          <h3 class="p-name">House of Sweets</h3>
-          <p class="p-desc">Ein Reel für House of Sweets: Süßes in Szene gesetzt, vom ersten Bild bis zum letzten Biss.</p>
-          <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
-          <div class="stats"><div class="stat"><b>0:48</b><span>Reel für House of Sweets</span></div></div>
-          <div class="p-actions"><button class="btn" type="button" data-play="house_sweets"><span>Video ansehen</span><i class="dot"></i></button><a class="p-link" href="https://www.instagram.com/p/Co4hBHlKNml/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+      <article class="pmod">
+        <div class="pm-side">
+          <div class="p-kicker mono"><i></i>03 / 04 · House of Sweets · Spreegold · The Pizzary</div>
+        <div class="pm-item" data-k="house-of-sweets">
+          <h3 class="pm-name">House of Sweets<span class="pm-stat"><b>0:48</b> Reel für House of Sweets</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Ein Reel für House of Sweets: Süßes in Szene gesetzt, vom ersten Bild bis zum letzten Biss.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Reel</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/p/Co4hBHlKNml/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="spreegold">
+          <h3 class="pm-name">Spreegold<span class="pm-stat"><b>0:28</b> Kurzvideo für Spreegold</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Kurzvideo für das Restaurant Spreegold.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Restaurant</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/spreegold.berlin/" target="_blank" rel="noopener">Spreegold auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="the-pizzary">
+          <h3 class="pm-name">The Pizzary<span class="pm-stat"><b>500</b> Gratis-Pizzen zur Neueröffnung</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Neueröffnung von null auf Schlange vor der Tür. Umbau als Serie, Food-Reels jeden Tag, und am Opening 500 Pizzen gratis. Im Netz angekündigt, vor Ort eingelöst.</p><p class="pm-stat2"><b>28.08.</b> Opening-Tag, wochenlang angeteasert</p>
+            <div class="p-chips"><span class="pill">Opening-Event</span><span class="pill">Reels</span><span class="pill">Dreh &amp; Schnitt</span></div>
+            
+          </div></div>
+        </div>
         </div>
         <div class="p-media">
-          <div class="panel tint">
+          <div data-pm="house-of-sweets" class="panel tint">
             <button class="phone ref" type="button" data-play="house_sweets" aria-label="House of Sweets Reel 1: Video mit Ton abspielen (0:48)"><video data-src="media/ref_house_sweets_loop.mp4" poster="media/ref_house_sweets.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:48</span></button>
             <button class="phone ref" type="button" data-play="house_sweets_1" aria-label="House of Sweets Reel 2: Video mit Ton abspielen (0:33)"><video data-src="media/ref_house_sweets_1_loop.mp4" poster="media/ref_house_sweets_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:33</span></button>
             <button class="phone ref" type="button" data-play="house_sweets_2" aria-label="House of Sweets Reel 3: Video mit Ton abspielen (0:27)"><video data-src="media/ref_house_sweets_2_loop.mp4" poster="media/ref_house_sweets_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button>
             <span class="cap mono">House of Sweets · Reels</span>
           </div>
+        
+          <div data-pm="spreegold" class="panel tint">
+            <button class="phone solo ref" type="button" data-play="spreegold" aria-label="Spreegold: Video mit Ton abspielen (0:28)"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:28</span></button>
+            <span class="cap mono">Spreegold · Kurzvideo</span>
+          </div>
+        
+          <div data-pm="the-pizzary" class="panel tint">
+            <button class="phone ref" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:53</span></button>
+            <button class="phone ref" type="button" data-play="pizzary3_1" aria-label="The Pizzary: Video mit Ton abspielen (0:07)"><video data-src="media/ref_pizzary3_1_loop.mp4" poster="media/ref_pizzary3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:07</span></button>
+            <button class="phone ref" type="button" data-play="pizzary3_2" aria-label="The Pizzary: Video mit Ton abspielen (0:10)"><video data-src="media/ref_pizzary3_2_loop.mp4" poster="media/ref_pizzary3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:10</span></button>
+            <span class="cap mono">Opening · Food · Reels</span>
+          </div>
         </div>
       </article>
+
+      <article class="pmod">
+        <div class="pm-side">
+          <div class="p-kicker mono"><i></i>04 / 04 · Zalando × Nike · Spreequell · Crazy Canes</div>
+        <div class="pm-item" data-k="zalando-x-nike">
+          <h3 class="pm-name">Zalando × Nike<span class="pm-stat"><b>67.400</b> Views auf TikTok</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p>
+            <div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="spreequell">
+          <h3 class="pm-name">Spreequell<span class="pm-stat"><b>173.000</b> Views auf Instagram</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p>
+            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span></div>
+            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
+          </div></div>
+        </div>
+        <div class="pm-item" data-k="crazy-canes">
+          <h3 class="pm-name">Crazy Canes<span class="pm-stat"><b>0:30</b> Reel mit Dina</span></h3>
+          <div class="pm-more"><div>
+            <p class="pm-desc">Reel für Crazy Canes mit Dina: Chicken, Sauce und Crunch im Mittelpunkt.</p>
+            <div class="p-chips"><span class="pill">Reel</span><span class="pill">Chicken-Konzept</span></div>
+            
+          </div></div>
+        </div>
+        </div>
+        <div class="p-media">
+          <div data-pm="zalando-x-nike" class="panel dark">
+            <button class="phone solo ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button>
+            <span class="cap mono">Zalando × Nike · TikTok</span>
+          </div>
+        
+          <div data-pm="spreequell" class="panel tint">
+            <button class="phone solo ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button>
+            <span class="cap mono">Spreequell · Reel</span>
+          </div>
+        
+          <div data-pm="crazy-canes" class="panel fire">
+            <button class="phone solo ref" type="button" data-play="crazycanes_dina" aria-label="Crazy Canes mit Dina: Video mit Ton abspielen (0:30)"><video data-src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button>
+            <span class="cap mono">Crazy Canes · Reel</span>
+          </div>
+        </div>
+      </article>
+
     </div>
   </section>
 
@@ -1466,17 +1452,26 @@
   });
 
   if (hasIO) {
-    // Projekte: aktiver Clip-Block bestimmt, welcher Text links steht
-    var infos = [].slice.call(d.querySelectorAll('.pj .p-info')), medias = [].slice.call(d.querySelectorAll('.pj .p-media'));
+    // Projekte: Das Panel in der Bildschirmmitte bestimmt, welches Projekt links aufgeklappt ist
+    var panelsP = [].slice.call(d.querySelectorAll('.pmod .panel[data-pm]'));
+    function pmActivate(panel){
+      var mod = panel.closest('.pmod'), k = panel.getAttribute('data-pm');
+      [].forEach.call(mod.querySelectorAll('.pm-item'), function(el){ el.classList.toggle('is-active', el.getAttribute('data-k') === k); });
+      [].forEach.call(mod.querySelectorAll('.panel[data-pm]'), function(el){ el.classList.toggle('is-active', el.getAttribute('data-pm') === k); });
+    }
     var ioP = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (!e.isIntersecting) return;
-        var k = medias.indexOf(e.target);
-        infos.forEach(function(el, i){ el.classList.toggle('is-active', i === k); el.classList.toggle('is-past', i < k); });
-        medias.forEach(function(el, i){ el.classList.toggle('is-active', i === k); });
-      });
+      entries.forEach(function(e){ if (e.isIntersecting) pmActivate(e.target); });
     }, {rootMargin: '-50% 0px -50% 0px'});
-    medias.forEach(function(m){ ioP.observe(m); });
+    panelsP.forEach(function(m){ ioP.observe(m); });
+    // Standard: erstes Projekt je Modul offen, Klick auf ein Projekt scrollt zu dessen Clips
+    [].forEach.call(d.querySelectorAll('.pmod'), function(mod){ var f = mod.querySelector('.panel[data-pm]'); if (f) pmActivate(f); });
+    [].forEach.call(d.querySelectorAll('.pm-item'), function(it){
+      it.addEventListener('click', function(ev){
+        if (window.innerWidth < 901 || ev.target.closest('a')) return;
+        var p = it.closest('.pmod').querySelector('.panel[data-pm="' + it.getAttribute('data-k') + '"]');
+        if (p) p.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+      });
+    });
 
     // Navigation: aktuellen Abschnitt markieren
     var links = [].slice.call(d.querySelectorAll('.nav a')), byId = {};
