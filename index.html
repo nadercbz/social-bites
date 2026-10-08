@@ -300,7 +300,8 @@
   .svc .nw{white-space:nowrap;display:inline-flex;align-items:flex-start;}
   .svc h3 sup{font-family:var(--mono);font-weight:500;font-size:.14em;letter-spacing:0;margin-top:.4em;color:var(--accent-ink);}
   .svc:nth-child(odd) .tile{background:var(--accent);box-shadow:0 .04em 0 var(--accent-ink);transform:rotate(2deg);}
-  .svc:hover .tile{transform:rotate(0) scale(1.12);}
+  .svc .tile{transition:transform .45s var(--ease);}
+  .svc:hover .tile{transform:rotate(0) scale(1.6);position:relative;z-index:3;box-shadow:0 18px 40px -14px rgba(30,27,26,.5);}
   .svc p{margin:0;max-width:52ch;color:var(--mute);font-weight:600;font-size:clamp(15px,1.25vw,18px);}
 
   /* Reel-Fenster */
@@ -789,7 +790,7 @@
 
   <section class="projects" id="arbeiten">
     <div class="sec-pill"><span class="pill">Unser • Reel</span></div>
-    <h2 class="big-h">Ausgewählte Projekte<sup>(13)</sup></h2>
+    <h2 class="big-h">Projekte<sup>(13)</sup></h2>
     <p class="lede">Views sind nett. Was zählt: wer vorbeikommt, wer bestellt, wer wiederkommt.</p>
 
     <div class="pj">
@@ -1052,9 +1053,8 @@
     <h2 class="big-h rv" id="wirk-h">Wirkung, nicht nur Reichweite.</h2>
     <p class="wirk-lead rv" style="--i:1">Wir bringen Marken und Menschen digital n&auml;her zusammen. 80&nbsp;% der deutschen Unternehmen sind auf Social Media aktiv (laut Bitkom), doch viele bleiben unter ihrem Potenzial. <b>Das Problem ist nicht die Plattform. Das Problem ist fehlende Strategie und Konstanz.</b></p>
     <ul class="wirk-stats">
-      <li class="rv" style="--i:0"><b><span class="cnt" data-to="15">15</span>&nbsp;Mio<i>+</i></b><span>Social-Media-Impressionen</span></li>
+      <li class="rv" style="--i:0"><b><span class="cnt" data-to="100">100</span>&nbsp;Mio<i>+</i></b><span>organische Views</span></li>
       <li class="rv" style="--i:1"><b><span class="cnt" data-to="60">60</span><i>+</i></b><span>Kunden und Projekte</span></li>
-      <li class="rv" style="--i:2"><b><span class="cnt" data-to="40">40</span></b><span>Projekte allein in 2026</span></li>
     </ul>
     <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#anfrage" data-anfrage><span>Kostenloses Erstgespr&auml;ch</span><i class="dot"></i></a></p>
   </section>
@@ -1086,7 +1086,12 @@
         <h3>KI <span class="tile"><video data-src="media/svc_ki.mp4" poster="media/svc_ki.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></span> <span class="nw">Automation<sup>(06)</sup></span></h3>
         <p>Autonome Workflows, die dich entlasten und mit deinen Firmenwerten eigenständig für dein Unternehmen arbeiten. Für deinen Fall eingerichtet.</p>
       </li>
+      <li class="svc">
+        <h3>Flächen <span class="nw">Beratung<sup>(07)</sup></span></h3>
+        <p>Beratung bei der Suche nach Geschäfts- und Store-Flächen, als Beratungsleistung gegen Gebühr. Direkt verbunden mit dem Marketing zum Start.</p>
+      </li>
     </ol>
+    <p class="wirk-cta rv"><span>Passt etwas davon zu deinem Vorhaben?</span><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
   </section>
 
   <section class="pakete" id="pakete" aria-labelledby="pk-h">
@@ -1225,6 +1230,7 @@
         </div>
       </div>
     </div>
+    <p class="wirk-cta"><span>Das könnte dein nächstes Projekt sein.</span><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
     <p class="pf-note mono">Views laut YouTube, Stand 07.10.2026. Die Musikvideos laufen auf den Kanälen der Artists.</p>
   </section>
 

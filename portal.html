@@ -384,6 +384,7 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
   }
+  .lg-tabs{margin:0 0 14px;}
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -403,8 +404,9 @@
   </div>
   <div class="lg-form-wrap">
     <form class="lg-form" id="loginForm" novalidate>
-      <p class="mono hot">Kundenportal</p>
-      <h2>Einloggen</h2>
+      <div class="seg lg-tabs" role="tablist" aria-label="Zugang"><button type="button" role="tab" data-lgtab="kunde" aria-pressed="true">Kundenportal</button><button type="button" role="tab" data-lgtab="intern" aria-pressed="false">Intern</button></div>
+      <p class="mono hot" id="lgKicker">Kundenportal</p>
+      <h2 id="lgTitle">Einloggen</h2>
       <label for="loginUser">Benutzername</label>
       <input class="field" id="loginUser" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false">
       <label for="loginPass">Passwort</label>
@@ -414,7 +416,7 @@
       </div>
       <p class="err" id="loginErr" role="alert" aria-live="assertive"></p>
       <button class="btn inv" type="submit"><span class="dot"></span><span>Einloggen</span></button>
-      <div class="demo-box">
+      <div class="demo-box" id="demoBox">
         <p><b>Demo-Zugang</b> für den Beispielkunden Teig &amp; Tomate:</p>
         <p>Benutzer <code>teigundtomate</code> · Passwort <code>biss2026</code></p>
         <button class="btn sm" type="button" id="fillDemo"><span class="dot"></span><span>Demo-Zugang einsetzen</span></button>
@@ -610,6 +612,12 @@ $("#pwToggle").addEventListener("click",function(){
   var p=$("#loginPass"),show=p.type==="password";p.type=show?"text":"password";
   this.textContent=show?"Verbergen":"Zeigen";this.setAttribute("aria-pressed",show?"true":"false");
 });
+document.querySelectorAll("[data-lgtab]").forEach(function(b){b.addEventListener("click",function(){
+  var intern=b.getAttribute("data-lgtab")==="intern";
+  document.querySelectorAll("[data-lgtab]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
+  $("#lgKicker").textContent=intern?"Interner Bereich":"Kundenportal";$("#lgTitle").textContent=intern?"Team-Login":"Einloggen";
+  $("#demoBox").hidden=intern;$("#loginErr").textContent="";$("#loginUser").focus();
+});});
 $("#fillDemo").addEventListener("click",function(){$("#loginUser").value=CRED.u;$("#loginPass").value=CRED.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
 $("#loginForm").addEventListener("submit",function(e){
   e.preventDefault();
