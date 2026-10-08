@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="theme.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Social Bites Kundenportal</title>
 <meta name="description" content="Kundenportal von Social Bites: Freigaben, Termine, Dateien, Rechnungen und Zahlen zu deinem Projekt.">
@@ -274,9 +275,9 @@
   .side-h:first-child{margin-top:0;}
   .nav-b .ext{font-family:var(--mono);font-size:11px;color:var(--accent-ink);}
   .tmain{min-width:0;display:grid;gap:12px;}
-  .frame-host{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);}
+  .frame-host{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 1px 2px rgba(35,35,33,.05),0 14px 30px -18px rgba(35,35,33,.22);}
   .frame-host iframe,.tframe{display:block;width:100%;height:calc(100vh - var(--bar) - 16px);height:calc(100dvh - var(--bar) - 16px);min-height:600px;border:0;background:var(--card);}
-  .tframe{border:1px solid var(--line);border-radius:14px;}
+  .tframe{border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(35,35,33,.05),0 14px 30px -18px rgba(35,35,33,.22);}
   /* Eingebettete Seiten und Sheets: das Fenster füllt die ganze Höhe bis unten, die Seite selbst scrollt nicht. Titel kompakt, Beschreibung ausgeblendet (steht auf der Startseite). */
   #team.fr .vh{margin-bottom:0;align-items:center;gap:6px 18px;}
   #team.fr .vh h1{font-size:clamp(22px,2vw,30px);line-height:1;margin:2px 0 0;}
@@ -417,6 +418,61 @@
     *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
   }
   .lg-tabs{margin:0 0 14px;}
+
+  /* Neue Seitenleiste im Team-Bereich: einklappbar, Gruppen mit Überschrift, Symbol je Eintrag, aktiver Eintrag mit gleitender Fläche */
+  #team .shell{grid-template-columns:var(--sbw,272px) minmax(0,1fr);transition:grid-template-columns .24s cubic-bezier(.23,1,.32,1);}
+  #team.sb-c .shell{--sbw:68px;}
+  #tside{display:flex;flex-direction:column;gap:0;position:sticky;top:calc(var(--bar) + 16px);height:calc(100vh - var(--bar) - 40px);height:calc(100dvh - var(--bar) - 40px);background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(35,35,33,.05),0 14px 30px -18px rgba(35,35,33,.22);}
+  #team.fr #tside{height:auto;position:static;}
+  .sb-hd{height:56px;flex:none;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line);}
+  .sb-logo{appearance:none;border:0;background:var(--paper-2);width:34px;height:34px;border-radius:10px;display:grid;place-items:center;cursor:pointer;flex:none;padding:5px;}
+  .sb-logo{overflow:hidden;}
+  .sb-logo img{width:24px;height:24px;max-width:none;object-fit:contain;display:block;}
+  .sb-name{font-weight:800;font-size:16px;letter-spacing:-.03em;white-space:nowrap;transition:opacity .14s;}
+  .sb-tg{appearance:none;margin-left:auto;width:30px;height:30px;border-radius:9px;border:0;background:transparent;color:var(--mute);display:grid;place-items:center;cursor:pointer;transition:background-color .15s,color .15s;}
+  .sb-tg:hover{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink);}
+  .sb-tg svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;transition:transform .24s;}
+  #team.sb-c .sb-tg{display:none;}
+  #team.sb-c .sb-name{opacity:0;width:0;overflow:hidden;}
+  .sb-nav{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:6px 8px 10px;scrollbar-width:thin;scrollbar-color:transparent transparent;}
+  .sb-nav.is-scrolling{scrollbar-color:rgba(35,35,33,.22) transparent;}
+  .sb-nav::-webkit-scrollbar{width:4px;}
+  .sb-nav::-webkit-scrollbar-thumb{background:transparent;border-radius:9px;}
+  .sb-nav.is-scrolling::-webkit-scrollbar-thumb{background:rgba(35,35,33,.22);}
+  .sb-sec{padding:2px 0;}
+  #tside .side-h{margin:14px 0 4px;padding:0 10px;height:16px;display:flex;align-items:flex-end;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);white-space:nowrap;transition:opacity .14s;}
+  #tside .sb-sec:first-of-type .side-h{margin-top:6px;}
+  #team.sb-c .side-h{height:1px;margin:10px 14px;padding:0;background:var(--line);font-size:0;opacity:1;}
+  .sb-pill{position:absolute;left:8px;right:8px;top:0;height:38px;border-radius:10px;background:var(--accent-tint);opacity:0;pointer-events:none;transition:transform .32s cubic-bezier(.23,1,.32,1),height .2s,opacity .2s;}
+  #tside .nav-b{position:relative;z-index:1;display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;height:38px;padding:0 16px;border:0;border-radius:10px;background:transparent;color:var(--mute);font-size:14.5px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s;}
+  #tside .nav-b:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);border:0;}
+  #tside .nav-b[aria-current="page"]{background:transparent;color:var(--ink);font-weight:750;border:0;}
+  #tside .nav-b[aria-current="page"]:hover{background:transparent;}
+  #tside .nav-b .ic{width:20px;height:20px;flex:none;display:grid;place-items:center;color:var(--mute);transition:color .15s;}
+  #tside .nav-b:hover .ic{color:var(--ink);}
+  #tside .nav-b[aria-current="page"] .ic{color:var(--accent-ink);}
+  #tside .nav-b .ic svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+  #tside .nav-b .lb{min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:left;transition:opacity .14s;}
+  #team.sb-c #tside .nav-b .lb,#team.sb-c .sb-user .lb2{opacity:0;}
+  .sb-ft{flex:none;border-top:1px solid var(--line);padding:8px;display:grid;gap:2px;}
+  .sb-ft .nav-b{height:34px;font-size:13.5px;}
+  .sb-user{display:flex;align-items:center;gap:10px;padding:8px 8px 4px;min-width:0;}
+  .sb-user .avatar{width:30px;height:30px;font-size:12px;}
+  .sb-user .lb2{min-width:0;display:grid;line-height:1.15;transition:opacity .14s;white-space:nowrap;}
+  .sb-user .lb2 b{font-size:13px;font-weight:750;}
+  .sb-user .lb2 small{font-size:11.5px;color:var(--mute);}
+  .cockpit-sky{margin-top:14px;}
+  .cockpit-sky .muted{margin:2px 0 12px;font-size:14px;}
+  @media (max-width:900px){
+    #team .shell{grid-template-columns:minmax(0,1fr);}
+    #tside{position:sticky;top:var(--bar);height:auto;flex-direction:row;gap:6px;overflow-x:auto;overflow-y:hidden;border-radius:0;border-width:0 0 1px;margin-inline:calc(var(--gutter) * -1);padding:10px var(--gutter);box-shadow:none;background:rgba(254,254,254,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:30;}
+    #tside .sb-hd,#tside .sb-ft,#tside .sb-pill,#tside .side-h{display:none;}
+    #tside .sb-nav,#tside .sb-sec{display:contents;}
+    #tside .nav-b{flex:none;width:auto;height:auto;padding:8px 12px;border:1px solid var(--line);background:rgba(255,253,248,.6);font-size:15px;}
+    #tside .nav-b .ic{display:none;}
+    #tside .nav-b[aria-current="page"]{background:var(--accent-tint);border:1px solid var(--ink);}
+  }
+  @media (prefers-reduced-motion:reduce){#team .shell,.sb-pill{transition:none;}}
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -522,6 +578,10 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="filePick" multiple hidden>
 
+<script src="skyline.js"></script>
+<script src="labor.js"></script>
+<script src="builder.js"></script>
+<script src="cockpit_daten.js"></script>
 <script>
 (function(){
 "use strict";
@@ -697,6 +757,7 @@ function render(){
   else h=vMsgs();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
   wireVideos(el);
+  mountProjSky();
   if(CUR==="nachrichten"){var t=$(".thread");if(t)t.lastElementChild&&t.lastElementChild.scrollIntoView({block:"nearest"});}
 }
 function head(k,t,p,right){return '<div class="vh"><div><p class="mono hot">'+k+'</p><h1>'+t+'</h1>'+(p?'<p>'+p+'</p>':"")+'</div>'+(right||"")+'</div>';}
@@ -724,12 +785,26 @@ function vOverview(){
   var tot=sum(VIEWS);
   h+='<section class="card"><h2>Teaser-Phase bisher</h2><p class="stat-num">'+tot.toLocaleString("de-DE")+'</p><p class="muted" style="margin:6px 0 12px;font-size:14.5px">Views in '+VIEWS.length+' Tagen, Beispieldaten</p>'+spark(VIEWS)+'<p style="margin:12px 0 0"><button class="btn sm" type="button" data-go="zahlen"><span class="dot"></span><span>Alle Zahlen</span></button></p></section>';
   h+='</div>';
+  h+='<section class="card" style="margin-top:14px"><h2>Aktivität im Projekt</h2><p class="muted" style="margin:2px 0 12px;font-size:14.5px">Jeder Tag, an dem etwas passiert ist: Nachrichten, Freigaben, Dateien. Fahr über die Würfel oder schalte oben auf die 3D Ansicht.</p><div id="skyProj"></div></section>';
   h+='<section class="card" style="margin-top:14px"><h2>Dein Team bei Social Bites</h2><div class="team">'+
      '<div class="person"><span class="avatar">N</span><div><b>Nader Ait-Laouad</b><small>Co-Founder</small></div></div>'+
      '<div class="person"><span class="avatar">T</span><div><b>Tommy Hein</b><small>Co-Founder</small></div></div>'+
      '</div><p class="muted" style="margin:14px 0 0;font-size:14.5px">Wir antworten meist innerhalb von 24 Stunden. Am schnellsten über <button class="link" type="button" data-go="nachrichten">Nachrichten</button>.</p></section>';
   h+=note("Demo mit dem Beispielkunden Teig &amp; Tomate. Zahlen, Beträge und Termine sind Beispiele, die Videos stammen aus echten Social-Bites-Produktionen.");
   return h;
+}
+var projSky=null;
+function mountProjSky(){
+  if(projSky){try{projSky.destroy();}catch(e){}projSky=null;}
+  var host=$("#skyProj");if(!host||!window.SBSkyline)return;
+  var c={};function add(a){if(a){var k=String(a).slice(0,10);c[k]=(c[k]||0)+1;}}
+  S.msgs.forEach(function(m){add(m.at);});
+  Object.keys(S.reels).forEach(function(k){add(S.reels[k].at);});
+  Object.keys(S.need).forEach(function(k){add(S.need[k].at);});
+  S.files.forEach(function(f){add(f.at);});
+  TERMS.forEach(function(t){var d0=D(t[0]);if(d0<=TODAY)add(iso(d0));});
+  var data=Object.keys(c).map(function(k){return {date:k,count:c[k]};});
+  projSky=SBSkyline.mount(host,{data:data,endDate:iso(TODAY),unit:"Aktion",unitPlural:"Aktionen",title:"Aktivität in deinem Projekt",ariaLabel:"Aktivität im Projekt pro Tag",weekStart:1,defaultView:"3d"});
 }
 function spark(a){
   var w=260,hh=54,mx=Math.max.apply(null,a),step=w/(a.length-1);
@@ -941,6 +1016,7 @@ var TNAV=[
   ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"]]],
+  ["Labor",[["t-labor","Labor"],["t-builder","Ablauf-Builder"]]],
   ["Marke",[["t-brandbook","Brand Book"],["t-brandkit","Brand-Kit & Logos"]]],
   ["Ablage",[["t-dateien","Dateien im Drive"]]]
 ];
@@ -967,10 +1043,82 @@ var KIT=[
 ];
 var KITCOL=[["Key White","#FEFEFE"],["Charcoal","#232321"],["Key Orange","#F26A21"],["Mint Green","#E3EAE0"],["Deep Orange","#C4490F"],["Orange Tint","#FDE3D2"],["Stone","#6C6F68"]];
 var TCUR="t-start", sheetTools=false, sheetGid=null;
+var TIC={
+  "t-start":'<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/>',
+  "t-rechner":'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+  "t-akquise":'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12h.01"/>',
+  "t-influencer":'<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.5-3.2 2.8-5 5.5-5s5 1.8 5.5 5"/><path d="M16 5.2a3 3 0 0 1 0 5.6M17.5 14.3c2 .5 3.2 2.3 3.5 4.7"/>',
+  "t-wissen":'<path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>',
+  "t-kunden":'<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3.5 13h17"/>',
+  "t-buero":'<path d="M5 20V5.5A1.5 1.5 0 0 1 6.5 4h7A1.5 1.5 0 0 1 15 5.5V20M15 10h3.5a1.5 1.5 0 0 1 1.5 1.5V20M3.5 20h17M8.5 8h3M8.5 12h3M8.5 16h3"/>',
+  "t-partner":'<path d="M10 14a4 4 0 0 0 5.7 0l3-3A4 4 0 0 0 13 5.3l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/>',
+  "t-playbook":'<path d="m4 7 1.5 1.5L8 6M4 13l1.5 1.5L8 12M4 19l1.5 1.5L8 18M11 7h9M11 13h9M11 19h9"/>',
+  "t-leistungen":'<path d="m12 4 8.5 4.5L12 13 3.5 8.5 12 4Z"/><path d="m3.5 12.5 8.5 4.5 8.5-4.5M3.5 16.5 12 21l8.5-4.5"/>',
+  "t-demo":'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
+  "os-start":'<path d="M4.5 16a8 8 0 1 1 15 0"/><path d="m12 13 3.5-4"/><circle cx="12" cy="14" r="1.2"/>',
+  "os-aufgaben":'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  "os-meetings":'<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/>',
+  "os-pipeline":'<path d="M4 5h16l-6 7.5V19l-4-2v-4.5L4 5Z"/>',
+  "os-leistungen":'<path d="M17.5 7.5a6 6 0 1 0 0 9M5 10.5h8M5 13.5h8"/>',
+  "os-portfolio":'<rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="m10.5 9.5 4 2.5-4 2.5v-5Z"/>',
+  "os-netzwerk":'<circle cx="12" cy="6" r="2.2"/><circle cx="6" cy="17" r="2.2"/><circle cx="18" cy="17" r="2.2"/><path d="M11 8 7 15M13 8l4 7M8.2 17h7.6"/>',
+  "os-ideen":'<path d="M9 18h6M10 21h4M12 3.5a6 6 0 0 0-3.5 10.9c.6.5 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.4 1-1.9A6 6 0 0 0 12 3.5Z"/>',
+  "os-pitch":'<path d="M5 20V4.5M5 5h12l-2.5 4L17 13H5"/>',
+  "os-rollen":'<circle cx="12" cy="9" r="3"/><path d="M6.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/>',
+  "t-trends":'<path d="m4 16 5-5 3.5 3.5L20 7M15 7h5v5"/>',
+  "t-galerie":'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 18 5-5 3 3 3-3 4 4"/>',
+  "t-konzepte":'<path d="M9 18h6M10 21h4M12 3.5a6 6 0 0 0-3.5 10.9c.6.5 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.4 1-1.9A6 6 0 0 0 12 3.5Z"/>',
+  "t-labor":'<path d="M9.5 4h5M10.5 4v5.5L5.2 18a1.8 1.8 0 0 0 1.6 2.7h10.4a1.8 1.8 0 0 0 1.6-2.7L13.5 9.5V4"/><path d="M8 15h8"/>',
+  "t-builder":'<rect x="4" y="5" width="9" height="3.2" rx="1.6"/><rect x="8" y="10.4" width="12" height="3.2" rx="1.6"/><rect x="6" y="15.8" width="8" height="3.2" rx="1.6"/>',
+  "t-brandbook":'<path d="M12 4a8 8 0 1 0 0 16c1.2 0 1.8-.9 1.4-2-.4-1 .3-2 1.4-2H17a3 3 0 0 0 3-3A8 8 0 0 0 12 4Z"/><circle cx="8" cy="11" r=".9"/><circle cx="11" cy="7.8" r=".9"/><circle cx="15" cy="8.5" r=".9"/>',
+  "t-brandkit":'<path d="M12 4v10m0 0-3.5-3.5M12 14l3.5-3.5M5 19h14"/>',
+  "t-dateien":'<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.2l2 2.3H18a2.5 2.5 0 0 1 2.5 2.5v6.7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5v-9Z"/>',
+  "ext":'<path d="M8 16 16 8M9 8h7v7"/>'
+};
+function tIc(v){return '<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24">'+(TIC[v]||'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>')+'</svg></span>';}
 function tNav(){
-  $("#tside").innerHTML=TNAV.map(function(g){
-    return '<p class="side-h mono">'+esc(g[0])+'</p>'+g[1].map(function(it){return '<button class="nav-b" type="button" data-tview="'+it[0]+'"><span>'+esc(it[1])+'</span></button>';}).join("");
-  }).join("")+'<div class="side-foot"><a class="link" href="index.html" target="_blank" rel="noopener">Website ↗</a><a class="link" href="'+SHEET_URL+'" target="_blank" rel="noopener">Social Bites OS in Google öffnen ↗</a><a class="link" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener">Drive-Ordner öffnen ↗</a></div>';
+  var coll=false;try{coll=localStorage.getItem("sb-tside")==="1";}catch(e){}
+  $("#team").classList.toggle("sb-c",coll);
+  var ext=function(href,label){return '<a class="nav-b" href="'+href+'" target="_blank" rel="noopener" title="'+esc(label)+'">'+tIc("ext")+'<span class="lb">'+esc(label)+'</span></a>';};
+  $("#tside").innerHTML='<div class="sb-hd"><button class="sb-logo" type="button" data-sbtoggle aria-label="Seitenleiste ausklappen"><img src="mouth.webp" alt=""></button><span class="sb-name">Social Bites</span><button class="sb-tg" type="button" data-sbtoggle aria-label="Seitenleiste einklappen" aria-expanded="'+(!coll)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><path d="M9.5 5v14"/><path d="m16 10-2 2 2 2"/></svg></button></div>'+
+    '<div class="sb-nav"><span class="sb-pill" aria-hidden="true"></span>'+TNAV.map(function(g){
+      return '<div class="sb-sec" role="group" aria-label="'+esc(g[0])+'"><p class="side-h mono">'+esc(g[0])+'</p>'+g[1].map(function(it){return '<button class="nav-b" type="button" data-tview="'+it[0]+'" title="'+esc(it[1])+'">'+tIc(it[0])+'<span class="lb">'+esc(it[1])+'</span></button>';}).join("")+'</div>';
+    }).join("")+'</div>'+
+    '<div class="sb-ft">'+ext("index.html","Website")+ext(SHEET_URL,"Social Bites OS in Google")+ext(driveUrl(DRIVE_ROOT),"Drive-Ordner")+'<div class="sb-user"><span class="avatar" aria-hidden="true">SB</span><span class="lb2"><b>Social Bites</b><small>Team, intern</small></span></div></div>';
+  var nv=$("#tside .sb-nav"),tmr;
+  nv.addEventListener("scroll",function(){nv.classList.add("is-scrolling");clearTimeout(tmr);tmr=setTimeout(function(){nv.classList.remove("is-scrolling");},700);},{passive:true});
+}
+function movePill(){
+  var pill=document.querySelector("#tside .sb-pill"),on=document.querySelector('#tside .sb-nav .nav-b[aria-current="page"]'),nav=document.querySelector("#tside .sb-nav");
+  if(!pill||!nav)return;
+  if(!on){pill.style.opacity=0;return;}
+  var a=on.getBoundingClientRect(),b=nav.getBoundingClientRect();
+  if(on.offsetTop<nav.scrollTop||on.offsetTop+on.offsetHeight>nav.scrollTop+nav.clientHeight){nav.scrollTop=Math.max(0,on.offsetTop-nav.clientHeight/2);}
+  a=on.getBoundingClientRect();b=nav.getBoundingClientRect();
+  pill.style.height=a.height+"px";pill.style.transform="translateY("+(a.top-b.top+nav.scrollTop)+"px)";pill.style.opacity=1;
+}
+window.addEventListener("resize",function(){movePill();});
+window.addEventListener("load",function(){movePill();});
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-sbtoggle]");if(!t||!$("#tside").contains(t))return;
+  var tm=$("#team"),c=!tm.classList.contains("sb-c");tm.classList.toggle("sb-c",c);
+  try{localStorage.setItem("sb-tside",c?"1":"0");}catch(err){}
+  var tg=$("#tside .sb-tg");if(tg)tg.setAttribute("aria-expanded",String(!c));
+  setTimeout(movePill,260);
+});
+/* Module im Team-Bereich: Cockpit Skyline, Labor, Ablauf-Builder. Beim Seitenwechsel wird das vorige sauber abgebaut. */
+var tDispose=null;
+function tMount(v){
+  if(tDispose){try{tDispose();}catch(e){}tDispose=null;}
+  try{
+    if(v==="t-labor"&&window.SBLabor&&$("#labHost")){var r=SBLabor.mount($("#labHost"));tDispose=r.dispose;}
+    else if(v==="t-builder"&&window.SBBuilder&&$("#bldHost")){var r2=SBBuilder.mount($("#bldHost"));tDispose=r2.dispose;}
+    else if(v==="t-start"&&window.SBSkyline&&window.SB_COCKPIT&&$("#skyCockpit")){
+      var C=window.SB_COCKPIT,last=null;if(C.events.length){var ld=new Date(C.events[C.events.length-1].date+"T00:00:00Z");ld.setUTCDate(ld.getUTCDate()+91);last=ld.toISOString().slice(0,10);}
+      var sk=SBSkyline.mount($("#skyCockpit"),{data:C.events,endDate:last,unit:"Event",unitPlural:"Events",title:'<b>'+C.anzahl_events.toLocaleString("de-DE")+'</b> Events in Berlin, nach Starttag',ariaLabel:"Events in Berlin pro Tag",weekStart:1});
+      if(sk)tDispose=sk.destroy;
+    }
+  }catch(e){console&&console.error&&console.error(e);}
 }
 function sheetSrc(gid){return SHEET_URL+(sheetTools?"":"?rm=minimal")+"#gid="+gid;}
 function showSheet(o){
@@ -981,9 +1129,10 @@ function showSheet(o){
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
   if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+  requestAnimationFrame(movePill);
   var on=document.querySelector('#tside [aria-current="page"]');if(on&&window.matchMedia("(max-width: 900px)").matches){var sd=$("#tside");sd.scrollLeft+=on.getBoundingClientRect().left-sd.getBoundingClientRect().left-16;}
   var el=$("#tview"),h="";
   $("#tframe").hidden=!os;$("#tframenote").hidden=!os;
@@ -1004,9 +1153,12 @@ function tGo(v,quiet){
   else if(v==="t-buero") h=head("Team","Büro & Mitarbeiter","Alle Mitarbeiter und Agenten in ihren Räumen, mit Skill-Set, Hierarchie und Ausbaustufen. Person anklicken, Namen ändern, Skills filtern. Oben zwischen Raumplan und Organigramm wechseln.",'<div class="acts"><a class="btn sm" href="buero.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="buero.html" title="Social Bites Büro"></iframe>';
   else if(v==="t-partner") h=head("Team","Partnerprogramm","Wer uns vermittelt, bekommt Provision und Anteilspunkte im Partner-Pool. Hier verwaltest du Partner, Vermittlungen, Auszahlungen und Vorlagen. Die öffentliche Seite ist noch nicht verlinkt, bis ihr die Konditionen freigebt.",'<div class="acts"><a class="btn sm" href="partner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Öffentliche Seite ↗</span></a><a class="btn sm" href="partner/Social-Bites-Partner-Leitfaden.pdf" target="_blank" rel="noopener"><span class="dot"></span><span>Leitfaden PDF ↗</span></a></div>')+'<iframe class="tframe" src="partner-team.html" title="Social Bites Partnerprogramm"></iframe>';
   else if(v==="t-konzepte") h=tKonzepte();
+  else if(v==="t-labor") h=head("Labor","Ablauf als 3D Maschine","Hier setzt du den Ablauf der Dienstleistung für einen Kunden zusammen und siehst ihn als Maschine. Vorlage wählen oder Bausteine einzeln an und aus schalten. Ein Auftrag fährt durch alle Stationen, Station anklicken zeigt, was dort passiert. Ziehen dreht, Scrollen zoomt.")+'<div id="labHost"></div>';
+  else if(v==="t-builder") h=head("Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer pro Kunde als Zeitachse. Vorlage wählen, Tage anpassen, Vorgänger festlegen. Der Plan zeigt, wie lange etwas dauert, was parallel läuft und welche Kette das Ende bestimmt. Unten lässt sich der Verlauf abspielen und scrubben.")+'<div id="bldHost"></div>';
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
+  tMount(v);
   var fr=el.querySelector("iframe.tframe[src]"),bsrc=null;
   if(os)bsrc=sheetSrc(os.gid);
   else if(fr&&!/^https?:/i.test(fr.getAttribute("src"))){bsrc=fr.getAttribute("src");bsrc+=(bsrc.indexOf("?")<0?"?":"&")+"big=1";}
@@ -1015,14 +1167,15 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
 function tStart(){
   var tile=function(v,label,title,txt,cls){return '<button class="tile'+(cls?" "+cls:"")+'" type="button" data-tview="'+v+'"><span class="mono">'+label+'</span><b>'+title+'</b><span>'+txt+'</span></button>';};
   return head("Team-Bereich","Alles von Social Bites an einem Ort.","Social Bites OS, Marke und Ablage. Die Tabellen kommen live aus Google Sheets und speichern jede Änderung sofort.")+
-    '<div class="tiles">'+
+ 	  (window.SB_COCKPIT?'<section class="card cockpit-sky"><h2>Cockpit: Wann ist was los in Berlin</h2><p class="muted">Jeder Würfel ist ein Tag, die Höhe zeigt, wie viele Events aus der Akquise Datenbank an dem Tag starten. So siehst du, wann viel los ist und wann sich ein Pitch an Veranstalter lohnt. Stand '+esc(window.SB_COCKPIT.stand||"")+'.</p><div id="skyCockpit"></div></section>':'')+
+    '<div class="tiles" style="margin-top:14px">'+
       tile("os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or")+
       tile("os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.")+
       tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
@@ -1038,6 +1191,8 @@ function tStart(){
       tile("t-trends","Kreativ","Trend-Indicator","Was diese Woche in Food und Gastro viral geht.","t-or")+
       tile("t-galerie","Kreativ","Galerie","Moodboards und Entwürfe, gerade: T-Shirt mit Biss.")+
       tile("t-konzepte","Kreativ","Konzepte","Eigene Konzepte von A bis Z, die wir später Kunden verkaufen.","t-ink")+
+      tile("t-labor","Labor","Labor","Den Ablauf für einen Kunden als 3D Maschine zusammenbauen.","t-or")+
+      tile("t-builder","Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer als Zeitachse.","t-ink")+
       tile("t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.")+
       tile("t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.")+
     '</div>'+
