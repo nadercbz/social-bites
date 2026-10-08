@@ -1942,7 +1942,7 @@
     var tile = d.getElementById('pitch-open'), veil = d.getElementById('pitch-veil');
     if (!tile || !veil || !window.matchMedia || !matchMedia('(hover:hover)').matches) return;
     var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '', cap = null;
-    var CAP = {de: ['Klick mich an', 'Kurz reinschauen, dann weißt du, wer wir sind und was wir für deinen Laden holen.'], en: ['Click me', 'A quick look and you know who we are and what we bring to your venue.']};
+    var CAP = {de: ['Hunger sichtbar machen', 'Drück Play.'], en: ['Make hunger visible', 'Press play.']};
     function lift(){
       if (lifted || Date.now() - tDrop < 350) return;
       clearTimeout(timer);
