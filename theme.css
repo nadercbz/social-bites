@@ -39,6 +39,12 @@
 :root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed .dot,
 :root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed i{background:#EEEBE3;}
 
+
+/* Umi: rote Flächen in Portal und Tools bekommen helle Schrift statt Charcoal */
+:root[data-palette="umi"]:not([data-theme="dark"]) :is(.badge,.pill.or,.pill.new,.pill.win,.chip.or,.chip[aria-pressed="true"],.chg.new,.vc .pf span.out,.dt.soon,.tag,.tk .tc,.kpi.or,.btn.or,.inbox .btn,.d-tot div.total,.steps button[aria-current="step"] i,.msg .avatar,.person .avatar,.need li.done .ck,.sheet .box.hot,.lt.o,.phases .pill.win,.ri.done .rn){color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) :is(.lg-art,.tile.t-or,.flow.or,.cover,.kpi.or,.d-tot div.total){--ink:#EEEBE3;color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .lg-art *{color:inherit;}
+
 :root[data-theme="dark"]{
   color-scheme:dark;
   --paper:#151211; --paper-2:#221D1B; --card:#1D1917; --ink:#F3ECDD; --mute:#A89F90;

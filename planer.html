@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Planer</title>
+<meta name="description" content="Aufgabentabelle mit Kategorien Product, Sales, Intern und Kalender für geplante Beiträge von Nader und Tommy.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Planer: Aufgabentabelle (Product, Sales, Intern) und Kalender für geplante Beiträge, pro Person. Alles bleibt nur in diesem Browser (localStorage). */
+  :root{
+    color-scheme:light;
+    --paper:#FEFEFE; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
+    --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
+    --ok:#1F7A4D; --ok-tint:#DDF1E4; --warn:#9A6400; --warn-tint:#FFF0C9; --bad:#B42318;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --grain:none;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-weight:700;font-size:14px;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s;}
+  .btn:hover{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.sm{padding:6px 10px;font-size:13px;}
+  .top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:42px;width:auto;}
+  .embedded .top img{display:none;}
+  .top .ttl b{display:block;font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .tabs{display:flex;gap:6px;margin-left:auto;}
+  .seg{display:inline-flex;flex-wrap:wrap;gap:6px;}
+  .seg button{font:650 14px/1 var(--display);padding:9px 13px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;transition:background-color .2s,color .2s;}
+  .seg button:hover{background:var(--paper-2);}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  main{padding:18px var(--gutter) 60px;display:grid;gap:14px;}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;}
+  .kpi small{display:block;font-size:12px;color:var(--mute);}
+  .kpi b{display:block;font-size:28px;letter-spacing:-.04em;margin-top:2px;font-variant-numeric:tabular-nums;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:auto;}
+  table{width:100%;border-collapse:collapse;min-width:820px;}
+  th{font:700 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:last-child td{border-bottom:0;}
+  td input,td select,td textarea{width:100%;border:1px solid transparent;border-radius:8px;padding:6px 7px;background:transparent;font-size:14.5px;}
+  td input:hover,td select:hover,td textarea:hover,td input:focus,td select:focus,td textarea:focus{border-color:var(--line-2);background:var(--card);}
+  td textarea{resize:vertical;min-height:34px;font-size:13.5px;color:var(--mute);}
+  td.t input{font-weight:700;}
+  .cat{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:4px 9px;}
+  .cat.product{background:var(--ink);color:var(--paper);}
+  .cat.sales{background:var(--accent);color:var(--ink);}
+  .cat.intern{background:var(--paper-2);color:var(--ink);}
+  .st-erledigt td.t input{text-decoration:line-through;color:var(--mute);}
+  .x{border:0;background:transparent;font-size:20px;cursor:pointer;color:var(--mute);padding:2px 8px;}
+  .x:hover{color:var(--bad);}
+  .hint{font-size:13px;color:var(--mute);margin:0;}
+
+  /* Kalender */
+  .cal-h{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;}
+  .cal-h h2{margin:0;font-size:22px;letter-spacing:-.04em;min-width:170px;}
+  .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .dow{background:var(--paper-2);font:700 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:8px;text-align:center;color:var(--mute);}
+  .day{background:var(--card);min-height:112px;padding:6px;display:flex;flex-direction:column;gap:4px;transition:background-color .15s;}
+  .day.other{background:var(--paper);}
+  .day.over{background:var(--accent-tint);}
+  .day.today .dn{background:var(--accent);color:var(--ink);}
+  .dn{align-self:flex-start;font:700 12px var(--mono);border-radius:6px;padding:2px 6px;color:var(--mute);}
+  .day.other .dn{opacity:.5;}
+  .ev{font-size:12.5px;font-weight:650;line-height:1.2;border-radius:7px;padding:4px 6px;cursor:grab;border-left:4px solid var(--ink);background:var(--paper-2);display:block;text-align:left;width:100%;user-select:none;}
+  .ev small{display:block;font:500 10px var(--mono);letter-spacing:.04em;color:var(--mute);text-transform:uppercase;}
+  .ev.ig{border-left-color:#C13584;} .ev.tt{border-left-color:#232321;} .ev.yt{border-left-color:#C4302B;} .ev.so{border-left-color:var(--accent);}
+  .ev.done{opacity:.55;text-decoration:line-through;}
+  .addd{margin-top:auto;align-self:flex-end;border:0;background:transparent;color:var(--mute);font-size:18px;line-height:1;cursor:pointer;padding:0 4px;opacity:0;}
+  .day:hover .addd,.addd:focus{opacity:1;}
+  dialog{border:1px solid var(--ink);border-radius:16px;padding:0;max-width:min(94vw,480px);width:100%;}
+  dialog::backdrop{background:rgba(0,0,0,.45);}
+  .dlg{padding:18px;display:grid;gap:10px;}
+  .dlg h3{margin:0;font-size:20px;letter-spacing:-.03em;}
+  .fld{display:grid;gap:4px;font-size:13px;color:var(--mute);}
+  .fld span{font-weight:650;}
+  .fld input,.fld select,.fld textarea{width:100%;padding:9px 10px;border:1px solid var(--line-2);border-radius:10px;background:var(--card);font-size:15px;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+  @media (max-width:720px){.day{min-height:78px;}.ev small{display:none;}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
+  <div class="ttl"><b>Planer</b><span class="mono">Aufgaben und Kalender. Bleibt nur in diesem Browser.</span></div>
+  <div class="seg tabs" role="tablist" aria-label="Bereich"><button type="button" role="tab" data-tab="aufgaben" aria-pressed="true">Aufgaben</button><button type="button" role="tab" data-tab="kalender" aria-pressed="false">Kalender</button></div>
+</header>
+<main id="main"></main>
+
+<dialog id="dlg" aria-label="Beitrag">
+  <form class="dlg" id="evForm" method="dialog">
+    <h3 id="evTitle">Beitrag planen</h3>
+    <label class="fld"><span>Titel oder Idee</span><input id="evT" required placeholder="z. B. Reel Spreequell Tour"></label>
+    <div class="g2">
+      <label class="fld"><span>Datum</span><input id="evD" type="date" required></label>
+      <label class="fld"><span>Uhrzeit</span><input id="evH" type="time"></label>
+      <label class="fld"><span>Wer</span><select id="evP"><option value="nader">Nader</option><option value="tommy">Tommy</option></select></label>
+      <label class="fld"><span>Plattform</span><select id="evL"><option value="ig">Instagram</option><option value="tt">TikTok</option><option value="yt">YouTube</option><option value="so">Sonstiges</option></select></label>
+      <label class="fld"><span>Kunde</span><input id="evK" placeholder="z. B. Spreegold"></label>
+      <label class="fld"><span>Status</span><select id="evS"><option value="idee">Idee</option><option value="geplant">Geplant</option><option value="gepostet">Gepostet</option></select></label>
+    </div>
+    <label class="fld"><span>Notiz, Caption, Hook</span><textarea id="evN" rows="3"></textarea></label>
+    <div class="acts"><button class="btn sm" type="button" id="evDel" hidden>Löschen</button><button class="btn sm" type="button" id="evCancel">Abbrechen</button><button class="btn sm inv" type="submit">Speichern</button></div>
+  </form>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+var KT="sb-aufgaben-v1",KC="sb-kalender-v1";
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function uid(){return "x"+Math.random().toString(36).slice(2,8);}
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+if(window.self!==window.top)document.documentElement.classList.add("embedded");
+
+/* Startliste aus den WhatsApp Notizen von Tommy (09.10.2026) und der Website Liste von Nader. Neue Einträge mit neuer id kommen beim nächsten Laden automatisch dazu. */
+var SEED=[
+ {id:"w01",t:"Visitenkarte",k:"intern",w:"beide",s:"offen",d:"",n:"Druckdaten und Mockups liegen im Projektordner Visitenkarten und im Brand Book."},
+ {id:"w02",t:"Direkt Angebot und Beispiele je Nische",k:"sales",w:"beide",s:"offen",d:"",n:"Direkt mit Angebot rausgehen, Beispiele zeigen, wie wir in Nische X (wo der Kunde drin ist) liefern könnten, welche Kunden wir beide schon betreut haben, wie unser Prozess ist."},
+ {id:"w03",t:"Outsource Prozess ausbauen",k:"intern",w:"beide",s:"offen",d:"",n:"Wie bekommen wir Cutter und Videografen? Playbook, Briefing Paket und Bezahlmodell klären."},
+ {id:"w04",t:"Dashboard: wöchentlich Instagram und TikTok nach viralen Videos scrapen",k:"product",w:"nader",s:"erledigt",d:"",n:"Läuft als Trend-Indicator, jeden Montag 07:00, plus Hook-Bibliothek."},
+ {id:"w05",t:"Buffer einbauen, Kalenderansicht per Buffer API mit Drag and Drop",k:"product",w:"nader",s:"laeuft",d:"",n:"Kalender mit Drag and Drop ist da (Reiter Kalender). Für die Buffer Anbindung brauchen wir Buffer Zugang (API Schlüssel) von Tommy oder Nader."},
+ {id:"w06",t:"Zukunft: SEO, Ads, GEO",k:"product",w:"beide",s:"offen",d:"",n:"Als Leistungspaket ausarbeiten, Master Sheet Kapitel 5, 11, 12 und 15 als Grundlage."},
+ {id:"w07",t:"Datenbanken vorbereiten",k:"sales",w:"beide",s:"laeuft",d:"2026-10-15",n:"Bis Donnerstag. Akquise Board und Influencer Datenbank laufen, Firmenarten und Flyer Liste sind drin."},
+ {id:"w08",t:"Mini Pitch mit 3 bis 4 Videoideen für die Mail",k:"sales",w:"tommy",s:"offen",d:"",n:"Kurzer Text plus 3 bis 4 konkrete Videoideen je Kunde. Hook-Bibliothek nutzen."},
+ {id:"w09",t:"Cold Caller",k:"sales",w:"tommy",s:"offen",d:"",n:"Leitfaden und Liste vorbereiten."},
+ {id:"w10",t:"Cold Caller scrapen",k:"sales",w:"tommy",s:"offen",d:"",n:"Tommy scrapt Kontakte für die Caller."},
+ {id:"w11",t:"KPI Tracking der letzten Videos pro Kunde",k:"product",w:"beide",s:"offen",d:"",n:"Views, Saves, Kommentare pro Video je Kunde sammeln, Monatsreport."},
+ {id:"w12",t:"Kalenderansicht wie Buffer für Nader und Tommy einzeln",k:"product",w:"nader",s:"erledigt",d:"",n:"Reiter Kalender, getrennt nach Nader und Tommy, Drag and Drop."},
+ {id:"w13",t:"Allgemeine Aufgabentabelle mit Kategorien Product, Sales, Intern",k:"product",w:"nader",s:"erledigt",d:"",n:"Das hier."},
+ {id:"n01",t:"Spreegold: mehr Videos auf der Website zeigen",k:"product",w:"nader",s:"offen",d:"",n:"Es gibt bisher nur ein Spreegold Video im Projektordner. Weitere Dateien oder Links liefern."},
+ {id:"n02",t:"Influencer und Artists: mehr Creator Namen zeigen",k:"product",w:"nader",s:"offen",d:"",n:"Bisher 6 Creator mit echten Beiträgen. Weitere Namen und Links liefern, dann kommen sie in die Karten Hand."},
+ {id:"n03",t:"Pitch Video mit neuem Skript (v3) einsprechen und bauen",k:"product",w:"nader",s:"offen",d:"",n:"Skript steht im Brand Book unter Videos und Skripte. Offen: Szenen mit Nader in den Läden drehen."}
+];
+var T=load(KT,null);
+if(!T){T=SEED.map(function(x){return Object.assign({},x);});}
+else{var have={};T.forEach(function(x){have[x.id]=1;});SEED.forEach(function(x){if(!have[x.id])T.push(Object.assign({},x));});}
+store(KT,T);
+var EV=load(KC,[]);
+
+var KAT={product:"Product",sales:"Sales",intern:"Intern"},ST={offen:"Offen",laeuft:"Läuft",erledigt:"Erledigt"},WER={beide:"Beide",nader:"Nader",tommy:"Tommy"};
+var tab=(new URLSearchParams(location.search).get("tab")||location.hash.slice(1)||"aufgaben");
+if(tab!=="kalender")tab="aufgaben";
+var F={k:"alle",s:"offen+laeuft",w:"alle"},person="alle",cur=new Date();cur.setDate(1);
+
+function head(){[].forEach.call(document.querySelectorAll("[data-tab]"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-tab")===tab));});}
+
+function vTasks(){
+  var cnt=function(k){return T.filter(function(x){return (k==="alle"||x.k===k)&&x.s!=="erledigt";}).length;};
+  var h='<div class="kpis"><div class="kpi"><small>Offen oder läuft</small><b>'+T.filter(function(x){return x.s!=="erledigt";}).length+'</b></div>'+
+   ["product","sales","intern"].map(function(k){return '<div class="kpi"><small>'+KAT[k]+'</small><b>'+cnt(k)+'</b></div>';}).join("")+
+   '<div class="kpi"><small>Erledigt</small><b>'+T.filter(function(x){return x.s==="erledigt";}).length+'</b></div></div>';
+  h+='<div class="bar"><div class="seg" role="group" aria-label="Kategorie">'+["alle","product","sales","intern"].map(function(k){return '<button type="button" data-fk="'+k+'" aria-pressed="'+(F.k===k)+'">'+(k==="alle"?"Alle":KAT[k])+'</button>';}).join("")+'</div>'+
+   '<div class="seg" role="group" aria-label="Status"><button type="button" data-fs="offen+laeuft" aria-pressed="'+(F.s==="offen+laeuft")+'">Offen und läuft</button><button type="button" data-fs="erledigt" aria-pressed="'+(F.s==="erledigt")+'">Erledigt</button><button type="button" data-fs="alle" aria-pressed="'+(F.s==="alle")+'">Alle</button></div>'+
+   '<div class="seg" role="group" aria-label="Wer">'+["alle","nader","tommy"].map(function(k){return '<button type="button" data-fw="'+k+'" aria-pressed="'+(F.w===k)+'">'+(k==="alle"?"Alle":WER[k])+'</button>';}).join("")+'</div>'+
+   '<button class="btn sm inv" type="button" id="addT" style="margin-left:auto">+ Aufgabe</button></div>';
+  var rows=T.filter(function(x){return (F.k==="alle"||x.k===F.k)&&(F.s==="alle"||(F.s==="erledigt"?x.s==="erledigt":x.s!=="erledigt"))&&(F.w==="alle"||x.w===F.w||x.w==="beide");});
+  rows.sort(function(a,b){return (a.s==="erledigt")-(b.s==="erledigt")||(a.d||"9999").localeCompare(b.d||"9999");});
+  h+='<div class="card"><table><thead><tr><th>Aufgabe</th><th>Kategorie</th><th>Wer</th><th>Status</th><th>Fällig</th><th>Notiz</th><th></th></tr></thead><tbody>'+
+   (rows.length?rows.map(function(x){return '<tr class="st-'+x.s+'" data-id="'+x.id+'"><td class="t"><input data-f="t" value="'+esc(x.t)+'" aria-label="Aufgabe"></td>'+
+    '<td><select data-f="k" aria-label="Kategorie">'+Object.keys(KAT).map(function(k){return '<option value="'+k+'"'+(x.k===k?" selected":"")+'>'+KAT[k]+'</option>';}).join("")+'</select></td>'+
+    '<td><select data-f="w" aria-label="Wer">'+Object.keys(WER).map(function(k){return '<option value="'+k+'"'+(x.w===k?" selected":"")+'>'+WER[k]+'</option>';}).join("")+'</select></td>'+
+    '<td><select data-f="s" aria-label="Status">'+Object.keys(ST).map(function(k){return '<option value="'+k+'"'+(x.s===k?" selected":"")+'>'+ST[k]+'</option>';}).join("")+'</select></td>'+
+    '<td><input data-f="d" type="date" value="'+esc(x.d)+'" aria-label="Fällig"></td>'+
+    '<td><textarea data-f="n" rows="2" aria-label="Notiz">'+esc(x.n)+'</textarea></td>'+
+    '<td><button class="x" type="button" data-rm="'+x.id+'" aria-label="Aufgabe löschen">×</button></td></tr>';}).join(""):'<tr><td colspan="7" style="padding:20px;color:var(--mute)">Nichts in dieser Ansicht.</td></tr>')+'</tbody></table></div>';
+  h+='<p class="hint">Die Startliste stammt aus den WhatsApp Notizen von Tommy und Naders Website Liste (09.10.2026). Alles ist direkt in der Tabelle änderbar und wird sofort gespeichert.</p>';
+  return h;
+}
+
+function pad(n){return String(n).padStart(2,"0");}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+var MON=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],DOW=["Mo","Di","Mi","Do","Fr","Sa","So"];
+var PL={ig:"Instagram",tt:"TikTok",yt:"YouTube",so:"Sonstiges"};
+function vCal(){
+  var y=cur.getFullYear(),m=cur.getMonth(),first=new Date(y,m,1),off=(first.getDay()+6)%7,start=new Date(y,m,1-off),todayS=iso(new Date());
+  var h='<div class="cal-h"><button class="btn sm" type="button" data-nav="-1" aria-label="Vorheriger Monat">←</button><h2>'+MON[m]+' '+y+'</h2><button class="btn sm" type="button" data-nav="1" aria-label="Nächster Monat">→</button><button class="btn sm" type="button" data-nav="0">Heute</button>'+
+   '<div class="seg" role="group" aria-label="Person" style="margin-left:auto">'+["alle","nader","tommy"].map(function(k){return '<button type="button" data-fp="'+k+'" aria-pressed="'+(person===k)+'">'+(k==="alle"?"Beide":WER[k])+'</button>';}).join("")+'</div><button class="btn sm inv" type="button" id="addE">+ Beitrag</button><button class="btn sm" type="button" id="csv">Als CSV exportieren</button></div>';
+  h+='<div class="grid">'+DOW.map(function(d){return '<div class="dow">'+d+'</div>';}).join("");
+  for(var i=0;i<42;i++){
+    var dd=new Date(start);dd.setDate(start.getDate()+i);var ds=iso(dd);
+    var evs=EV.filter(function(e){return e.d===ds&&(person==="alle"||e.p===person);}).sort(function(a,b){return (a.h||"99").localeCompare(b.h||"99");});
+    h+='<div class="day'+(dd.getMonth()!==m?" other":"")+(ds===todayS?" today":"")+'" data-day="'+ds+'"><span class="dn">'+dd.getDate()+'</span>'+
+      evs.map(function(e){return '<div role="button" tabindex="0" class="ev '+e.l+(e.s==="gepostet"?" done":"")+'" draggable="true" data-ev="'+e.id+'"><small>'+esc((e.h||"")+" "+WER[e.p]+(e.k?" · "+e.k:""))+'</small>'+esc(e.t)+'</div>';}).join("")+
+      '<button class="addd" type="button" data-add="'+ds+'" aria-label="Beitrag am '+ds+' anlegen">+</button></div>';
+  }
+  h+='</div><p class="hint">Beiträge anklicken zum Bearbeiten, zwischen Tagen ziehen zum Verschieben. Buffer Anbindung: dafür braucht es den Buffer Zugang (API Schlüssel). Bis dahin plant ihr hier und exportiert als CSV.</p>';
+  return h;
+}
+function render(){head();$("#main").innerHTML=tab==="kalender"?vCal():vTasks();try{history.replaceState(null,"","?tab="+tab);}catch(e){}}
+
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-tab],[data-fk],[data-fs],[data-fw],[data-fp],[data-nav],[data-add],[data-ev],[data-rm],#addT,#addE,#csv");if(!t)return;
+  if(t.hasAttribute("data-tab")){tab=t.getAttribute("data-tab");render();return;}
+  if(t.hasAttribute("data-fk")){F.k=t.getAttribute("data-fk");render();return;}
+  if(t.hasAttribute("data-fs")){F.s=t.getAttribute("data-fs");render();return;}
+  if(t.hasAttribute("data-fw")){F.w=t.getAttribute("data-fw");render();return;}
+  if(t.hasAttribute("data-fp")){person=t.getAttribute("data-fp");render();return;}
+  if(t.hasAttribute("data-nav")){var v=+t.getAttribute("data-nav");if(!v){cur=new Date();cur.setDate(1);}else cur=new Date(cur.getFullYear(),cur.getMonth()+v,1);render();return;}
+  if(t.hasAttribute("data-add")){openEv(null,t.getAttribute("data-add"));return;}
+  if(t.hasAttribute("data-ev")){openEv(t.getAttribute("data-ev"));return;}
+  if(t.hasAttribute("data-rm")){if(!confirm("Aufgabe löschen?"))return;T=T.filter(function(x){return x.id!==t.getAttribute("data-rm");});store(KT,T);render();return;}
+  if(t.id==="addT"){T.unshift({id:uid(),t:"Neue Aufgabe",k:F.k==="alle"?"intern":F.k,w:"beide",s:"offen",d:"",n:""});store(KT,T);render();return;}
+  if(t.id==="addE"){openEv(null,iso(new Date()));return;}
+  if(t.id==="csv"){exportCsv();return;}
+});
+document.addEventListener("keydown",function(e){var t=e.target.closest&&e.target.closest("[data-ev]");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openEv(t.getAttribute("data-ev"));}});
+document.addEventListener("change",function(e){
+  var el=e.target,f=el.getAttribute&&el.getAttribute("data-f");if(!f)return;
+  var row=el.closest("tr"),x=T.filter(function(q){return q.id===row.getAttribute("data-id");})[0];if(!x)return;
+  x[f]=el.value;store(KT,T);if(f==="s"||f==="k"||f==="d")render();
+});
+document.addEventListener("input",function(e){
+  var el=e.target,f=el.getAttribute&&el.getAttribute("data-f");if(!f||!(f==="t"||f==="n"))return;
+  var row=el.closest("tr"),x=T.filter(function(q){return q.id===row.getAttribute("data-id");})[0];if(x){x[f]=el.value;store(KT,T);}
+});
+
+// Dialog Beitrag
+var editId=null;
+function openEv(id,date){
+  editId=id;var e=id?EV.filter(function(x){return x.id===id;})[0]:null;
+  $("#evTitle").textContent=e?"Beitrag bearbeiten":"Beitrag planen";
+  $("#evT").value=e?e.t:"";$("#evD").value=e?e.d:date;$("#evH").value=e?e.h:"";$("#evP").value=e?e.p:(person==="tommy"?"tommy":"nader");$("#evL").value=e?e.l:"ig";$("#evK").value=e?e.k:"";$("#evS").value=e?e.s:"idee";$("#evN").value=e?e.n:"";
+  $("#evDel").hidden=!e;$("#dlg").showModal();
+}
+$("#evForm").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var o={id:editId||uid(),t:$("#evT").value.trim(),d:$("#evD").value,h:$("#evH").value,p:$("#evP").value,l:$("#evL").value,k:$("#evK").value.trim(),s:$("#evS").value,n:$("#evN").value};
+  if(!o.t||!o.d)return;
+  if(editId)EV=EV.map(function(x){return x.id===editId?o:x;});else EV.push(o);
+  store(KC,EV);$("#dlg").close();render();
+});
+$("#evCancel").addEventListener("click",function(){$("#dlg").close();});
+$("#evDel").addEventListener("click",function(){if(!confirm("Beitrag löschen?"))return;EV=EV.filter(function(x){return x.id!==editId;});store(KC,EV);$("#dlg").close();render();});
+
+// Drag and Drop zwischen Tagen
+var dragId=null;
+document.addEventListener("dragstart",function(e){var t=e.target.closest&&e.target.closest("[data-ev]");if(!t)return;dragId=t.getAttribute("data-ev");try{e.dataTransfer.setData("text/plain",dragId);e.dataTransfer.effectAllowed="move";}catch(x){}});
+document.addEventListener("dragover",function(e){var d=e.target.closest&&e.target.closest("[data-day]");if(!d||!dragId)return;e.preventDefault();[].forEach.call(document.querySelectorAll(".day.over"),function(n){if(n!==d)n.classList.remove("over");});d.classList.add("over");});
+document.addEventListener("drop",function(e){var d=e.target.closest&&e.target.closest("[data-day]");if(!d||!dragId)return;e.preventDefault();var ev=EV.filter(function(x){return x.id===dragId;})[0];if(ev){ev.d=d.getAttribute("data-day");store(KC,EV);}dragId=null;render();});
+document.addEventListener("dragend",function(){dragId=null;[].forEach.call(document.querySelectorAll(".day.over"),function(n){n.classList.remove("over");});});
+
+function exportCsv(){
+  var rows=[["Datum","Uhrzeit","Wer","Plattform","Kunde","Status","Titel","Notiz"]].concat(EV.filter(function(e){return person==="alle"||e.p===person;}).sort(function(a,b){return (a.d+(a.h||"")).localeCompare(b.d+(b.h||""));}).map(function(e){return [e.d,e.h,WER[e.p],PL[e.l],e.k,e.s,e.t,e.n];}));
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c==null?"":c).replace(/"/g,'""')+'"';}).join(";");}).join("\n");
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));a.download="Social-Bites-Kalender.csv";document.body.appendChild(a);a.click();a.remove();
+}
+render();
+})();
+</script>
+</body>
+</html>
