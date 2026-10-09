@@ -1264,7 +1264,10 @@ var KZ_CHECK=[
   ["Website und Bestellwege","Seite, Lieferdienste, Kasse, Kiosk Terminal"],
   ["Pitch Dokument","PDF für den Kunden mit allem Obigen, Paketpreis"],
   ["Rechtliches","Genehmigungen, Hygiene, Markenrecht, vorher mit Vera klären"],
-  ["Angebot an den Kunden","Preis fürs Konzept, Umsetzung als Paket, nächste Schritte"]
+  ["Angebot an den Kunden","Preis fürs Konzept, Umsetzung als Paket, nächste Schritte"],
+  ["Businessplan mit Zahlen","Investition, Umsatz, Kosten, Break-even, Amortisation, 36 Monate, jede Zahl mit Quelle"],
+  ["Franchise Handbuch","Systemhandbuch in 12 Kapiteln, erst nach erfolgreichem Pilotbetrieb an Partner"],
+  ["Verkaufsreife Check","Nachweis, Zahlen, Wiederholbarkeit, Schutz, Auftritt, Launch, Angebot: alles grün, dann raus"]
 ];
 var KZ_SEED=[
   {id:"mochi-mama",name:"Mochi Mama",typ:"Dessert Bar",ort:"Berlin Mitte, Rosenthaler Platz oder Torstraße",idee:"Frisches Mochi Eis, Matcha Drinks und Mochi Donuts. Klein, fotogen und gemacht für TikTok. Wenig Fläche, hohe Marge, Take-away stark.",farben:["#7DA46F","#F4A0B8","#2A2A28","#FFF6EA"],logo:"konzepte/mochi-mama.webp",png:"konzepte/mochi-mama.png"},
@@ -1294,7 +1297,8 @@ function tKonzepte(){
   var st=kzLoad(),all=KZ_SEED.concat(st.extra.map(function(x){x.extra=true;return x;}));
   return head("Kreativ","Konzepte","Hier entstehen unsere eigenen Konzepte von A bis Z, die wir später an Kunden verkaufen. Ein Konzept ist ein komplettes Unternehmen auf dem Papier: Name, Logo, CI, Standort, Speisekarte mit Rezepten und die Visualisierung des Stores. Gesammelt wird hier alles, was dazugehört.",'<div class="acts"><button class="btn sm inv" type="button" data-kz="new"><span class="dot"></span><span>Neue Idee anlegen</span></button></div>')+
     '<section class="card kz-how"><h2>Das gehört zu einem Konzept</h2><ol>'+KZ_CHECK.map(function(it){return '<li><span><b>'+esc(it[0])+'</b>. '+esc(it[1])+'.</span></li>';}).join("")+'</ol>'+
-    '<p class="muted" style="margin:0;font-size:14px">Stand heute: noch kein Konzept ausgearbeitet. Drei Ideen mit Logo liegen zum Start bereit, damit das Thema nicht verloren geht. Namen und Orte sind Platzhalter, vor einer echten Nutzung Markenrecht und Standort prüfen. Haken und Notizen bleiben in diesem Browser.</p></section>'+
+    '<p class="muted" style="margin:0;font-size:14px">Stand heute: noch kein Konzept ausgearbeitet. Drei Ideen mit Logo liegen zum Start bereit, damit das Thema nicht verloren geht. Namen und Orte sind Platzhalter, vor einer echten Nutzung Markenrecht und Standort prüfen. Haken und Notizen bleiben in diesem Browser.</p></section>'
+    '<section class="card" style="margin-top:14px"><h2>Was ein Konzept verkaufbar macht</h2><p class="muted" style="margin:0 0 10px;font-size:14px">Ein Käufer kauft keine Idee, er kauft weniger Risiko. Jedes Konzept braucht diese sieben Dinge, bevor es rausgeht.</p><ol class="kz-sell">'+[["Nachweis","Pop-up, Vorbestellungen oder Social Test mit Zahl und Datum"],["Zahlen","Rezeptkalkulation und Businessplan mit Break-even und Amortisation"],["Wiederholbarkeit","Rezepte, Abläufe und Schulung so aufgeschrieben, dass ein Fremder es nachmachen kann"],["Schutz","Marke geprüft, Domain und Handles gesichert, Rezepte geheim, NDA vor dem Zeigen"],["Auftritt","Name, Logo, CI, Verpackung, Store Visualisierung, Mockups"],["Launch Plan","Opening Kampagne, Creator, Monatsplan, Budget"],["Klares Angebot","Konzept Paket, Lizenz, Umsetzung mit uns oder Franchise (erst nach Pilotbetrieb)"]].map(function(x){return '<li><b>'+x[0]+'</b>. '+x[1]+'.</li>';}).join('')+'</ol><p class="muted" style="margin:10px 0 0;font-size:13.5px">Jedes Konzept hat einen eigenen Ordner mit allen Bausteinen, Businessplan (Excel) und Franchise Handbuch: Projektordner Konzepte, Bauanleitung in Konzepte/BAUANLEITUNG.md.</p></section>'+
     '<div class="kz-grid">'+all.map(function(c){return kzCard(c,st);}).join("")+'</div>';
 }
 function tFiles(){
