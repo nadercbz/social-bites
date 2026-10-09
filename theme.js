@@ -48,13 +48,15 @@
     }
   }
 
+  function pal() { try { return localStorage.getItem("sb-palette") === "umi" ? "umi" : ""; } catch (e) { return ""; } }
   function apply() {
     var m = mode(), e = eff(m);
+    if (pal()) root.setAttribute("data-palette", pal()); else root.removeAttribute("data-palette");
     root.setAttribute("data-theme", e);
     root.setAttribute("data-mode", m);
     root.style.colorScheme = e;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : "#FEFEFE");
+    if (meta) meta.setAttribute("content", e === "dark" ? "#151211" : (pal() === "umi" ? "#EEEBE3" : "#FEFEFE"));
     if (document.body) { swapLogos(); ui(); }
   }
 
@@ -63,7 +65,7 @@
 
   apply();
 
-  window.addEventListener("storage", function (e) { if (e.key === K) apply(); });
+  window.addEventListener("storage", function (e) { if (e.key === K || e.key === "sb-palette") apply(); });
   if (mq) { if (mq.addEventListener) mq.addEventListener("change", apply); else if (mq.addListener) mq.addListener(apply); }
 
   document.addEventListener("DOMContentLoaded", function () {

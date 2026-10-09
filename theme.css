@@ -16,6 +16,29 @@
 .sb-tt .tt-ic{width:22px;height:22px;} .sb-tt .tt-ic svg{width:21px;height:21px;}
 @media print{.sb-tt{display:none!important;}}
 
+
+/* Farbwelt Umi (nur im hellen Modus): Hintergrund #EEEBE3 und tiefes Rot #76150E statt Orange, aus dem Umi Logo.
+   Umschalten über das Menü oben in der Website (bgswitch.js), gespeichert in localStorage "sb-palette". */
+:root[data-palette="umi"]:not([data-theme="dark"]){
+  --paper:#EEEBE3; --paper-2:#E1DCCF; --card:#F8F6F0;
+  --accent:#76150E; --accent-ink:#76150E; --accent-tint:#E7D5CE;
+  --line:rgba(35,35,33,.15);
+  --grain:none;
+}
+:root[data-palette="umi"]:not([data-theme="dark"]) ::selection{background:#76150E;color:#EEEBE3;}
+/* Flächen in Rot bekommen helle Schrift statt Charcoal */
+:root[data-palette="umi"]:not([data-theme="dark"]) :is(.cta-fixed,.pills .pill:first-child,.btn.or,.win-play,.cv-play,.pf-play,.play,.player-x,.pfd-x,.tag.off,.anf-done .big,.pfd-nav button:hover,.pfd-nav button:focus-visible,.car-nav button:hover:not(:disabled),.pf-arrows button:hover:not(:disabled),.copy:hover,.anf-x:hover,.anf-call:hover,.ht-play,.badge,.svc:nth-child(odd) .tile){color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) :is(.mnav,.manifest,.wirk-card.or,.panel.fire){--ink:#EEEBE3;color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .btn:hover,
+:root[data-palette="umi"]:not([data-theme="dark"]) .btn:focus-visible,
+:root[data-palette="umi"]:not([data-theme="dark"]) .btn.inv:hover,
+:root[data-palette="umi"]:not([data-theme="dark"]) .btn.inv:focus-visible{color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed:hover,
+:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed:focus-visible{background:#4C0C07;color:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .ht-play{background:#76150E;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed .dot,
+:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed i{background:#EEEBE3;}
+
 :root[data-theme="dark"]{
   color-scheme:dark;
   --paper:#151211; --paper-2:#221D1B; --card:#1D1917; --ink:#F3ECDD; --mute:#A89F90;
