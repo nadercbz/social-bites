@@ -700,7 +700,7 @@ function authMode(){try{return sessionStorage.getItem(AUTH)||"";}catch(e){return
 function authed(){return authMode()==="1";}
 function setAuth(v){try{if(v)sessionStorage.setItem(AUTH,v);else sessionStorage.removeItem(AUTH);}catch(e){}authed.mem=v||"";}
 /* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
-var TEAM_HASHES=["eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab","e0a93f7716e0bc692b6526ff5339a1300589cca771fd365ef3460f6070756a78","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5"];  /* bisheriger Zugang, nader, tommy */
+var TEAM_HASHES=["eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab","e0a93f7716e0bc692b6526ff5339a1300589cca771fd365ef3460f6070756a78","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* bisheriger Zugang, nader, tommy */
 function isTeam(u,p){
   try{
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
@@ -722,13 +722,16 @@ document.querySelectorAll("[data-lgtab]").forEach(function(b){b.addEventListener
 });});
 /* Team-Zugang merken (nur in diesem Browser, localStorage). Im Code steht weiterhin kein Passwort, nur die Prüfsummen. */
 var TKEY="sb-team-zugang";
+/* Testphase: der Knopf setzt Benutzer und Passwort der Testphase ein (Nader, 09.10.2026). Zum Abschalten TEST_ZUGANG auf null setzen, dann gilt nur noch der gemerkte Zugang. */
+var TEST_ZUGANG={u:"socialbites",p:"00000"};
 function teamSaved(){try{var o=JSON.parse(localStorage.getItem(TKEY));return o&&o.u&&o.p?o:null;}catch(e){return null;}}
+function teamAccess(){return teamSaved()||TEST_ZUGANG;}
 function teamBoxRefresh(){
-  var o=teamSaved(),b=$("#fillTeam"),h=$("#teamHint");
-  b.disabled=!o;$("#forgetTeam").hidden=!o;
-  h.textContent=o?"Gemerkt für "+o.u+". Ein Klick füllt Benutzername und Passwort aus, danach nur noch Einloggen.":"Noch nichts gemerkt. Einmal normal einloggen, Haken lassen, dann ist es da.";
+  var o=teamAccess(),b=$("#fillTeam"),h=$("#teamHint");
+  b.disabled=!o;$("#forgetTeam").hidden=!teamSaved();
+  h.textContent=o?"Testzugang für "+o.u+". Ein Klick füllt Benutzername und Passwort aus, danach nur noch Einloggen.":"Noch nichts gemerkt. Einmal normal einloggen, Haken lassen, dann ist es da.";
 }
-$("#fillTeam").addEventListener("click",function(){var o=teamSaved();if(!o)return;$("#loginUser").value=o.u;$("#loginPass").value=o.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
+$("#fillTeam").addEventListener("click",function(){var o=teamAccess();if(!o)return;$("#loginUser").value=o.u;$("#loginPass").value=o.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
 $("#forgetTeam").addEventListener("click",function(){try{localStorage.removeItem(TKEY);}catch(e){}teamBoxRefresh();toast("Gemerkten Zugang vergessen.");});
 $("#fillDemo").addEventListener("click",function(){$("#loginUser").value=CRED.u;$("#loginPass").value=CRED.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
 $("#loginForm").addEventListener("submit",function(e){
