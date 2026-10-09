@@ -1000,7 +1000,7 @@
       <span class="row">Wir machen
         <span class="pills" aria-hidden="true"><span class="pill">Viral</span><span class="pill">Brands</span><span class="pill">Openings</span></span>
       </span>
-      <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_pitch.mp4" poster="media/tile_pitch.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
+      <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_pitch.mp4?v=3" poster="media/tile_pitch.webp?v=3" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
     <div class="hero-foot">
@@ -1880,7 +1880,7 @@
 
 
   // Pitch-Video (Stand 09.10.2026): Querformat und Hochformat, je nach Fenster. Quelle der Dateien: Projects/56_Social Bite/Pitch/
-  var PITCH_WIDE = 'media/pitch.mp4', PITCH_TALL = 'media/pitch_9x16.mp4', PITCH_POSTER = 'media/pitch_poster.webp';
+  var PITCH_WIDE = 'media/pitch.mp4?v=3', PITCH_TALL = 'media/pitch_9x16.mp4?v=3', PITCH_POSTER = 'media/pitch_poster.webp?v=3';
   var pd = d.getElementById('pitchd'), pst = d.getElementById('pitchd-stage');
   function pitchClose(){ var v = pst.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } pst.innerHTML = ''; pst.style.cssText = ''; if (pd.open) pd.close(); }
   d.getElementById('pitch-open').addEventListener('click', function(){
