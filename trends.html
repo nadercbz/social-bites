@@ -253,6 +253,21 @@
     dialog.vd{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0;margin:0;}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+
+  /* Hook Bibliothek (aus dem Learnings Doc) */
+  .hbk-types{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;}
+  .hbk-types button{font:650 13.5px/1 var(--display);padding:8px 12px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;}
+  .hbk-types button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .hbk-t{margin:18px 0 8px;font-weight:800;font-size:19px;letter-spacing:-.03em;}
+  .hbk-t span{display:block;font-weight:500;font-size:13.5px;color:var(--mute);letter-spacing:0;margin-top:2px;}
+  .hbk-f{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:8px;}
+  .hbk-f div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;}
+  .hbk-f b{display:block;font-weight:750;font-size:15.5px;letter-spacing:-.02em;}
+  .hbk-f small{display:block;color:var(--mute);font-size:13px;margin-top:2px;line-height:1.35;}
+  .hbk-n{margin:0;padding-left:18px;display:grid;gap:5px;}
+  .hbk-n li{font-size:15px;}
+  .hbk-warn{background:var(--warn-tint,#FFF0C9);color:var(--warn,#9A6400);border-radius:12px;padding:10px 13px;font-size:14px;margin:10px 0;}
+  .hbk-q{width:100%;max-width:420px;min-height:40px;border:1.5px solid var(--ink);border-radius:8px;padding:6px 10px;background:var(--card);margin:0 0 12px;}
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -275,6 +290,7 @@
 <div class="toast" id="toast" role="status"></div>
 
 <script src="trends/trends_data.js"></script>
+<script src="trends/hooks_wissen.js"></script>
 <script src="kunden_seed.js"></script>
 <script>
 try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
@@ -303,7 +319,7 @@ var CATS=D.cats||[{id:"alle",name:"Alle"}];
 var cat=load("sb-trends-cat",CATS[0].id),tab=(location.hash.slice(1)||"puls");
 var SAVED=load("sb-trends-merk",{});
 function inCat(x){if(cat==="alle")return true;var c=x.cats||(x.cat?[x.cat]:[]);return c.indexOf(cat)>-1;}
-var TABS=[["puls","Überblick"],["videos","Virale Videos"],["tags","Hashtags & Sounds"],["suche","Suchtrends"],["words","Wordings & Hooks"],["kunde","Ideen für Kunden"],["merk","Merkliste"]];
+var TABS=[["puls","Überblick"],["videos","Virale Videos"],["tags","Hashtags & Sounds"],["suche","Suchtrends"],["words","Wordings & Hooks"],["bib","Hook-Bibliothek"],["kunde","Ideen für Kunden"],["merk","Merkliste"]];
 
 function header(){
   $("#stand").textContent=D.updated?("KW "+(D.week||"")+" · Stand "+new Date(D.updated).toLocaleDateString("de-DE",{day:"numeric",month:"numeric",year:"numeric"})+" · jeden Montag neu"):"Noch keine Daten";
@@ -531,17 +547,46 @@ document.addEventListener("click",function(e){
   if(t.id==="kidCopy"){copy(KID.out.map(function(o){return o.t+"\n"+o.x;}).join("\n\n"),"Alle Ideen kopiert");return;}
   var i=t.getAttribute("data-kidc");if(i!=null){copy(KID.out[+i].t+"\n"+KID.out[+i].x,"Idee kopiert");}
 });
+
+var HBK={typ:"alle",q:""};
+function vBib(){
+  var W=window.SB_HOOKWISSEN;
+  if(!W)return '<div class="empty">Hook Bibliothek nicht geladen.</div>';
+  var h='<h1 class="h2">Hook-Bibliothek.</h1><p class="lead">Unser Wissen aus dem Learnings Doc: Hooks nach Typ, Formate, Strategien erfolgreicher Marken und der 5 Schritte Plan für Content Ideen. '+esc(W.hinweis)+' <a href="'+esc(W.doc)+'" target="_blank" rel="noopener">Doc öffnen ↗</a></p>';
+  h+='<div class="hbk-warn">'+W.achtung.map(esc).join(" ")+'</div>';
+  h+='<section class="sec"><div class="sec-h"><h3>Learnings '+esc(W.stand)+'</h3><span class="mono">kurz und wichtig</span></div><ol class="hbk-n card" style="padding:14px 14px 14px 32px">'+W.oktober.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ol></section>';
+  h+='<section class="sec"><div class="sec-h"><h3>'+esc(W.drei_formate.titel)+'</h3></div><div class="hbk-f">'+W.drei_formate.punkte.map(function(x,i){return '<div><b>'+(i+1)+'. '+esc(x)+'</b></div>';}).join("")+'</div></section>';
+  h+='<section class="sec"><div class="sec-h"><h3>Hooks</h3><span class="mono">'+W.hooktypen.reduce(function(a,t){return a+t.hooks.length;},0)+' Vorlagen · antippen zum Kopieren oder Merken</span></div>';
+  h+='<input class="hbk-q" id="hbkQ" type="search" placeholder="Hooks durchsuchen" value="'+esc(HBK.q)+'" aria-label="Hooks durchsuchen"><div class="hbk-types" role="group" aria-label="Hooktyp"><button type="button" data-hbk="alle" aria-pressed="'+(HBK.typ==="alle")+'">Alle</button>'+W.hooktypen.map(function(t){return '<button type="button" data-hbk="'+t.id+'" aria-pressed="'+(HBK.typ===t.id)+'">'+esc(t.name)+'</button>';}).join("")+'</div><div id="hbkList"></div></section>';
+  h+='<section class="sec"><div class="sec-h"><h3>Formate</h3><span class="mono">Ideen für Reels und TikToks</span></div>'+W.formate.map(function(g){return '<div class="hbk-t">'+esc(g.name)+'</div><div class="hbk-f">'+g.punkte.map(function(x){return '<div><b>'+esc(x[0])+'</b><small>'+esc(x[1])+'</small></div>';}).join("")+'</div>';}).join("")+'</section>';
+  h+='<section class="sec"><div class="sec-h"><h3>Was erfolgreiche Marken machen</h3><span class="mono">Analysen aus dem Doc</span></div><div class="hbk-f">'+W.marken.map(function(m){return '<div><b>'+esc(m.name)+'</b><ul class="hbk-n" style="margin-top:6px">'+m.punkte.map(function(x){return '<li style="font-size:13.5px">'+esc(x)+'</li>';}).join("")+'</ul></div>';}).join("")+'</div></section>';
+  h+='<section class="sec"><div class="sec-h"><h3>Content Ideen finden: 5 Schritte</h3><span class="mono">'+esc(W.plan.merksatz)+'</span></div><div class="hbk-f">'+W.plan.schritte.map(function(x,i){return '<div><b>'+(i+1)+'. '+esc(x[0])+'</b><small>'+esc(x[1])+'</small></div>';}).join("")+'</div><div class="hbk-t">Werkzeuge<span>Alle kostenlos nutzbar, Funktionsumfang prüfen</span></div><div class="hbk-f">'+W.plan.tools.map(function(x){return '<div><b>'+esc(x[0])+'</b><small>'+esc(x[1])+'</small></div>';}).join("")+'</div><p class="hbk-warn" style="margin-top:12px">'+esc(W.plan.case)+'</p></section>';
+  h+='<div class="two"><section><div class="sec-h"><h3>Content Don\'ts</h3><span class="mono">fatale Fehler</span></div><ul class="hbk-n card" style="padding:14px 14px 14px 32px">'+W.donts.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></section><section><div class="sec-h"><h3>Prinzipien</h3><span class="mono">dran halten</span></div><ul class="hbk-n card" style="padding:14px 14px 14px 32px">'+W.prinzipien.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></section></div>';
+  h+='<section class="sec"><div class="sec-h"><h3>Viral Marketing Tricks</h3><span class="mono">mit Einordnung von uns</span></div><div class="hbk-f">'+W.tricks.map(function(x){return '<div><b>'+esc(x[0])+'</b>'+(x[1]?'<small>'+esc(x[1])+'</small>':"")+'</div>';}).join("")+'</div><p class="hint" style="margin-top:10px;color:var(--mute);font-size:13px">'+esc(W.visual)+'</p></section>';
+  return h;
+}
+function drawBib(){
+  var W=window.SB_HOOKWISSEN,el=$("#hbkList");if(!W||!el)return;
+  var q=HBK.q.toLowerCase();
+  el.innerHTML=W.hooktypen.filter(function(t){return HBK.typ==="alle"||t.id===HBK.typ;}).map(function(t){
+    var hs=t.hooks.filter(function(x){return !q||x.toLowerCase().indexOf(q)>-1;});
+    if(!hs.length)return "";
+    return '<div class="hbk-t">'+esc(t.name)+'<span>'+esc(t.kurz)+'</span></div><div class="hooks">'+hs.map(function(x){return '<div class="hook"><b>'+esc(x)+'</b><div class="acts"><button class="btn sm" type="button" data-copy="'+esc(x)+'"><span class="dot"></span><span>Kopieren</span></button><button class="btn sm" type="button" data-savehook="'+esc(x)+'" aria-label="Merken"><span class="dot"></span><span>★</span></button></div></div>';}).join("")+'</div>';
+  }).join("")||'<div class="empty">Nichts gefunden.</div>';
+}
 function render(){
   header();
   var m=$("#main");
-  m.innerHTML=tab==="videos"?vVideos():tab==="tags"?vTags():tab==="suche"?vSuche():tab==="words"?vWords():tab==="merk"?vMerk():tab==="kunde"?vKunde():vPuls();
+  m.innerHTML=tab==="videos"?vVideos():tab==="tags"?vTags():tab==="suche"?vSuche():tab==="words"?vWords():tab==="bib"?vBib():tab==="merk"?vMerk():tab==="kunde"?vKunde():vPuls();
   if(tab==="videos")vGrid();
   if(tab==="suche")drawChart();
   if(tab==="words")drawBuilder();
+  if(tab==="bib")drawBib();
   try{history.replaceState(null,"","#"+tab);}catch(e){}
 }
 document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-cat],[data-tab],[data-go],[data-vid],[data-plat],[data-copy],[data-save],[data-savehook],[data-unsave],[data-kw],[data-closevd],#merkCopy,#merkClear");if(!t)return;
+  var t=e.target.closest("[data-hbk],[data-cat],[data-tab],[data-go],[data-vid],[data-plat],[data-copy],[data-save],[data-savehook],[data-unsave],[data-kw],[data-closevd],#merkCopy,#merkClear");if(!t)return;
+  if(t.hasAttribute("data-hbk")){HBK.typ=t.getAttribute("data-hbk");t.parentNode.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",b===t);});drawBib();return;}
   if(t.hasAttribute("data-cat")){cat=t.getAttribute("data-cat");store("sb-trends-cat",cat);kwOn=null;render();return;}
   if(t.hasAttribute("data-tab")){tab=t.getAttribute("data-tab");render();window.scrollTo(0,0);return;}
   if(t.hasAttribute("data-go")){tab=t.getAttribute("data-go");render();window.scrollTo(0,0);return;}
@@ -559,7 +604,8 @@ document.addEventListener("click",function(e){
 $("#vd").addEventListener("close",function(){if(tab==="videos")vGrid();if(tab==="merk")render();});
 $("#vd").addEventListener("click",function(e){if(e.target===this)this.close();});
 document.addEventListener("input",function(e){
-  if(e.target.id==="vq"){vf.q=e.target.value;vGrid();}
+  if(e.target.id==="hbkQ"){HBK.q=e.target.value;drawBib();}
+  else if(e.target.id==="vq"){vf.q=e.target.value;vGrid();}
   else if(e.target.hasAttribute&&e.target.hasAttribute("data-b"))drawBuilder();
 });
 document.addEventListener("change",function(e){
