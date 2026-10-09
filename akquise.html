@@ -340,7 +340,7 @@ function lockScreen(msg){
   async function go(){
     var p=$("#pw").value;if(!p||Date.now()<wait)return;
     $("#pwErr").textContent="";$("#pwGo").disabled=true;
-    try{DATA=await decrypt(window.AKQ_ENC,p);try{sessionStorage.setItem("akq-pw",p);}catch(e){}start();}
+    try{DATA=await decrypt(window.AKQ_ENC,p);try{localStorage.setItem("akq-pw",p);sessionStorage.setItem("akq-pw",p);}catch(e){}start();}
     catch(e){tries++;$("#pwErr").textContent=tries>=5?"Zu viele Versuche, 30 Sekunden Pause.":"Falsche Passphrase.";if(tries>=5){wait=Date.now()+30000;tries=0;}$("#pwGo").disabled=false;$("#pw").select();}
   }
   $("#pwGo").addEventListener("click",go);$("#pw").addEventListener("keydown",function(e){if(e.key==="Enter")go();});
@@ -349,7 +349,7 @@ function lockScreen(msg){
 async function boot(){
   if(await loadLocal()){DATA=window.AKQ_DATA;return start();}
   if(!window.AKQ_ENC){$("#main").innerHTML='<div class="lock"><h1>Noch keine Daten</h1><p>Der tägliche Lauf hat noch keine verschlüsselte Datei erzeugt. Lokal auf dem Mac läuft das Board schon, auf GitHub folgt es, sobald die Passphrase im Schlüsselbund liegt.</p></div>';return;}
-  var saved="";try{saved=sessionStorage.getItem("akq-pw")||"";}catch(e){}
+  var saved="";try{saved=localStorage.getItem("akq-pw")||sessionStorage.getItem("akq-pw")||"";}catch(e){}
   if(saved){try{DATA=await decrypt(window.AKQ_ENC,saved);return start();}catch(e){}}
   lockScreen();
 }
@@ -820,7 +820,7 @@ var PITCH_SALT="SocialBites-Pitch-v1",PITCH_KEY=null;
 var HG_K={gastro:"#F4CDB4",beauty:"#F3C6CF",praxis:"#A9DCDC",kanzlei:"#BBD0F2"};
 function pitchKey(){
   if(PITCH_KEY)return PITCH_KEY;
-  var pw="";try{pw=sessionStorage.getItem("akq-pw")||"";}catch(e){}
+  var pw="";try{pw=localStorage.getItem("akq-pw")||sessionStorage.getItem("akq-pw")||"";}catch(e){}
   if(!pw)return Promise.reject(new Error("Keine Passphrase in dieser Sitzung"));
   PITCH_KEY=crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]).then(function(km){
     return crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode(PITCH_SALT),iterations:600000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);});

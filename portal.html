@@ -696,9 +696,10 @@ function badges(){
 
 /* Login */
 var AUTH="sb-portal-auth";
-function authMode(){try{return sessionStorage.getItem(AUTH)||"";}catch(e){return authed.mem||"";}}
+/* Login bleibt auf diesem Gerät gespeichert (localStorage), bis man auf Abmelden klickt. */
+function authMode(){try{return localStorage.getItem(AUTH)||sessionStorage.getItem(AUTH)||"";}catch(e){return authed.mem||"";}}
 function authed(){return authMode()==="1";}
-function setAuth(v){try{if(v)sessionStorage.setItem(AUTH,v);else sessionStorage.removeItem(AUTH);}catch(e){}authed.mem=v||"";}
+function setAuth(v){try{if(v){localStorage.setItem(AUTH,v);sessionStorage.setItem(AUTH,v);}else{localStorage.removeItem(AUTH);sessionStorage.removeItem(AUTH);}}catch(e){}authed.mem=v||"";}
 /* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
 var TEAM_HASHES=["eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab","e0a93f7716e0bc692b6526ff5339a1300589cca771fd365ef3460f6070756a78","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* bisheriger Zugang, nader, tommy */
 function isTeam(u,p){
