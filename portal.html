@@ -1035,7 +1035,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-demo","Kundenansicht (Demo)"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"]]],
   ["Produktion",[["t-callsheet","Call Sheet"],["t-release","Model Release"]]],
@@ -1077,7 +1077,6 @@ var TIC={
   "t-partner":'<path d="M10 14a4 4 0 0 0 5.7 0l3-3A4 4 0 0 0 13 5.3l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/>',
   "t-playbook":'<path d="m4 7 1.5 1.5L8 6M4 13l1.5 1.5L8 12M4 19l1.5 1.5L8 18M11 7h9M11 13h9M11 19h9"/>',
   "t-leistungen":'<path d="m12 4 8.5 4.5L12 13 3.5 8.5 12 4Z"/><path d="m3.5 12.5 8.5 4.5 8.5-4.5M3.5 16.5 12 21l8.5-4.5"/>',
-  "t-demo":'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
   "os-start":'<path d="M4.5 16a8 8 0 1 1 15 0"/><path d="m12 13 3.5-4"/><circle cx="12" cy="14" r="1.2"/>',
   "os-aufgaben":'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
   "os-meetings":'<rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/>',
@@ -1153,7 +1152,6 @@ function showSheet(o){
 }
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
-  if(v==="t-demo"){setAuth("1");$("#team").hidden=true;$("#tsheet").removeAttribute("src");enter();toast("Kundenansicht (Demo). Zurück ins Team: abmelden, mit Team-Zugang einloggen.");return;}
   if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
