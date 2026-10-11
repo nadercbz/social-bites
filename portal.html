@@ -1282,9 +1282,7 @@ var KZ_CHECK=[
   ["Verkaufsreife Check","Nachweis, Zahlen, Wiederholbarkeit, Schutz, Auftritt, Launch, Angebot: alles grün, dann raus"]
 ];
 var KZ_SEED=[
-  {id:"mochi-mama",name:"Mochi Mama",typ:"Dessert Bar",ort:"Berlin Mitte, Rosenthaler Platz oder Torstraße",idee:"Frisches Mochi Eis, Matcha Drinks und Mochi Donuts. Klein, fotogen und gemacht für TikTok. Wenig Fläche, hohe Marge, Take-away stark.",farben:["#7DA46F","#F4A0B8","#2A2A28","#FFF6EA"],logo:"konzepte/mochi-mama.webp",png:"konzepte/mochi-mama.png"},
-  {id:"feuer-fladen",name:"Feuer & Fladen",typ:"Steinofen Küche",ort:"Berlin Kreuzberg, Bergmannkiez",idee:"Fladen aus dem Steinofen: Pide, Manakish, Khachapuri. Der Teig entsteht vor den Augen der Gäste, das Feuer ist die Show. Mittagstisch und Abend, gut zum Teilen.",farben:["#E8582B","#0E4452","#FFF1DC","#2A2A28"],logo:"konzepte/feuer-fladen.webp",png:"konzepte/feuer-fladen.png"},
-  {id:"bruder-birria",name:"Bruder Birria",typ:"Street Food",ort:"Berlin Neukölln, Weserstraße",idee:"Birria Tacos mit Konsommé zum Tunken. Kurze Karte, starke Videomotive (Käse ziehen, Dip), Abendgeschäft und Lieferung.",farben:["#C21F1F","#1A1A1A","#F6E9D2","#E3A21A"],logo:"konzepte/bruder-birria.webp",png:"konzepte/bruder-birria.png"}
+  {id:"bam-bird",name:"Bam Bird",typ:"Fast Food",fertig:true,ort:"Berlin, Straßenladen 60 m² und Center Insel",idee:"Chicken Strips, Burger und Crinkle Fries mit sechs Dips. Laut, knusprig, frech. Halal. Marke zum Verkauf (Paket A2, 24.900 € netto). Komplettes Konzept (Entwurf): Brandbook, Rezepte, Businessplan, Handbuch, 3D Visualisierungen, Präsentationen.",farben:["#D6141C","#6E0F14","#F7D3D3","#FFFDFB"],logo:"konzepte/bam-bird.webp",png:"konzepte/bam-bird.png"},
 ];
 function kzLoad(){try{var o=JSON.parse(localStorage.getItem(KZ_KEY)||"{}");return {extra:o.extra||[],checks:o.checks||{},notes:o.notes||{},open:o.open||{}};}catch(e){return {extra:[],checks:{},notes:{},open:{}};}}
 function kzSave(o){try{localStorage.setItem(KZ_KEY,JSON.stringify(o));}catch(e){}}
@@ -1298,7 +1296,7 @@ function kzCard(c,st){
     '<div class="kz-body"><div class="kz-meta"><span class="pill">Idee</span>'+(c.typ?'<span class="pill">'+esc(c.typ)+'</span>':'')+'</div>'+
     '<h3>'+esc(c.name)+'</h3>'+(c.ort?'<p><b>Standort:</b> '+esc(c.ort)+'</p>':'')+(c.idee?'<p>'+esc(c.idee)+'</p>':'')+
     (c.farben?'<div class="kz-cols" title="Farbidee">'+c.farben.map(function(f){return '<i style="background:'+f+'"></i>';}).join("")+'</div>':'')+
-    '<div class="kz-bar" title="'+done+' von '+KZ_CHECK.length+' erledigt"><b style="width:'+pct+'%"></b></div><p style="font-size:12.5px">'+done+' von '+KZ_CHECK.length+' Schritten erledigt. Noch kein ausgearbeitetes Konzept.</p>'+
+    '<div class="kz-bar" title="'+done+' von '+KZ_CHECK.length+' erledigt"><b style="width:'+pct+'%"></b></div><p style="font-size:12.5px">'+done+' von '+KZ_CHECK.length+' Schritten erledigt. '+(c.fertig?'Entwurf liegt im Ordner Konzepte, Pilot und Markenprüfung fehlen.':'Noch kein ausgearbeitetes Konzept.')+'</p>'+
     '<div class="kz-acts"><button class="btn sm'+(open==="check"?" inv":"")+'" type="button" data-kz="check" data-id="'+c.id+'"><span class="dot"></span><span>Checkliste</span></button>'+
     '<button class="btn sm'+(open==="note"?" inv":"")+'" type="button" data-kz="note" data-id="'+c.id+'"><span class="dot"></span><span>Notizen</span></button>'+
     (c.png?'<a class="btn sm" href="'+c.png+'" download><span class="dot"></span><span>Logo laden</span></a>':'')+
@@ -1309,7 +1307,7 @@ function tKonzepte(){
   var st=kzLoad(),all=KZ_SEED.concat(st.extra.map(function(x){x.extra=true;return x;}));
   return head("Kreativ","Konzepte","Hier entstehen unsere eigenen Konzepte von A bis Z, die wir später an Kunden verkaufen. Ein Konzept ist ein komplettes Unternehmen auf dem Papier: Name, Logo, CI, Standort, Speisekarte mit Rezepten und die Visualisierung des Stores. Gesammelt wird hier alles, was dazugehört.",'<div class="acts"><button class="btn sm inv" type="button" data-kz="new"><span class="dot"></span><span>Neue Idee anlegen</span></button></div>')+
     '<section class="card kz-how"><h2>Das gehört zu einem Konzept</h2><ol>'+KZ_CHECK.map(function(it){return '<li><span><b>'+esc(it[0])+'</b>. '+esc(it[1])+'.</span></li>';}).join("")+'</ol>'+
-    '<p class="muted" style="margin:0;font-size:14px">Stand heute: noch kein Konzept ausgearbeitet. Drei Ideen mit Logo liegen zum Start bereit, damit das Thema nicht verloren geht. Namen und Orte sind Platzhalter, vor einer echten Nutzung Markenrecht und Standort prüfen. Haken und Notizen bleiben in diesem Browser.</p></section>'+
+    '<p class="muted" style="margin:0;font-size:14px">Stand heute: Bam Bird ist als erstes Konzept ausgearbeitet (Entwurf), Halal, Marke zum Verkauf mit Rechteübergang für 24.900 € netto. Vor einer echten Nutzung Markenrecht und Standort prüfen. Haken und Notizen bleiben in diesem Browser.</p></section>'+
     '<section class="card" style="margin-top:14px"><h2>Was ein Konzept verkaufbar macht</h2><p class="muted" style="margin:0 0 10px;font-size:14px">Ein Käufer kauft keine Idee, er kauft weniger Risiko. Jedes Konzept braucht diese sieben Dinge, bevor es rausgeht.</p><ol class="kz-sell">'+[["Nachweis","Pop-up, Vorbestellungen oder Social Test mit Zahl und Datum"],["Zahlen","Rezeptkalkulation und Businessplan mit Break-even und Amortisation"],["Wiederholbarkeit","Rezepte, Abläufe und Schulung so aufgeschrieben, dass ein Fremder es nachmachen kann"],["Schutz","Marke geprüft, Domain und Handles gesichert, Rezepte geheim, NDA vor dem Zeigen"],["Auftritt","Name, Logo, CI, Verpackung, Store Visualisierung, Mockups"],["Launch Plan","Opening Kampagne, Creator, Monatsplan, Budget"],["Klares Angebot","Konzept Paket, Lizenz, Umsetzung mit uns oder Franchise (erst nach Pilotbetrieb)"]].map(function(x){return '<li><b>'+x[0]+'</b>. '+x[1]+'.</li>';}).join('')+'</ol><p class="muted" style="margin:10px 0 0;font-size:13.5px">Jedes Konzept hat einen eigenen Ordner mit allen Bausteinen, Businessplan (Excel) und Franchise Handbuch: Projektordner Konzepte, Bauanleitung in Konzepte/BAUANLEITUNG.md.</p></section>'+
     '<div class="kz-grid">'+all.map(function(c){return kzCard(c,st);}).join("")+'</div>';
 }
@@ -1330,7 +1328,7 @@ document.addEventListener("change",function(e){
   var c=e.target.closest("[data-kzchk]");if(!c)return;
   var st=kzLoad(),id=c.getAttribute("data-kzchk");st.checks[id]=st.checks[id]||{};st.checks[id][c.getAttribute("data-i")]=c.checked;kzSave(st);
   var card=c.closest(".kz-card"),done=card.querySelectorAll("[data-kzchk]:checked").length,tot=KZ_CHECK.length;
-  card.querySelector(".kz-bar b").style.width=Math.round(done/tot*100)+"%";card.querySelector(".kz-body > p:last-of-type").textContent=done+" von "+tot+" Schritten erledigt. Noch kein ausgearbeitetes Konzept.";
+  card.querySelector(".kz-bar b").style.width=Math.round(done/tot*100)+"%";card.querySelector(".kz-body > p:last-of-type").textContent=done+" von "+tot+" Schritten erledigt.";
 });
 document.addEventListener("input",function(e){
   var t=e.target.closest("[data-kznote]");if(!t)return;
