@@ -1283,7 +1283,7 @@ var KZ_CHECK=[
   ["Verkaufsreife Check","Nachweis, Zahlen, Wiederholbarkeit, Schutz, Auftritt, Launch, Angebot: alles grün, dann raus"]
 ];
 var KZ_SEED=[
-  {id:"bam-bird",name:"Bam Bird",typ:"Fast Food",fertig:true,ort:"Berlin, Straßenladen 60 m² und Center Insel",idee:"Chicken Strips, Burger und Crinkle Fries mit sechs Dips. Laut, knusprig, frech. Halal. Marke zum Verkauf (Paket A2, 24.900 € netto). Komplettes Konzept (Entwurf): Brandbook, Rezepte, Businessplan, Handbuch, 3D Visualisierungen, Präsentationen.",farben:["#D6141C","#6E0F14","#F7D3D3","#FFFDFB"],dateien:true,web:"https://nadercbz.github.io/bam-bird/",board:"https://nadercbz.github.io/bam-bird/board/",kiosk:"https://nadercbz.github.io/bam-bird/kiosk/kiosk.html",logo:"konzepte/bam-bird.webp",png:"konzepte/bam-bird.png"},
+  {id:"bam-bird",name:"Bam Bird",typ:"Fast Food",fertig:true,ort:"Berlin, Straßenladen 60 m² und Center Insel",idee:"Chicken Strips, Burger und Crinkle Fries mit sechs Dips. Laut, knusprig, frech. Halal. Marke zum Verkauf (Paket A2, 24.900 € netto). Komplettes Konzept (Entwurf): Brandbook, Rezepte, Businessplan, Handbuch, 3D Visualisierungen, Präsentationen.",farben:["#D6141C","#6E0F14","#F7D3D3","#FFFDFB"],dateien:true,web:"https://nadercbz.github.io/bam-bird/",board:"https://nadercbz.github.io/bam-bird/board/",kiosk:"https://nadercbz.github.io/bam-bird/kiosk/kiosk.html",paket:"https://nadercbz.github.io/bam-bird/paket/",logo:"konzepte/bam-bird.webp",png:"konzepte/bam-bird.png"},
 ];
 function kzLoad(){try{var o=JSON.parse(localStorage.getItem(KZ_KEY)||"{}");return {extra:o.extra||[],checks:o.checks||{},notes:o.notes||{},open:o.open||{}};}catch(e){return {extra:[],checks:{},notes:{},open:{}};}}
 function kzSave(o){try{localStorage.setItem(KZ_KEY,JSON.stringify(o));}catch(e){}}
@@ -1302,6 +1302,7 @@ function kzCard(c,st){
     '<button class="btn sm'+(open==="note"?" inv":"")+'" type="button" data-kz="note" data-id="'+c.id+'"><span class="dot"></span><span>Notizen</span></button>'+
     (c.web?'<a class="btn sm" href="'+c.web+'" target="_blank" rel="noopener"><span class="dot"></span><span>Website ansehen ↗</span></a>':'')+
     (c.board?'<a class="btn sm" href="'+c.board+'" target="_blank" rel="noopener"><span class="dot"></span><span>Gesamtboard ↗</span></a>':'')+
+    (c.paket?'<a class="btn sm" href="'+c.paket+'" target="_blank" rel="noopener"><span class="dot"></span><span>Paket ansehen ↗</span></a>':'')+
     (c.kiosk?'<a class="btn sm" href="'+c.kiosk+'" target="_blank" rel="noopener"><span class="dot"></span><span>Kiosk Demo ↗</span></a>':'')+
     (c.png?'<a class="btn sm" href="'+c.png+'" download><span class="dot"></span><span>Logo laden</span></a>':'')+
     (c.extra?'<button class="btn sm" type="button" data-kz="del" data-id="'+c.id+'"><span class="dot"></span><span>Löschen</span></button>':'')+
