@@ -140,6 +140,15 @@
   '.kzf-md blockquote{margin:.8em 0;padding:8px 14px;border-left:3px solid var(--accent);background:var(--accent-tint);border-radius:0 10px 10px 0}'+
   '.kzf-md hr{border:0;border-top:1px solid var(--line);margin:1.6em 0}.kzf-md a{color:var(--accent-ink)}'+
   '.kzf-tw{overflow:auto;margin:.8em 0}.kzf-md table{border-collapse:collapse;font-size:13.5px;min-width:100%}.kzf-md th,.kzf-md td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}.kzf-md th{background:var(--paper-2)}'+
+  '.kzf-box.sheet{display:flex;flex-direction:column;place-items:initial;overflow:hidden}'+
+  '.kzf-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:10px;border-bottom:1px solid var(--line);background:var(--paper-2)}'+
+  '.kzf-tabs button{border:1px solid var(--line-2);background:var(--card);color:var(--ink);font:600 12.5px var(--display);padding:6px 12px;border-radius:999px;cursor:pointer}'+
+  '.kzf-tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}'+
+  '.kzf-sh{flex:1;overflow:auto;padding:0 0 10px}'+
+  '.kzf-sh table{border-collapse:collapse;font-size:13px;white-space:nowrap}'+
+  '.kzf-sh td{border:1px solid var(--line);padding:5px 10px;max-width:520px;overflow:hidden;text-overflow:ellipsis}'+
+  '.kzf-sh td.n{text-align:right;font-variant-numeric:tabular-nums}.kzf-sh td.b{font-weight:700;background:var(--paper-2)}'+
+  '.kzf-sh tr:first-child td:first-child{font-size:15px}.kzf-sh td.w{white-space:normal;min-width:260px}'+
   '.kzf-st{font:500 12px var(--mono);color:var(--mute);padding:6px var(--gutter);border-top:1px solid var(--line);background:var(--card);min-height:30px}'+
   '.kzf-lock{margin:auto;max-width:420px;padding:26px;border:1px solid var(--line);border-radius:16px;background:var(--card);display:grid;gap:12px}'+
   '.kzf-lock h3{margin:0;font-size:22px}.kzf-lock p{margin:0;color:var(--mute);font-size:14px}'+
@@ -207,6 +216,11 @@
       if(S.cur!==f)return;
       var box=v.querySelector(".kzf-box");st.textContent="";
       if(f.mime==="text/markdown"){box.className="kzf-box txt";box.innerHTML='<div class="kzf-md">'+md(new TextDecoder().decode(b))+'</div>';return;}
+      if(f.ansicht){
+        box.className="kzf-box sheet";box.innerHTML='<span class="kzf-empty" style="margin:30px auto">Tabellen werden geladen …</span>';
+        hol(f.ansicht).then(function(x){if(S.cur!==f)return;sheets(box,JSON.parse(new TextDecoder().decode(x)));}).catch(function(e){st.textContent="Ansicht ging nicht: "+e.message;});
+        return;
+      }
       var u=URL.createObjectURL(new Blob([b],{type:f.mime}));S.urls.push(u);
       if(/^image\//.test(f.mime))box.innerHTML='<img alt="'+esc(f.name)+'" src="'+u+'">';
       else if(f.mime==="application/pdf"){box.innerHTML='<iframe title="'+esc(f.name)+'" src="'+u+'"></iframe>';var bar=v.querySelector(".kzf-bar");if(bar)bar.insertAdjacentHTML("beforeend",'<a class="btn sm" href="'+u+'" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen</span></a>');}
@@ -215,6 +229,22 @@
     }).catch(function(e){st.textContent="Ging nicht: "+e.message;});
   }
 
+  function sheets(box,sh){
+    var num=/^-?[\d.]+(,\d+)?( €| %)?$/;
+    function show(i){
+      var t=sh[i],h='<table><tbody>';
+      t.rows.forEach(function(r,ri){
+        h+='<tr>'+r.map(function(c,ci){
+          var cls=[];if(num.test(c))cls.push("n");if(t.bold&&t.bold[ri]&&t.bold[ri][ci]&&c!=="")cls.push("b");if(c.length>60)cls.push("w");
+          return '<td'+(cls.length?' class="'+cls.join(" ")+'"':'')+'>'+esc(c)+'</td>';}).join("")+'</tr>';
+      });
+      box.querySelector(".kzf-sh").innerHTML=h+'</tbody></table>';
+      box.querySelectorAll(".kzf-tabs button").forEach(function(b,k){b.classList.toggle("on",k===i);});
+    }
+    box.innerHTML='<div class="kzf-tabs">'+sh.map(function(t,i){return '<button type="button" data-i="'+i+'">'+esc(t.name.replace(/_/g," "))+'</button>';}).join("")+'</div><div class="kzf-sh"></div>';
+    box.querySelector(".kzf-tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(b)show(+b.getAttribute("data-i"));});
+    show(0);
+  }
   function onClick(e){
     var b=e.target.closest("[data-a]");if(!b||!el||!el.contains(b))return;
     var a=b.getAttribute("data-a");
