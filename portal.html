@@ -596,6 +596,7 @@
 <script src="labor.js"></script>
 <script src="builder.js"></script>
 <script src="cockpit_daten.js"></script>
+<script src="konzept_dateien.js"></script>
 <script>
 (function(){
 "use strict";
@@ -1282,7 +1283,7 @@ var KZ_CHECK=[
   ["Verkaufsreife Check","Nachweis, Zahlen, Wiederholbarkeit, Schutz, Auftritt, Launch, Angebot: alles grün, dann raus"]
 ];
 var KZ_SEED=[
-  {id:"bam-bird",name:"Bam Bird",typ:"Fast Food",fertig:true,ort:"Berlin, Straßenladen 60 m² und Center Insel",idee:"Chicken Strips, Burger und Crinkle Fries mit sechs Dips. Laut, knusprig, frech. Halal. Marke zum Verkauf (Paket A2, 24.900 € netto). Komplettes Konzept (Entwurf): Brandbook, Rezepte, Businessplan, Handbuch, 3D Visualisierungen, Präsentationen.",farben:["#D6141C","#6E0F14","#F7D3D3","#FFFDFB"],logo:"konzepte/bam-bird.webp",png:"konzepte/bam-bird.png"},
+  {id:"bam-bird",name:"Bam Bird",typ:"Fast Food",fertig:true,ort:"Berlin, Straßenladen 60 m² und Center Insel",idee:"Chicken Strips, Burger und Crinkle Fries mit sechs Dips. Laut, knusprig, frech. Halal. Marke zum Verkauf (Paket A2, 24.900 € netto). Komplettes Konzept (Entwurf): Brandbook, Rezepte, Businessplan, Handbuch, 3D Visualisierungen, Präsentationen.",farben:["#D6141C","#6E0F14","#F7D3D3","#FFFDFB"],dateien:true,logo:"konzepte/bam-bird.webp",png:"konzepte/bam-bird.png"},
 ];
 function kzLoad(){try{var o=JSON.parse(localStorage.getItem(KZ_KEY)||"{}");return {extra:o.extra||[],checks:o.checks||{},notes:o.notes||{},open:o.open||{}};}catch(e){return {extra:[],checks:{},notes:{},open:{}};}}
 function kzSave(o){try{localStorage.setItem(KZ_KEY,JSON.stringify(o));}catch(e){}}
@@ -1292,12 +1293,12 @@ function kzCard(c,st){
   if(open==="check")panel='<div class="kz-panel">'+KZ_CHECK.map(function(it,i){return '<label><input type="checkbox" data-kzchk="'+c.id+'" data-i="'+i+'"'+((st.checks[c.id]&&st.checks[c.id][i])?" checked":"")+'><span>'+esc(it[0])+'<small>'+esc(it[1])+'</small></span></label>';}).join("")+'</div>';
   if(open==="note")panel='<div class="kz-panel"><textarea data-kznote="'+c.id+'" placeholder="Gedanken, Rezepte, Ideen für die Einrichtung, Preise …">'+esc(st.notes[c.id]||"")+'</textarea></div>';
   return '<article class="kz-card">'+
-    (c.logo?'<div class="kz-logo"><img src="'+c.logo+'" alt="Logo '+esc(c.name)+'" loading="lazy"></div>':'<div class="kz-logo none">'+esc(c.name||"Neue Idee")+'</div>')+
+    (c.logo?'<div class="kz-logo"'+(c.dateien?' data-kz="files" data-id="'+c.id+'" data-name="'+esc(c.name)+'" style="cursor:pointer" title="Unterlagen öffnen"':'')+'><img src="'+c.logo+'" alt="Logo '+esc(c.name)+'" loading="lazy"></div>':'<div class="kz-logo none">'+esc(c.name||"Neue Idee")+'</div>')+
     '<div class="kz-body"><div class="kz-meta"><span class="pill">Idee</span>'+(c.typ?'<span class="pill">'+esc(c.typ)+'</span>':'')+'</div>'+
     '<h3>'+esc(c.name)+'</h3>'+(c.ort?'<p><b>Standort:</b> '+esc(c.ort)+'</p>':'')+(c.idee?'<p>'+esc(c.idee)+'</p>':'')+
     (c.farben?'<div class="kz-cols" title="Farbidee">'+c.farben.map(function(f){return '<i style="background:'+f+'"></i>';}).join("")+'</div>':'')+
     '<div class="kz-bar" title="'+done+' von '+KZ_CHECK.length+' erledigt"><b style="width:'+pct+'%"></b></div><p style="font-size:12.5px">'+done+' von '+KZ_CHECK.length+' Schritten erledigt. '+(c.fertig?'Entwurf liegt im Ordner Konzepte, Pilot und Markenprüfung fehlen.':'Noch kein ausgearbeitetes Konzept.')+'</p>'+
-    '<div class="kz-acts"><button class="btn sm'+(open==="check"?" inv":"")+'" type="button" data-kz="check" data-id="'+c.id+'"><span class="dot"></span><span>Checkliste</span></button>'+
+    '<div class="kz-acts">'+(c.dateien?'<button class="btn sm inv" type="button" data-kz="files" data-id="'+c.id+'" data-name="'+esc(c.name)+'"><span class="dot"></span><span>Unterlagen öffnen</span></button>':'')+'<button class="btn sm'+(open==="check"?" inv":"")+'" type="button" data-kz="check" data-id="'+c.id+'"><span class="dot"></span><span>Checkliste</span></button>'+
     '<button class="btn sm'+(open==="note"?" inv":"")+'" type="button" data-kz="note" data-id="'+c.id+'"><span class="dot"></span><span>Notizen</span></button>'+
     (c.png?'<a class="btn sm" href="'+c.png+'" download><span class="dot"></span><span>Logo laden</span></a>':'')+
     (c.extra?'<button class="btn sm" type="button" data-kz="del" data-id="'+c.id+'"><span class="dot"></span><span>Löschen</span></button>':'')+
@@ -1321,6 +1322,7 @@ document.addEventListener("click",function(e){
   var b=e.target.closest("[data-kz]");if(!b)return;
   var st=kzLoad(),a=b.getAttribute("data-kz"),id=b.getAttribute("data-id");
   if(a==="new"){var n=window.prompt("Wie heißt die Idee?");if(!n)return;var o=window.prompt("Wo könnte sie laufen (Stadt, Straße)?")||"";var i=window.prompt("Eine Zeile zur Idee:")||"";st.extra.push({id:"x"+Date.now(),name:n.trim(),ort:o.trim(),idee:i.trim(),typ:"Eigene Idee"});kzSave(st);tGo("t-konzepte",true);return;}
+  if(a==="files"){if(window.KzFiles)KzFiles.open(id,b.getAttribute("data-name"));return;}
   if(a==="del"){if(!window.confirm("Diese Idee löschen?"))return;st.extra=st.extra.filter(function(x){return x.id!==id;});kzSave(st);tGo("t-konzepte",true);return;}
   st.open[id]=st.open[id]===a?"":a;kzSave(st);var y=window.scrollY;tGo("t-konzepte",true);window.scrollTo(0,y);
 });
