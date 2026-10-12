@@ -1044,7 +1044,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-context","Context"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"]]],
   ["Planung",[["t-aufgaben","Aufgaben"],["t-kalender","Kalender"]]],
@@ -1108,6 +1108,7 @@ var TIC={
   "t-builder":'<rect x="4" y="5" width="9" height="3.2" rx="1.6"/><rect x="8" y="10.4" width="12" height="3.2" rx="1.6"/><rect x="6" y="15.8" width="8" height="3.2" rx="1.6"/>',
   "t-brandbook":'<path d="M12 4a8 8 0 1 0 0 16c1.2 0 1.8-.9 1.4-2-.4-1 .3-2 1.4-2H17a3 3 0 0 0 3-3A8 8 0 0 0 12 4Z"/><circle cx="8" cy="11" r=".9"/><circle cx="11" cy="7.8" r=".9"/><circle cx="15" cy="8.5" r=".9"/>',
   "t-brandkit":'<path d="M12 4v10m0 0-3.5-3.5M12 14l3.5-3.5M5 19h14"/>',
+  "t-context":'<path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z"/><path d="M9 9h5M9 12.5h5"/>',
   "t-dateien":'<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.2l2 2.3H18a2.5 2.5 0 0 1 2.5 2.5v6.7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5v-9Z"/>',
   "ext":'<path d="M8 16 16 8M9 8h7v7"/>'
 };
@@ -1164,7 +1165,7 @@ function showSheet(o){
 }
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien","t-context"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   requestAnimationFrame(movePill);
@@ -1196,6 +1197,7 @@ function tGo(v,quiet){
   else if(v==="t-builder") h=head("Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer pro Kunde als Zeitachse. Vorlage wählen, Tage anpassen, Vorgänger festlegen. Der Plan zeigt, wie lange etwas dauert, was parallel läuft und welche Kette das Ende bestimmt. Unten lässt sich der Verlauf abspielen und scrubben.")+'<div id="bldHost"></div>';
   else if(v==="t-brandkit") h=tKit();
   else if(v==="t-dateien") h=tFiles();
+  else if(v==="t-context") h=head("Team","Context","Hier liegt der Bauplan für neue Konzepte (Musterbauanleitung mit den Bausteinen 1 bis 24, den Entscheidungen vorab, der Credit Grenze und den Fallen) plus die Referenz aus Bam Bird. Neues Konzept: Moodboard und Name, dann baut Claude Block für Block nach dieser Anleitung. Die Dateien sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><button class="btn sm inv" type="button" data-kz="files" data-id="context" data-name="Context"><span class="dot"></span><span>Context öffnen</span></button></div>');
   el.innerHTML=h;el.classList.remove("enter");void el.offsetWidth;el.classList.add("enter");
   tMount(v);
   var fr=el.querySelector("iframe.tframe[src]"),bsrc=null;
@@ -1206,7 +1208,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien","t-context":"Context"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -1221,6 +1223,7 @@ function tStart(){
       tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden und Events in Berlin, täglich frisch, mit Konzept-PDFs.","t-or")+
       tile("t-influencer","Vertrieb","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre und Branche.","t-or")+
       tile("t-wissen","Wissen","Kampagnen Master Sheet","Marketing Wissen in Kapiteln, mit Briefing für jeden Mitarbeiter.","t-ink")+
+      tile("t-context","Wissen","Context","Bauanleitung für neue Konzepte und Referenz Bam Bird.","t-ink")+
       tile("t-kunden","Team","Kunden & Belege","Kundenstamm, offene Rechnungen, Mahnungen.")+
       tile("t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or")+
       tile("t-buero","Team","Büro & Mitarbeiter","28 Agenten in 8 Räumen, mit Skill-Set und Organigramm.","t-or")+
