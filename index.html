@@ -656,6 +656,7 @@
   /* Pitch-Video: die Kachel in der Headline wird beim Drüberfahren groß, Klick öffnet das Video im eigenen Fenster */
   .hero-tile{border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;vertical-align:baseline;z-index:1;transition:transform .55s var(--ease),box-shadow .55s var(--ease);}
   .hero-tile:hover,.hero-tile:focus-visible{outline:none;}
+  .hero-tile{width:1.9em;height:1.02em;border-radius:.09em;}
   /* Mouseover: Video fährt in die Bildschirmmitte, wird etwa doppelt so groß, der Rest dahinter wird dunkel, unscharf und glasig */
   .pitch-veil{position:fixed;inset:0;z-index:58;background:rgba(10,8,7,.78);-webkit-backdrop-filter:blur(22px) saturate(1.1);backdrop-filter:blur(22px) saturate(1.1);opacity:0;pointer-events:none;transition:opacity .45s var(--ease);}
   .pitch-veil.on{opacity:1;}
