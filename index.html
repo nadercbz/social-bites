@@ -739,6 +739,7 @@
   }
   /* Influencer Karten Hand: Karten fächern sich unten auf, die aktive hebt sich nach oben. Links Name, rechts Details */
   .hg{display:flex;align-items:center;gap:clamp(16px,3vw,48px);}
+  #pf-influencer{overflow-x:clip;} /* Fächer-Karten ragten auf dem Handy über den Rand, Seite wurde breiter als der Bildschirm */
   .hg-side{flex:none;width:clamp(150px,18vw,260px);}
   .hg-l{text-align:right;}
   .hg-count{font:500 12px var(--mono);letter-spacing:.06em;color:var(--mute);}
@@ -957,6 +958,56 @@
   /* Videos ohne dunkle Kontur */
   .phone,.wide{border:0 !important;}
   .card-vid{border:0;}
+  /* SHOWROOM START */
+  .sr-open body{overflow:hidden;}
+  .sr-open .cta-fixed,.sr-open .sb-tt{visibility:hidden;}
+  .sr{position:fixed;inset:0;z-index:80;color:#F3ECDD;}
+  .sr[hidden]{display:none;}
+  .sr-bg{position:absolute;inset:0;background:rgba(14,11,10,var(--sr-a,.42));-webkit-backdrop-filter:blur(28px) saturate(1.5);backdrop-filter:blur(28px) saturate(1.5);opacity:0;transition:opacity .45s var(--ease);}
+  .sr.is-in .sr-bg{opacity:1;}
+  .sr-scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(70px,9vh,90px) clamp(10px,2vw,28px) 40px;}
+  .sr-bar{position:absolute;left:0;right:0;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(14px,2vw,28px);pointer-events:none;opacity:0;transform:translateY(-10px);transition:opacity .4s var(--ease) .1s,transform .4s var(--ease) .1s;}
+  .sr.is-in .sr-bar{opacity:1;transform:none;}
+  .sr-bar>*{pointer-events:auto;}
+  .sr-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
+  .sr-tag b{color:var(--accent);font-weight:600;}
+  .sr-x{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#FEFEFE;display:grid;place-items:center;padding:0;cursor:pointer;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:background-color .2s ease,transform .3s var(--ease);}
+  .sr-x:hover,.sr-x:focus-visible{background:rgba(255,255,255,.22);transform:rotate(90deg);}
+  .sr-wall{columns:1;column-gap:14px;max-width:1800px;margin:0 auto;}
+  @media (min-width:330px){.sr-wall{columns:2;}}
+  @media (max-width:599px){.sr-wall{column-gap:10px;}.sr-t{margin-bottom:10px;border-radius:13px;}.sr-cap{padding:30px 9px 9px;}.sr-cap b{font-size:13px;}.sr-cap span{font-size:9.5px;}.sr-play{left:7px;top:7px;font-size:10px;padding:5px 8px;}}
+  @media (min-width:900px){.sr-wall{columns:3;}}
+  @media (min-width:1300px){.sr-wall{columns:4;}}
+  @media (min-width:1750px){.sr-wall{columns:5;}}
+  .sr-t{position:relative;display:block;width:100%;aspect-ratio:var(--ar,16/9);margin:0 0 14px;padding:0;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);break-inside:avoid;cursor:pointer;color:#FEFEFE;font:inherit;text-align:left;box-shadow:0 20px 44px -24px rgba(0,0,0,.85);opacity:0;transform:translateY(28px) scale(.97);transition:opacity .6s var(--ease),transform .6s var(--ease),border-color .2s ease;}
+  .sr.is-in .sr-t.in{opacity:1;transform:none;}
+  .sr-t img,.sr-t video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease);}
+  .sr-t:hover{border-color:rgba(255,255,255,.28);}
+  .sr-t:hover img,.sr-t:hover video{transform:scale(1.035);}
+  .sr-t.photo,.sr-t.loop{cursor:zoom-in;}
+  .sr-t:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .sr-play{position:absolute;left:10px;top:10px;z-index:2;font-size:11px;line-height:1;padding:7px 10px;border-radius:999px;background:var(--accent);color:#232321;}
+  .sr-cap{position:absolute;left:0;right:0;bottom:0;z-index:1;display:grid;gap:4px;padding:40px 13px 12px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.74));}
+  .sr-cap b{font-weight:700;font-size:15px;line-height:1.15;letter-spacing:-.01em;}
+  .sr-cap span{font-size:10.5px;opacity:.78;}
+  .sr-end{display:flex;flex-direction:column;align-items:center;gap:14px;margin:34px 0 10px;text-align:center;}
+  .sr-end p{margin:0;font-size:15px;opacity:.8;}
+  .sr-lb{position:fixed;inset:0;z-index:90;}
+  .sr-lb[hidden]{display:none;}
+  .sr-lb-bg{position:absolute;inset:0;background:rgba(8,6,5,.84);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);opacity:0;transition:opacity .3s ease;}
+  .sr-lb.on .sr-lb-bg{opacity:1;}
+  .sr-lb .sr-x{position:absolute;top:14px;right:14px;z-index:3;opacity:0;transition:opacity .25s ease .1s,background-color .2s ease,transform .3s var(--ease);}
+  .sr-lb.on .sr-x,.sr-lb.on .sr-lb-nav,.sr-lb.on .sr-lb-cap{opacity:1;}
+  .sr-lb-m{position:fixed;z-index:2;margin:0;transform-origin:0 0;border-radius:14px;object-fit:cover;background:#000;box-shadow:0 30px 80px -24px rgba(0,0,0,.85);cursor:zoom-out;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none;will-change:transform;}
+  .sr-lb-nav{position:absolute;top:50%;z-index:3;width:46px;height:46px;margin-top:-23px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#FEFEFE;font-size:20px;cursor:pointer;opacity:0;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:opacity .25s ease .1s,background-color .2s ease;}
+  .sr-lb-nav:hover,.sr-lb-nav:focus-visible{background:var(--accent);color:#232321;}
+  .sr-lb-prev{left:14px;}
+  .sr-lb-next{right:14px;}
+  .sr-lb-cap{position:absolute;left:50%;bottom:16px;z-index:3;max-width:min(90vw,640px);transform:translateX(-50%);padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.1);color:#FEFEFE;font-size:11px;text-align:center;opacity:0;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:opacity .25s ease .1s;}
+  .sr-lb-cap:empty{display:none;}
+  @media (max-width:700px){.sr-lb-nav{display:none;}}
+  @media (prefers-reduced-motion:reduce){.sr-t{opacity:1;transform:none;transition:none;}.sr-bg,.sr-bar,.sr-lb-bg{transition:none;}}
+  /* SHOWROOM END */
 </style>
 <link rel="stylesheet" href="theme.css">
 <script src="bgswitch.js" defer></script>
@@ -973,6 +1024,7 @@
     <a href="#leistungen">Leistungen</a>
     <a href="#pakete">Pakete</a>
     <a href="#portfolio">Portfolio</a>
+    <a href="#showroom" data-showroom>Showroom</a>
     <a href="#ablauf">So läuft's</a>
   </nav>
   <div class="head-actions">
@@ -991,9 +1043,10 @@
   <a href="#leistungen"><small>02</small>Leistungen</a>
   <a href="#pakete"><small>03</small>Pakete</a>
   <a href="#portfolio"><small>04</small>Portfolio</a>
-  <a href="#ablauf"><small>05</small>So läuft's</a>
-  <a href="#anfrage" data-anfrage><small>06</small>Projekt starten</a>
-  <a href="portal.html"><small>07</small>Kundenportal</a>
+  <a href="#showroom" data-showroom><small>05</small>Showroom</a>
+  <a href="#ablauf"><small>06</small>So läuft's</a>
+  <a href="#anfrage" data-anfrage><small>07</small>Projekt starten</a>
+  <a href="portal.html"><small>08</small>Kundenportal</a>
   <div class="mnav-set" id="mnav-set"></div>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
@@ -1497,6 +1550,64 @@
   </div>
 </dialog>
 
+<!-- SHOWROOM START -->
+<div class="sr" id="showroom" role="dialog" aria-modal="true" aria-label="Showroom" hidden>
+  <div class="sr-bg"></div>
+  <div class="sr-scroll" id="sr-scroll">
+    <div class="sr-wall" id="sr-wall"></div>
+    <div class="sr-end"><p>Das könnte dein nächstes Projekt sein.</p><a class="btn or" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+  </div>
+  <div class="sr-bar"><span class="sr-tag mono">Showroom · <b id="sr-count"></b></span><button class="sr-x" type="button" id="sr-x" aria-label="Showroom schließen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+</div>
+<div class="sr-lb" id="sr-lb" hidden>
+  <div class="sr-lb-bg"></div>
+  <button class="sr-x" type="button" id="sr-lb-x" aria-label="Schließen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  <button class="sr-lb-nav sr-lb-prev" type="button" aria-label="Zurück">&larr;</button>
+  <button class="sr-lb-nav sr-lb-next" type="button" aria-label="Weiter">&rarr;</button>
+  <p class="sr-lb-cap mono" id="sr-lb-cap"></p>
+</div>
+<template id="sr-reels">
+<button class="sr-t reel" type="button" data-play="burgerking" style="--ar:9/16"><video data-src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="esn" style="--ar:9/16"><video data-src="media/ref_esn_loop.mp4" poster="media/ref_esn.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="spreequell" style="--ar:9/16"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah" style="--ar:9/16"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="zalando_nike" style="--ar:9/16"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="aldi" style="--ar:9/16"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="wolt" style="--ar:9/16"><video data-src="media/ref_wolt_loop.mp4" poster="media/ref_wolt.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="step_mmaah" style="--ar:9/16"><video data-src="media/ref_step_mmaah_loop.mp4" poster="media/ref_step_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="step_crazycanes" style="--ar:9/16"><video data-src="media/ref_step_crazycanes_loop.mp4" poster="media/ref_step_crazycanes.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="step_pizzary" style="--ar:9/16"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="step_vrohstoff" style="--ar:9/16"><video data-src="media/ref_step_vrohstoff_loop.mp4" poster="media/ref_step_vrohstoff.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="c44_vorstellung" style="--ar:9/16"><video data-src="media/ref_c44_vorstellung_loop.mp4" poster="media/ref_c44_vorstellung.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="c44_bowls" style="--ar:9/16"><video data-src="media/ref_c44_bowls_loop.mp4" poster="media/ref_c44_bowls.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="c44_sandwich" style="--ar:9/16"><video data-src="media/ref_c44_sandwich_loop.mp4" poster="media/ref_c44_sandwich.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="spreegold" style="--ar:9/16"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="wild_thai" style="--ar:9/16"><video data-src="media/ref_wild_thai_loop.mp4" poster="media/ref_wild_thai.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="wild_probe" style="--ar:9/16"><video data-src="media/ref_wild_probe_loop.mp4" poster="media/ref_wild_probe.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="wild_team" style="--ar:9/16"><video data-src="media/ref_wild_team_loop.mp4" poster="media/ref_wild_team.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="frank_dube" style="--ar:9/16"><video data-src="media/ref_frank_dube_loop.mp4" poster="media/ref_frank_dube.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_1" style="--ar:9/16"><video data-src="media/ref_mmaah3_1_loop.mp4" poster="media/ref_mmaah3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_2" style="--ar:9/16"><video data-src="media/ref_mmaah3_2_loop.mp4" poster="media/ref_mmaah3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_3" style="--ar:9/16"><video data-src="media/ref_mmaah3_3_loop.mp4" poster="media/ref_mmaah3_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_4" style="--ar:9/16"><video data-src="media/ref_mmaah3_4_loop.mp4" poster="media/ref_mmaah3_4.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_5" style="--ar:9/16"><video data-src="media/ref_mmaah3_5_loop.mp4" poster="media/ref_mmaah3_5.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_6" style="--ar:9/16"><video data-src="media/ref_mmaah3_6_loop.mp4" poster="media/ref_mmaah3_6.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mmaah3_7" style="--ar:9/16"><video data-src="media/ref_mmaah3_7_loop.mp4" poster="media/ref_mmaah3_7.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mian_market" style="--ar:9/16"><video data-src="media/ref_mian_market_loop.mp4" poster="media/ref_mian_market.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mian_1" style="--ar:9/16"><video data-src="media/ref_mian_1_loop.mp4" poster="media/ref_mian_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mian_3" style="--ar:9/16"><video data-src="media/ref_mian_3_loop.mp4" poster="media/ref_mian_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="pizzary3_2" style="--ar:9/16"><video data-src="media/ref_pizzary3_2_loop.mp4" poster="media/ref_pizzary3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="house_sweets" style="--ar:9/16"><video data-src="media/ref_house_sweets_loop.mp4" poster="media/ref_house_sweets.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="mcdarwichs" style="--ar:9/16"><video data-src="media/ref_mcdarwichs_loop.mp4" poster="media/ref_mcdarwichs.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="pizzary3_1" style="--ar:9/16"><video data-src="media/ref_pizzary3_1_loop.mp4" poster="media/ref_pizzary3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="crazycanes_dina" style="--ar:9/16"><video data-src="media/ref_crazycanes_dina_loop.mp4" poster="media/ref_crazycanes_dina.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="wolt_1" style="--ar:9/16"><video data-src="media/ref_wolt_1_loop.mp4" poster="media/ref_wolt_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="house_sweets_1" style="--ar:9/16"><video data-src="media/ref_house_sweets_1_loop.mp4" poster="media/ref_house_sweets_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="house_sweets_2" style="--ar:9/16"><video data-src="media/ref_house_sweets_2_loop.mp4" poster="media/ref_house_sweets_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="kampagne_lifestyle" style="--ar:9/16"><video data-src="media/ref_kampagne_lifestyle_loop.mp4" poster="media/ref_kampagne_lifestyle.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+<button class="sr-t reel" type="button" data-play="kampagne_street" style="--ar:9/16"><video data-src="media/ref_kampagne_street_loop.mp4" poster="media/ref_kampagne_street.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></button>
+</template>
+<!-- SHOWROOM END -->
 <dialog class="player" id="player" aria-labelledby="player-title">
   <div class="player-box">
     <div class="player-head">
@@ -1893,6 +2004,235 @@
     stopPlayer();
     if (!d.hidden) live.forEach(play);
   });
+  // SHOWROOM START
+  // Showroom: Glas-Overlay mit allen Arbeiten. Gebaut von build_showroom.py
+  (function(){
+    var sr = d.getElementById('showroom'), tpl = d.getElementById('sr-reels');
+    if (!sr || !tpl) return;
+    var wall = d.getElementById('sr-wall'), scr = d.getElementById('sr-scroll'), xBtn = d.getElementById('sr-x'),
+        lbW = d.getElementById('sr-lb'), lbCap = d.getElementById('sr-lb-cap'), lbX = d.getElementById('sr-lb-x'),
+        built = false, lastFocus = null, srLive = [], srIO = null, cur = null, hideT = 0;
+    var EASE = 'cubic-bezier(.22,1,.36,1)';
+
+    function el(tag, cls, html){ var e = d.createElement(tag); if (cls) e.className = cls; if (html) e.innerHTML = html; return e; }
+    function esc(s){ return String(s || '').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+    function cap(b, s){ return '<span class="sr-cap">' + (b ? '<b>' + esc(b) + '</b>' : '') + (s ? '<span class="mono">' + esc(s) + '</span>' : '') + '</span>'; }
+
+    function build(){
+      built = true;
+      var groups = [[], [], [], []];
+      // Reels aus dem Template, Texte aus REFS
+      [].slice.call(tpl.content.children).forEach(function(t){
+        var b = t.cloneNode(true), r = REFS[b.getAttribute('data-play')] || {};
+        b.insertAdjacentHTML('beforeend', '<span class="sr-play mono" aria-hidden="true">&#9654; ' + esc(r.d) + '</span>' + cap(r.t, (r.p || '') + (r.v ? ' · ' + r.v + ' Views' : '')));
+        b.setAttribute('aria-label', (r.t || 'Video') + ': Video mit Ton abspielen');
+        groups[0].push(b);
+      });
+      var pf = d.getElementById('portfolio');
+      if (pf) {
+        each('.pf-film', function(c){
+          var b = el('button', 'sr-t film'), img = c.querySelector('img'), v = c.querySelector('video[data-src]'),
+              yt = c.getAttribute('data-plat') === 'yt';
+          b.type = 'button'; b.style.setProperty('--ar', '16/9'); b._src = c;
+          b.setAttribute('aria-label', c.getAttribute('aria-label') || c.getAttribute('data-title'));
+          b.innerHTML = '<img src="' + esc(img ? img.getAttribute('src') : '') + '" alt="" loading="lazy" decoding="async">' +
+            (v ? '<video data-src="' + esc(v.getAttribute('data-src')) + '" poster="' + esc(v.getAttribute('poster')) + '" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>' : '') +
+            '<span class="sr-play mono" aria-hidden="true">&#9654; ' + (yt ? 'YouTube' : 'Vimeo') + '</span>' + cap(c.getAttribute('data-title'), c.getAttribute('data-meta'));
+          groups[1].push(b);
+        }, pf);
+        each('.pf-loop', function(c){
+          var v = c.querySelector('video'), b = el('button', 'sr-t loop');
+          b.type = 'button'; b.style.setProperty('--ar', '16/9');
+          b.setAttribute('aria-label', 'Vergrößern: ' + (v.getAttribute('aria-label') || 'Ausschnitt'));
+          b.innerHTML = '<video data-src="' + esc(v.getAttribute('data-src')) + '" poster="' + esc(v.getAttribute('poster')) + '" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>' + cap('', 'Ausschnitt');
+          b.setAttribute('data-cap', v.getAttribute('aria-label') || '');
+          groups[2].push(b);
+        }, pf);
+        each('.pf-photo', function(c){
+          var img = c.querySelector('img'), b = el('button', 'sr-t photo');
+          b.type = 'button'; b.style.setProperty('--ar', (img.getAttribute('width') || 4) + '/' + (img.getAttribute('height') || 3));
+          b.setAttribute('data-full', c.getAttribute('data-full')); b.setAttribute('data-cap', c.getAttribute('data-cap') || '');
+          b.setAttribute('aria-label', 'Foto vergrößern: ' + (c.getAttribute('data-cap') || ''));
+          b.innerHTML = '<img src="' + esc(img.getAttribute('src')) + '" alt="' + esc(img.getAttribute('alt')) + '" loading="lazy" decoding="async">';
+          groups[3].push(b);
+        }, pf);
+      }
+      // Gleichmäßig mischen: jede Gruppe verteilt sich über die ganze Wand
+      var all = [];
+      groups.forEach(function(g, gi){ g.forEach(function(b, i){ all.push({b: b, k: (i + 0.5) / g.length + gi * 0.013}); }); });
+      all.sort(function(a, b){ return a.k - b.k; });
+      all.forEach(function(o, i){ o.b.style.transitionDelay = (i < 14 ? i * 45 : 0) + 'ms'; wall.appendChild(o.b); });
+      d.getElementById('sr-count').textContent = all.length;
+
+      if (hasIO) {
+        srIO = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            var t = e.target, v = t.querySelector('video'), i = v ? srLive.indexOf(v) : -1;
+            if (e.isIntersecting) {
+              t.classList.add('in');
+              if (v && canPlay) { if (!v.getAttribute('src')) v.src = v.getAttribute('data-src'); if (i < 0) srLive.push(v); play(v); }
+            } else if (v) { v.pause(); if (i >= 0) srLive.splice(i, 1); }
+          });
+        }, {root: scr, rootMargin: '160px 0px'});
+        each('.sr-t', function(t){ srIO.observe(t); }, wall);
+      } else each('.sr-t', function(t){ t.classList.add('in'); }, wall);
+    }
+
+    // Hintergrund wird beim Scrollen dunkler
+    var rafA = 0;
+    function setA(){ rafA = 0; sr.style.setProperty('--sr-a', (0.42 + Math.min(1, scr.scrollTop / 900) * 0.4).toFixed(3)); }
+    scr.addEventListener('scroll', function(){ if (!rafA) rafA = requestAnimationFrame(setA); }, {passive: true});
+
+    function open(push){
+      if (!sr.hidden) return;
+      if (!built) build();
+      clearTimeout(hideT);
+      lastFocus = d.activeElement;
+      live.forEach(function(v){ v.pause(); });
+      sr.hidden = false; root.classList.add('sr-open');
+      scr.scrollTop = 0; setA();
+      void sr.offsetWidth; sr.classList.add('is-in');
+      srLive.forEach(play);
+      try { xBtn.focus({preventScroll: true}); } catch (err) { xBtn.focus(); }
+      if (push !== false && location.hash !== '#showroom') history.pushState({sr: 1}, '', '#showroom');
+    }
+    function shut(){
+      if (sr.hidden) return;
+      lbClose(true);
+      sr.classList.remove('is-in'); root.classList.remove('sr-open');
+      srLive.forEach(function(v){ v.pause(); });
+      hideT = setTimeout(function(){ sr.hidden = true; }, reduce ? 0 : 420);
+      if (lastFocus && lastFocus.focus) try { lastFocus.focus({preventScroll: true}); } catch (err) {}
+      if (!d.hidden) live.forEach(play);
+    }
+    function close(){
+      if (history.state && history.state.sr) history.back();
+      else { shut(); if (location.hash === '#showroom') history.replaceState(null, '', location.pathname + location.search); }
+    }
+    window.addEventListener('popstate', function(){ if (location.hash === '#showroom') open(false); else shut(); });
+
+    d.addEventListener('click', function(e){
+      var a = e.target.closest('[data-showroom]');
+      if (a) { e.preventDefault(); open(); return; }
+      if (!sr.hidden && sr.contains(e.target) && e.target.closest('[data-anfrage]')) close();
+    });
+    xBtn.addEventListener('click', close);
+    wall.addEventListener('click', function(e){
+      var t = e.target.closest('.sr-t'); if (!t) return;
+      if (t._src) t._src.click();
+      else if (t.classList.contains('photo') || t.classList.contains('loop')) lbOpen(t);
+    });
+
+    // Lightbox mit Shared-Element-Übergang und Wegziehen
+    function items(){ return [].slice.call(wall.querySelectorAll('.sr-t.photo,.sr-t.loop')); }
+    function geom(ar){
+      var vw = innerWidth, vh = innerHeight, w = Math.min(vw * 0.94, vh * 0.86 * ar), h = w / ar;
+      return {w: w, h: h, l: (vw - w) / 2, t: (vh - h) / 2};
+    }
+    function place(m, g){ m.style.left = g.l + 'px'; m.style.top = g.t + 'px'; m.style.width = g.w + 'px'; m.style.height = g.h + 'px'; }
+    function delta(r, g){ return 'translate(' + (r.left - g.l) + 'px,' + (r.top - g.t) + 'px) scale(' + (r.width / g.w) + ',' + (r.height / g.h) + ')'; }
+    function media(t){
+      var m;
+      if (t.classList.contains('photo')) {
+        var th = t.querySelector('img'), full = new Image();
+        m = new Image(); m.src = th.currentSrc || th.src; m.alt = t.getAttribute('data-cap') || '';
+        full.onload = function(){ if (cur && cur.m === m) m.src = full.src; };
+        full.src = t.getAttribute('data-full');
+      } else {
+        var v = t.querySelector('video');
+        m = d.createElement('video'); m.poster = v.getAttribute('poster');
+        m.muted = true; m.loop = true; m.playsInline = true; m.setAttribute('playsinline', '');
+        m.src = v.getAttribute('src') || v.getAttribute('data-src');
+      }
+      m.className = 'sr-lb-m'; m.draggable = false;
+      return m;
+    }
+    function lbOpen(t, step){
+      var r = t.getBoundingClientRect(), ar = r.width / r.height, g = geom(ar), m = media(t);
+      if (cur) { cur.m.remove(); cur.t.style.visibility = ''; }
+      clearTimeout(lbW._t);
+      place(m, g); lbW.appendChild(m);
+      t.style.visibility = 'hidden';
+      cur = {t: t, m: m, ar: ar, g: g};
+      lbCap.textContent = t.getAttribute('data-cap') || '';
+      if (m.tagName === 'VIDEO') play(m);
+      if (step) {
+        m.animate([{opacity: 0, transform: 'scale(.96)'}, {opacity: 1, transform: 'none'}], {duration: reduce ? 0 : 240, easing: EASE});
+      } else {
+        lbW.hidden = false; void lbW.offsetWidth; lbW.classList.add('on');
+        var an = m.animate([{transform: delta(r, g)}, {transform: 'none'}], {duration: reduce ? 0 : 520, easing: EASE});
+        an.onfinish = function(){ an.cancel(); };
+        try { lbX.focus({preventScroll: true}); } catch (err) {}
+      }
+      bindDrag(m);
+    }
+    function lbClose(instant){
+      if (!cur) return;
+      var c = cur; cur = null;
+      lbW.classList.remove('on');
+      c.m.getAnimations().forEach(function(a){ a.cancel(); });
+      var r = c.t.getBoundingClientRect(), seen = r.bottom > 0 && r.top < innerHeight;
+      function done(){ c.m.remove(); c.t.style.visibility = ''; }
+      if (instant || reduce || !seen) { done(); lbW.hidden = true; return; }
+      var an = c.m.animate([{transform: c.m.style.transform || 'none'}, {transform: delta(r, c.g)}], {duration: 380, easing: EASE, fill: 'forwards'});
+      an.onfinish = done;
+      lbW._t = setTimeout(function(){ if (!cur) lbW.hidden = true; }, 400);
+      try { c.t.focus({preventScroll: true}); } catch (err) {}
+    }
+    function lbStep(n){
+      if (!cur) return;
+      var list = items(), i = list.indexOf(cur.t);
+      if (list.length < 2) return;
+      lbOpen(list[(i + n + list.length) % list.length], true);
+    }
+    function bindDrag(m){
+      var y0 = 0, t0 = 0, dy = 0, on = false, bg = lbW.querySelector('.sr-lb-bg');
+      m.addEventListener('pointerdown', function(e){
+        on = true; y0 = e.clientY; t0 = e.timeStamp; dy = 0;
+        m.getAnimations().forEach(function(a){ a.cancel(); });
+        try { m.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      m.addEventListener('pointermove', function(e){
+        if (!on) return;
+        dy = e.clientY - y0;
+        m.style.transform = 'translateY(' + dy * 0.85 + 'px) scale(' + (1 - Math.min(Math.abs(dy) / 1600, 0.12)) + ')';
+        bg.style.opacity = String(1 - Math.min(Math.abs(dy) / 500, 0.6));
+      });
+      function up(e){
+        if (!on) return; on = false;
+        var v = dy / Math.max(1, e.timeStamp - t0);
+        bg.style.opacity = '';
+        if (Math.abs(dy) < 6 || Math.abs(dy) > 100 || Math.abs(v) > 0.5) { lbClose(); return; }
+        var back = m.style.transform; m.style.transform = '';
+        m.animate([{transform: back}, {transform: 'none'}], {duration: 360, easing: 'cubic-bezier(.34,1.56,.64,1)'});
+      }
+      m.addEventListener('pointerup', up);
+      m.addEventListener('pointercancel', up);
+    }
+    lbW.querySelector('.sr-lb-bg').addEventListener('click', function(){ lbClose(); });
+    lbX.addEventListener('click', function(){ lbClose(); });
+    lbW.querySelector('.sr-lb-prev').addEventListener('click', function(){ lbStep(-1); });
+    lbW.querySelector('.sr-lb-next').addEventListener('click', function(){ lbStep(1); });
+    window.addEventListener('resize', function(){ if (cur) { cur.g = geom(cur.ar); place(cur.m, cur.g); } });
+
+    d.addEventListener('keydown', function(e){
+      if (sr.hidden || d.querySelector('dialog[open]')) return;
+      if (e.key === 'Escape') { e.preventDefault(); if (cur) lbClose(); else close(); }
+      else if (cur && e.key === 'ArrowRight') lbStep(1);
+      else if (cur && e.key === 'ArrowLeft') lbStep(-1);
+    });
+    // Fokus bleibt im Showroom, solange kein Player offen ist
+    d.addEventListener('focusin', function(e){
+      if (sr.hidden || d.querySelector('dialog[open]')) return;
+      if (cur) { if (!lbW.contains(e.target)) lbX.focus(); }
+      else if (!sr.contains(e.target)) xBtn.focus();
+    });
+    d.addEventListener('visibilitychange', function(){
+      if (!sr.hidden) srLive.forEach(function(v){ if (d.hidden) v.pause(); else play(v); });
+    });
+    if (location.hash === '#showroom') { history.replaceState({sr: 1}, '', '#showroom'); open(false); }
+  })();
+  // SHOWROOM END
 
 
   // Pitch-Video (Stand 09.10.2026): Querformat und Hochformat, je nach Fenster. Quelle der Dateien: Projects/56_Social Bite/Pitch/
