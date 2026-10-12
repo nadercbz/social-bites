@@ -661,6 +661,15 @@
   .pitch-veil.on{opacity:1;}
   .pitch-clone{position:fixed;z-index:60;margin:0;padding:0;border:0;overflow:hidden;cursor:pointer;background:#232321 center/cover no-repeat;box-shadow:0 .4em 1.4em rgba(0,0,0,.55);transition:transform .55s var(--ease);will-change:transform;}
   .pitch-clone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .pitch-go{position:fixed;z-index:61;display:flex;align-items:center;gap:14px;margin:0;padding:14px 20px 14px 22px;border:0;border-radius:999px;background:#F26A21;color:#232321;font:inherit;text-align:left;cursor:pointer;opacity:0;transform:translateX(-14px);transition:opacity .45s ease .25s,transform .6s var(--ease) .25s,background-color .2s ease;box-shadow:0 14px 34px -12px rgba(242,106,33,.7);}
+  .pitch-go.on{opacity:1;transform:none;}
+  .pitch-go:hover,.pitch-go:focus-visible{background:#FEFEFE;outline:none;}
+  .pitch-go b{display:block;font-weight:800;font-size:clamp(20px,1.8vw,26px);letter-spacing:-.03em;line-height:1;}
+  .pitch-go small{display:block;margin-top:5px;font-size:12px;font-weight:600;opacity:.75;}
+  .pitch-go i{font-style:normal;font-size:22px;line-height:1;transition:transform .3s var(--ease);}
+  .pitch-go:hover i{transform:translateX(4px);}
+  .pitch-go.below{transform:translate(-50%,12px);}
+  .pitch-go.below.on{transform:translateX(-50%);}
   .pitch-cap{position:fixed;z-index:61;left:50%;width:min(86vw,560px);text-align:center;color:#FEFEFE;pointer-events:none;opacity:0;transform:translate(-50%,10px);transition:opacity .45s ease .25s,transform .6s var(--ease) .25s;}
   .pitch-cap.on{opacity:1;transform:translate(-50%,0);}
   .pitch-cap b{display:block;font-weight:800;letter-spacing:-.04em;line-height:1;font-size:clamp(28px,3.4vw,46px);}
@@ -1059,7 +1068,7 @@
       <span class="row">Wir machen
         <span class="pills" aria-hidden="true"><span class="pill">Viral</span><span class="pill">Brands</span><span class="pill">Openings</span></span>
       </span>
-      <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_pitch.mp4?v=4" poster="media/tile_pitch.webp?v=4" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
+      <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_mood.mp4?v=1" poster="media/tile_mood.webp?v=1" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
     <div class="hero-cta"><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
@@ -2473,7 +2482,6 @@
     var tile = d.getElementById('pitch-open'), veil = d.getElementById('pitch-veil');
     if (!tile || !veil || !window.matchMedia || !matchMedia('(hover:hover)').matches) return;
     var timer = 0, lifted = false, tLift = 0, tDrop = 0, clone = null, home = '', cap = null;
-    var CAP = {de: ['Dein Business. Sichtbar', 'Drück Play.']};
     function lift(){
       if (lifted || Date.now() - tDrop < 350) return;
       clearTimeout(timer);
@@ -2486,9 +2494,9 @@
       clone.style.cssText = 'left:' + (cx - w / 2) + 'px;top:' + (cy - h / 2) + 'px;width:' + w + 'px;height:' + h + 'px;border-radius:' + cs.borderRadius + ';' + (v && v.poster ? 'background-image:url(' + v.poster + ');' : '');
       home = cs.transform === 'none' ? '' : cs.transform;
       clone.style.transform = home || 'none';
-      clone.innerHTML = (src ? '<video src="' + src + '" muted loop playsinline autoplay></video>' : '') + '<span class="ht-play" aria-hidden="true">&#9654;</span>';
+      clone.innerHTML = (src ? '<video src="' + src + '" muted loop playsinline autoplay></video>' : '');
       d.body.appendChild(clone);
-      var cv = clone.querySelector('video'); if (cv) { var pp = cv.play(); if (pp && pp.catch) pp.catch(function(){}); }
+      var cv = clone.querySelector('video'); if (cv) { try { if (v && v.currentTime) cv.currentTime = v.currentTime; } catch (err) {} var pp = cv.play(); if (pp && pp.catch) pp.catch(function(){}); }
       clone.addEventListener('click', function(){ drop(); tile.click(); });
       tile.style.visibility = 'hidden';
       var sc = Math.min(2, (window.innerWidth * 0.8) / w, (window.innerHeight * 0.8) / h);
@@ -2496,11 +2504,13 @@
       void clone.offsetWidth;
       clone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc.toFixed(3) + ')';
       veil.classList.add('on');
-      var ct = CAP.de;
       if (cap) cap.remove();
-      cap = d.createElement('div'); cap.className = 'pitch-cap'; cap.setAttribute('aria-hidden', 'true');
-      cap.innerHTML = '<b>' + ct[0] + '<i>.</i></b><span>' + ct[1] + '</span>';
-      cap.style.top = (window.innerHeight / 2 + h * sc / 2 + 30) + 'px';
+      cap = d.createElement('button'); cap.type = 'button'; cap.className = 'pitch-go';
+      cap.innerHTML = '<span><b>Klick hier</b><small>Imagefilm ansehen</small></span><i aria-hidden="true">&rarr;</i>';
+      var gx = window.innerWidth / 2 + w * sc / 2 + 28;
+      if (gx + 250 < window.innerWidth) { cap.style.left = gx + 'px'; cap.style.top = (window.innerHeight / 2 - 34) + 'px'; }
+      else { cap.classList.add('below'); cap.style.left = '50%'; cap.style.top = (window.innerHeight / 2 + h * sc / 2 + 24) + 'px'; }
+      cap.addEventListener('click', function(){ drop(); tile.click(); });
       d.body.appendChild(cap);
       requestAnimationFrame(function(){ requestAnimationFrame(function(){ if (cap) cap.classList.add('on'); }); });
       lifted = true; tLift = Date.now();
@@ -2519,6 +2529,7 @@
     d.addEventListener('mousemove', function(e){
       if (!lifted || Date.now() - tLift < 700 || d.activeElement === tile) return;
       var r = clone ? clone.getBoundingClientRect() : tile.getBoundingClientRect();
+      if (cap) { var g = cap.getBoundingClientRect(); r = {left: Math.min(r.left, g.left), right: Math.max(r.right, g.right), top: Math.min(r.top, g.top), bottom: Math.max(r.bottom, g.bottom)}; }
       if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) drop();
     });
     window.addEventListener('scroll', function(){ drop(); }, {passive: true});
