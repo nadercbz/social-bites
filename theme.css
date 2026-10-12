@@ -126,4 +126,8 @@
 :root[data-theme="dark"] .ocard.founder{background:#F3ECDD;color:#232321;border-color:#F3ECDD;}
 :root[data-theme="dark"] .ocard.founder small{color:#5A5248;}
 :root[data-theme="dark"] .star{background:#F3ECDD;box-shadow:0 0 0 2px #151211;}
-:root[data-theme="dark"] .panel{box-shadow:6px 6px 0 var(--accent),0 20px 40px rgba(0,0,0,.5);}
+/* Dark Mode: keine Umrahmungen. Orange Versatz-Schatten und harte Rahmen raus. */
+:root[data-theme="dark"] :is(.panel,.pav,.hero figure img,.kit figure img,.tier.hot,.calc .out,form.f,.lc,.mrow,.kz,.ic,.kc,.pk,.card,.bcard,.kap){box-shadow:none !important;border-color:transparent !important;}
+:root[data-theme="dark"] :is(.lc,.mrow,.kz,.ic,.kc,.pk,.card,.kap):is(:hover,.on,[open]){box-shadow:none !important;border-color:transparent !important;}
+:root[data-theme="dark"] .bcard[aria-current="true"]{box-shadow:none !important;border-color:transparent !important;}
+:root[data-theme="dark"] .pm-frame{box-shadow:none !important;}
