@@ -657,6 +657,14 @@
   .hero-tile{border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;vertical-align:baseline;z-index:1;transition:transform .55s var(--ease),box-shadow .55s var(--ease);}
   .hero-tile:hover,.hero-tile:focus-visible{outline:none;}
   .hero-tile{width:1.9em;height:1.02em;border-radius:.09em;}
+  /* Handy: Kachel wandert per JS aus der Headline als breite Karte unter die Überschrift */
+  @media (max-width:700px){
+    .hero > .hero-tile{display:block;flex:none;width:100%;max-width:480px;height:auto;aspect-ratio:16/9;margin:clamp(14px,2.2vh,24px) auto 0;border-radius:14px;transform:rotate(-1deg);box-shadow:0 16px 30px -16px rgba(0,0,0,.55);}
+    .hero > .hero-tile .ht-play{width:64px;height:64px;margin:-32px 0 0 -32px;font-size:22px;opacity:1;transform:scale(1);}
+    .hero > .hero-tile{animation:rise .85s var(--ease) .2s both;}
+    .hero-cta{padding:clamp(10px,2vh,20px) 0;}
+  }
+  @media (max-width:700px) and (max-height:760px){.hero > .hero-tile{max-height:24svh;}}
   /* Mouseover: Video fährt in die Bildschirmmitte, wird etwa doppelt so groß, der Rest dahinter wird dunkel, unscharf und glasig */
   .pitch-veil{position:fixed;inset:0;z-index:58;background:rgba(10,8,7,.78);-webkit-backdrop-filter:blur(22px) saturate(1.1);backdrop-filter:blur(22px) saturate(1.1);opacity:0;pointer-events:none;transition:opacity .45s var(--ease);}
   .pitch-veil.on{opacity:1;}
@@ -2476,6 +2484,19 @@
     window.addEventListener('scroll', function(){ if (!raf) raf = requestAnimationFrame(update); }, {passive: true});
     window.addEventListener('resize', update);
     update();
+  })();
+
+  // Hero-Kachel: auf dem Handy als große Karte unter der Überschrift, am Desktop klein in der Zeile
+  (function(){
+    var tile = d.getElementById('pitch-open'), cta = d.querySelector('.hero-cta');
+    if (!tile || !cta) return;
+    var ph = d.createComment('hero-tile'), mq = matchMedia('(max-width:700px)');
+    tile.parentNode.insertBefore(ph, tile);
+    function place(){
+      if (mq.matches) cta.parentNode.insertBefore(tile, cta);
+      else ph.parentNode.insertBefore(tile, ph.nextSibling);
+    }
+    mq.addEventListener('change', place); place();
   })();
 
   // Hero-Kachel: bei Mouseover in die Bildschirmmitte, doppelt so groß, Hintergrund glasig
