@@ -144,7 +144,7 @@
   /* Hero */
   .hero{min-height:100vh;min-height:100svh;padding:clamp(96px,11vh,120px) var(--gutter) 0;display:flex;flex-direction:column;}
   .hero-h{
-    margin:auto;text-align:center;font-weight:800;
+    margin:auto auto 0;text-align:center;font-weight:800;
     font-size:clamp(38px,8.2vw,122px);line-height:.95;letter-spacing:-.05em;
     display:flex;flex-direction:column;align-items:center;gap:.04em;
   }
@@ -156,7 +156,9 @@
     transform:rotate(-2deg);box-shadow:0 .04em 0 var(--ink);transition:transform .5s var(--ease);
   }
   .tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-  .hero-foot{margin-top:clamp(24px,4vh,48px);text-align:center;}
+  .hero-cta{margin:auto 0;padding:clamp(18px,3vh,32px) 0;display:flex;justify-content:center;}
+  .hero-cta .btn{font-size:clamp(16px,1.3vw,19px);padding:14px 24px;}
+  .hero-foot{margin-top:0;text-align:center;}
   .hero-sub{font-size:clamp(15px,1.3vw,18px);font-weight:600;margin:0 auto;max-width:62ch;}
   .hero-sub .hot{display:block;}
   @media (max-width:760px){.hero-sub{font-size:clamp(12.5px,3.5vw,15px);}}
@@ -929,6 +931,7 @@
     .hero-h .row{animation:rise .85s var(--ease) both;}
     .hero-h .row:nth-child(2){animation-delay:.08s;}
     .hero-h .row:nth-child(3){animation-delay:.16s;}
+    .hero-cta{animation:rise .85s var(--ease) .24s both;}
     .hero-foot{animation:rise .85s var(--ease) .3s both;}
     @supports (animation-timeline:view()){
       .phone,.wide{animation:drift linear both;animation-timeline:view();}
@@ -1006,6 +1009,7 @@
       <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_pitch.mp4?v=4" poster="media/tile_pitch.webp?v=4" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
+    <div class="hero-cta"><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
     <div class="hero-foot">
       <p class="hero-sub">Social Media für Unternehmer, Marken und Gastro aus Berlin.<br><span class="hot">Über 500 Millionen organische Views auf TikTok und Instagram.</span></p>
       <div class="trust">
