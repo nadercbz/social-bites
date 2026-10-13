@@ -167,10 +167,31 @@
     document.body.appendChild(el);document.body.style.overflow="hidden";
     document.addEventListener("keydown",esc_);
   }
-  function esc_(e){if(e.key==="Escape"&&el)close();}
+  var navT=null;
+  function esc_(e){
+    if(!el)return;
+    if(e.key==="Escape"){close();return;}
+    /* Pfeil hoch und runter springt durch die Dateiliste links (über alle Kategorien), auch mit Suchfilter */
+    if((e.key==="ArrowDown"||e.key==="ArrowUp")&&!e.altKey&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey){
+      var tg=e.target&&e.target.tagName;
+      if(tg==="VIDEO"||tg==="TEXTAREA"||tg==="SELECT")return;
+      var rows=[].slice.call(el.querySelectorAll(".kzf-row"));if(!rows.length)return;
+      e.preventDefault();
+      var cur=rows.findIndex(function(r){return r.classList.contains("on");});
+      var n=cur<0?(e.key==="ArrowDown"?0:rows.length-1):Math.max(0,Math.min(rows.length-1,cur+(e.key==="ArrowDown"?1:-1)));
+      if(n===cur)return;
+      rows.forEach(function(r,i){r.classList.toggle("on",i===n);});
+      var row=rows[n];
+      if(!(document.activeElement&&document.activeElement.type==="search"))row.focus({preventScroll:true});
+      row.scrollIntoView({block:"nearest"});
+      /* kurz warten, damit schnelles Durchdrücken nicht jede große Datei entschlüsselt */
+      clearTimeout(navT);
+      navT=setTimeout(function(){var f=S.man&&S.man.dateien.filter(function(x){return x.id===row.getAttribute("data-id");})[0];if(f&&el)oeffnen(f);},140);
+    }
+  }
   function close(){
     S.urls.forEach(function(u){URL.revokeObjectURL(u);});S.urls=[];S.cache={};
-    document.removeEventListener("keydown",esc_);
+    document.removeEventListener("keydown",esc_);clearTimeout(navT);
     if(el){el.remove();el=null;}document.body.style.overflow="";
   }
 
