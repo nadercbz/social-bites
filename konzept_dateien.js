@@ -6,6 +6,9 @@
   var S={id:"",name:"",key:null,man:null,cur:null,urls:[],cache:{}};
   var el=null;
 
+  /* Große Konzepte liegen auf ihrer eigenen Seite (GitHub Pages Grenze 1 GB), gleiche Verschlüsselung, andere Adresse */
+  var BASE={"acai-x-you":"https://nadercbz.github.io/acai-x-you/dateien/"};
+  function pfad(){return BASE[S.id]||("konzepte/"+S.id+"/");}
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   function mb(n){return n>=1048576?(n/1048576).toFixed(1).replace(".",",")+" MB":Math.max(1,Math.round(n/1024))+" KB";}
   function getPw(){try{return sessionStorage.getItem("akq-pw")||localStorage.getItem("akq-pw")||"";}catch(e){return "";}}
@@ -20,7 +23,7 @@
     return crypto.subtle.decrypt({name:"AES-GCM",iv:b.slice(4,16)},S.key,b.slice(16)).then(function(x){return new Uint8Array(x);});
   }
   function hol(fid){
-    return fetch("konzepte/"+S.id+"/"+fid+".enc").then(function(r){if(!r.ok)throw new Error("Datei fehlt auf dem Server");return r.arrayBuffer();}).then(dec);
+    return fetch(pfad()+fid+".enc").then(function(r){if(!r.ok)throw new Error("Datei fehlt auf dem Server");return r.arrayBuffer();}).then(dec);
   }
   function bytes(f){
     if(S.cache[f.id])return Promise.resolve(S.cache[f.id]);
@@ -203,7 +206,7 @@
   }
   function entsperren(pw){
     var st=el.querySelector(".kzf-st");st.textContent="Prüfe Passphrase, das dauert einen Moment …";
-    return deriveKey(pw).then(function(k){S.key=k;return fetch("konzepte/"+S.id+"/index.enc").then(function(r){if(!r.ok)throw new Error("Dateiliste fehlt auf dem Server");return r.arrayBuffer();}).then(dec);})
+    return deriveKey(pw).then(function(k){S.key=k;return fetch(pfad()+"index.enc").then(function(r){if(!r.ok)throw new Error("Dateiliste fehlt auf dem Server");return r.arrayBuffer();}).then(dec);})
       .then(function(b){S.man=JSON.parse(new TextDecoder().decode(b));setPw(pw);st.textContent="";zeigen();})
       .catch(function(e){S.key=null;st.textContent="";lock(e&&e.name==="OperationError"?"Passphrase stimmt nicht.":("Ging nicht: "+(e&&e.message||e)));});
   }
