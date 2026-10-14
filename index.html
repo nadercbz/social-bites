@@ -473,9 +473,9 @@
   .foot-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
   .foot-top h2{margin:0;font-weight:800;letter-spacing:-.05em;line-height:.92;font-size:clamp(44px,8vw,128px);}
   .foot-cta{display:flex;gap:10px;flex-wrap:wrap;}
-  .foot .btn:not(.inv){background:transparent;color:var(--ink);border-color:rgba(254,254,254,.45);}
-  .foot .btn:not(.inv) .dot{background:var(--accent);}
-  .foot .btn:not(.inv):hover,.foot .btn:not(.inv):focus-visible{color:#17140F;border-color:var(--ink);}
+  .foot .btn:not(.inv):not(.shiny){background:transparent;color:var(--ink);border-color:rgba(254,254,254,.45);}
+  .foot .btn:not(.inv):not(.shiny) .dot{background:var(--accent);}
+  .foot .btn:not(.inv):not(.shiny):hover,.foot .btn:not(.inv):not(.shiny):focus-visible{color:#17140F;border-color:var(--ink);}
   .foot-nums{list-style:none;margin:0;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
   .foot-nums b{display:block;font-weight:800;font-size:clamp(30px,4vw,56px);letter-spacing:-.05em;line-height:1;color:var(--accent);}
   .foot-nums span{display:block;margin-top:8px;font-size:14px;color:var(--mute);max-width:26ch;}
@@ -722,14 +722,14 @@
   .bgsw .lang-menu button span{flex:1;text-align:left;}
   .bgsw .lang-menu button b{width:auto;font-weight:500;letter-spacing:.02em;}
   .head-actions{padding-right:172px;}
-  /* Fester Anfrage-Button im Shiny-Stil: dunkle Fläche, umlaufender Orange-Bogen, Glanz */
+  /* Anfrage-Buttons im Shiny-Stil (fester Button oben rechts + alle .btn.shiny): dunkle Fläche, umlaufender Orange-Bogen, Glanz */
   @property --sh-a{syntax:"<angle>";initial-value:0deg;inherits:false;}
   @property --sh-o{syntax:"<angle>";initial-value:0deg;inherits:false;}
   @property --sh-p{syntax:"<percentage>";initial-value:9%;inherits:false;}
   @property --sh-s{syntax:"<color>";initial-value:#FEFEFE;inherits:false;}
-  .cta-fixed{
+  :is(.cta-fixed,.btn.shiny){
     --sh-fill:#232321;--sh-acc:var(--accent);--sh-soft:#FF9A5C;--sh-t:.8s cubic-bezier(.25,1,.5,1);
-    position:fixed;top:8px;right:8px;z-index:62;isolation:isolate;overflow:hidden;
+    isolation:isolate;overflow:hidden;position:relative;cursor:pointer;
     display:inline-flex;align-items:center;gap:9px;padding:12px 18px 12px 20px;border-radius:999px;
     border:2px solid transparent;color:#FEFEFE;font:700 15px/1 var(--display);letter-spacing:-.01em;white-space:nowrap;
     background:
@@ -739,26 +739,31 @@
     transition:--sh-o var(--sh-t),--sh-p var(--sh-t),--sh-s var(--sh-t),translate .2s ease;
     animation:shAngle 3s linear infinite;
   }
-  .cta-fixed::before,.cta-fixed::after,.cta-fixed span::before{content:"";pointer-events:none;position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:-1;}
-  .cta-fixed::before{
+  #cta-fixed{position:fixed;top:8px;right:8px;z-index:62;}
+  .btn.shiny[hidden]{display:none;}
+  .btn.shiny{padding:14px 22px 14px 24px;font-size:16px;}
+  .hero-cta .btn.shiny{font-size:clamp(16px,1.3vw,19px);padding:16px 26px 16px 28px;}
+  .mail .btn.shiny{font-size:clamp(17px,1.6vw,21px);}
+  :is(.cta-fixed,.btn.shiny)::before,:is(.cta-fixed,.btn.shiny)::after,:is(.cta-fixed,.btn.shiny) span::before{content:"";pointer-events:none;position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:-1;}
+  :is(.cta-fixed,.btn.shiny)::before{
     width:calc(100% - 6px);height:calc(100% - 6px);border-radius:inherit;opacity:.45;
     background:radial-gradient(circle at 2px 2px,#FEFEFE .5px,transparent 0) padding-box;background-size:4px 4px;background-repeat:space;
     -webkit-mask-image:conic-gradient(from calc(var(--sh-a) + 45deg),#000,transparent 10% 90%,#000);mask-image:conic-gradient(from calc(var(--sh-a) + 45deg),#000,transparent 10% 90%,#000);
     animation:shAngle 3s linear infinite;
   }
-  .cta-fixed::after{
+  :is(.cta-fixed,.btn.shiny)::after{
     width:100%;aspect-ratio:1;opacity:.6;
     background:linear-gradient(-50deg,transparent,var(--sh-acc),transparent);
     -webkit-mask-image:radial-gradient(circle at bottom,transparent 40%,#000);mask-image:radial-gradient(circle at bottom,transparent 40%,#000);
     animation:shSpin 3s linear infinite;
   }
-  .cta-fixed span{position:relative;z-index:1;}
-  .cta-fixed span::before{width:calc(100% + 3rem);height:calc(100% + 2rem);box-shadow:inset 0 -1ex 2rem 4px var(--sh-acc);opacity:0;transition:opacity var(--sh-t);animation:shBreathe 4.5s linear infinite;}
-  .cta-fixed i{position:relative;z-index:1;width:7px;height:7px;border-radius:50%;background:var(--sh-acc);flex:none;transition:transform .35s var(--ease);}
-  .cta-fixed:hover,.cta-fixed:focus-visible{--sh-p:20%;--sh-o:95deg;--sh-s:var(--sh-soft);}
-  .cta-fixed:hover span::before,.cta-fixed:focus-visible span::before{opacity:1;}
-  .cta-fixed:hover i,.cta-fixed:focus-visible i{background:#FEFEFE;transform:scale(1.5);}
-  .cta-fixed:active{translate:0 1px;}
+  :is(.cta-fixed,.btn.shiny) span{position:relative;z-index:1;}
+  :is(.cta-fixed,.btn.shiny) span::before{width:calc(100% + 3rem);height:calc(100% + 2rem);box-shadow:inset 0 -1ex 2rem 4px var(--sh-acc);opacity:0;transition:opacity var(--sh-t);animation:shBreathe 4.5s linear infinite;}
+  :is(.cta-fixed,.btn.shiny) :is(i,.dot){position:relative;z-index:1;width:7px;height:7px;border-radius:50%;background:var(--sh-acc);flex:none;transform:none;transition:transform .35s var(--ease);}
+  :is(.cta-fixed,.btn.shiny):is(:hover,:focus-visible){--sh-p:20%;--sh-o:95deg;--sh-s:var(--sh-soft);color:#FEFEFE;border-color:transparent;}
+  :is(.cta-fixed,.btn.shiny):is(:hover,:focus-visible) span::before{opacity:1;}
+  :is(.cta-fixed,.btn.shiny):is(:hover,:focus-visible) :is(i,.dot){background:#FEFEFE;transform:scale(1.5);}
+  :is(.cta-fixed,.btn.shiny):active{translate:0 1px;}
   @keyframes shAngle{to{--sh-a:360deg;}}
   @keyframes shSpin{to{rotate:360deg;}}
   @keyframes shBreathe{0%,100%{scale:1;}50%{scale:1.2;}}
@@ -767,10 +772,11 @@
     .site-head.is-hidden{transform:none;}
     .head-actions{padding-right:0;}
     .menu-btn{margin-left:0;}
-    .cta-fixed{top:11px;right:58px;padding:10px 13px 10px 14px;font-size:13px;gap:7px;}
+    #cta-fixed{top:11px;right:58px;padding:10px 13px 10px 14px;font-size:13px;gap:7px;}
     .lang-menu{right:-60px;}
   }
-  @media (prefers-reduced-motion:reduce){.cta-fixed,.cta-fixed::before,.cta-fixed::after,.cta-fixed span::before{animation:none;}.cta-fixed{transition:none;}.cta-fixed:hover span::before,.cta-fixed:focus-visible span::before{opacity:0;}}
+  @media (prefers-reduced-motion:reduce){:is(.cta-fixed,.btn.shiny),:is(.cta-fixed,.btn.shiny)::before,:is(.cta-fixed,.btn.shiny)::after,:is(.cta-fixed,.btn.shiny) span::before{animation:none;}:is(.cta-fixed,.btn.shiny){transition:none;}:is(.cta-fixed,.btn.shiny):is(:hover,:focus-visible) span::before{opacity:0;}}
+  @media (max-width:900px){.btn.shiny{padding:12px 18px 12px 20px;font-size:15px;}}
   html.lang-ar :is(h1,h2,h3,h4,p,li,span,a,button,label,small,dd,dt,b,em){unicode-bidi:plaintext;}
   html.lang-ar body{font-family:var(--display),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;}
   html.lang-ar :is(h1,h2,h3,h4,.hero-h,.big-h){font-family:var(--head),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;letter-spacing:0;}
@@ -1114,7 +1120,7 @@
       <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_mood.mp4?v=1" poster="media/tile_mood.webp?v=1" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
-    <div class="hero-cta"><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+    <div class="hero-cta"><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
     <div class="hero-foot">
       <p class="hero-sub">Social Media für Unternehmer, Marken und Gastro aus Berlin.<br><span class="hot">Über 500 Millionen organische Views auf TikTok und Instagram.</span></p>
       <div class="trust">
@@ -1286,7 +1292,7 @@
       <li class="rv" style="--i:0"><b><span class="cnt" data-to="500">500</span>&nbsp;Mio<i>+</i></b><span>organische Views</span></li>
       <li class="rv" style="--i:1"><b><span class="cnt" data-to="60">60</span><i>+</i></b><span>Kunden und Projekte</span></li>
     </ul>
-    <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn inv" href="#anfrage" data-anfrage><span>Kostenloser Marketing-Check</span><i class="dot"></i></a></p>
+    <p class="wirk-cta rv"><span>Bereit, deine Marke sichtbar zu machen?</span><a class="btn shiny" href="#anfrage" data-anfrage><span>Kostenloser Marketing-Check</span><i class="dot"></i></a></p>
   </section>
 
   <section class="services" id="leistungen">
@@ -1325,7 +1331,7 @@
         <p>Google-Profil mit starken Fotos, Bewertungsprozess und der Check, wie ChatGPT und Google KI dein Business nennen. Damit dich findet, wer gerade Hunger hat.</p>
       </li>
     </ol>
-    <p class="wirk-cta rv"><span>Passt etwas davon zu deinem Vorhaben?</span><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
+    <p class="wirk-cta rv"><span>Passt etwas davon zu deinem Vorhaben?</span><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
   </section>
 
   <section class="pakete" id="pakete" aria-labelledby="pk-h">
@@ -1340,7 +1346,7 @@
           <h3>Bites Opening</h3>
           <p>Neueröffnung mit Content und Opening-Event. Von der Baustelle bis zur Schlange vor der Tür.</p>
           <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
-          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites Opening"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="opening">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+          <div class="pk-acts"><button class="btn shiny" type="button" data-anfrage="Bites Opening"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="opening">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
         </div>
       </article>
       <article class="pk pk-cr">
@@ -1350,7 +1356,7 @@
           <h3>Bites for Gastro</h3>
           <p>Monatliche Betreuung für Unternehmen, die mehr Kunden, mehr Reichweite und einen Kanal wollen, der endlich läuft.</p>
           <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
-          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites for Gastro"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="gastro">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+          <div class="pk-acts"><button class="btn shiny" type="button" data-anfrage="Bites for Gastro"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="gastro">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
         </div>
       </article>
       <article class="pk pk-ink">
@@ -1360,7 +1366,7 @@
           <h3>Bites for Brands</h3>
           <p>Kampagnen für Systemgastronomie und Marken. Mit Einkauf, Recht und mehreren Freigabestufen.</p>
           <div class="pk-price"><span class="mono">Preis</span><b>auf Anfrage</b></div>
-          <div class="pk-acts"><button class="btn inv" type="button" data-anfrage="Bites for Brands"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="brands">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
+          <div class="pk-acts"><button class="btn shiny" type="button" data-anfrage="Bites for Brands"><span>Anfragen</span><i class="dot"></i></button><button class="pk-more" type="button" data-paket="brands">Was drin ist <span aria-hidden="true">&rarr;</span></button></div>
         </div>
       </article>
     </div>
@@ -1377,7 +1383,7 @@
         <h3 class="mono">Was drin ist</h3>
         <ul id="pkd-list"></ul>
         <dl class="pkd-facts"><div><dt class="mono">Zeitraum</dt><dd id="pkd-zeit"></dd></div><div><dt class="mono">Preis</dt><dd>auf Anfrage</dd></div></dl>
-        <div class="pk-acts"><button class="btn or" type="button" id="pkd-go" data-anfrage=""><span>Dieses Paket anfragen</span><i class="dot"></i></button><a class="pk-more" href="tel:+4917622733831">Lieber anrufen <span aria-hidden="true">&rarr;</span></a></div>
+        <div class="pk-acts"><button class="btn shiny" type="button" id="pkd-go" data-anfrage=""><span>Dieses Paket anfragen</span><i class="dot"></i></button><a class="pk-more" href="tel:+4917622733831">Lieber anrufen <span aria-hidden="true">&rarr;</span></a></div>
       </div>
     </div>
   </dialog>
@@ -1433,7 +1439,7 @@
         <p class="inf-kunden mono">Beiträge der Kunden: <a href="https://www.instagram.com/reel/DcqKoKQsoFN/" target="_blank" rel="noopener">The Pizzary, Opening Event &#8599;</a> <a href="https://www.instagram.com/p/DHQPuwWNdzI/" target="_blank" rel="noopener">Mian Market &#8599;</a></p>
       </div>
     </div>
-    <p class="wirk-cta"><span>Das könnte dein nächstes Projekt sein.</span><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
+    <p class="wirk-cta"><span>Das könnte dein nächstes Projekt sein.</span><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
     <p class="pf-note mono">Views laut YouTube, Stand 07.10.2026. Die Musikvideos laufen auf den Kanälen der Artists.</p>
   </section>
 
@@ -1505,7 +1511,7 @@
   <section class="contact" id="kontakt">
     <div>
       <h2>Content, den Leute sehen wollen <a class="btn" href="portal.html"><video data-src="media/tender.mp4" poster="media/tender.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span>Kundenportal ansehen</span><i class="dot"></i></a></h2>
-      <div class="mail"><small>Kostenloser Marketing-Check mit kleinem Instagram-Profil-Check: Ziele und Umfang festlegen, ersten Drehtag planen.</small><a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+      <div class="mail"><small>Kostenloser Marketing-Check mit kleinem Instagram-Profil-Check: Ziele und Umfang festlegen, ersten Drehtag planen.</small><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
       <div class="mail"><small>Lieber direkt anrufen?</small><span class="mail-soon"><a href="tel:+4917622733831">Nader 0176 22733831</a><br><a href="tel:+4917680256378">Tommy 0176 80256378</a></span></div>
     </div>
   </section>
@@ -1516,7 +1522,7 @@
   <button class="pitchd-x" type="button" id="pitchd-x" aria-label="Schließen">&times;</button>
   <div class="pitchd-box">
     <div class="pitchd-stage" id="pitchd-stage"></div>
-    <a class="btn" href="#anfrage" data-anfrage id="pitchd-cta"><span>Projekt starten</span><i class="dot"></i></a>
+    <a class="btn shiny" href="#anfrage" data-anfrage id="pitchd-cta"><span>Projekt starten</span><i class="dot"></i></a>
   </div>
 </dialog>
 
@@ -1527,7 +1533,7 @@
     <div class="foot-top">
       <h2>Dein Business.<br>Unser Content.</h2>
       <div class="foot-cta">
-        <a class="btn inv" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a>
+        <a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a>
         <a class="btn" href="portal.html"><span>Kundenportal</span><i class="dot"></i></a>
       </div>
     </div>
@@ -1586,7 +1592,7 @@
           <button class="btn" type="button" data-anf-back hidden><span>Zurück</span><i class="dot"></i></button>
           <span class="sp"></span>
           <button class="btn inv" type="button" data-anf-next><span>Weiter</span><i class="dot"></i></button>
-          <button class="btn or" type="submit" data-anf-send hidden><span>Anfrage senden</span><i class="dot"></i></button>
+          <button class="btn shiny" type="submit" data-anf-send hidden><span>Anfrage senden</span><i class="dot"></i></button>
         </div>
       </form>
       <div class="anf-done" id="anf-done" hidden>
@@ -1611,7 +1617,7 @@
   <div class="sr-bg"></div>
   <div class="sr-scroll" id="sr-scroll">
     <div class="sr-wall" id="sr-wall"></div>
-    <div class="sr-end"><p>Das könnte dein nächstes Projekt sein.</p><a class="btn or" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+    <div class="sr-end"><p>Das könnte dein nächstes Projekt sein.</p><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
   </div>
   <div class="sr-bar"><span class="sr-tag mono">Showroom · <b id="sr-count"></b></span><button class="sr-x" type="button" id="sr-x" aria-label="Showroom schließen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
 </div>
