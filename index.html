@@ -722,21 +722,55 @@
   .bgsw .lang-menu button span{flex:1;text-align:left;}
   .bgsw .lang-menu button b{width:auto;font-weight:500;letter-spacing:.02em;}
   .head-actions{padding-right:172px;}
-  .cta-fixed{position:fixed;top:8px;right:8px;z-index:62;display:inline-flex;align-items:center;gap:9px;padding:11px 16px 11px 18px;border-radius:9px;background:var(--accent);color:#232321;font:700 15px/1 var(--display);letter-spacing:-.01em;white-space:nowrap;box-shadow:0 8px 20px -10px rgba(242,106,33,.8);transition:background-color .25s ease,color .25s ease,transform .3s var(--ease);}
-  .cta-fixed i{width:7px;height:7px;border-radius:50%;background:#232321;transition:transform .35s var(--ease);}
-  .cta-fixed:hover,.cta-fixed:focus-visible{background:var(--accent-ink);color:#FEFEFE;}
+  /* Fester Anfrage-Button im Shiny-Stil: dunkle Fläche, umlaufender Orange-Bogen, Glanz */
+  @property --sh-a{syntax:"<angle>";initial-value:0deg;inherits:false;}
+  @property --sh-o{syntax:"<angle>";initial-value:0deg;inherits:false;}
+  @property --sh-p{syntax:"<percentage>";initial-value:9%;inherits:false;}
+  @property --sh-s{syntax:"<color>";initial-value:#FEFEFE;inherits:false;}
+  .cta-fixed{
+    --sh-fill:#232321;--sh-acc:var(--accent);--sh-soft:#FF9A5C;--sh-t:.8s cubic-bezier(.25,1,.5,1);
+    position:fixed;top:8px;right:8px;z-index:62;isolation:isolate;overflow:hidden;
+    display:inline-flex;align-items:center;gap:9px;padding:12px 18px 12px 20px;border-radius:999px;
+    border:2px solid transparent;color:#FEFEFE;font:700 15px/1 var(--display);letter-spacing:-.01em;white-space:nowrap;
+    background:
+      linear-gradient(var(--sh-fill),var(--sh-fill)) padding-box,
+      conic-gradient(from calc(var(--sh-a) - var(--sh-o)),transparent,var(--sh-acc) var(--sh-p),var(--sh-s) calc(var(--sh-p)*2),var(--sh-acc) calc(var(--sh-p)*3),transparent calc(var(--sh-p)*4)) border-box;
+    box-shadow:inset 0 0 0 1px #1A1818,0 0 0 1px rgba(242,106,33,.35),0 0 24px -4px rgba(242,106,33,.6),0 10px 26px -12px rgba(242,106,33,.95);
+    transition:--sh-o var(--sh-t),--sh-p var(--sh-t),--sh-s var(--sh-t),translate .2s ease;
+    animation:shAngle 3s linear infinite;
+  }
+  .cta-fixed::before,.cta-fixed::after,.cta-fixed span::before{content:"";pointer-events:none;position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:-1;}
+  .cta-fixed::before{
+    width:calc(100% - 6px);height:calc(100% - 6px);border-radius:inherit;opacity:.45;
+    background:radial-gradient(circle at 2px 2px,#FEFEFE .5px,transparent 0) padding-box;background-size:4px 4px;background-repeat:space;
+    -webkit-mask-image:conic-gradient(from calc(var(--sh-a) + 45deg),#000,transparent 10% 90%,#000);mask-image:conic-gradient(from calc(var(--sh-a) + 45deg),#000,transparent 10% 90%,#000);
+    animation:shAngle 3s linear infinite;
+  }
+  .cta-fixed::after{
+    width:100%;aspect-ratio:1;opacity:.6;
+    background:linear-gradient(-50deg,transparent,var(--sh-acc),transparent);
+    -webkit-mask-image:radial-gradient(circle at bottom,transparent 40%,#000);mask-image:radial-gradient(circle at bottom,transparent 40%,#000);
+    animation:shSpin 3s linear infinite;
+  }
+  .cta-fixed span{position:relative;z-index:1;}
+  .cta-fixed span::before{width:calc(100% + 3rem);height:calc(100% + 2rem);box-shadow:inset 0 -1ex 2rem 4px var(--sh-acc);opacity:0;transition:opacity var(--sh-t);animation:shBreathe 4.5s linear infinite;}
+  .cta-fixed i{position:relative;z-index:1;width:7px;height:7px;border-radius:50%;background:var(--sh-acc);flex:none;transition:transform .35s var(--ease);}
+  .cta-fixed:hover,.cta-fixed:focus-visible{--sh-p:20%;--sh-o:95deg;--sh-s:var(--sh-soft);}
+  .cta-fixed:hover span::before,.cta-fixed:focus-visible span::before{opacity:1;}
   .cta-fixed:hover i,.cta-fixed:focus-visible i{background:#FEFEFE;transform:scale(1.5);}
-  .cta-fixed::after{content:"";position:absolute;inset:-4px;border-radius:12px;border:2px solid var(--accent);opacity:0;animation:ctaPulse 3.2s ease-out 2s infinite;pointer-events:none;}
-  @keyframes ctaPulse{0%{opacity:.7;transform:scale(.96);}70%,100%{opacity:0;transform:scale(1.08);}}
+  .cta-fixed:active{translate:0 1px;}
+  @keyframes shAngle{to{--sh-a:360deg;}}
+  @keyframes shSpin{to{rotate:360deg;}}
+  @keyframes shBreathe{0%,100%{scale:1;}50%{scale:1.2;}}
   .menu-open .cta-fixed{display:none;}
   @media (max-width:900px){
     .site-head.is-hidden{transform:none;}
     .head-actions{padding-right:0;}
     .menu-btn{margin-left:0;}
-    .cta-fixed{top:11px;right:58px;padding:10px 12px;font-size:13px;}
+    .cta-fixed{top:11px;right:58px;padding:10px 13px 10px 14px;font-size:13px;gap:7px;}
     .lang-menu{right:-60px;}
   }
-  @media (prefers-reduced-motion:reduce){.cta-fixed::after{animation:none;}}
+  @media (prefers-reduced-motion:reduce){.cta-fixed,.cta-fixed::before,.cta-fixed::after,.cta-fixed span::before{animation:none;}.cta-fixed{transition:none;}.cta-fixed:hover span::before,.cta-fixed:focus-visible span::before{opacity:0;}}
   html.lang-ar :is(h1,h2,h3,h4,p,li,span,a,button,label,small,dd,dt,b,em){unicode-bidi:plaintext;}
   html.lang-ar body{font-family:var(--display),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;}
   html.lang-ar :is(h1,h2,h3,h4,.hero-h,.big-h){font-family:var(--head),'Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;letter-spacing:0;}
@@ -1054,7 +1088,7 @@
   </div>
   <div class="progress" aria-hidden="true"></div>
 </header>
-<a class="cta-fixed" href="#anfrage" data-anfrage id="cta-fixed"><span>Projekt starten</span><i aria-hidden="true"></i></a>
+<a class="cta-fixed" href="#anfrage" data-anfrage id="cta-fixed"><span>Anfrage senden</span><i aria-hidden="true"></i></a>
 
 <nav class="mnav" id="mnav" aria-label="Menü" inert>
   <a href="#arbeiten"><small>01</small>Projekte</a>

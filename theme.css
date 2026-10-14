@@ -33,11 +33,8 @@
 :root[data-palette="umi"]:not([data-theme="dark"]) .btn:focus-visible,
 :root[data-palette="umi"]:not([data-theme="dark"]) .btn.inv:hover,
 :root[data-palette="umi"]:not([data-theme="dark"]) .btn.inv:focus-visible{color:#EEEBE3;}
-:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed:hover,
-:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed:focus-visible{background:#4C0C07;color:#EEEBE3;}
 :root[data-palette="umi"]:not([data-theme="dark"]) .ht-play{background:#76150E;}
-:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed .dot,
-:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed i{background:#EEEBE3;}
+:root[data-palette="umi"]:not([data-theme="dark"]) .cta-fixed{--sh-fill:#2A0806;--sh-soft:#E0614F;}
 
 
 /* Umi: rote Flächen in Portal und Tools bekommen helle Schrift statt Charcoal */
