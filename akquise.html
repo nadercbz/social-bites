@@ -822,11 +822,12 @@ document.addEventListener("change",function(e){
   store("sb-akq-evfilter",EVF);evShown=40;render(true);
 });
 
-/* ---------- Jobs: Stellenanzeigen von Kleinanzeigen, Anbieter die Personal suchen und Content brauchen ---------- */
+/* ---------- Jobs: Firmen, die Social Media Manager, Content Creator, Grafiker oder Webdesigner suchen (Kleinanzeigen) ---------- */
 var JOBS=[],JOBS_STATE="idle",JOBS_META={};
-var JF=load("sb-akq-jobfilter",{q:"",bl:"Berlin",kat:"",tage:14,min:0,sig:"",verm:false,kontakt:false,gew:false,alle:false,sort:"score"});
+var JF_DEF={q:"",bl:"",kat:"",br:"",tage:30,min:0,sig:"",verm:false,ag:false,kontakt:false,gew:false,alle:false,sort:"score"};
+var JF=Object.assign({},JF_DEF,load("sb-akq-jobfilter2",{}));
 var jobShown=40;
-var JOB_SIG={social:"Sucht Social Media oder Content",eroeffnung:"Eröffnung oder Neustart",mehrere:"Mehrere offene Stellen"};
+var JOB_SIG={eroeffnung:"Eröffnung oder Neustart",einstieg:"Kleines Budget",mehrere:"Mehrere offene Stellen"};
 function jobLoadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=function(){rej(new Error("fehlt"));};document.head.appendChild(s);});}
 function loadJobs(){
   if(JOBS_STATE==="loading"||JOBS_STATE==="ok")return;
@@ -848,19 +849,21 @@ function jobById(id){return JOBS.filter(function(j){return j.id===id;})[0];}
 function jobAsLead(j){return {id:j.id,name:j.anbieter||j.titel,branche:"job",kiez:j.ort||"",score:j.score||0,kontakt:j.titel,website:j.website||j.url};}
 function jobFirma(j){return j.anbieter||j.shop||"";}
 function jobKontakt(j){return !!(j.mail||j.telefon||j.website);}
-function jobSigs(j){var a=[];if(j.signal_social)a.push("social");if(j.signal_eroeffnung)a.push("eroeffnung");if((j.anbieter_n||1)>=3)a.push("mehrere");return a;}
+function jobSigs(j){var a=[];if(j.signal_eroeffnung)a.push("eroeffnung");if(j.einstieg)a.push("einstieg");if((j.anbieter_n||1)>=3)a.push("mehrere");return a;}
 function jobOk(j){
   var f=JF,st=stOf(j.id),d=days(j.datum);
   if(f.tage&&d!=null&&-d>f.tage)return false;
   if(!f.alle&&st!=="neu"&&st!=="vorgemerkt"&&st!=="konzept")return false;
   if(f.bl&&j.bundesland!==f.bl)return false;
   if(f.kat&&j.kat!==f.kat)return false;
+  if(f.br&&j.branche!==f.br)return false;
   if(!f.verm&&j.vermittler)return false;
+  if(!f.ag&&j.agentur)return false;
   if(f.gew&&j.anbieter_typ==="privat")return false;
   if(f.kontakt&&!jobKontakt(j))return false;
   if(f.min&&(j.score||0)<f.min)return false;
   if(f.sig&&jobSigs(j).indexOf(f.sig)<0)return false;
-  if(f.q){var h=evFold([j.titel,j.anbieter,j.ort,j.plz,j.bundesland,j.vorschau,j.beschreibung,j.kat_name].join(" "));if(evFold(f.q).split(/\s+/).some(function(w){return w&&h.indexOf(w)<0;}))return false;}
+  if(f.q){var h=evFold([j.titel,j.anbieter,j.ort,j.plz,j.bundesland,j.vorschau,j.beschreibung,j.kat_name,j.branche_name,j.plattform].join(" "));if(evFold(f.q).split(/\s+/).some(function(w){return w&&h.indexOf(w)<0;}))return false;}
   return true;
 }
 function jobList(){
@@ -882,7 +885,8 @@ function jobBriefing(j){
   var s=jobSigs(j).map(function(k){return JOB_SIG[k];});
   var L=["KONZEPT-BRIEFING für Social Bites","",
    "Anbieter: "+(jobFirma(j)||"(Name steht nicht in der Anzeige, bitte aus Website oder Impressum klären)"),
-   "Branche: "+(j.kat_name||"")+(j.anbieter_typ?" · "+j.anbieter_typ:""),
+   "Sucht die Rolle: "+(j.kat_name||""),
+   "Branche (geschätzt): "+(j.branche_name||"Sonstige")+(j.anbieter_typ?" · "+j.anbieter_typ:"")+(j.plattform?" · Anzeige über "+j.plattform:""),
    "Ort: "+[j.plz,j.ort].filter(Boolean).join(" ")+", "+(j.bundesland||""),
    "Sucht: "+j.titel+" (eingestellt am "+fmtD(j.datum)+")"+((j.anbieter_n||1)>1?", insgesamt "+j.anbieter_n+" offene Stellen":""),
    j.arbeitszeit?"Arbeitszeit: "+j.arbeitszeit:"",
@@ -890,21 +894,22 @@ function jobBriefing(j){
    j.website?"Website: "+j.website:"",j.mail?"E-Mail: "+j.mail:"",j.telefon?"Telefon: "+j.telefon:"",
    s.length?"Signale: "+s.join(", "):"","Fit-Score: "+(j.score||0)+" von 100","",
    "Text der Anzeige:",(j.beschreibung||j.vorschau||"").trim(),"",
-   "AUFTRAG: Baue für diesen Anbieter ein komplettes Verkaufskonzept, das ich ihm direkt verkaufen kann. Erst Marke und Auftritt recherchieren (Website, Instagram, Google Maps, Bewertungen), den Bedarf aus der Anzeige ableiten (Personal finden ist oft ein Sichtbarkeits- und Content-Problem), dann Konzept in Steps mit Paket und Preis. Gastro und Beauty per Du, Praxis und Kanzlei per Sie."];
+   "AUFTRAG: Diese Firma will eine Stelle als "+(j.kat_name||"Kreative")+" besetzen. Baue ein komplettes Verkaufskonzept, das zeigt, warum Social Bites die bessere Lösung ist als eine Festanstellung: Erst Marke und Auftritt recherchieren (Website, Instagram, TikTok, Google Maps), dann die Aufgaben aus der Anzeige übernehmen und zeigen, was wir pro Monat liefern, mit Paket, Preis und Vergleich zu den Kosten der Stelle (Gehalt, Einarbeitung, Ausfall, Technik). Gastro und Beauty per Du, Praxis und Kanzlei per Sie."];
   return L.filter(function(x){return x!==""||true;}).join("\n").replace(/\n{3,}/g,"\n\n");
 }
 function jobText(j){
   var who=PREF.who||"Nader",T=Object.assign({referenzen:"The Pizzary, Mmaah, Crazy Canes und Vrohstoff"},(DATA&&DATA.profil&&DATA.profil.texte)||{});
   var f=jobFirma(j);
-  return "Betreff: Mehr Bewerbungen durch besseren Auftritt"+(f?" bei "+f:"")+"\n\nGuten Tag,\n\nich habe gesehen, dass Sie aktuell "+j.titel.replace(/\s*\(m\/w\/d\)|\s*\(w\/m\/d\)|\s*m\/w\/d/ig,"")+" suchen. Gute Leute finden heute vor allem über das, was sie im Netz von Ihnen sehen: Instagram, TikTok, Google.\n\nWir sind Social Bites, ein Team aus Berlin für Content, der Gäste und Bewerber gleichzeitig anzieht. Zuletzt haben wir unter anderem Openings und Kampagnen für "+T.referenzen+" produziert.\n\nWir haben uns Ihren Auftritt angesehen und ein Konzept für Sie vorbereitet. Hätten Sie diese Woche 10 Minuten, damit ich es Ihnen zeigen kann?\n\nMit freundlichen Grüßen\n"+who+" von Social Bites\nnadercbz.github.io/social-bites";
+  var rolle=j.kat_name||"Unterstützung im Marketing";
+  return "Betreff: Ihre Stelle als "+rolle+(f?" bei "+f:"")+": ein Vorschlag\n\nGuten Tag,\n\nich habe gesehen, dass Sie gerade eine Stelle als "+rolle+" besetzen möchten. Bevor Sie jemanden einarbeiten: Genau diese Arbeit machen wir jeden Tag, als komplettes Team aus Konzept, Dreh, Schnitt, Design und Community, ohne Einarbeitung, Urlaubsvertretung oder eigene Technik.\n\nWir sind Social Bites aus Berlin. Zuletzt haben wir unter anderem Content und Kampagnen für "+T.referenzen+" produziert.\n\nWir haben uns Ihren Auftritt angesehen und ein Konzept vorbereitet, was wir für Sie pro Monat liefern würden, im Vergleich zu den Kosten der Stelle. Hätten Sie diese Woche 10 Minuten, damit ich es Ihnen zeige?\n\nMit freundlichen Grüßen\n"+who+" von Social Bites\nnadercbz.github.io/social-bites";
 }
 function jobCard(j){
   var st=stOf(j.id),done=!(st==="neu"||st==="vorgemerkt"||st==="konzept"),sg=jobSigs(j);
   var warum=(j.warum||[]).filter(function(w){return w.p>0;}).slice(0,5).map(function(w){return '<span>'+esc(w.t)+'<b>+'+w.p+'</b></span>';}).join("");
   return '<article class="lc'+(done?" done":"")+'" data-id="'+esc(j.id)+'">'+jobDt(j)+
-   '<div><div class="hd"><h3 data-open="'+esc(j.id)+'">'+esc(j.titel)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(j.kat_name||"Job")+'</span><span class="pill">'+esc(j.bundesland)+'</span>'+(j.ort?'<span class="pill">'+esc(j.ort)+'</span>':"")+
-   (j.anbieter_typ?'<span class="pill">'+esc(j.anbieter_typ)+'</span>':"")+(sg.map(function(k){return '<span class="pill or">'+esc(JOB_SIG[k])+'</span>';}).join(""))+(j.vermittler?'<span class="pill bad">Vermittler</span>':"")+(j._new?'<span class="pill new">Neu</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+'<span class="pill">'+esc(ago(j.datum))+'</span></div></div>'+
-   '<p class="evdate">'+esc(jobFirma(j)||"Anbieter unbekannt")+'<small>'+esc(((j.anbieter_n||1)>1?j.anbieter_n+" offene Stellen · ":"")+((j.mehrfach||1)>1?"in "+j.mehrfach+" Bezirken geschaltet · ":"")+(j.arbeitszeit||""))+'</small></p>'+
+   '<div><div class="hd"><h3 data-open="'+esc(j.id)+'">'+esc(j.titel)+'</h3></div><div class="meta" style="margin-top:6px"><span class="pill ink">'+esc(j.kat_name||"Job")+'</span>'+(j.branche_name?'<span class="pill">'+esc(j.branche_name)+'</span>':"")+'<span class="pill">'+esc(j.bundesland)+'</span>'+(j.ort?'<span class="pill">'+esc(j.ort)+'</span>':"")+
+   (j.anbieter_typ?'<span class="pill">'+esc(j.anbieter_typ)+'</span>':"")+(sg.map(function(k){return '<span class="pill or">'+esc(JOB_SIG[k])+'</span>';}).join(""))+(j.vermittler?'<span class="pill bad">Vermittler</span>':"")+(j.agentur?'<span class="pill bad">Agentur</span>':"")+(j._new?'<span class="pill new">Neu</span>':"")+(st!=="neu"?'<span class="pill or">'+esc(stName(st))+'</span>':"")+'<span class="pill">'+esc(ago(j.datum))+'</span></div></div>'+
+   '<p class="evdate">'+esc(jobFirma(j)||"Anbieter unbekannt")+'<small>'+esc((j.plattform?"über "+j.plattform+" · ":"")+((j.anbieter_n||1)>1?j.anbieter_n+" offene Stellen · ":"")+((j.mehrfach||1)>1?"in "+j.mehrfach+" Bezirken geschaltet · ":"")+(j.arbeitszeit||""))+'</small></p>'+
    (warum?'<div class="warum">'+warum+'</div>':"")+
    '<p class="evdesc">'+esc(String(j.beschreibung||j.vorschau||"").replace(/\s+/g," ").slice(0,210))+'…</p>'+
    '<div class="contact">'+jobContact(j)+'</div>'+
@@ -916,24 +921,26 @@ function jobCard(j){
    (st==="neu"||st==="vorgemerkt"||st==="konzept"?'<button class="btn sm" type="button" data-set="kein_fit" data-id="'+esc(j.id)+'" title="Passt nicht, nicht mehr zeigen"><span class="dot"></span><span>Kein Fit</span></button>':'<button class="btn sm" type="button" data-set="neu" data-id="'+esc(j.id)+'"><span class="dot"></span><span>Zurück auf Neu</span></button>')+'</div></article>';
 }
 function vJobs(){
-  var h='<h1 class="h2">Jobs.</h1><p class="lead">Stellenanzeigen von Kleinanzeigen aus ganz Deutschland, Berlin zuerst. Wer Personal sucht, hat meist auch ein Sichtbarkeits- und Content-Problem. Gefällt dir eine Anzeige, kopierst du das Briefing und baust daraus ein fertiges Konzept zum Verkaufen. Der Agent liest täglich neu.</p>';
+  var h='<h1 class="h2">Jobs.</h1><p class="lead">Firmen in ganz Deutschland, die gerade einen Social Media Manager, Content Creator, Grafiker oder Webdesigner suchen. Genau diese Arbeit verkaufen wir. Berlin steht oben. Gefällt dir eine Anzeige, kopierst du das Briefing und baust daraus ein Konzept: Social Bites statt Festanstellung. Der Agent liest täglich neu.</p>';
   if(JOBS_STATE==="loading"||JOBS_STATE==="idle")return h+'<div class="empty"><b>Stellen werden geladen …</b><span>Einen Moment.</span></div>';
   if(JOBS_STATE==="fehler"||!JOBS.length)return h+'<div class="empty"><b>Noch keine Stellen in den Daten.</b><span>Lokal mit: python3 Akquise/update_jobs.py. Auf GitHub erscheinen sie nach dem nächsten Lauf mit --deploy.</span></div>';
   var f=JF,list=jobList(),opt=function(c,cur){return Object.keys(c).sort().map(function(k){return '<option value="'+esc(k)+'"'+(cur===k?" selected":"")+'>'+esc(k)+' ('+c[k]+')</option>';}).join("");};
-  var cb={},ck={};JOBS.forEach(function(j){if(!f.verm&&j.vermittler)return;cb[j.bundesland]=(cb[j.bundesland]||0)+1;if(!f.bl||j.bundesland===f.bl)ck[j.kat]=(ck[j.kat]||0)+1;});
+  var cb={},ck={},cr={};JOBS.forEach(function(j){if(!f.verm&&j.vermittler)return;if(!f.ag&&j.agentur)return;cb[j.bundesland]=(cb[j.bundesland]||0)+1;if(!f.bl||j.bundesland===f.bl){ck[j.kat]=(ck[j.kat]||0)+1;cr[j.branche]=(cr[j.branche]||0)+1;}});
+  var brs=(JOBS_META.branchen||[]);
   var kats=(JOBS_META.kategorien||[]);
-  var nBer=JOBS.filter(function(j){return j.bundesland==="Berlin"&&!j.vermittler;}).length,nGas=list.filter(function(j){return j.kat==="gastro";}).length,nK=list.filter(jobKontakt).length,nT=list.filter(function(j){return days(j.datum)>=-1;}).length;
-  h+='<div class="stats"><div class="stat"><span class="mono">Treffer mit Filter</span><b>'+list.length+'</b></div><div class="stat"><span class="mono">Davon Gastro</span><b>'+nGas+'</b></div><div class="stat"><span class="mono">Heute und gestern</span><b>'+nT+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+nK+'</b></div><div class="stat"><span class="mono">Berlin gesamt</span><b>'+nBer+'</b></div></div>';
+  var nBer=JOBS.filter(function(j){return j.bundesland==="Berlin"&&!j.vermittler&&!j.agentur;}).length,nGas=list.filter(function(j){return j.kat==="social"||j.kat==="content";}).length,nK=list.filter(jobKontakt).length,nT=list.filter(function(j){return days(j.datum)>=-1;}).length;
+  h+='<div class="stats"><div class="stat"><span class="mono">Treffer mit Filter</span><b>'+list.length+'</b></div><div class="stat"><span class="mono">Social und Content</span><b>'+nGas+'</b></div><div class="stat"><span class="mono">Heute und gestern</span><b>'+nT+'</b></div><div class="stat"><span class="mono">Mit Kontakt</span><b>'+nK+'</b></div><div class="stat"><span class="mono">Berlin gesamt</span><b>'+nBer+'</b></div></div>';
   h+='<div class="evbar"><input type="search" id="jbq" placeholder="Suche: Beruf, Firma, Ort, PLZ" value="'+esc(f.q)+'" aria-label="Suche">'+
    '<select id="jbbl" aria-label="Bundesland"><option value="">Ganz Deutschland</option>'+opt(cb,f.bl)+'</select>'+
-   '<select id="jbkat" aria-label="Kategorie"><option value="">Alle Kategorien</option>'+kats.map(function(k){return '<option value="'+esc(k.key)+'"'+(f.kat===k.key?" selected":"")+'>'+esc(k.name)+(ck[k.key]?' ('+ck[k.key]+')':'')+'</option>';}).join("")+'</select>'+
-   '<select id="jbtage" aria-label="Zeitraum">'+[[1,"Heute und gestern"],[3,"Letzte 3 Tage"],[7,"Letzte 7 Tage"],[14,"Letzte 14 Tage"],[0,"Alle"]].map(function(t){return '<option value="'+t[0]+'"'+(+f.tage===t[0]?" selected":"")+'>'+t[1]+'</option>';}).join("")+'</select>'+
+   '<select id="jbkat" aria-label="Rolle"><option value="">Alle Rollen</option>'+kats.map(function(k){return '<option value="'+esc(k.key)+'"'+(f.kat===k.key?" selected":"")+'>'+esc(k.name)+(ck[k.key]?' ('+ck[k.key]+')':'')+'</option>';}).join("")+'</select>'+
+   '<select id="jbbr" aria-label="Branche"><option value="">Alle Branchen</option>'+brs.filter(function(k){return cr[k.key];}).map(function(k){return '<option value="'+esc(k.key)+'"'+(f.br===k.key?" selected":"")+'>'+esc(k.name)+' ('+cr[k.key]+')</option>';}).join("")+'</select>'+
+   '<select id="jbtage" aria-label="Zeitraum">'+[[1,"Heute und gestern"],[3,"Letzte 3 Tage"],[7,"Letzte 7 Tage"],[14,"Letzte 14 Tage"],[30,"Letzte 30 Tage"],[0,"Alle"]].map(function(t){return '<option value="'+t[0]+'"'+(+f.tage===t[0]?" selected":"")+'>'+t[1]+'</option>';}).join("")+'</select>'+
    '<select id="jbsig" aria-label="Signal"><option value="">Alle Signale</option>'+Object.keys(JOB_SIG).map(function(k){return '<option value="'+k+'"'+(f.sig===k?" selected":"")+'>'+JOB_SIG[k]+'</option>';}).join("")+'</select>'+
    '<select id="jbmin" aria-label="Mindest-Fit">'+[[0,"Jeder Fit"],[40,"Fit ab 40"],[55,"Fit ab 55"],[70,"Fit ab 70"]].map(function(t){return '<option value="'+t[0]+'"'+(+f.min===t[0]?" selected":"")+'>'+t[1]+'</option>';}).join("")+'</select>'+
    '<select id="jbsort" aria-label="Sortierung"><option value="score"'+(f.sort==="score"?" selected":"")+'>Nach Fit</option><option value="datum"'+(f.sort==="datum"?" selected":"")+'>Nach Datum</option></select>'+
-   '<label class="chk"><input type="checkbox" id="jbkontakt"'+(f.kontakt?" checked":"")+'>mit Kontakt</label><label class="chk"><input type="checkbox" id="jbgew"'+(f.gew?" checked":"")+'>nicht privat</label><label class="chk"><input type="checkbox" id="jbverm"'+(f.verm?" checked":"")+'>Vermittler zeigen</label><label class="chk"><input type="checkbox" id="jballe"'+(f.alle?" checked":"")+'>Erledigte zeigen</label>'+
+   '<label class="chk"><input type="checkbox" id="jbkontakt"'+(f.kontakt?" checked":"")+'>mit Kontakt</label><label class="chk"><input type="checkbox" id="jbgew"'+(f.gew?" checked":"")+'>nicht privat</label><label class="chk"><input type="checkbox" id="jbverm"'+(f.verm?" checked":"")+'>Jobbörsen ohne Firma zeigen</label><label class="chk"><input type="checkbox" id="jbag"'+(f.ag?" checked":"")+'>Agenturen zeigen</label><label class="chk"><input type="checkbox" id="jballe"'+(f.alle?" checked":"")+'>Erledigte zeigen</label>'+
    '<button class="btn sm" type="button" data-jobreset><span class="dot"></span><span>Zurücksetzen</span></button></div>';
-  if(!list.length)return h+'<div class="empty"><b>Keine Stellen mit diesen Filtern.</b><span>Wähle „Ganz Deutschland“, einen längeren Zeitraum oder setze die Filter zurück.</span></div>';
+  if(!list.length)return h+'<div class="empty"><b>Keine Stellen mit diesen Filtern.</b><span>Wähle „Ganz Deutschland“, „Alle Branchen“, einen längeren Zeitraum oder setze die Filter zurück.</span></div>';
   return h+'<div class="lcards">'+list.slice(0,jobShown).map(jobCard).join("")+'</div>'+(list.length>jobShown?'<button class="btn more" type="button" data-jobmore><span class="dot"></span><span>Mehr zeigen ('+(list.length-jobShown)+')</span></button>':"");
 }
 function openJob(id){
@@ -947,7 +954,7 @@ function openJob(id){
    '<div class="box" style="margin:0"><h4 class="mono">Text der Anzeige</h4><p style="margin:0;white-space:pre-wrap;font-size:14px;max-height:260px;overflow:auto">'+esc(j.beschreibung||j.vorschau||"")+'</p></div></div>'+
    '<div class="box"><h4 class="mono">Status und Notiz</h4><div class="stbtns" id="stb">'+STAT.map(function(s){return '<button class="btn sm" type="button" data-set="'+s[0]+'" data-id="'+esc(id)+'" aria-pressed="'+(o.s===s[0])+'"><span class="dot"></span><span>'+s[1]+'</span></button>';}).join("")+'</div><textarea class="note" id="detNote" placeholder="Notiz: Wen gesprochen, was vereinbart?">'+esc(o.note||"")+'</textarea>'+
    '<div class="dealbox" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px"><label style="font-size:12.5px;color:var(--mute)">Wert in Euro<input class="note" id="detWert" type="number" min="0" step="50" style="min-height:38px" value="'+esc(o.wert||"")+'"></label><label style="font-size:12.5px;color:var(--mute)">Nächster Schritt am<input class="note" id="detND" type="date" style="min-height:38px" value="'+esc(o.nd||"")+'"></label><label style="grid-column:1/-1;font-size:12.5px;color:var(--mute)">Nächster Schritt<input class="note" id="detNext" style="min-height:38px" placeholder="z. B. Konzept zeigen, nachfassen" value="'+esc(o.next||"")+'"></label></div></div></div>'+
-   '<div class="col"><div class="box"><h4 class="mono">Anbieter und Kontakt</h4><dl><dt>Anbieter</dt><dd>'+esc(jobFirma(j)||"unbekannt")+'</dd><dt>Website</dt><dd>'+(j.website?'<a href="'+esc(webUrl(j.website))+'" target="_blank" rel="noopener">'+esc(hostOf(j.website))+' ↗</a>':"nicht in der Anzeige")+'</dd><dt>E-Mail</dt><dd>'+(j.mail?'<a href="mailto:'+esc(j.mail)+'">'+esc(j.mail)+'</a>':"nicht in der Anzeige")+'</dd><dt>Telefon</dt><dd>'+(j.telefon?'<a href="tel:'+esc(String(j.telefon).replace(/[^\d+]/g,""))+'">'+esc(j.telefon)+'</a>':"nicht in der Anzeige")+'</dd></dl>'+
+   '<div class="col"><div class="box"><h4 class="mono">Anbieter und Kontakt</h4><dl><dt>Anbieter</dt><dd>'+esc(jobFirma(j)||"unbekannt")+'</dd>'+(j.plattform?'<dt>Anzeige über</dt><dd>'+esc(j.plattform)+' (Jobbörse)</dd>':"")+'<dt>Branche</dt><dd>'+esc(j.branche_name||"Sonstige")+' (geschätzt)</dd><dt>Website</dt><dd>'+(j.website?'<a href="'+esc(webUrl(j.website))+'" target="_blank" rel="noopener">'+esc(hostOf(j.website))+' ↗</a>':"nicht in der Anzeige")+'</dd><dt>E-Mail</dt><dd>'+(j.mail?'<a href="mailto:'+esc(j.mail)+'">'+esc(j.mail)+'</a>':"nicht in der Anzeige")+'</dd><dt>Telefon</dt><dd>'+(j.telefon?'<a href="tel:'+esc(String(j.telefon).replace(/[^\d+]/g,""))+'">'+esc(j.telefon)+'</a>':"nicht in der Anzeige")+'</dd></dl>'+
    '<div class="contact">'+jobContact(j)+'</div><div class="hint" style="margin-top:8px">Die Telefonnummer hinter „Nachricht“ zeigt Kleinanzeigen nur im Konto. Firma suchen führt zu Website, Impressum und Instagram.</div></div>'+
    '<div class="box"><h4 class="mono">Konzept-Briefing</h4><div class="tx" style="border:0;background:none;padding:0"><textarea id="ta_jobb" aria-label="Briefing" style="min-height:230px">'+esc(jobBriefing(j))+'</textarea><div class="tops"><button class="btn inv" type="button" data-jobcopy="ta_jobb"><span class="dot"></span><span>Briefing kopieren</span></button></div><div class="hint">Gib mir dieses Briefing, dann baue ich das komplette Konzept für den Anbieter.</div></div></div>'+
    '<div class="box"><h4 class="mono">Erste Nachricht</h4><div class="tx" style="border:0;background:none;padding:0"><textarea id="ta_jobt" aria-label="Text">'+esc(jobText(j))+'</textarea><div class="hint">Ein Anbieter ist ein Unternehmen: Kalt-E-Mail ist meist unzulässig (UWG § 7). Sicherer sind Anruf, Besuch oder die Nachricht über Kleinanzeigen, dann das Konzept als Folgemail. Keine Rechtsberatung.</div><div class="tops"><button class="btn inv" type="button" data-jobcopy="ta_jobt"><span class="dot"></span><span>Text kopieren</span></button>'+(j.mail?'<a class="btn" href="mailto:'+esc(j.mail)+'?subject='+encodeURIComponent("Mehr Bewerbungen durch besseren Auftritt")+'" target="_blank"><span class="dot"></span><span>Im Mail-Programm öffnen</span></a>':"")+'</div></div></div></div>';
@@ -955,11 +962,11 @@ function openJob(id){
   var d=$("#det");d.setAttribute("data-id",id);try{d.showModal();}catch(er){d.setAttribute("open","");}
 }
 var jbQT;
-document.addEventListener("input",function(e){if(e.target.id==="jbq"){clearTimeout(jbQT);var v=e.target.value;jbQT=setTimeout(function(){JF.q=v;store("sb-akq-jobfilter",JF);jobShown=40;var pos=v.length;render(true);var i=$("#jbq");if(i){i.focus();try{i.setSelectionRange(pos,pos);}catch(er){}}},220);}});
+document.addEventListener("input",function(e){if(e.target.id==="jbq"){clearTimeout(jbQT);var v=e.target.value;jbQT=setTimeout(function(){JF.q=v;store("sb-akq-jobfilter2",JF);jobShown=40;var pos=v.length;render(true);var i=$("#jbq");if(i){i.focus();try{i.setSelectionRange(pos,pos);}catch(er){}}},220);}});
 document.addEventListener("change",function(e){
-  var id=e.target.id,map={jbbl:"bl",jbkat:"kat",jbsig:"sig",jbsort:"sort"},num={jbtage:"tage",jbmin:"min"},chk={jbkontakt:"kontakt",jbgew:"gew",jbverm:"verm",jballe:"alle"};
+  var id=e.target.id,map={jbbl:"bl",jbkat:"kat",jbbr:"br",jbsig:"sig",jbsort:"sort"},num={jbtage:"tage",jbmin:"min"},chk={jbkontakt:"kontakt",jbgew:"gew",jbverm:"verm",jbag:"ag",jballe:"alle"};
   if(map[id])JF[map[id]]=e.target.value;else if(num[id])JF[num[id]]=+e.target.value;else if(chk[id])JF[chk[id]]=e.target.checked;else return;
-  store("sb-akq-jobfilter",JF);jobShown=40;render(true);
+  store("sb-akq-jobfilter2",JF);jobShown=40;render(true);
 });
 
 /* ---------- Konzepte: fertige DIN A4 Pitch Seiten als PDF ---------- */
@@ -1083,7 +1090,7 @@ document.addEventListener("click",function(e){
   if(t.hasAttribute("data-jobmore")){jobShown+=40;render(true);return;}
   if(t.hasAttribute("data-jobbrief")){var jj=jobById(t.getAttribute("data-jobbrief"));if(jj){copy(jobBriefing(jj),"Briefing für "+(jobFirma(jj)||jj.titel)+" kopiert");if(stOf(jj.id)==="neu"){setStatus(jj.id,"vorgemerkt");render(true);}}return;}
   if(t.hasAttribute("data-jobcopy")){var jt=$("#"+t.getAttribute("data-jobcopy"));if(jt)copy(jt.value,"Text kopiert");return;}
-  if(t.hasAttribute("data-jobreset")){JF={q:"",bl:"Berlin",kat:"",tage:14,min:0,sig:"",verm:false,kontakt:false,gew:false,alle:false,sort:"score"};store("sb-akq-jobfilter",JF);render();return;}
+  if(t.hasAttribute("data-jobreset")){JF=Object.assign({},JF_DEF);store("sb-akq-jobfilter2",JF);render();return;}
   if(t.hasAttribute("data-kz")){pitchDl(t.getAttribute("data-kz"));return;}
   if(t.hasAttribute("data-kzall")){pitchAll();return;}
   if(t.hasAttribute("data-copyaddr")){var la=LEADS.filter(function(l){return l.id===t.getAttribute("data-copyaddr");})[0];copy([la.name,la.adresse||la.strasse,la.plz,"Berlin"].filter(Boolean).join(", "),"Adresse kopiert");return;}
