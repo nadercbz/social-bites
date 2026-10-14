@@ -1,0 +1,295 @@
+/* Soft Glass, Designschicht für den internen Bereich (Portal und alle Team-Werkzeuge). Stand 14.10.2026.
+   Vorbild: Naders Moodboard (weiche Orange-Verläufe, Milchglas-Karten, große Radien, Pillen-Knöpfe, schwarze CTA-Pille).
+   Wird als LETZTES Stylesheet nach theme.css geladen und überschreibt nur das Aussehen, nie die Logik.
+   Farben bleiben die Social-Bites-Palette. Druck bleibt unberührt (alles in @media screen). */
+
+:root{
+  --g-r-xl:30px; --g-r-lg:22px; --g-r-md:16px; --g-r-sm:12px;
+  --g-bg:#EFEDE9;
+  --g-glass:rgba(255,255,255,.58);
+  --g-glass-2:rgba(255,255,255,.78);
+  --g-glass-line:rgba(255,255,255,.75);
+  --g-field:rgba(255,255,255,.66);
+  --g-soft:rgba(35,35,33,.055);
+  --g-shadow:0 1px 1px rgba(35,35,33,.03),0 10px 30px -14px rgba(60,40,25,.22);
+  --g-shadow-lg:0 2px 4px rgba(35,35,33,.04),0 30px 60px -28px rgba(60,40,25,.35);
+  --g-blur:saturate(170%) blur(22px);
+  --g-orb1:rgba(242,106,33,.42); --g-orb2:rgba(253,180,125,.50); --g-orb3:rgba(227,234,224,.95);
+  --g-hi:inset 0 1px 0 rgba(255,255,255,.9);
+}
+:root[data-theme="dark"]{
+  --g-bg:#121010;
+  --g-glass:rgba(38,33,30,.55);
+  --g-glass-2:rgba(48,42,38,.78);
+  --g-glass-line:rgba(255,240,225,.09);
+  --g-field:rgba(255,245,235,.06);
+  --g-soft:rgba(255,245,235,.06);
+  --g-shadow:0 1px 1px rgba(0,0,0,.2),0 14px 34px -16px rgba(0,0,0,.6);
+  --g-shadow-lg:0 30px 70px -30px rgba(0,0,0,.8);
+  --g-orb1:rgba(242,106,33,.32); --g-orb2:rgba(196,73,15,.22); --g-orb3:rgba(60,45,38,.5);
+  --g-hi:inset 0 1px 0 rgba(255,240,225,.07);
+}
+
+
+
+@media screen{
+/* Farbwörter der Seiten auf Glas umstellen: so werden alle Karten, Leisten und Linien der Werkzeuge weicher, ohne jede Seite einzeln anzufassen */
+:root.sbg{
+  --card:rgba(255,255,255,.62);
+  --paper-2:rgba(255,255,255,.46);
+  --line:rgba(35,35,33,.07);
+  --line-2:rgba(35,35,33,.14);
+  --g-solid:#FBFAF8;
+}
+:root[data-theme="dark"].sbg{
+  --card:rgba(38,33,30,.62);
+  --paper-2:rgba(255,245,235,.05);
+  --line:rgba(255,245,235,.08);
+  --line-2:rgba(255,245,235,.16);
+  --g-solid:#1E1A18;
+}
+
+
+/* ---------- Hintergrund: weiche Orange-Kugeln wie im Moodboard ---------- */
+html.sbg{
+  background:
+    radial-gradient(42vmax 42vmax at 92% -6%, var(--g-orb1), transparent 62%),
+    radial-gradient(38vmax 38vmax at -8% 104%, var(--g-orb2), transparent 60%),
+    radial-gradient(50vmax 40vmax at 30% 40%, var(--g-orb3), transparent 70%),
+    var(--g-bg) !important;
+  background-attachment:fixed !important;
+}
+:root[data-theme="dark"].sbg{
+  background:
+    radial-gradient(46vmax 46vmax at 95% -10%, var(--g-orb1), transparent 60%),
+    radial-gradient(40vmax 40vmax at -10% 110%, var(--g-orb2), transparent 60%),
+    var(--g-bg) !important;
+  background-attachment:fixed !important;
+}
+html.sbg body{background:transparent !important;min-height:100vh;}
+html.sbg ::selection{background:var(--accent);color:#232321;}
+
+/* ---------- Kopfleisten als Milchglas ---------- */
+html.sbg :is(.top,.bar,.bars,header.hd){
+  background:var(--g-glass) !important;
+  -webkit-backdrop-filter:var(--g-blur); backdrop-filter:var(--g-blur);
+  border-bottom:1px solid var(--g-glass-line) !important;
+  box-shadow:0 1px 0 rgba(35,35,33,.04);
+}
+html.sbg .top .ttl b{font-weight:650;letter-spacing:-.03em;}
+html.sbg .mono{letter-spacing:.06em;}
+
+/* ---------- Karten und Flächen: Glas, große Radien, keine harten Linien ---------- */
+html.sbg :is(.card,.stat,.kpi,.box,.kcol,.panel,.fcard,.dc,.pc,.sheet-card,.blk,.grp,.idea,.vc,.bcard,.ocard,.lc,.ev,.day,.calc,.todo,.tpl,.party,.warnbox,.miss-box,.hook,.kap,.src):not(.sheet *):not(.dsheet *){
+  background:var(--g-glass) !important;
+  border:1px solid var(--g-glass-line) !important;
+  border-radius:var(--g-r-lg) !important;
+  box-shadow:var(--g-shadow),var(--g-hi);
+  -webkit-backdrop-filter:var(--g-blur); backdrop-filter:var(--g-blur);
+}
+html.sbg :is(.stat,.kpi){border-radius:var(--g-r-md) !important;}
+html.sbg :is(.lc,.ev){border-radius:var(--g-r-md) !important;box-shadow:var(--g-shadow);}
+html.sbg .day{border-radius:14px !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;}
+html.sbg :is(.lc,.vc,.bcard,.ocard,.idea,.dc):hover{box-shadow:var(--g-shadow-lg),var(--g-hi);}
+html.sbg :is(.kcol){background:var(--g-soft) !important;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;border-color:transparent !important;}
+
+/* Werkzeug-Flächen (Rechner, Kunden, Belege) */
+html.sbg :is(.pal,.doc-ctrl,.filters,.miss-box,.mailbox){border-radius:var(--g-r-lg) !important;border:1px solid var(--g-glass-line) !important;box-shadow:var(--g-shadow),var(--g-hi);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);}
+html.sbg .meta{background:var(--g-glass) !important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-bottom:1px solid var(--g-glass-line) !important;}
+html.sbg .drop{border:1.5px dashed rgba(35,35,33,.16) !important;border-radius:var(--g-r-xl) !important;background:rgba(255,255,255,.35) !important;}
+:root[data-theme="dark"].sbg .drop{border-color:rgba(255,245,235,.14) !important;background:rgba(255,245,235,.03) !important;}
+html.sbg :is(.dsheet,.sheet,.d-table){--card:#FFFFFF;}
+
+/* Dunkle Ergebnisfläche (z. B. Summe im Rechner) bleibt dunkel, wird aber weich */
+html.sbg :is(.sum,.d-tot div.total){border-radius:var(--g-r-xl) !important;border:0 !important;box-shadow:var(--g-shadow-lg);}
+
+/* ---------- Knöpfe: Pillen ---------- */
+html.sbg .btn{
+  border-radius:999px !important;
+  border:1px solid var(--g-glass-line) !important;
+  background:var(--g-glass-2) !important;
+  color:var(--ink) !important;
+  padding:9px 16px;
+  font-weight:600;
+  box-shadow:0 1px 2px rgba(35,35,33,.06),var(--g-hi);
+  -webkit-backdrop-filter:var(--g-blur); backdrop-filter:var(--g-blur);
+  transition:transform .25s var(--ease,ease),box-shadow .25s ease,background-color .25s ease,color .25s ease;
+}
+html.sbg .btn .dot{display:none !important;}
+html.sbg .btn:hover,html.sbg .btn:focus-visible{background:#FFFFFF !important;color:var(--ink) !important;transform:translateY(-1px);box-shadow:0 8px 20px -10px rgba(60,40,25,.35),var(--g-hi);}
+html.sbg .btn:active{transform:translateY(0) scale(.98);}
+html.sbg .btn.sm{padding:7px 13px;}
+/* Schwarze Pille, wie "Join in" */
+html.sbg .btn.inv{background:#232321 !important;color:#FEFEFE !important;border-color:#232321 !important;}
+html.sbg .btn.inv:hover,html.sbg .btn.inv:focus-visible{background:#000 !important;color:#FEFEFE !important;}
+/* Orange Pille mit leichtem Verlauf */
+html.sbg :is(.btn.or,.btn.accent){background:linear-gradient(180deg,#F7844A,#F26A21) !important;color:#232321 !important;border-color:rgba(242,106,33,.5) !important;box-shadow:0 8px 20px -10px rgba(242,106,33,.7),inset 0 1px 0 rgba(255,255,255,.35);}
+html.sbg :is(.btn.or,.btn.accent):hover{background:linear-gradient(180deg,#F98F58,#F47A35) !important;color:#232321 !important;}
+html.sbg .btn.danger{color:#B42318 !important;}
+html.sbg .btn.armed{color:var(--accent-ink) !important;box-shadow:0 0 0 2px var(--accent-tint),var(--g-hi);}
+:root[data-theme="dark"].sbg .btn:hover,:root[data-theme="dark"].sbg .btn:focus-visible{background:rgba(70,62,56,.9) !important;color:var(--ink) !important;}
+:root[data-theme="dark"].sbg .btn.inv{background:#F3ECDD !important;color:#151211 !important;border-color:#F3ECDD !important;}
+
+/* ---------- Segment-Schalter und Tabs: ein Glas-Track, aktive Pille weiß ---------- */
+html.sbg :is(.seg,.tabs,.wtab-row,.views){
+  background:var(--g-soft);
+  border-radius:999px;
+  padding:4px !important;
+  gap:2px !important;
+  box-shadow:inset 0 1px 2px rgba(35,35,33,.06);
+}
+html.sbg :is(.seg,.tabs,.views) :is(button,a){
+  border:0 !important;
+  border-radius:999px !important;
+  background:transparent !important;
+  color:var(--mute) !important;
+  font-weight:600;
+  padding:8px 14px;
+  transition:background-color .2s ease,color .2s ease,box-shadow .2s ease;
+}
+html.sbg :is(.seg,.tabs,.views) :is(button,a):hover{color:var(--ink) !important;background:rgba(255,255,255,.5) !important;}
+html.sbg :is(.seg,.tabs,.views) :is(button,a):is([aria-pressed="true"],[aria-selected="true"],[aria-current="page"],.on){
+  background:#FFFFFF !important;color:var(--ink) !important;
+  box-shadow:0 1px 2px rgba(35,35,33,.08),0 6px 14px -8px rgba(60,40,25,.35);
+}
+:root[data-theme="dark"].sbg :is(.seg,.tabs,.views) :is(button,a):is([aria-pressed="true"],[aria-selected="true"],[aria-current="page"],.on){background:rgba(255,245,235,.14) !important;}
+:root[data-theme="dark"].sbg :is(.seg,.tabs,.views) :is(button,a):hover{background:rgba(255,245,235,.07) !important;}
+
+/* ---------- Chips und Pillen ---------- */
+html.sbg :is(.chip,.pill,.gchip,.rchip){
+  border-radius:999px !important;
+  border:1px solid var(--g-glass-line) !important;
+  background:var(--g-glass-2);
+  box-shadow:0 1px 2px rgba(35,35,33,.05);
+}
+html.sbg :is(.chip,.pill,.gchip,.rchip):is([aria-pressed="true"],.on){background:#232321 !important;color:#FEFEFE !important;border-color:#232321 !important;}
+html.sbg :is(.pill.or,.chip.or,.badge){background:var(--accent) !important;border-color:var(--accent) !important;color:#232321 !important;}
+
+/* ---------- Eingabefelder: weich gefüllt, ohne Rahmen ---------- */
+html.sbg :is(input[type="text"],input[type="search"],input[type="email"],input[type="tel"],input[type="url"],input[type="number"],input[type="date"],input[type="time"],input[type="password"],input:not([type]),select,textarea){
+  background:var(--g-field) !important;
+  border:1px solid var(--g-glass-line) !important;
+  border-radius:var(--g-r-sm) !important;
+  box-shadow:inset 0 1px 2px rgba(35,35,33,.06);
+  transition:box-shadow .2s ease,background-color .2s ease;
+}
+html.sbg :is(input,select,textarea):hover{background:var(--g-glass-2) !important;}
+html.sbg :is(input,select,textarea):focus{outline:none !important;background:#FFFFFF !important;box-shadow:0 0 0 4px rgba(242,106,33,.16),inset 0 1px 2px rgba(35,35,33,.04) !important;border-color:rgba(242,106,33,.45) !important;}
+:root[data-theme="dark"].sbg :is(input,select,textarea):focus{background:rgba(255,245,235,.1) !important;}
+html.sbg input[type="search"]{border-radius:999px !important;padding-left:16px;}
+html.sbg select{appearance:none;-webkit-appearance:none;padding-right:36px !important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%236C6F68' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat:no-repeat !important;background-position:right 14px center !important;}
+html.sbg input[type="checkbox"],html.sbg input[type="radio"]{accent-color:#F26A21;}
+html.sbg input[type="range"]{accent-color:#F26A21;}
+
+/* Plus-Knöpfe und runde Symbolknöpfe: weiße Kreise wie im Moodboard */
+html.sbg :is(.add,.c-x,.theme-btn,.sb-tt,.arr,.pclose,.anf-x){
+  border-radius:50% !important;
+  border:1px solid var(--g-glass-line) !important;
+  background:var(--g-glass-2) !important;
+  box-shadow:0 1px 2px rgba(35,35,33,.06),0 6px 16px -10px rgba(60,40,25,.35);
+  -webkit-backdrop-filter:var(--g-blur); backdrop-filter:var(--g-blur);
+}
+
+html.sbg [data-add]:not(.btn){border:0 !important;background:#FFFFFF !important;color:var(--ink) !important;border-radius:50% !important;box-shadow:0 1px 2px rgba(35,35,33,.1),0 6px 14px -8px rgba(60,40,25,.4);transition:transform .2s ease,background-color .2s ease,color .2s ease;}
+html.sbg [data-add]:not(.btn):hover{background:#232321 !important;color:#FEFEFE !important;transform:scale(1.06);}
+:root[data-theme="dark"].sbg [data-add]:not(.btn){background:rgba(255,245,235,.12) !important;}
+html.sbg .blk{border-radius:var(--g-r-md) !important;border:1px solid var(--g-glass-line) !important;background:var(--g-glass-2) !important;box-shadow:0 1px 2px rgba(35,35,33,.04);}
+
+/* Tabellen: luftiger, Linien leiser */
+html.sbg table{border-collapse:separate;border-spacing:0;}
+html.sbg :is(th,td){border-color:rgba(35,35,33,.07) !important;}
+:root[data-theme="dark"].sbg :is(th,td){border-color:rgba(255,245,235,.07) !important;}
+
+/* Dialoge und Popups */
+html.sbg :is(dialog,.dlg,.pop,.det,.modal){background:var(--g-solid) !important;}
+html.sbg :is(dialog,.dlg,.pop,.det,.modal,.toast){
+  border-radius:var(--g-r-xl) !important;
+  border:1px solid var(--g-glass-line) !important;
+  box-shadow:var(--g-shadow-lg);
+}
+html.sbg dialog::backdrop{background:rgba(35,35,33,.25);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+html.sbg .toast{border-radius:999px !important;background:#232321 !important;color:#FEFEFE !important;}
+
+/* Überschriften ruhiger: weniger fett, zweiter Teil grau möglich mit <em class="soft"> */
+html.sbg :is(h1,h2){font-weight:650;letter-spacing:-.04em;}
+html.sbg .soft{color:var(--mute);font-weight:500;font-style:normal;}
+
+/* Scrollbars dezent */
+html.sbg *{scrollbar-width:thin;scrollbar-color:rgba(35,35,33,.18) transparent;}
+
+/* ========== Portal (portal.html) ========== */
+html.sbg #tside{
+  background:var(--g-glass) !important;
+  border:1px solid var(--g-glass-line) !important;
+  border-radius:var(--g-r-xl) !important;
+  box-shadow:var(--g-shadow-lg),var(--g-hi) !important;
+  -webkit-backdrop-filter:var(--g-blur); backdrop-filter:var(--g-blur);
+}
+html.sbg .sb-hd{border-bottom:0 !important;}
+html.sbg .sb-logo{border-radius:50% !important;background:#FFFFFF !important;box-shadow:0 1px 2px rgba(35,35,33,.08);}
+html.sbg .sb-name{font-weight:650 !important;}
+html.sbg #tside .nav-b{border-radius:999px !important;font-weight:550;}
+html.sbg #tside .nav-b[aria-current="page"]{font-weight:650 !important;}
+html.sbg #tside .sb-pill{border-radius:999px !important;background:#FFFFFF !important;box-shadow:0 1px 2px rgba(35,35,33,.08),0 8px 18px -10px rgba(60,40,25,.4) !important;}
+:root[data-theme="dark"].sbg #tside .sb-pill{background:rgba(255,245,235,.12) !important;}
+html.sbg #tside .side-h{font-family:var(--mono);letter-spacing:.1em;opacity:.8;}
+html.sbg .vh h1{font-weight:600 !important;letter-spacing:-.045em !important;}
+html.sbg .tframe,html.sbg .frame-host iframe{
+  border-radius:var(--g-r-xl) !important;
+  box-shadow:var(--g-shadow-lg) !important;
+  background:var(--g-bg) !important;
+  border:1px solid var(--g-glass-line) !important;
+}
+html.sbg .login :is(form,.lg-card){border-radius:var(--g-r-xl) !important;}
+@media (max-width:900px){
+  html.sbg #tside{border-radius:0 !important;box-shadow:none !important;}
+  html.sbg #tside .nav-b{border:1px solid var(--g-glass-line) !important;background:var(--g-glass-2) !important;}
+  html.sbg #tside .nav-b[aria-current="page"]{background:#232321 !important;color:#FEFEFE !important;}
+  html.sbg #tside .nav-b[aria-current="page"] .lb{color:#FEFEFE;}
+  html.sbg .tframe,html.sbg .frame-host iframe{border-radius:var(--g-r-lg) !important;}
+}
+
+/* Kacheln auf Team Start: weiß-glasig, Akzent nur als weicher Orange-Verlauf, dunkle Kacheln mit Glut unten (Moodboard) */
+html.sbg .tiles{gap:16px !important;}
+html.sbg .tile{
+  position:relative;overflow:hidden;isolation:isolate;
+  min-height:172px;padding:22px 22px 20px !important;
+  border-radius:26px !important;border:1px solid var(--g-glass-line) !important;
+  background:var(--g-glass) !important;color:var(--ink) !important;
+  box-shadow:var(--g-shadow),var(--g-hi);
+  -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+  transition:transform .35s var(--ease,ease),box-shadow .35s ease !important;
+}
+html.sbg .tile::after{
+  content:"";position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;
+  background:#FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5L8 6l-3.5 3.5' fill='none' stroke='%23232321' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;
+  box-shadow:0 1px 2px rgba(35,35,33,.1),0 6px 14px -8px rgba(60,40,25,.4);
+  transform:scale(.85);opacity:.0;transition:opacity .25s ease,transform .35s var(--ease,ease);
+}
+html.sbg .tile:hover::after,html.sbg .tile:focus-visible::after{opacity:1;transform:scale(1);}
+html.sbg .tile:hover,html.sbg .tile:focus-visible{transform:translateY(-3px) !important;box-shadow:var(--g-shadow-lg),var(--g-hi);}
+html.sbg .tile b{font-weight:600 !important;font-size:23px !important;letter-spacing:-.04em !important;}
+html.sbg .tile .mono{font-size:10.5px;color:var(--mute) !important;letter-spacing:.1em;}
+html.sbg .tile span:last-child{color:var(--mute) !important;}
+html.sbg .tile.t-or{
+  background:
+    radial-gradient(150px 150px at 88% 105%, rgba(242,106,33,.95), rgba(247,132,74,.55) 45%, transparent 72%),
+    radial-gradient(220px 160px at 105% 60%, rgba(253,190,140,.55), transparent 70%),
+    var(--g-glass-2) !important;
+}
+html.sbg .tile.t-ink{
+  background:
+    radial-gradient(260px 170px at 70% 125%, rgba(242,106,33,.85), rgba(196,73,15,.45) 40%, transparent 72%),
+    linear-gradient(180deg,#1B1918 0%,#141212 100%) !important;
+  color:#FEFEFE !important;border-color:rgba(255,255,255,.06) !important;
+}
+html.sbg .tile.t-ink b{color:#FEFEFE;}
+html.sbg .tile.t-ink .mono,html.sbg .tile.t-ink span:last-child{color:rgba(254,254,254,.66) !important;}
+:root[data-theme="dark"].sbg .tile::after{background-color:rgba(255,245,235,.14);filter:invert(1);}
+
+/* Eingebettete Seiten: Kopf ohne Schatten, Fläche läuft durch */
+html.sbg.embedded .top,html.sbg body.embedded .top{box-shadow:none;}
+
+}
