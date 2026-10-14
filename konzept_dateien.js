@@ -7,7 +7,7 @@
   var el=null;
 
   /* Große Konzepte liegen auf ihrer eigenen Seite (GitHub Pages Grenze 1 GB), gleiche Verschlüsselung, andere Adresse */
-  var BASE={"acai-x-you":"https://nadercbz.github.io/acai-x-you/dateien/","pink-moss":"https://nadercbz.github.io/pink-moss/dateien/","maloa":"https://nadercbz.github.io/maloa-konzept/dateien/"};
+  var BASE={"acai-x-you":"https://nadercbz.github.io/acai-x-you/dateien/","pink-moss":"https://nadercbz.github.io/pink-moss/dateien/","maloa":"https://nadercbz.github.io/maloa-konzept/dateien/","agora":"https://nadercbz.github.io/agora-redesign/dateien/"};
   function pfad(){return BASE[S.id]||("konzepte/"+S.id+"/");}
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   function mb(n){return n>=1048576?(n/1048576).toFixed(1).replace(".",",")+" MB":Math.max(1,Math.round(n/1024))+" KB";}
