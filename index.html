@@ -1084,6 +1084,7 @@
     <a href="#portfolio">Portfolio</a>
     <a href="#showroom" data-showroom>Showroom</a>
     <a href="#ablauf">So läuft's</a>
+    <a href="konzepte.html">Konzepte</a>
   </nav>
   <div class="head-actions">
     <div class="lang bgsw" id="bgsw"><button class="theme-btn lang-btn" type="button" id="bgsw-cur" aria-haspopup="true" aria-expanded="false" aria-controls="bgsw-menu" aria-label="Hintergrundfarbe wählen" title="Hintergrundfarbe"><i></i></button><ul class="lang-menu" id="bgsw-menu" role="menu"></ul></div>
@@ -1103,8 +1104,9 @@
   <a href="#portfolio"><small>04</small>Portfolio</a>
   <a href="#showroom" data-showroom><small>05</small>Showroom</a>
   <a href="#ablauf"><small>06</small>So läuft's</a>
-  <a href="#anfrage" data-anfrage><small>07</small>Projekt starten</a>
-  <a href="portal.html"><small>08</small>Kundenportal</a>
+  <a href="konzepte.html"><small>07</small>Konzepte</a>
+  <a href="#anfrage" data-anfrage><small>08</small>Projekt starten</a>
+  <a href="portal.html"><small>09</small>Kundenportal</a>
   <div class="mnav-set" id="mnav-set"></div>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
@@ -1953,7 +1955,15 @@
         .catch(function(){ finish(false); })
         .then(function(){ sending = false; bSend.disabled = false; bSend.querySelector('span').textContent = 'Anfrage senden'; });
     });
-    if (location.hash === '#anfrage') setTimeout(openAnf, 300);
+    if (location.hash === '#anfrage') setTimeout(function(){
+      // Auswahl von der Seite Konzepte (Baukasten) übernehmen
+      var k = null; try { k = JSON.parse(sessionStorage.getItem('sb-konzept-anfrage') || 'null'); sessionStorage.removeItem('sb-konzept-anfrage'); } catch (e) {}
+      openAnf(k && k.paket ? k.paket : undefined);
+      if (k) {
+        [].slice.call(form.querySelectorAll('input[name=thema]')).forEach(function(i){ if (i.value === 'Branding & Design') i.checked = true; });
+        var ta = form.querySelector('textarea[name=nachricht]'); if (ta && k.text) ta.value = k.text;
+      }
+    }, 300);
   }
 
   // Header: beim Runterscrollen weg, beim Hochscrollen wieder da

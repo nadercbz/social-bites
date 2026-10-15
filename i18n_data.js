@@ -1,6 +1,7 @@
 /* Übersetzungen der Startseite. Schlüssel ist der deutsche Originaltext. Erzeugt am 08.10.2026, Quelle Higgsfield frei, Texte von Claude übersetzt, bitte von Muttersprachlern gegenlesen lassen. */
 window.SB_I18N={
 "en": {
+"Konzepte": "Concepts",
 "Reel mit Dina": "Reel with Dina",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ and reels 1 to 3",
 "Gratis-Pizzen zur Neueröffnung": "Free pizzas at the opening",
@@ -251,6 +252,7 @@ window.SB_I18N={
 "Auslieferung, Launch und Case": "Delivery, launch and case study"
 },
 "tr": {
+"Konzepte": "Konseptler",
 "Reel mit Dina": "Dina ile Reel",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ ve Reel 1 ile 3",
 "Gratis-Pizzen zur Neueröffnung": "Açılışta bedava pizza",
@@ -501,6 +503,7 @@ window.SB_I18N={
 "Auslieferung, Launch und Case": "Teslimat, lansman ve case"
 },
 "ru": {
+"Konzepte": "Концепции",
 "Reel mit Dina": "Reel с Dina",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ и Reels с 1 по 3",
 "Gratis-Pizzen zur Neueröffnung": "Бесплатная пицца на открытии",
@@ -751,6 +754,7 @@ window.SB_I18N={
 "Auslieferung, Launch und Case": "Сдача, запуск и кейс"
 },
 "uk": {
+"Konzepte": "Концепції",
 "Reel mit Dina": "Reel з Dina",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ і Reels з 1 по 3",
 "Gratis-Pizzen zur Neueröffnung": "Безкоштовна піца на відкритті",
@@ -1001,6 +1005,7 @@ window.SB_I18N={
 "Auslieferung, Launch und Case": "Здача, запуск і кейс"
 },
 "ar": {
+"Konzepte": "المفاهيم",
 "Reel mit Dina": "ريل مع Dina",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ وريلز 1 إلى 3",
 "Gratis-Pizzen zur Neueröffnung": "بيتزا مجانية في الافتتاح",
@@ -1251,6 +1256,7 @@ window.SB_I18N={
 "Auslieferung, Launch und Case": "التسليم والإطلاق ودراسة الحالة"
 },
 "vi": {
+"Konzepte": "Concept",
 "Reel mit Dina": "Reel cùng Dina",
 "Mmaah · KBBQ und Reels 1 bis 3": "Mmaah · KBBQ và Reel 1 đến 3",
 "Gratis-Pizzen zur Neueröffnung": "Pizza miễn phí ngày khai trương",
