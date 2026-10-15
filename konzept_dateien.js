@@ -135,6 +135,7 @@
   '.kzf-box{flex:1;min-height:320px;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:auto;display:grid;place-items:center}'+
   '.kzf-box>img,.kzf-box>video{max-width:100%;max-height:100%;display:block}'+
   '.kzf-box>iframe{width:100%;height:100%;border:0;min-height:60vh}'+
+  '.kzf-box.web>iframe{min-height:78vh;border-radius:14px}'+
   '.kzf-box.txt{display:block;padding:clamp(16px,3vw,36px)}'+
   '.kzf-md{max-width:860px;margin:0 auto;font-size:15.5px;line-height:1.6}'+
   '.kzf-md h1{font-size:30px;letter-spacing:-.03em;margin:.2em 0 .5em}.kzf-md h2{font-size:23px;letter-spacing:-.02em;margin:1.6em 0 .5em}.kzf-md h3{font-size:18px;margin:1.4em 0 .4em}.kzf-md h4{font-size:15px;margin:1.2em 0 .3em}'+
@@ -248,6 +249,7 @@
       var u=URL.createObjectURL(new Blob([b],{type:f.mime}));S.urls.push(u);
       if(/^image\//.test(f.mime))box.innerHTML='<img alt="'+esc(f.name)+'" src="'+u+'">';
       else if(f.mime==="application/pdf"){box.innerHTML='<iframe title="'+esc(f.name)+'" src="'+u+'"></iframe>';var bar=v.querySelector(".kzf-bar");if(bar)bar.insertAdjacentHTML("beforeend",'<a class="btn sm" href="'+u+'" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen</span></a>');}
+      else if(f.mime==="text/html"){box.className="kzf-box web";box.innerHTML='<iframe title="'+esc(f.name)+'" src="'+u+'"></iframe>';var hb=v.querySelector(".kzf-bar");if(hb)hb.insertAdjacentHTML("beforeend",'<a class="btn sm" href="'+u+'" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild in neuem Tab</span></a>');}
       else if(/^video\//.test(f.mime))box.innerHTML='<video controls playsinline src="'+u+'"></video>';
       else box.innerHTML='<div class="kzf-empty">Für dieses Format gibt es keine Vorschau ('+esc(ext(f))+'). Mit „Herunterladen“ in Excel oder dem passenden Programm öffnen.</div>';
     }).catch(function(e){st.textContent="Ging nicht: "+e.message;});
