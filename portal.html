@@ -1051,7 +1051,7 @@ var OS_TABS=[
   {v:"os-rollen",t:"Rollen & Regeln",gid:"361083581",d:"Wer was übernimmt, wie viel Zeit jeder mitbringt und wie wir entscheiden."}
 ];
 var TNAV=[
-  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-context","Context"]]],
+  ["Team",[["t-start","Start"],["t-rechner","Preisrechner"],["t-akquise","Akquise-Board"],["t-influencer","Influencer-Datenbank"],["t-wissen","Kampagnen Master Sheet"],["t-mitbewerber","Mitbewerber"],["t-kunden","Kunden & Belege"],["t-buero","Büro & Mitarbeiter"],["t-partner","Partnerprogramm"],["t-playbook","Abläufe (Playbook)"],["t-leistungen","Leistungen"],["t-context","Context"]]],
   ["Social Bites OS",OS_TABS.map(function(o){return [o.v,o.t];})],
   ["Kreativ",[["t-trends","Trend-Indicator"],["t-galerie","Galerie & Moodboards"],["t-konzepte","Konzepte"],["t-reihenfolge","Konzept Reihenfolge"]]],
   ["Planung",[["t-aufgaben","Aufgaben"],["t-kalender","Kalender"]]],
@@ -1104,6 +1104,7 @@ var TIC={
   "os-ideen":'<path d="M9 18h6M10 21h4M12 3.5a6 6 0 0 0-3.5 10.9c.6.5 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.4 1-1.9A6 6 0 0 0 12 3.5Z"/>',
   "os-pitch":'<path d="M5 20V4.5M5 5h12l-2.5 4L17 13H5"/>',
   "os-rollen":'<circle cx="12" cy="9" r="3"/><path d="M6.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/>',
+  "t-mitbewerber":'<circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="10.5" r="2.5"/><path d="M3.5 19c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5M14.5 15.2c.6-.2 1.3-.2 2-.2 2.3 0 4 1.2 4.5 4"/>',
   "t-trends":'<path d="m4 16 5-5 3.5 3.5L20 7M15 7h5v5"/>',
   "t-galerie":'<rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 18 5-5 3 3 3-3 4 4"/>',
   "t-reihenfolge":'<path d="M5 6h2M5 12h2M5 18h2M10 6h9M10 12h9M10 18h9"/>',
@@ -1174,7 +1175,7 @@ function showSheet(o){
 }
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
-  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-reihenfolge","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien","t-context"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-influencer","t-wissen","t-mitbewerber","t-kunden","t-buero","t-partner","t-playbook","t-leistungen","t-trends","t-galerie","t-konzepte","t-reihenfolge","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien","t-context"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   requestAnimationFrame(movePill);
@@ -1192,6 +1193,7 @@ function tGo(v,quiet){
   else if(v==="t-akquise") h=head("Team","Akquise-Board","Jeden Morgen neue Chancen in Berlin: Läden, die bald aufmachen, neue Firmen, Praxen und Kanzleien, dazu kommende Events zum Anfragen. Mit Score, Karte, Kontakt, fertigem Erstkontakt-Text und je einer A4-Konzeptseite für die besten 30 zum Download. Die Daten sind verschlüsselt, die Passphrase kennen nur Nader und Tommy.",'<div class="acts"><a class="btn sm" href="akquise.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="akquise.html" title="Social Bites Akquise-Board"></iframe>';
   else if(v==="t-influencer") h=head("Team","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre, Branche, Plattform und Größe. Mit unseren Listen für Crazy Canes, The Pizzary und Mmaah plus neuer Recherche. Sterne merken Favoriten, Export als CSV. Die Daten sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><a class="btn sm" href="influencer.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="influencer.html" title="Social Bites Influencer-Datenbank"></iframe>';
   else if(v==="t-wissen") h=head("Team","Kampagnen Master Sheet","Tommys Marketing Wissen aus Videos und Kursen: Gastro Kampagnen, B2B, Branding, Google Ads und KI Suche (GEO), in Kapiteln mit unseren Ideen und Hinweisen. Jedes Kapitel sagt, welcher Mitarbeiter im Büro es kennt, und jeder bekommt sein Briefing. Die Daten sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><a class="btn sm" href="wissen.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="wissen.html" title="Social Bites Kampagnen Master Sheet"></iframe>';
+  else if(v==="t-mitbewerber") h=head("Team","Mitbewerber: Agenturen, die in unserer Nische auch tätig sind","Short Content, Social Media und Video für Gastro, Food und lokale Marken. Mit Referenzkunden, Preisen aus dem Doc, Stern zum Merken und eigener Notiz je Agentur. Quelle ist Tommys Doc Best Agencies. Die Daten sind verschlüsselt, dieselbe Passphrase wie im Akquise-Board.",'<div class="acts"><a class="btn sm" href="mitbewerber.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="mitbewerber.html" title="Social Bites Mitbewerber"></iframe>';
   else if(v==="t-kunden") h=head("Team","Kunden & Belege","Kundenstamm Schritt für Schritt anlegen, auch direkt im Gespräch. Dazu das Rechnungsbuch: was offen ist, was überfällig ist, und Mahnungen in drei Stufen mit Mail-Text. Alles bleibt nur in diesem Browser.",'<div class="acts"><a class="btn sm" href="kunden.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="kunden.html" title="Social Bites Kunden und Belege"></iframe>';
   else if(v==="t-trends") h=head("Kreativ","Trend-Indicator","Jeden Montag neu: virale Videos aus Food und Gastro, Hashtags, Sounds, Google-Suchtrends und die Hooks, die gerade ziehen. Kategorie oben wechseln, Videos merken, Hooks für Kunden bauen.",'<div class="acts"><a class="btn sm" href="trends.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="trends.html" title="Social Bites Trend-Indicator"></iframe>';
   else if(v==="t-galerie") h=head("Kreativ","Galerie & Moodboards","Entwürfe und Ideen als Boards. Herz für Favoriten, Notiz pro Bild, Präsentieren für den großen Bildschirm. Neue Ideen schickst du Claude im Chat.",'<div class="acts"><a class="btn sm" href="galerie.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild ↗</span></a></div>')+'<iframe class="tframe" src="galerie.html" title="Social Bites Galerie" allow="fullscreen" allowfullscreen></iframe>';
@@ -1218,7 +1220,7 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-reihenfolge":"Konzept Reihenfolge","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien","t-context":"Context"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Belege","t-buero":"Büro & Mitarbeiter","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-mitbewerber":"Mitbewerber","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-reihenfolge":"Konzept Reihenfolge","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien","t-context":"Context"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
@@ -1233,6 +1235,7 @@ function tStart(){
       tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden und Events in Berlin, täglich frisch, mit Konzept-PDFs.","t-or")+
       tile("t-influencer","Vertrieb","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre und Branche.","t-or")+
       tile("t-wissen","Wissen","Kampagnen Master Sheet","Marketing Wissen in Kapiteln, mit Briefing für jeden Mitarbeiter.","t-ink")+
+      tile("t-mitbewerber","Markt","Mitbewerber","67 Agenturen in unserer Nische, mit Referenzkunden und Preisen.","t-or")+
       tile("t-context","Wissen","Context","Bauanleitung für neue Konzepte und Referenz Bam Bird.","t-ink")+
       tile("t-kunden","Team","Kunden & Belege","Kundenstamm, offene Rechnungen, Mahnungen.")+
       tile("t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or")+
