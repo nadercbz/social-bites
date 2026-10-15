@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
 <script src="theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Konzepte | Social Bites</title>
@@ -13,7 +14,8 @@
 <meta property="og:title" content="Social Bites. Dein Konzept, komplett aus einer Hand">
 <meta property="og:description" content="Logo, Marke, Website, Store und Betrieb. Drei Pakete oder frei zusammengestellt.">
 <!-- Beim Livegang durch die absolute URL ersetzen, sonst zeigen Messenger kein Vorschaubild -->
-<meta property="og:image" content="og.jpg">
+<meta property="og:image" content="https://nadercbz.github.io/social-bites/og.jpg">
+<meta property="og:url" content="https://nadercbz.github.io/social-bites/konzepte.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -504,6 +506,17 @@
   .player[open] .player-box{animation:pop .45s var(--ease) both;}
   @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
 
+  /* Kopf mit sieben Menüpunkten (seit Konzepte): breite Bildschirme Portal nur als Schloss, mittlere Breiten Burger-Menü */
+  @media (max-width:1620px) and (min-width:1361px){
+    .nav{gap:18px;font-size:15.5px;}
+    .portal-link{padding:9px;}
+    .portal-link span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  }
+  @media (max-width:1360px) and (min-width:901px){
+    .nav{display:none;}
+    .menu-btn{display:block;}
+    .site-head{grid-template-columns:1fr auto;}
+  }
   @media (max-width:900px){
     .nav{display:none;}
     .menu-btn{display:block;}
@@ -1065,7 +1078,7 @@
   /* SHOWROOM END */
 </style>
 <link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="konzepte_seite/konzepte.css?v=1">
+<link rel="stylesheet" href="konzepte_seite/konzepte.css?v=2">
 </head>
 <body>
 <a class="skip" href="#kz-ausgangslage">Zum Inhalt springen</a>
@@ -1249,6 +1262,6 @@
   </div>
 </footer>
 
-<script src="konzepte_seite/konzepte.js?v=1"></script>
+<script src="konzepte_seite/konzepte.js?v=2"></script>
 </body>
 </html>

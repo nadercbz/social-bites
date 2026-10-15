@@ -507,6 +507,17 @@
   .player[open] .player-box{animation:pop .45s var(--ease) both;}
   @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:none;}}
 
+  /* Kopf mit sieben Menüpunkten (seit Konzepte): breite Bildschirme Portal nur als Schloss, mittlere Breiten Burger-Menü */
+  @media (max-width:1620px) and (min-width:1361px){
+    .nav{gap:18px;font-size:15.5px;}
+    .portal-link{padding:9px;}
+    .portal-link span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  }
+  @media (max-width:1360px) and (min-width:901px){
+    .nav{display:none;}
+    .menu-btn{display:block;}
+    .site-head{grid-template-columns:1fr auto;}
+  }
   @media (max-width:900px){
     .nav{display:none;}
     .menu-btn{display:block;}
