@@ -140,7 +140,7 @@ try{if(window.self!==window.top)document.documentElement.classList.add("embedded
 
   function chips(){
     var h="";
-    [["alle","Alle"],["ghost","Geist Cover"],["collage","Foto Collage"]].forEach(function(a){h+='<button class="btn sm" type="button" data-stil="'+a[0]+'" aria-pressed="'+(fStil===a[0])+'"><span class="dot"></span><span>'+a[1]+'</span></button>';});
+    [["alle","Alle"],["ghost","Motiv Cover"],["collage","Foto Collage"]].forEach(function(a){h+='<button class="btn sm" type="button" data-stil="'+a[0]+'" aria-pressed="'+(fStil===a[0])+'"><span class="dot"></span><span>'+a[1]+'</span></button>';});
     h+='<span class="sep"></span>';
     [["alle","Jeder Status"],["idee","Idee"],["bereit","Bereit"],["gepostet","Gepostet"]].forEach(function(a){h+='<button class="btn sm" type="button" data-stat="'+a[0]+'" aria-pressed="'+(fStat===a[0])+'"><span class="dot"></span><span>'+a[1]+'</span></button>';});
     $("filters").innerHTML=h;
@@ -149,7 +149,7 @@ try{if(window.self!==window.top)document.documentElement.classList.add("embedded
     var l=P.filter(function(p){return (fStil==="alle"||p.stil===fStil)&&(fStat==="alle"||st(p.id)===fStat);});
     $("sub").textContent="Karussell Posts · "+l.length+" von "+P.length;
     $("grid").innerHTML=l.length?l.map(function(p){
-      return '<button class="card" type="button" data-id="'+p.id+'"><span class="im"><img src="'+p.dir+'/t1.webp" alt="Cover von '+p.titel+'" loading="lazy" width="480" height="600"><span class="no">'+String(p.id).padStart(2,"0")+'</span><span class="cnt">5 Slides</span></span><h3>'+p.titel+'</h3><span class="meta"><span class="chip">'+(p.stil==="ghost"?"Geist Cover":"Foto Collage")+'</span><span class="chip s-'+st(p.id)+'">'+LBL[st(p.id)]+'</span></span></button>';
+      return '<button class="card" type="button" data-id="'+p.id+'"><span class="im"><img src="'+p.dir+'/t1.webp" alt="Cover von '+p.titel+'" loading="lazy" width="480" height="600"><span class="no">'+String(p.id).padStart(2,"0")+'</span><span class="cnt">5 Slides</span></span><h3>'+p.titel+'</h3><span class="meta"><span class="chip">'+(p.stil==="ghost"?"Motiv Cover":"Foto Collage")+'</span><span class="chip s-'+st(p.id)+'">'+LBL[st(p.id)]+'</span></span></button>';
     }).join(""):'<p class="hint">Keine Posts mit diesem Filter.</p>';
   }
   function show(){
@@ -159,7 +159,7 @@ try{if(window.self!==window.top)document.documentElement.classList.add("embedded
   }
   function open(id){
     cur=P.filter(function(p){return p.id===id})[0]; if(!cur)return; idx=0;
-    $("dno").textContent="Post "+String(cur.id).padStart(2,"0")+" · "+(cur.stil==="ghost"?"Geist Cover":"Foto Collage")+" · "+cur.datum;
+    $("dno").textContent="Post "+String(cur.id).padStart(2,"0")+" · "+(cur.stil==="ghost"?"Motiv Cover":"Foto Collage")+" · "+cur.datum;
     $("dtitle").textContent=cur.titel;
     $("dcap").textContent=cur.caption+"\n\n"+cur.tags;
     $("dpts").innerHTML=cur.punkte.map(function(x){return "<li>"+x+"</li>"}).join("");
