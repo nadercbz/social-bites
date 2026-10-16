@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Social Bites Social Media</title>
+<meta name="description" content="Fertige Karussell Posts von Social Bites mit Captions und Download.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..900&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  /* Social Media: Raster aller Karussell Posts, Klick öffnet den Post mit allen Slides, Caption zum Kopieren, Status und Notiz. */
+  :root{
+    color-scheme:light;
+    --paper:#FEFEFE; --paper-2:#E3EAE0; --card:#FFFFFF; --ink:#232321; --mute:#6C6F68;
+    --line:rgba(35,35,33,.14); --line-2:rgba(35,35,33,.3);
+    --accent:#F26A21; --accent-ink:#C4490F; --accent-tint:#FDE3D2;
+    --display:'Schibsted Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --gutter:clamp(16px,2.6vw,36px);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{background:var(--paper);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
+  img{max-width:100%;height:auto;display:block;}
+  button,input,select,textarea{font:inherit;color:inherit;}
+  ::selection{background:var(--accent);color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;border-radius:4px;}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11px;line-height:1.3;}
+  .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:9px;background:var(--paper-2);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:600 14.5px/1.2 var(--display);letter-spacing:-.01em;cursor:pointer;text-decoration:none;transition:border-color .2s,color .3s;}
+  .btn > *{position:relative;z-index:1;}
+  .btn .dot{z-index:0;width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;transition:transform .5s var(--ease);}
+  .btn:hover .dot,.btn:focus-visible .dot{transform:scale(80);}
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);}
+  .btn.inv{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .btn.inv:hover,.btn.inv:focus-visible{color:var(--ink);border-color:var(--accent);}
+  .btn[aria-pressed="true"]{border-color:var(--accent-ink);background:var(--accent-tint);color:var(--accent-ink);}
+
+  .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px var(--gutter);background:rgba(254,254,254,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .top img{height:46px;width:auto;}
+  .top .ttl{display:flex;flex-direction:column;gap:2px;}
+  .top .ttl b{font-weight:800;font-size:20px;letter-spacing:-.035em;line-height:1;}
+  .top .ttl .mono{color:var(--mute);font-size:10.5px;}
+  .top .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .embedded .top img{display:none;}
+
+  main{padding:18px var(--gutter) 70px;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
+  .filters .sep{width:1px;height:22px;background:var(--line-2);margin:0 4px;}
+  .hint{color:var(--mute);font-size:14px;max-width:70ch;margin:0 0 16px;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:18px;}
+  .card{display:grid;gap:10px;align-content:start;min-width:0;text-align:left;background:none;border:0;padding:0;cursor:pointer;}
+  .card .im{position:relative;aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:var(--paper-2);border:1px solid var(--line);}
+  .card .im img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+  .card:hover .im img,.card:focus-visible .im img{transform:scale(1.04);}
+  .card .no{position:absolute;left:10px;top:10px;font:700 15px var(--mono);background:var(--ink);color:var(--paper);border-radius:6px;padding:4px 8px;letter-spacing:.04em;}
+  .card .cnt{position:absolute;right:10px;top:10px;font:500 12px var(--mono);background:rgba(35,35,33,.78);color:#FEFEFE;border-radius:6px;padding:4px 8px;}
+  .card h3{margin:0;font-weight:800;font-size:18px;letter-spacing:-.03em;line-height:1.12;}
+  .card .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--paper-2);color:var(--ink);}
+  .chip.s-bereit{background:var(--accent-tint);color:var(--accent-ink);}
+  .chip.s-gepostet{background:var(--ink);color:var(--paper);}
+
+  dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);border-radius:16px;overflow:hidden;}
+  dialog::backdrop{background:rgba(20,18,16,.72);backdrop-filter:blur(4px);}
+  .dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);max-height:calc(100dvh - 24px);}
+  .stage{background:#232321;display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;}
+  .big{position:relative;display:grid;place-items:center;padding:14px;min-height:0;}
+  .big img{max-height:calc(100dvh - 190px);width:auto;max-width:100%;aspect-ratio:4/5;border-radius:6px;object-fit:contain;}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(254,254,254,.92);color:#232321;font-size:22px;cursor:pointer;display:grid;place-items:center;}
+  .nav.p{left:14px}.nav.n{right:14px}
+  .thumbs{display:flex;gap:6px;padding:0 14px 14px;justify-content:center;}
+  .thumbs button{border:2px solid transparent;border-radius:6px;padding:0;background:none;cursor:pointer;width:64px;opacity:.65;}
+  .thumbs button[aria-current="true"]{border-color:var(--accent);opacity:1;}
+  .thumbs img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:4px;}
+  .side{padding:18px 18px 20px;overflow:auto;display:grid;gap:14px;align-content:start;}
+  .side h2{margin:0;font-weight:800;font-size:26px;letter-spacing:-.04em;line-height:1.02;}
+  .side .row{display:flex;gap:8px;flex-wrap:wrap;}
+  .side label{display:grid;gap:5px;}
+  .side select,.side textarea{width:100%;border:1px solid var(--line-2);border-radius:8px;background:var(--card);padding:9px 10px;font-size:15px;}
+  .side textarea{min-height:78px;resize:vertical;}
+  .cap{white-space:pre-wrap;background:var(--paper-2);border-radius:10px;padding:12px 13px;font-size:15px;line-height:1.45;}
+  .pts{margin:0;padding-left:18px;font-size:14.5px;color:var(--mute);}
+  .x{position:absolute;right:10px;top:10px;z-index:5;width:38px;height:38px;border-radius:50%;border:0;background:rgba(254,254,254,.92);color:#232321;font-size:20px;cursor:pointer;}
+  @media (max-width:820px){.dl{grid-template-columns:1fr;overflow:auto}.big img{max-height:62dvh}.stage{grid-template-rows:auto auto}.thumbs button{width:52px}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<header class="top">
+  <img src="logo_social_bites.webp" alt="Social Bites">
+  <div class="ttl"><b>Social Media</b><span class="mono" id="sub">Karussell Posts</span></div>
+  <div class="acts"><button class="btn sm" type="button" id="reset"><span class="dot"></span><span>Status zurücksetzen</span></button></div>
+</header>
+<main>
+  <p class="hint">Klick auf einen Post öffnet alle Slides, die Caption zum Kopieren und den Download in 1080 × 1350. Status und Notiz bleiben in diesem Browser. Neue Posts schickst du Claude im Chat, sie erscheinen hier nach dem nächsten Deploy.</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<dialog id="dlg" aria-label="Post ansehen">
+  <button class="x" type="button" id="close" aria-label="Schließen">×</button>
+  <div class="dl">
+    <div class="stage">
+      <div class="big"><button class="nav p" type="button" id="prev" aria-label="Vorherige Slide">‹</button><img id="bigimg" alt=""><button class="nav n" type="button" id="next" aria-label="Nächste Slide">›</button></div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <div class="side">
+      <div><p class="mono" style="margin:0 0 6px;color:var(--mute)" id="dno"></p><h2 id="dtitle"></h2></div>
+      <div class="row"><button class="btn sm inv" type="button" id="dlone"><span class="dot"></span><span>Diese Slide laden</span></button><button class="btn sm" type="button" id="dlall"><span class="dot"></span><span>Alle 5 laden</span></button></div>
+      <label><span class="mono">Status</span><select id="dstatus"><option value="idee">Idee</option><option value="bereit">Bereit zum Posten</option><option value="gepostet">Gepostet</option></select></label>
+      <div><p class="mono" style="margin:0 0 6px;color:var(--mute)">Caption</p><div class="cap" id="dcap"></div></div>
+      <div class="row"><button class="btn sm" type="button" id="cpcap"><span class="dot"></span><span>Caption kopieren</span></button></div>
+      <div><p class="mono" style="margin:0 0 6px;color:var(--mute)">Die Punkte</p><ol class="pts" id="dpts"></ol></div>
+      <label><span class="mono">Notiz</span><textarea id="dnote" placeholder="Zum Beispiel: Montag 18 Uhr posten"></textarea></label>
+    </div>
+  </div>
+</dialog>
+
+<script src="socialmedia/posts.js"></script>
+<script>
+try{if(window.self!==window.top)document.documentElement.classList.add("embedded");}catch(e){document.documentElement.classList.add("embedded");}
+(function(){
+  var P=window.SM_POSTS||[], KEY="sb-social-v1", S={};
+  try{S=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){S={}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function st(id){return (S[id]&&S[id].status)||"bereit";}
+  var LBL={idee:"Idee",bereit:"Bereit",gepostet:"Gepostet"};
+  var fStil="alle", fStat="alle", cur=null, idx=0;
+  var $=function(i){return document.getElementById(i)};
+
+  function chips(){
+    var h="";
+    [["alle","Alle"],["ghost","Geist Cover"],["collage","Foto Collage"]].forEach(function(a){h+='<button class="btn sm" type="button" data-stil="'+a[0]+'" aria-pressed="'+(fStil===a[0])+'"><span class="dot"></span><span>'+a[1]+'</span></button>';});
+    h+='<span class="sep"></span>';
+    [["alle","Jeder Status"],["idee","Idee"],["bereit","Bereit"],["gepostet","Gepostet"]].forEach(function(a){h+='<button class="btn sm" type="button" data-stat="'+a[0]+'" aria-pressed="'+(fStat===a[0])+'"><span class="dot"></span><span>'+a[1]+'</span></button>';});
+    $("filters").innerHTML=h;
+  }
+  function grid(){
+    var l=P.filter(function(p){return (fStil==="alle"||p.stil===fStil)&&(fStat==="alle"||st(p.id)===fStat);});
+    $("sub").textContent="Karussell Posts · "+l.length+" von "+P.length;
+    $("grid").innerHTML=l.length?l.map(function(p){
+      return '<button class="card" type="button" data-id="'+p.id+'"><span class="im"><img src="'+p.dir+'/t1.webp" alt="Cover von '+p.titel+'" loading="lazy" width="480" height="600"><span class="no">'+String(p.id).padStart(2,"0")+'</span><span class="cnt">5 Slides</span></span><h3>'+p.titel+'</h3><span class="meta"><span class="chip">'+(p.stil==="ghost"?"Geist Cover":"Foto Collage")+'</span><span class="chip s-'+st(p.id)+'">'+LBL[st(p.id)]+'</span></span></button>';
+    }).join(""):'<p class="hint">Keine Posts mit diesem Filter.</p>';
+  }
+  function show(){
+    var p=cur;
+    $("bigimg").src=p.dir+"/s"+(idx+1)+".jpg"; $("bigimg").alt="Slide "+(idx+1)+" von "+p.titel;
+    Array.prototype.forEach.call($("thumbs").children,function(b,i){b.setAttribute("aria-current",String(i===idx));});
+  }
+  function open(id){
+    cur=P.filter(function(p){return p.id===id})[0]; if(!cur)return; idx=0;
+    $("dno").textContent="Post "+String(cur.id).padStart(2,"0")+" · "+(cur.stil==="ghost"?"Geist Cover":"Foto Collage")+" · "+cur.datum;
+    $("dtitle").textContent=cur.titel;
+    $("dcap").textContent=cur.caption+"\n\n"+cur.tags;
+    $("dpts").innerHTML=cur.punkte.map(function(x){return "<li>"+x+"</li>"}).join("");
+    $("dstatus").value=st(cur.id); $("dnote").value=(S[cur.id]&&S[cur.id].note)||"";
+    var t="";for(var i=1;i<=5;i++)t+='<button type="button" data-i="'+(i-1)+'" aria-label="Slide '+i+'"><img src="'+cur.dir+'/t'+i+'.webp" alt=""></button>';
+    $("thumbs").innerHTML=t; show();
+    if(!$("dlg").open)$("dlg").showModal();
+  }
+  function dl(url,name){var a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();}
+  function fileName(i){return "social-bites-post-"+String(cur.id).padStart(2,"0")+"-slide-"+(i+1)+".jpg";}
+
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("button"); if(!t)return;
+    if(t.dataset.stil){fStil=t.dataset.stil;chips();grid();return;}
+    if(t.dataset.stat){fStat=t.dataset.stat;chips();grid();return;}
+    if(t.classList.contains("card")){open(+t.dataset.id);return;}
+    if(t.dataset.i!==undefined&&t.closest("#thumbs")){idx=+t.dataset.i;show();return;}
+  });
+  $("prev").onclick=function(){idx=(idx+4)%5;show();};
+  $("next").onclick=function(){idx=(idx+1)%5;show();};
+  $("close").onclick=function(){$("dlg").close();};
+  $("dlg").addEventListener("click",function(e){if(e.target===$("dlg"))$("dlg").close();});
+  $("dlg").addEventListener("close",function(){chips();grid();});
+  document.addEventListener("keydown",function(e){if(!$("dlg").open)return;if(e.key==="ArrowRight"){$("next").click();}else if(e.key==="ArrowLeft"){$("prev").click();}});
+  $("dlone").onclick=function(){dl(cur.dir+"/s"+(idx+1)+".jpg",fileName(idx));};
+  $("dlall").onclick=function(){for(var i=0;i<5;i++)(function(i){setTimeout(function(){dl(cur.dir+"/s"+(i+1)+".jpg",fileName(i));},i*350);})(i);};
+  $("dstatus").onchange=function(){S[cur.id]=S[cur.id]||{};S[cur.id].status=this.value;save();};
+  $("dnote").oninput=function(){S[cur.id]=S[cur.id]||{};S[cur.id].note=this.value;save();};
+  $("cpcap").onclick=function(){
+    var b=this,el=$("dcap"),txt=el.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.lastChild.textContent="Markiert, jetzt kopieren";}
+    try{navigator.clipboard.writeText(txt).then(function(){b.lastChild.textContent="Kopiert";setTimeout(function(){b.lastChild.textContent="Caption kopieren"},1600)},sel);}catch(e){sel();}
+  };
+  $("reset").onclick=function(){if(!window.confirm("Alle Status und Notizen zurücksetzen?"))return;S={};save();chips();grid();};
+  chips();grid();
+  var h=(location.hash||"").replace("#","");if(/^p\d+$/.test(h))open(+h.slice(1));
+})();
+</script>
+</body>
+</html>
