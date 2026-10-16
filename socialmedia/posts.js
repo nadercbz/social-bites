@@ -10,8 +10,11 @@ window.SM_POSTS=[
    "Social Media",
    "KI"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/01"
+  "datum": "2026-10-16",
+  "dir": "socialmedia/01",
+  "zeit": "19:30",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 2,
@@ -24,8 +27,11 @@ window.SM_POSTS=[
    "Der Mythos Hook",
    "Der Fehler Hook"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/02"
+  "datum": "2026-10-17",
+  "dir": "socialmedia/02",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 3,
@@ -38,8 +44,11 @@ window.SM_POSTS=[
    "Keiner versteht das Thema",
    "Kein Grund zu bleiben"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/03"
+  "datum": "2026-10-18",
+  "dir": "socialmedia/03",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 4,
@@ -52,8 +61,11 @@ window.SM_POSTS=[
    "Bilder",
    "Videos"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/04"
+  "datum": "2026-10-19",
+  "dir": "socialmedia/04",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 5,
@@ -66,8 +78,11 @@ window.SM_POSTS=[
    "Der Widerspruch",
    "Die Frage"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/05"
+  "datum": "2026-10-20",
+  "dir": "socialmedia/05",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 6,
@@ -80,8 +95,11 @@ window.SM_POSTS=[
    "Schritt 2: Themen",
    "Schritt 3: Plan"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/06"
+  "datum": "2026-10-21",
+  "dir": "socialmedia/06",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 7,
@@ -94,8 +112,11 @@ window.SM_POSTS=[
    "Das Produkt in Bewegung",
    "Zeig die Menschen"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/07"
+  "datum": "2026-10-22",
+  "dir": "socialmedia/07",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 8,
@@ -108,8 +129,11 @@ window.SM_POSTS=[
    "Geteilt und gesendet",
    "Gespeichert"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/08"
+  "datum": "2026-10-23",
+  "dir": "socialmedia/08",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 9,
@@ -122,8 +146,11 @@ window.SM_POSTS=[
    "Kein Wiedererkennen",
    "Keine Handlung"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/09"
+  "datum": "2026-10-24",
+  "dir": "socialmedia/09",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 10,
@@ -136,8 +163,11 @@ window.SM_POSTS=[
    "Streiche Floskeln",
    "Lies es laut"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/10"
+  "datum": "2026-10-25",
+  "dir": "socialmedia/10",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 11,
@@ -150,8 +180,11 @@ window.SM_POSTS=[
    "Baue Fehler ein",
    "Lass Gesichter weg"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/11"
+  "datum": "2026-10-26",
+  "dir": "socialmedia/11",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 12,
@@ -164,8 +197,11 @@ window.SM_POSTS=[
    "Ein Fehler und die Lösung",
    "Kundenstimmen"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/12"
+  "datum": "2026-10-27",
+  "dir": "socialmedia/12",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 13,
@@ -178,8 +214,11 @@ window.SM_POSTS=[
    "Eine Idee pro Post",
    "Ein klarer Aufruf"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/13"
+  "datum": "2026-10-28",
+  "dir": "socialmedia/13",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 14,
@@ -192,8 +231,11 @@ window.SM_POSTS=[
    "Vertrauen",
    "Anfrage"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/14"
+  "datum": "2026-10-29",
+  "dir": "socialmedia/14",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  },
  {
   "id": 15,
@@ -206,7 +248,10 @@ window.SM_POSTS=[
    "Mehr Speicherungen",
    "Zweite Chance"
   ],
-  "datum": "16.10.2026",
-  "dir": "socialmedia/15"
+  "datum": "2026-10-30",
+  "dir": "socialmedia/15",
+  "zeit": "14:00",
+  "ig": "geplant",
+  "tt": "geplant"
  }
 ];

@@ -69,6 +69,24 @@
   .chip.s-bereit{background:var(--accent-tint);color:var(--accent-ink);}
   .chip.s-gepostet{background:var(--ink);color:var(--paper);}
 
+  .views{display:flex;gap:8px;margin-bottom:16px}
+  .plan{border:1px solid var(--line);border-radius:14px;background:var(--card);overflow-x:auto}
+  .plan table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px}
+  .plan th{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--paper)}
+  .plan td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  .plan tr:last-child td{border-bottom:0}
+  .plan tr.row{cursor:pointer}.plan tr.row:hover td{background:var(--paper)}
+  .plan .th{width:54px}.plan .th img{width:44px;height:55px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+  .plan .dt{font-family:var(--mono);font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .plan .tt{font-weight:700;letter-spacing:-.02em}
+  .st{display:inline-block;font:500 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:5px;white-space:nowrap}
+  .st.geplant{background:var(--accent-tint);color:var(--accent-ink)}
+  .st.live{background:var(--ink);color:var(--paper)}
+  .st.offen{background:var(--paper-2);color:var(--ink)}
+  .sumbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+  .sumbar div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:130px}
+  .sumbar b{display:block;font:800 26px var(--display);letter-spacing:-.04em;line-height:1.05}
+  .sumbar span{font:500 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
   dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);border-radius:16px;overflow:hidden;}
   dialog::backdrop{background:rgba(20,18,16,.72);backdrop-filter:blur(4px);}
   .dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);max-height:calc(100dvh - 24px);}
@@ -102,9 +120,11 @@
   <div class="acts"><button class="btn sm" type="button" id="reset"><span class="dot"></span><span>Status zurücksetzen</span></button></div>
 </header>
 <main>
-  <p class="hint">Klick auf einen Post öffnet alle Slides, die Caption zum Kopieren und den Download in 1080 × 1350. Status und Notiz bleiben in diesem Browser. Neue Posts schickst du Claude im Chat, sie erscheinen hier nach dem nächsten Deploy.</p>
-  <div class="filters" id="filters"></div>
-  <div class="grid" id="grid"></div>
+  <p class="hint" id="introHint">Klick auf einen Post öffnet alle Slides, die Caption zum Kopieren und den Download in 1080 × 1350. Status und Notiz bleiben in diesem Browser. Neue Posts schickst du Claude im Chat, sie erscheinen hier nach dem nächsten Deploy.</p>
+  <div class="views" id="views"></div>
+  <div id="planView" hidden><div class="sumbar" id="sumbar"></div><div class="plan"><table><thead><tr><th></th><th>Datum</th><th>Uhr</th><th>Post</th><th>Instagram</th><th>TikTok</th></tr></thead><tbody id="planBody"></tbody></table></div><p class="hint" style="margin-top:12px">Beide Kanäle sind über Metricool (Instagram) und TikTok Studio (TikTok) eingeplant. Der Status wechselt automatisch auf „Live“, sobald der Zeitpunkt vorbei ist. Ein Klick auf eine Zeile öffnet den Post.</p></div>
+  <div id="galView"><div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div></div>
 </main>
 
 <dialog id="dlg" aria-label="Post ansehen">
@@ -194,7 +214,27 @@ try{if(window.self!==window.top)document.documentElement.classList.add("embedded
     try{navigator.clipboard.writeText(txt).then(function(){b.lastChild.textContent="Kopiert";setTimeout(function(){b.lastChild.textContent="Caption kopieren"},1600)},sel);}catch(e){sel();}
   };
   $("reset").onclick=function(){if(!window.confirm("Alle Status und Notizen zurücksetzen?"))return;S={};save();chips();grid();};
-  chips();grid();
+  var VIEW="plan";
+  function berlinNow(){return new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/Berlin"}));}
+  function when(p){var a=(p.datum||"").split("-"),t=(p.zeit||"00:00").split(":");return new Date(+a[0],+a[1]-1,+a[2],+t[0],+t[1]);}
+  function stat(p,k){var v=p[k];if(!v)return '<span class="st offen">nicht geplant</span>';return when(p)<=berlinNow()?'<span class="st live">Live</span>':'<span class="st geplant">Geplant</span>';}
+  function dts(p){var d=when(p);return d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});}
+  function plan(){
+    var l=P.slice().sort(function(a,b){return when(a)-when(b);}), now=berlinNow();
+    var live=l.filter(function(p){return when(p)<=now;}).length, rest=l.length-live;
+    var nxt=l.filter(function(p){return when(p)>now;})[0];
+    $("sumbar").innerHTML='<div><b>'+l.length+'</b><span>Posts</span></div><div><b>'+live+'</b><span>Schon live</span></div><div><b>'+rest+'</b><span>Noch geplant</span></div>'+(nxt?'<div><b style="font-size:19px;line-height:1.25">'+dts(nxt)+', '+nxt.zeit+'</b><span>Als Nächstes</span></div>':'');
+    $("planBody").innerHTML=l.map(function(p){return '<tr class="row" data-id="'+p.id+'"><td class="th"><img src="'+p.dir+'/t1.webp" alt="" loading="lazy" width="44" height="55"></td><td class="dt">'+dts(p)+'</td><td class="dt">'+p.zeit+'</td><td class="tt">'+p.titel+'</td><td>'+stat(p,"ig")+'</td><td>'+stat(p,"tt")+'</td></tr>';}).join("");
+  }
+  function views(){
+    $("views").innerHTML='<button class="btn sm" type="button" data-view="plan" aria-pressed="'+(VIEW==="plan")+'"><span class="dot"></span><span>Planung und Übersicht</span></button><button class="btn sm" type="button" data-view="gal" aria-pressed="'+(VIEW==="gal")+'"><span class="dot"></span><span>Alle Posts</span></button>';
+    $("planView").hidden=VIEW!=="plan"; $("galView").hidden=VIEW!=="gal";
+  }
+  document.addEventListener("click",function(e){
+    var v=e.target.closest("[data-view]"); if(v){VIEW=v.dataset.view;views();return;}
+    var r=e.target.closest("tr.row"); if(r){open(+r.dataset.id);}
+  });
+  chips();grid();plan();views();
   var h=(location.hash||"").replace("#","");if(/^p\d+$/.test(h))open(+h.slice(1));
 })();
 </script>
