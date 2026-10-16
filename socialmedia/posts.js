@@ -85,13 +85,13 @@ window.SM_POSTS=[
  },
  {
   "id": 7,
-  "titel": "Gastro braucht Reels",
+  "titel": "Jede Marke braucht Reels",
   "stil": "ghost",
-  "caption": "Gäste entscheiden heute schon vor der Tür, ob sie reingehen. Kurze Reels von Essen, Küche und Team zeigen, wie es bei dir schmeckt und wie es sich anfühlt. Das ist Werbung, die nichts kostet außer Zeit.",
-  "tags": "#gastro #gastronomie #restaurantmarketing #reels #berlin",
+  "caption": "Kunden entscheiden heute schon vor dem Kauf, ob sie dir vertrauen. Kurze Reels vom Produkt, vom Team und vom Alltag zeigen, wie es bei dir wirklich ist. Das ist Werbung, die nicht nach Werbung aussieht.",
+  "tags": "#reels #socialmediamarketing #contentstrategie #marke #berlin",
   "punkte": [
-   "Gäste suchen online",
-   "Essen in Bewegung",
+   "Kunden suchen online",
+   "Das Produkt in Bewegung",
    "Zeig die Menschen"
   ],
   "datum": "16.10.2026",
