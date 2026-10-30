@@ -861,6 +861,15 @@ $("#bq").addEventListener("input",renderB);
     if(ex){ex.quelle=BESTAND;fixed++;}
   });
   if(fixed)saveK();
+  /* Kunden, die nicht zu Nader gehören (Tommys Liste), aus der Startliste entfernen. Nur ohne Belege, nur Bestandskunden aus der Startliste. */
+  var rm=(window.KUNDEN_ENTFERNEN||[]).map(function(n){return n.trim().toLowerCase();}),removed=0;
+  if(rm.length){
+    K=K.filter(function(k){
+      if(k.quelle===BESTAND&&rm.indexOf(String(k.name).trim().toLowerCase())>-1&&!belegeOf(k).length){removed++;return false;}
+      return true;
+    });
+    if(removed)saveK();
+  }
   seed.forEach(function(sd,i){
     if(done[sd.id])return;
     done[sd.id]=1;
@@ -872,7 +881,7 @@ $("#bq").addEventListener("input",renderB);
   });
   if(added)saveK();
   store("sb-kunden-seed",done);
-  if(added)setTimeout(function(){toast(added+" Kunden aus der Kundenliste übernommen");},400);
+  if(added||removed)setTimeout(function(){toast((added?added+" Kunden übernommen":"")+(added&&removed?", ":"")+(removed?removed+" fremde Kunden entfernt":""));},400);
 })();
 if(/belege/.test(location.hash)){setTab("belege");if(B.some(isOver))bFil="ueber";}
 render();
