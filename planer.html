@@ -101,6 +101,51 @@
   .acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
   @media (max-width:720px){.day{min-height:78px;}.ev small{display:none;}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+
+  /* To-do Liste */
+  .kpi.hot b{color:var(--accent-ink);}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chips button{display:inline-flex;align-items:center;gap:7px;font:650 13.5px/1 var(--display);padding:8px 12px;border-radius:999px;border:1.5px solid var(--line-2);background:transparent;cursor:pointer;}
+  .chips button i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--ink));}
+  .chips button sup{font:600 10.5px var(--mono);color:var(--mute);}
+  .chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chips button[aria-pressed="true"] sup{color:inherit;opacity:.7;}
+  .grp h3{margin:6px 2px 8px;font:700 12px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mute);}
+  .grp h3 span{background:var(--paper-2);border-radius:999px;padding:2px 8px;margin-left:6px;color:var(--ink);}
+  .grp.bad h3{color:var(--bad);}
+  .list{overflow:hidden;}
+  .todo{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:13px 14px;border-bottom:1px solid var(--line);}
+  .todo:last-child{border-bottom:0;}
+  .chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--line-2);background:transparent;cursor:pointer;margin-top:1px;position:relative;transition:background-color .15s,border-color .15s;}
+  .chk:hover{border-color:var(--accent);}
+  .chk[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);}
+  .chk[aria-pressed="true"]::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);}
+  .tb{all:unset;cursor:pointer;display:grid;gap:3px;min-width:0;}
+  .tb:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:6px;}
+  .tt{font-weight:750;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .pr{width:9px;height:9px;border-radius:50%;background:var(--line-2);flex:none;}
+  .pr.p-hoch{background:var(--bad);} .pr.p-mittel{background:var(--accent);}
+  .run{font:700 10.5px var(--mono);text-transform:uppercase;letter-spacing:.05em;background:var(--warn-tint);color:var(--warn);border-radius:999px;padding:2px 8px;font-style:normal;}
+  .nt{font-size:13.5px;color:var(--mute);line-height:1.35;}
+  .meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+  .kd{font:700 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:4px 10px;background:color-mix(in srgb,var(--c) 18%,transparent);border:1px solid color-mix(in srgb,var(--c) 55%,transparent);white-space:nowrap;}
+  .due{font:600 12px var(--mono);color:var(--mute);white-space:nowrap;}
+  .due.over{color:var(--bad);font-weight:700;} .due.today{color:var(--accent-ink);font-weight:700;} .due.soon{color:var(--warn);font-weight:700;}
+  .st-erledigt .tt{text-decoration:line-through;color:var(--mute);}
+  .st-erledigt .nt{opacity:.6;}
+  .lock{max-width:420px;margin:60px auto;display:grid;gap:12px;text-align:center;}
+  .lock h1{margin:0;font-size:28px;letter-spacing:-.04em;}
+  .lock input{padding:12px;border:1.5px solid var(--ink);border-radius:10px;background:var(--card);font-size:16px;}
+  .err{color:var(--bad);min-height:1.2em;margin:0;font-size:14px;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--mute);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .lg{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .lg.g{background:#1A73E8;} .lg.t{background:var(--accent);} .lg.e{background:#C13584;}
+  .ev.k-g{border-left-color:#1A73E8;background:color-mix(in srgb,#1A73E8 12%,var(--paper-2));}
+  .ev.k-t{border-left-color:var(--accent);background:var(--accent-tint);color:#232321;cursor:pointer;}
+  .ev.k-g,.ev.k-t{cursor:pointer;}
+  .ev{margin-bottom:2px;}
+  @media (max-width:720px){.todo{grid-template-columns:auto 1fr;}.meta{grid-column:2;flex-direction:row;flex-wrap:wrap;align-items:center;}}
 </style>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="glass.css"><script>document.documentElement.classList.add("sbg")</script>
@@ -108,14 +153,30 @@
 <body>
 <header class="top">
   <img src="logo_social_bites.webp" alt="Social Bites" width="900" height="806">
-  <div class="ttl"><b>Planer</b><span class="mono">Aufgaben und Kalender. Bleibt nur in diesem Browser.</span></div>
+  <div class="ttl"><b>Planer</b><span class="mono">Aufgaben und Kalender. Daten verschlüsselt, Haken nur in diesem Browser.</span></div>
   <div class="seg tabs" role="tablist" aria-label="Bereich"><button type="button" role="tab" data-tab="aufgaben" aria-pressed="true">Aufgaben</button><button type="button" role="tab" data-tab="kalender" aria-pressed="false">Kalender</button></div>
 </header>
 <main id="main"></main>
 
+<dialog id="tkDlg" aria-label="Aufgabe">
+  <form class="dlg" id="tkForm" method="dialog">
+    <h3 id="tkTitle">Neue Aufgabe</h3>
+    <label class="fld"><span>Aufgabe</span><input id="tkT" required placeholder="z. B. Website fertigstellen"></label>
+    <div class="g2">
+      <label class="fld"><span>Kunde oder Bereich</span><input id="tkK" list="kList" placeholder="z. B. The Meat Company"><datalist id="kList"></datalist></label>
+      <label class="fld"><span>Priorität</span><select id="tkP"><option value="hoch">Hoch</option><option value="mittel">Mittel</option><option value="niedrig">Niedrig</option></select></label>
+      <label class="fld"><span>Frist</span><input id="tkD" type="date"></label>
+      <label class="fld"><span>Uhrzeit</span><input id="tkH" type="time"></label>
+      <label class="fld"><span>Status</span><select id="tkS"><option value="offen">Offen</option><option value="laeuft">Läuft</option><option value="erledigt">Erledigt</option></select></label>
+    </div>
+    <label class="fld"><span>Notiz</span><textarea id="tkN" rows="3"></textarea></label>
+    <div class="acts"><button class="btn sm" type="button" id="tkDel" hidden>Löschen</button><button class="btn sm" type="button" id="tkCancel">Abbrechen</button><button class="btn sm inv" type="submit">Speichern</button></div>
+  </form>
+</dialog>
+<dialog id="inDlg" aria-label="Termin"><div class="dlg"><h3 id="inTitle"></h3><div id="inBody"></div><div class="acts"><button class="btn sm inv" type="button" id="inClose">Schließen</button></div></div></dialog>
 <dialog id="dlg" aria-label="Beitrag">
   <form class="dlg" id="evForm" method="dialog">
-    <h3 id="evTitle">Beitrag planen</h3>
+    <h3 id="evTitle">Eintrag planen</h3>
     <label class="fld"><span>Titel oder Idee</span><input id="evT" required placeholder="z. B. Reel Spreequell Tour"></label>
     <div class="g2">
       <label class="fld"><span>Datum</span><input id="evD" type="date" required></label>
@@ -130,125 +191,189 @@
   </form>
 </dialog>
 
+<script src="akquise/planer.enc.js" onerror="void 0"></script>
 <script>
 (function(){
 "use strict";
-var KT="sb-aufgaben-v1",KC="sb-kalender-v1";
+var KT="sb-aufgaben-v2",KC="sb-kalender-v1";
 function $(s){return document.querySelector(s);}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 function uid(){return "x"+Math.random().toString(36).slice(2,8);}
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 if(window.self!==window.top)document.documentElement.classList.add("embedded");
+try{localStorage.removeItem("sb-aufgaben-v1");}catch(e){}  /* alte Startliste (WhatsApp Notizen) ist entfernt */
 
-/* Startliste aus den WhatsApp Notizen von Tommy (09.10.2026) und der Website Liste von Nader. Neue Einträge mit neuer id kommen beim nächsten Laden automatisch dazu. */
-var SEED=[
- {id:"w01",t:"Visitenkarte",k:"intern",w:"beide",s:"offen",d:"",n:"Druckdaten und Mockups liegen im Projektordner Visitenkarten und im Brand Book."},
- {id:"w02",t:"Direkt Angebot und Beispiele je Nische",k:"sales",w:"beide",s:"offen",d:"",n:"Direkt mit Angebot rausgehen, Beispiele zeigen, wie wir in Nische X (wo der Kunde drin ist) liefern könnten, welche Kunden wir beide schon betreut haben, wie unser Prozess ist."},
- {id:"w03",t:"Outsource Prozess ausbauen",k:"intern",w:"beide",s:"offen",d:"",n:"Wie bekommen wir Cutter und Videografen? Playbook, Briefing Paket und Bezahlmodell klären."},
- {id:"w04",t:"Dashboard: wöchentlich Instagram und TikTok nach viralen Videos scrapen",k:"product",w:"nader",s:"erledigt",d:"",n:"Läuft als Trend-Indicator, jeden Montag 07:00, plus Hook-Bibliothek."},
- {id:"w05",t:"Buffer einbauen, Kalenderansicht per Buffer API mit Drag and Drop",k:"product",w:"nader",s:"laeuft",d:"",n:"Kalender mit Drag and Drop ist da (Reiter Kalender). Für die Buffer Anbindung brauchen wir Buffer Zugang (API Schlüssel) von Tommy oder Nader."},
- {id:"w06",t:"Zukunft: SEO, Ads, GEO",k:"product",w:"beide",s:"offen",d:"",n:"Als Leistungspaket ausarbeiten, Master Sheet Kapitel 5, 11, 12 und 15 als Grundlage."},
- {id:"w07",t:"Datenbanken vorbereiten",k:"sales",w:"beide",s:"laeuft",d:"2026-10-15",n:"Bis Donnerstag. Akquise Board und Influencer Datenbank laufen, Firmenarten und Flyer Liste sind drin."},
- {id:"w08",t:"Mini Pitch mit 3 bis 4 Videoideen für die Mail",k:"sales",w:"tommy",s:"offen",d:"",n:"Kurzer Text plus 3 bis 4 konkrete Videoideen je Kunde. Hook-Bibliothek nutzen."},
- {id:"w09",t:"Cold Caller",k:"sales",w:"tommy",s:"offen",d:"",n:"Leitfaden und Liste vorbereiten."},
- {id:"w10",t:"Cold Caller scrapen",k:"sales",w:"tommy",s:"offen",d:"",n:"Tommy scrapt Kontakte für die Caller."},
- {id:"w11",t:"KPI Tracking der letzten Videos pro Kunde",k:"product",w:"beide",s:"offen",d:"",n:"Views, Saves, Kommentare pro Video je Kunde sammeln, Monatsreport."},
- {id:"w12",t:"Kalenderansicht wie Buffer für Nader und Tommy einzeln",k:"product",w:"nader",s:"erledigt",d:"",n:"Reiter Kalender, getrennt nach Nader und Tommy, Drag and Drop."},
- {id:"w13",t:"Allgemeine Aufgabentabelle mit Kategorien Product, Sales, Intern",k:"product",w:"nader",s:"erledigt",d:"",n:"Das hier."},
- {id:"n01",t:"Spreegold: mehr Videos auf der Website zeigen",k:"product",w:"nader",s:"offen",d:"",n:"Es gibt bisher nur ein Spreegold Video im Projektordner. Weitere Dateien oder Links liefern."},
- {id:"n02",t:"Influencer und Artists: mehr Creator Namen zeigen",k:"product",w:"nader",s:"offen",d:"",n:"Bisher 6 Creator mit echten Beiträgen. Weitere Namen und Links liefern, dann kommen sie in die Karten Hand."},
- {id:"n03",t:"Pitch Video mit neuem Skript (v3) einsprechen und bauen",k:"product",w:"nader",s:"offen",d:"",n:"Skript steht im Brand Book unter Videos und Skripte. Offen: Szenen mit Nader in den Läden drehen."}
-];
-var T=load(KT,null);
-if(!T){T=SEED.map(function(x){return Object.assign({},x);});}
-else{var have={};T.forEach(function(x){have[x.id]=1;});SEED.forEach(function(x){if(!have[x.id])T.push(Object.assign({},x));});}
-store(KT,T);
-var EV=load(KC,[]);
+/* Daten: lokal Klartext, sonst verschlüsselt (Passphrase wie im Akquise-Board) */
+var DATA=null;
+function isLocal(){return /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)&&!/[?&]enc=1/.test(location.search);}
+function b64(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);});}
+async function decrypt(enc,pass){
+  var km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]);
+  var key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(enc.salt),iterations:enc.runden,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+  var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(enc.iv)},key,b64(enc.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function loadLocal(){
+  if(!isLocal())return false;
+  try{var r=await fetch("../Planer/planer_daten.json?v="+Date.now());if(!r.ok)return false;DATA=await r.json();return true;}catch(e){return false;}
+}
+function lockScreen(){
+  $("#main").innerHTML='<div class="lock"><h1>Aufgaben und Kalender</h1><p>Die Daten sind verschlüsselt. Gib die Passphrase von Nader und Tommy ein, dieselbe wie im Akquise-Board.</p><input id="pw" type="password" autocomplete="current-password" placeholder="Passphrase" aria-label="Passphrase"><button class="btn inv" id="pwGo" type="button">Öffnen</button><p class="err" id="pwErr" role="alert"></p></div>';
+  var tries=0,wait=0;
+  function go(){
+    if(Date.now()<wait){$("#pwErr").textContent="Kurz warten.";return;}
+    var p=$("#pw").value;if(!p)return;$("#pwGo").disabled=true;
+    decrypt(window.PLANER_ENC,p).then(function(d){DATA=d;try{localStorage.setItem("akq-pw",p);sessionStorage.setItem("akq-pw",p);}catch(e){}start();},
+      function(){tries++;$("#pwErr").textContent=tries>=5?"Zu viele Versuche, 30 Sekunden Pause.":"Falsche Passphrase.";if(tries>=5){wait=Date.now()+30000;tries=0;}$("#pwGo").disabled=false;$("#pw").select();});
+  }
+  $("#pwGo").addEventListener("click",go);$("#pw").addEventListener("keydown",function(e){if(e.key==="Enter")go();});$("#pw").focus();
+}
+async function boot(){
+  if(await loadLocal())return start();
+  if(!window.PLANER_ENC){$("#main").innerHTML='<div class="lock"><h1>Noch keine Daten</h1><p>Die verschlüsselten Aufgaben liegen noch nicht auf GitHub.</p></div>';return;}
+  var saved="";try{saved=localStorage.getItem("akq-pw")||sessionStorage.getItem("akq-pw")||"";}catch(e){}
+  if(saved){try{DATA=await decrypt(window.PLANER_ENC,saved);return start();}catch(e){}}
+  lockScreen();
+}
 
-var KAT={product:"Product",sales:"Sales",intern:"Intern"},ST={offen:"Offen",laeuft:"Läuft",erledigt:"Erledigt"},WER={beide:"Beide",nader:"Nader",tommy:"Tommy"};
-var tab=(new URLSearchParams(location.search).get("tab")||location.hash.slice(1)||"aufgaben");
-if(tab!=="kalender")tab="aufgaben";
-var F={k:"alle",s:"offen+laeuft",w:"alle"},person="alle",cur=new Date();cur.setDate(1);
+var S=load(KT,{over:{},own:[],del:[]}),EV=load(KC,[]);
+function saveS(){store(KT,S);}
+var PRIO={hoch:"Hoch",mittel:"Mittel",niedrig:"Niedrig"},ST={offen:"Offen",laeuft:"Läuft",erledigt:"Erledigt"},WER={beide:"Beide",nader:"Nader",tommy:"Tommy"},PL={ig:"Instagram",tt:"TikTok",yt:"YouTube",so:"Sonstiges"};
+var MON=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],DOW=["Mo","Di","Mi","Do","Fr","Sa","So"],DOWL=["So","Mo","Di","Mi","Do","Fr","Sa"];
+function pad(n){return String(n).padStart(2,"0");}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function fromIso(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function dayDiff(s){var a=fromIso(iso(new Date())),b=fromIso(s);return Math.round((b-a)/864e5);}
+function fmtD(s){var d=fromIso(s);return DOWL[d.getDay()]+" "+pad(d.getDate())+"."+pad(d.getMonth()+1)+".";}
+function rel(s){var n=dayDiff(s);return n===0?"Heute":n===1?"Morgen":n===-1?"Gestern":n<0?"vor "+(-n)+" Tagen":null;}
+var tab=(new URLSearchParams(location.search).get("tab")||location.hash.slice(1)||"aufgaben");if(tab!=="kalender")tab="aufgaben";
+var F={kunde:"alle",s:"offen"},person="alle",cur=new Date();cur.setDate(1);
 
+function tasks(){
+  var base=(DATA.aufgaben||[]).filter(function(x){return S.del.indexOf(x.id)<0;}).map(function(x){return Object.assign({},x,S.over[x.id]||{});});
+  return base.concat(S.own.map(function(x){return Object.assign({},x);}));
+}
+function colorOf(k){var h=0;for(var i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))%360;return "hsl("+h+" 65% 58%)";}
 function head(){[].forEach.call(document.querySelectorAll("[data-tab]"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-tab")===tab));});}
 
+function pill(x){
+  if(!x.d)return '<span class="due none">Ohne Datum</span>';
+  var n=dayDiff(x.d),c=x.s==="erledigt"?"":n<0?" over":n===0?" today":n<=2?" soon":"";
+  var r=rel(x.d);return '<span class="due'+c+'">'+(r?r+" · ":"")+fmtD(x.d)+(x.h?" · "+x.h:"")+'</span>';
+}
+function row(x){
+  return '<div class="todo st-'+x.s+'" data-id="'+x.id+'"><button class="chk" type="button" data-chk="'+x.id+'" aria-label="'+(x.s==="erledigt"?"Wieder öffnen":"Erledigt")+'" aria-pressed="'+(x.s==="erledigt")+'"></button>'+
+   '<button class="tb" type="button" data-open="'+x.id+'"><span class="tt"><span class="pr p-'+(x.prio||"mittel")+'" title="Priorität '+(PRIO[x.prio||"mittel"])+'"></span>'+esc(x.t)+(x.s==="laeuft"?'<em class="run">läuft</em>':"")+'</span>'+
+   (x.n?'<span class="nt">'+esc(x.n)+'</span>':"")+'</button>'+
+   '<span class="meta"><span class="kd" style="--c:'+colorOf(x.kunde||"Allgemein")+'">'+esc(x.kunde||"Allgemein")+'</span>'+pill(x)+'</span></div>';
+}
 function vTasks(){
-  var cnt=function(k){return T.filter(function(x){return (k==="alle"||x.k===k)&&x.s!=="erledigt";}).length;};
-  var h='<div class="kpis"><div class="kpi"><small>Offen oder läuft</small><b>'+T.filter(function(x){return x.s!=="erledigt";}).length+'</b></div>'+
-   ["product","sales","intern"].map(function(k){return '<div class="kpi"><small>'+KAT[k]+'</small><b>'+cnt(k)+'</b></div>';}).join("")+
-   '<div class="kpi"><small>Erledigt</small><b>'+T.filter(function(x){return x.s==="erledigt";}).length+'</b></div></div>';
-  h+='<div class="bar"><div class="seg" role="group" aria-label="Kategorie">'+["alle","product","sales","intern"].map(function(k){return '<button type="button" data-fk="'+k+'" aria-pressed="'+(F.k===k)+'">'+(k==="alle"?"Alle":KAT[k])+'</button>';}).join("")+'</div>'+
-   '<div class="seg" role="group" aria-label="Status"><button type="button" data-fs="offen+laeuft" aria-pressed="'+(F.s==="offen+laeuft")+'">Offen und läuft</button><button type="button" data-fs="erledigt" aria-pressed="'+(F.s==="erledigt")+'">Erledigt</button><button type="button" data-fs="alle" aria-pressed="'+(F.s==="alle")+'">Alle</button></div>'+
-   '<div class="seg" role="group" aria-label="Wer">'+["alle","nader","tommy"].map(function(k){return '<button type="button" data-fw="'+k+'" aria-pressed="'+(F.w===k)+'">'+(k==="alle"?"Alle":WER[k])+'</button>';}).join("")+'</div>'+
-   '<button class="btn sm inv" type="button" id="addT" style="margin-left:auto">+ Aufgabe</button></div>';
-  var rows=T.filter(function(x){return (F.k==="alle"||x.k===F.k)&&(F.s==="alle"||(F.s==="erledigt"?x.s==="erledigt":x.s!=="erledigt"))&&(F.w==="alle"||x.w===F.w||x.w==="beide");});
-  rows.sort(function(a,b){return (a.s==="erledigt")-(b.s==="erledigt")||(a.d||"9999").localeCompare(b.d||"9999");});
-  h+='<div class="card"><table><thead><tr><th>Aufgabe</th><th>Kategorie</th><th>Wer</th><th>Status</th><th>Fällig</th><th>Notiz</th><th></th></tr></thead><tbody>'+
-   (rows.length?rows.map(function(x){return '<tr class="st-'+x.s+'" data-id="'+x.id+'"><td class="t"><input data-f="t" value="'+esc(x.t)+'" aria-label="Aufgabe"></td>'+
-    '<td><select data-f="k" aria-label="Kategorie">'+Object.keys(KAT).map(function(k){return '<option value="'+k+'"'+(x.k===k?" selected":"")+'>'+KAT[k]+'</option>';}).join("")+'</select></td>'+
-    '<td><select data-f="w" aria-label="Wer">'+Object.keys(WER).map(function(k){return '<option value="'+k+'"'+(x.w===k?" selected":"")+'>'+WER[k]+'</option>';}).join("")+'</select></td>'+
-    '<td><select data-f="s" aria-label="Status">'+Object.keys(ST).map(function(k){return '<option value="'+k+'"'+(x.s===k?" selected":"")+'>'+ST[k]+'</option>';}).join("")+'</select></td>'+
-    '<td><input data-f="d" type="date" value="'+esc(x.d)+'" aria-label="Fällig"></td>'+
-    '<td><textarea data-f="n" rows="2" aria-label="Notiz">'+esc(x.n)+'</textarea></td>'+
-    '<td><button class="x" type="button" data-rm="'+x.id+'" aria-label="Aufgabe löschen">×</button></td></tr>';}).join(""):'<tr><td colspan="7" style="padding:20px;color:var(--mute)">Nichts in dieser Ansicht.</td></tr>')+'</tbody></table></div>';
-  h+='<p class="hint">Die Startliste stammt aus den WhatsApp Notizen von Tommy und Naders Website Liste (09.10.2026). Alles ist direkt in der Tabelle änderbar und wird sofort gespeichert.</p>';
+  var all=tasks(),open=all.filter(function(x){return x.s!=="erledigt";});
+  var due0=open.filter(function(x){return x.d&&dayDiff(x.d)<=0;}).length,wk=open.filter(function(x){return x.d&&dayDiff(x.d)>0&&dayDiff(x.d)<=7;}).length;
+  var h='<div class="kpis"><div class="kpi"><small>Offen</small><b>'+open.length+'</b></div><div class="kpi hot"><small>Heute oder überfällig</small><b>'+due0+'</b></div><div class="kpi"><small>In den nächsten 7 Tagen</small><b>'+wk+'</b></div><div class="kpi"><small>Erledigt</small><b>'+(all.length-open.length)+'</b></div></div>';
+  var kunden=[];all.forEach(function(x){var k=x.kunde||"Allgemein";if(kunden.indexOf(k)<0)kunden.push(k);});kunden.sort(function(a,b){return a==="Allgemein"?1:b==="Allgemein"?-1:a.localeCompare(b);});
+  h+='<div class="bar"><div class="seg" role="group" aria-label="Status">'+[["offen","Offen"],["erledigt","Erledigt"],["alle","Alle"]].map(function(k){return '<button type="button" data-fs="'+k[0]+'" aria-pressed="'+(F.s===k[0])+'">'+k[1]+'</button>';}).join("")+'</div>'+
+   '<button class="btn sm inv" type="button" id="addT" style="margin-left:auto">+ Aufgabe</button></div>'+
+   '<div class="chips" role="group" aria-label="Kunde"><button type="button" data-fk="alle" aria-pressed="'+(F.kunde==="alle")+'">Alle Kunden</button>'+kunden.map(function(k){var n=open.filter(function(x){return (x.kunde||"Allgemein")===k;}).length;return '<button type="button" data-fk="'+esc(k)+'" aria-pressed="'+(F.kunde===k)+'" style="--c:'+colorOf(k)+'"><i></i>'+esc(k)+'<sup>'+n+'</sup></button>';}).join("")+'</div>';
+  var rows=all.filter(function(x){return (F.kunde==="alle"||(x.kunde||"Allgemein")===F.kunde)&&(F.s==="alle"||(F.s==="erledigt"?x.s==="erledigt":x.s!=="erledigt"));});
+  var G=[["Überfällig",function(x){return x.d&&dayDiff(x.d)<0;}],["Heute",function(x){return x.d&&dayDiff(x.d)===0;}],["Morgen",function(x){return x.d&&dayDiff(x.d)===1;}],["Diese Woche",function(x){return x.d&&dayDiff(x.d)>1&&dayDiff(x.d)<=7;}],["Später",function(x){return x.d&&dayDiff(x.d)>7;}],["Ohne Datum",function(x){return !x.d;}]],used={};
+  var out="";
+  G.forEach(function(g){
+    var l=rows.filter(function(x){return !used[x.id]&&g[1](x);});l.forEach(function(x){used[x.id]=1;});
+    l.sort(function(a,b){return (a.d||"9999").localeCompare(b.d||"9999")||(a.h||"99").localeCompare(b.h||"99");});
+    if(l.length)out+='<section class="grp'+(g[0]==="Überfällig"?" bad":"")+'"><h3>'+g[0]+' <span>'+l.length+'</span></h3><div class="card list">'+l.map(row).join("")+'</div></section>';
+  });
+  h+=out||'<div class="card" style="padding:22px;color:var(--mute)">Nichts in dieser Ansicht.</div>';
+  h+='<p class="hint">Haken setzen oder anklicken zum Bearbeiten. Aufgaben mit Datum stehen auch im Kalender. Neue Aufgaben sagst du mir in Claude Code, ich trage sie ein.</p>';
   return h;
 }
 
-function pad(n){return String(n).padStart(2,"0");}
-function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
-var MON=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],DOW=["Mo","Di","Mi","Do","Fr","Sa","So"];
-var PL={ig:"Instagram",tt:"TikTok",yt:"YouTube",so:"Sonstiges"};
 function vCal(){
   var y=cur.getFullYear(),m=cur.getMonth(),first=new Date(y,m,1),off=(first.getDay()+6)%7,start=new Date(y,m,1-off),todayS=iso(new Date());
   var h='<div class="cal-h"><button class="btn sm" type="button" data-nav="-1" aria-label="Vorheriger Monat">←</button><h2>'+MON[m]+' '+y+'</h2><button class="btn sm" type="button" data-nav="1" aria-label="Nächster Monat">→</button><button class="btn sm" type="button" data-nav="0">Heute</button>'+
-   '<div class="seg" role="group" aria-label="Person" style="margin-left:auto">'+["alle","nader","tommy"].map(function(k){return '<button type="button" data-fp="'+k+'" aria-pressed="'+(person===k)+'">'+(k==="alle"?"Beide":WER[k])+'</button>';}).join("")+'</div><button class="btn sm inv" type="button" id="addE">+ Beitrag</button><button class="btn sm" type="button" id="csv">Als CSV exportieren</button></div>';
+   '<button class="btn sm inv" type="button" id="addE" style="margin-left:auto">+ Eintrag</button><button class="btn sm" type="button" id="csv">Als CSV exportieren</button></div>';
+  h+='<div class="legend"><span><i class="lg g"></i>Google Kalender</span><span><i class="lg t"></i>Aufgabe mit Frist</span><span><i class="lg e"></i>Eigener Eintrag</span></div>';
+  var T=tasks().filter(function(x){return x.d&&x.s!=="erledigt";});
   h+='<div class="grid">'+DOW.map(function(d){return '<div class="dow">'+d+'</div>';}).join("");
   for(var i=0;i<42;i++){
     var dd=new Date(start);dd.setDate(start.getDate()+i);var ds=iso(dd);
-    var evs=EV.filter(function(e){return e.d===ds&&(person==="alle"||e.p===person);}).sort(function(a,b){return (a.h||"99").localeCompare(b.h||"99");});
+    var items=[];
+    (DATA.termine||[]).filter(function(e){return e.d===ds;}).forEach(function(e){items.push({k:"g",h:e.h||"",id:e.id,t:e.t,sub:e.h?e.h+(e.he?"–"+e.he:""):"ganztägig"});});
+    T.filter(function(x){return x.d===ds;}).forEach(function(x){items.push({k:"t",h:x.h||"24",id:x.id,t:x.t,sub:(x.kunde||"Allgemein")+(x.h?" · "+x.h:"")});});
+    EV.filter(function(e){return e.d===ds&&(person==="alle"||e.p===person);}).forEach(function(e){items.push({k:"e",h:e.h||"",id:e.id,t:e.t,sub:(e.h||"")+" "+WER[e.p]+(e.k?" · "+e.k:""),l:e.l,done:e.s==="gepostet"});});
+    items.sort(function(a,b){return (a.h||"00").localeCompare(b.h||"00");});
     h+='<div class="day'+(dd.getMonth()!==m?" other":"")+(ds===todayS?" today":"")+'" data-day="'+ds+'"><span class="dn">'+dd.getDate()+'</span>'+
-      evs.map(function(e){return '<div role="button" tabindex="0" class="ev '+e.l+(e.s==="gepostet"?" done":"")+'" draggable="true" data-ev="'+e.id+'"><small>'+esc((e.h||"")+" "+WER[e.p]+(e.k?" · "+e.k:""))+'</small>'+esc(e.t)+'</div>';}).join("")+
-      '<button class="addd" type="button" data-add="'+ds+'" aria-label="Beitrag am '+ds+' anlegen">+</button></div>';
+      items.map(function(it){return '<div role="button" tabindex="0" class="ev k-'+it.k+(it.l?" "+it.l:"")+(it.done?" done":"")+'"'+(it.k==="e"?' draggable="true"':"")+' data-'+(it.k==="e"?"ev":it.k==="t"?"open":"gev")+'="'+it.id+'"><small>'+esc(it.sub)+'</small>'+esc(it.t)+'</div>';}).join("")+
+      '<button class="addd" type="button" data-add="'+ds+'" aria-label="Eintrag am '+ds+' anlegen">+</button></div>';
   }
-  h+='</div><p class="hint">Beiträge anklicken zum Bearbeiten, zwischen Tagen ziehen zum Verschieben. Buffer Anbindung: dafür braucht es den Buffer Zugang (API Schlüssel). Bis dahin plant ihr hier und exportiert als CSV.</p>';
+  h+='</div><p class="hint">Google Kalender Termine sind eine Momentaufnahme (Stand '+esc(DATA.stand||"")+'), ich hole sie bei jedem Update neu. Eigene Einträge anklicken zum Bearbeiten, zwischen Tagen ziehen zum Verschieben.</p>';
   return h;
 }
 function render(){head();$("#main").innerHTML=tab==="kalender"?vCal():vTasks();try{history.replaceState(null,"","?tab="+tab);}catch(e){}}
 
-document.addEventListener("click",function(e){
-  var t=e.target.closest("[data-tab],[data-fk],[data-fs],[data-fw],[data-fp],[data-nav],[data-add],[data-ev],[data-rm],#addT,#addE,#csv");if(!t)return;
+function start(){
+  document.addEventListener("click",onClick);
+  document.addEventListener("keydown",function(e){var t=e.target.closest&&e.target.closest("[data-ev],[data-gev],.ev[data-open]");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.click();}});
+  render();
+}
+function setTask(id,patch){
+  var own=S.own.filter(function(x){return x.id===id;})[0];
+  if(own)Object.assign(own,patch);else{S.over[id]=Object.assign(S.over[id]||{},patch);}
+  saveS();
+}
+function onClick(e){
+  var t=e.target.closest("[data-tab],[data-fk],[data-fs],[data-nav],[data-add],[data-ev],[data-gev],[data-open],[data-chk],#addT,#addE,#csv");if(!t)return;
   if(t.hasAttribute("data-tab")){tab=t.getAttribute("data-tab");render();return;}
-  if(t.hasAttribute("data-fk")){F.k=t.getAttribute("data-fk");render();return;}
+  if(t.hasAttribute("data-fk")){F.kunde=t.getAttribute("data-fk");render();return;}
   if(t.hasAttribute("data-fs")){F.s=t.getAttribute("data-fs");render();return;}
-  if(t.hasAttribute("data-fw")){F.w=t.getAttribute("data-fw");render();return;}
-  if(t.hasAttribute("data-fp")){person=t.getAttribute("data-fp");render();return;}
   if(t.hasAttribute("data-nav")){var v=+t.getAttribute("data-nav");if(!v){cur=new Date();cur.setDate(1);}else cur=new Date(cur.getFullYear(),cur.getMonth()+v,1);render();return;}
+  if(t.hasAttribute("data-chk")){var id=t.getAttribute("data-chk"),x=tasks().filter(function(q){return q.id===id;})[0];if(x){setTask(id,{s:x.s==="erledigt"?"offen":"erledigt"});render();}return;}
+  if(t.hasAttribute("data-open")){openTask(t.getAttribute("data-open"));return;}
+  if(t.hasAttribute("data-gev")){openInfo(t.getAttribute("data-gev"));return;}
   if(t.hasAttribute("data-add")){openEv(null,t.getAttribute("data-add"));return;}
   if(t.hasAttribute("data-ev")){openEv(t.getAttribute("data-ev"));return;}
-  if(t.hasAttribute("data-rm")){if(!confirm("Aufgabe löschen?"))return;T=T.filter(function(x){return x.id!==t.getAttribute("data-rm");});store(KT,T);render();return;}
-  if(t.id==="addT"){T.unshift({id:uid(),t:"Neue Aufgabe",k:F.k==="alle"?"intern":F.k,w:"beide",s:"offen",d:"",n:""});store(KT,T);render();return;}
+  if(t.id==="addT"){openTask(null);return;}
   if(t.id==="addE"){openEv(null,iso(new Date()));return;}
   if(t.id==="csv"){exportCsv();return;}
-});
-document.addEventListener("keydown",function(e){var t=e.target.closest&&e.target.closest("[data-ev]");if(t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openEv(t.getAttribute("data-ev"));}});
-document.addEventListener("change",function(e){
-  var el=e.target,f=el.getAttribute&&el.getAttribute("data-f");if(!f)return;
-  var row=el.closest("tr"),x=T.filter(function(q){return q.id===row.getAttribute("data-id");})[0];if(!x)return;
-  x[f]=el.value;store(KT,T);if(f==="s"||f==="k"||f==="d")render();
-});
-document.addEventListener("input",function(e){
-  var el=e.target,f=el.getAttribute&&el.getAttribute("data-f");if(!f||!(f==="t"||f==="n"))return;
-  var row=el.closest("tr"),x=T.filter(function(q){return q.id===row.getAttribute("data-id");})[0];if(x){x[f]=el.value;store(KT,T);}
-});
+}
 
-// Dialog Beitrag
+/* Dialog Aufgabe */
+var taskId=null;
+function openTask(id){
+  taskId=id;var x=id?tasks().filter(function(q){return q.id===id;})[0]:null;
+  $("#tkTitle").textContent=x?"Aufgabe bearbeiten":"Neue Aufgabe";
+  $("#tkT").value=x?x.t:"";$("#tkK").value=x?(x.kunde||""):(F.kunde==="alle"?"":F.kunde);$("#tkD").value=x&&x.d?x.d:"";$("#tkH").value=x&&x.h?x.h:"";$("#tkP").value=x?(x.prio||"mittel"):"mittel";$("#tkS").value=x?x.s:"offen";$("#tkN").value=x?(x.n||""):"";
+  var ks=[];tasks().forEach(function(q){var k=q.kunde||"Allgemein";if(ks.indexOf(k)<0)ks.push(k);});$("#kList").innerHTML=ks.map(function(k){return '<option value="'+esc(k)+'">';}).join("");
+  $("#tkDel").hidden=!x;$("#tkDlg").showModal();
+}
+$("#tkForm").addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var o={t:$("#tkT").value.trim(),kunde:$("#tkK").value.trim()||"Allgemein",d:$("#tkD").value,h:$("#tkH").value,prio:$("#tkP").value,s:$("#tkS").value,n:$("#tkN").value};
+  if(!o.t)return;
+  if(taskId)setTask(taskId,o);else{S.own.unshift(Object.assign({id:uid()},o));saveS();}
+  $("#tkDlg").close();render();
+});
+$("#tkCancel").addEventListener("click",function(){$("#tkDlg").close();});
+$("#tkDel").addEventListener("click",function(){
+  if(!confirm("Aufgabe löschen?"))return;
+  if(S.own.some(function(x){return x.id===taskId;}))S.own=S.own.filter(function(x){return x.id!==taskId;});else{S.del.push(taskId);}
+  saveS();$("#tkDlg").close();render();
+});
+/* Info zu Google Terminen */
+function openInfo(id){
+  var e=(DATA.termine||[]).filter(function(x){return x.id===id;})[0];if(!e)return;
+  $("#inTitle").textContent=e.t;$("#inBody").innerHTML='<p><b>'+fmtD(e.d)+'</b>'+(e.h?" · "+e.h+(e.he?" bis "+e.he:""):" · ganztägig")+'</p>'+(e.ort?'<p>Ort: '+esc(e.ort)+'</p>':"")+(e.n?'<p>'+esc(e.n)+'</p>':"")+'<p class="hint">Aus deinem Google Kalender. Ändern kannst du den Termin dort, oder sag mir Bescheid.</p>';
+  $("#inDlg").showModal();
+}
+$("#inClose").addEventListener("click",function(){$("#inDlg").close();});
+
+/* Dialog Eintrag (eigene Einträge im Kalender) */
 var editId=null;
 function openEv(id,date){
   editId=id;var e=id?EV.filter(function(x){return x.id===id;})[0]:null;
-  $("#evTitle").textContent=e?"Beitrag bearbeiten":"Beitrag planen";
-  $("#evT").value=e?e.t:"";$("#evD").value=e?e.d:date;$("#evH").value=e?e.h:"";$("#evP").value=e?e.p:(person==="tommy"?"tommy":"nader");$("#evL").value=e?e.l:"ig";$("#evK").value=e?e.k:"";$("#evS").value=e?e.s:"idee";$("#evN").value=e?e.n:"";
+  $("#evTitle").textContent=e?"Eintrag bearbeiten":"Eintrag planen";
+  $("#evT").value=e?e.t:"";$("#evD").value=e?e.d:date;$("#evH").value=e?e.h:"";$("#evP").value=e?e.p:"nader";$("#evL").value=e?e.l:"ig";$("#evK").value=e?e.k:"";$("#evS").value=e?e.s:"idee";$("#evN").value=e?e.n:"";
   $("#evDel").hidden=!e;$("#dlg").showModal();
 }
 $("#evForm").addEventListener("submit",function(ev){
@@ -259,9 +384,8 @@ $("#evForm").addEventListener("submit",function(ev){
   store(KC,EV);$("#dlg").close();render();
 });
 $("#evCancel").addEventListener("click",function(){$("#dlg").close();});
-$("#evDel").addEventListener("click",function(){if(!confirm("Beitrag löschen?"))return;EV=EV.filter(function(x){return x.id!==editId;});store(KC,EV);$("#dlg").close();render();});
+$("#evDel").addEventListener("click",function(){if(!confirm("Eintrag löschen?"))return;EV=EV.filter(function(x){return x.id!==editId;});store(KC,EV);$("#dlg").close();render();});
 
-// Drag and Drop zwischen Tagen
 var dragId=null;
 document.addEventListener("dragstart",function(e){var t=e.target.closest&&e.target.closest("[data-ev]");if(!t)return;dragId=t.getAttribute("data-ev");try{e.dataTransfer.setData("text/plain",dragId);e.dataTransfer.effectAllowed="move";}catch(x){}});
 document.addEventListener("dragover",function(e){var d=e.target.closest&&e.target.closest("[data-day]");if(!d||!dragId)return;e.preventDefault();[].forEach.call(document.querySelectorAll(".day.over"),function(n){if(n!==d)n.classList.remove("over");});d.classList.add("over");});
@@ -269,11 +393,15 @@ document.addEventListener("drop",function(e){var d=e.target.closest&&e.target.cl
 document.addEventListener("dragend",function(){dragId=null;[].forEach.call(document.querySelectorAll(".day.over"),function(n){n.classList.remove("over");});});
 
 function exportCsv(){
-  var rows=[["Datum","Uhrzeit","Wer","Plattform","Kunde","Status","Titel","Notiz"]].concat(EV.filter(function(e){return person==="alle"||e.p===person;}).sort(function(a,b){return (a.d+(a.h||"")).localeCompare(b.d+(b.h||""));}).map(function(e){return [e.d,e.h,WER[e.p],PL[e.l],e.k,e.s,e.t,e.n];}));
+  var rows=[["Art","Datum","Uhrzeit","Titel","Kunde","Notiz"]];
+  (DATA.termine||[]).forEach(function(e){rows.push(["Google Kalender",e.d,e.h,e.t,"",e.n]);});
+  tasks().forEach(function(x){if(x.d)rows.push(["Aufgabe",x.d,x.h,x.t,x.kunde,x.n]);});
+  EV.forEach(function(e){rows.push(["Eintrag",e.d,e.h,e.t,e.k,e.n]);});
+  rows.sort(function(a,b){return (a[0]==="Art"?-1:0)||(a[1]+(a[2]||"")).localeCompare(b[1]+(b[2]||""));});
   var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c==null?"":c).replace(/"/g,'""')+'"';}).join(";");}).join("\n");
-  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));a.download="Social-Bites-Kalender.csv";document.body.appendChild(a);a.click();a.remove();
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));a.download="Social-Bites-Planer.csv";document.body.appendChild(a);a.click();a.remove();
 }
-render();
+boot();
 })();
 </script>
 </body>
