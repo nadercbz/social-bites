@@ -521,19 +521,7 @@
       </div>
       <p class="err" id="loginErr" role="alert" aria-live="assertive"></p>
       <button class="btn inv" type="submit"><span class="dot"></span><span>Einloggen</span></button>
-      <div class="demo-box" id="demoBox">
-        <p><b>Demo-Zugang</b> für den Beispielkunden Teig &amp; Tomate:</p>
-        <p>Benutzer <code>teigundtomate</code> · Passwort <code>biss2026</code></p>
-        <button class="btn sm" type="button" id="fillDemo"><span class="dot"></span><span>Demo-Zugang einsetzen</span></button>
-      </div>
-      <div class="demo-box" id="teamBox" hidden>
-        <p><b>Zum Testen:</b> Nach dem ersten Login merkt sich dieser Browser den Team-Zugang, danach reicht ein Klick.</p>
-        <label class="mem"><input type="checkbox" id="teamMem" checked> Zugang in diesem Browser merken</label>
-        <button class="btn sm" type="button" id="fillTeam"><span class="dot"></span><span>Team-Zugang einsetzen</span></button>
-        <button class="link" type="button" id="forgetTeam" hidden>Gemerkten Zugang vergessen</button>
-        <p class="hint" id="teamHint"></p>
-      </div>
-      <p class="fine">Das ist eine Demo mit Beispieldaten. Echte Kunden bekommen ihren eigenen Zugang beim Kick-off. Diese Seite schickt nichts an einen Server, alles bleibt in deinem Browser.</p>
+      <p class="fine">Zugang nur mit Benutzername und Passwort. Diese Seite schickt nichts an einen Server.</p>
     </form>
   </div>
 </section>
@@ -627,7 +615,7 @@ function relDay(d){var n=Math.round((d-TODAY)/864e5);if(n===0)return"heute";if(n
 /* Beispielprojekt: Opening liegt immer 31 Tage in der Zukunft, damit die Demo aktuell wirkt */
 var OPEN_IN=31, OPEN=addDays(TODAY,OPEN_IN), NOWO=-OPEN_IN;
 function D(o){return addDays(OPEN,o);}
-var CRED={u:"teigundtomate",p:"biss2026"};
+var CRED={u:"",p:""};  /* Demo-Zugang entfernt am 30.10.2026 */
 var CLIENT="Teig & Tomate", CONTACT="Sarah";
 
 var MILES=[
@@ -717,7 +705,7 @@ function authMode(){try{return localStorage.getItem(AUTH)||sessionStorage.getIte
 function authed(){return authMode()==="1";}
 function setAuth(v){try{if(v){localStorage.setItem(AUTH,v);sessionStorage.setItem(AUTH,v);}else{localStorage.removeItem(AUTH);sessionStorage.removeItem(AUTH);}}catch(e){}authed.mem=v||"";}
 /* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
-var TEAM_HASHES=["eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab","e0a93f7716e0bc692b6526ff5339a1300589cca771fd365ef3460f6070756a78","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* bisheriger Zugang, nader, tommy */
+var TEAM_HASHES=["070520c35d97261064793b9b6292db974b36146349abb5965a15e2f26350d7fa","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5"];  /* nader (neu seit 30.10.2026), tommy. Weitere Mitarbeiter: Prüfsumme von "benutzer:passwort" (klein geschrieben) hier anhängen */
 function isTeam(u,p){
   try{
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
@@ -735,32 +723,22 @@ document.querySelectorAll("[data-lgtab]").forEach(function(b){b.addEventListener
   var intern=b.getAttribute("data-lgtab")==="intern";
   document.querySelectorAll("[data-lgtab]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});
   $("#lgKicker").textContent=intern?"Interner Bereich":"Kundenportal";$("#lgTitle").textContent=intern?"Team-Login":"Einloggen";
-  $("#demoBox").hidden=intern;$("#teamBox").hidden=!intern;$("#loginErr").textContent="";teamBoxRefresh();$("#loginUser").focus();
+  $("#loginErr").textContent="";$("#loginUser").focus();
 });});
 /* Team-Zugang merken (nur in diesem Browser, localStorage). Im Code steht weiterhin kein Passwort, nur die Prüfsummen. */
 var TKEY="sb-team-zugang";
 /* Testphase: der Knopf setzt Benutzer und Passwort der Testphase ein (Nader, 09.10.2026). Zum Abschalten TEST_ZUGANG auf null setzen, dann gilt nur noch der gemerkte Zugang. */
-var TEST_ZUGANG={u:"socialbites",p:"00000"};
+var TEST_ZUGANG=null;  /* Testzugang abgeschaltet am 30.10.2026, weil die Seite öffentlich ist */
 function teamSaved(){try{var o=JSON.parse(localStorage.getItem(TKEY));return o&&o.u&&o.p?o:null;}catch(e){return null;}}
 function teamAccess(){return teamSaved()||TEST_ZUGANG;}
-function teamBoxRefresh(){
-  var o=teamAccess(),b=$("#fillTeam"),h=$("#teamHint");
-  b.disabled=!o;$("#forgetTeam").hidden=!teamSaved();
-  h.textContent=o?"Testzugang für "+o.u+". Ein Klick füllt Benutzername und Passwort aus, danach nur noch Einloggen.":"Noch nichts gemerkt. Einmal normal einloggen, Haken lassen, dann ist es da.";
-}
-$("#fillTeam").addEventListener("click",function(){var o=teamAccess();if(!o)return;$("#loginUser").value=o.u;$("#loginPass").value=o.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
-$("#forgetTeam").addEventListener("click",function(){try{localStorage.removeItem(TKEY);}catch(e){}teamBoxRefresh();toast("Gemerkten Zugang vergessen.");});
-$("#fillDemo").addEventListener("click",function(){$("#loginUser").value=CRED.u;$("#loginPass").value=CRED.p;$("#loginErr").textContent="";$("#loginForm").querySelector('[type="submit"]').focus();});
 $("#loginForm").addEventListener("submit",function(e){
   e.preventDefault();
   var u=$("#loginUser").value.trim().toLowerCase(),p=$("#loginPass").value,err=$("#loginErr"),f=$("#loginForm");
   if(!u||!p){err.textContent="Bitte Benutzername und Passwort eingeben.";return;}
-  if(u===CRED.u&&p===CRED.p){err.textContent="";setAuth("1");enter();return;}
   isTeam(u,p).then(function(ok){
     if(ok){err.textContent="";setAuth("team");
-      try{if($("#teamMem").checked)localStorage.setItem(TKEY,JSON.stringify({u:u,p:p}));}catch(e){}
       enterTeam();return;}
-    err.textContent="Benutzername oder Passwort stimmt nicht. Für die Demo: Demo-Zugang einsetzen.";
+    err.textContent="Benutzername oder Passwort stimmt nicht. ";
     f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake");
   });
 });
@@ -1419,7 +1397,8 @@ $("#tview").addEventListener("click",function(e){
   var c=e.target.closest("[data-hex]");if(c){var v=c.getAttribute("data-hex");try{navigator.clipboard.writeText(v).then(function(){toast(v+" kopiert");},function(){toast(v);});}catch(err){toast(v);}}
 });
 $("#tlogout").addEventListener("click",function(){setAuth(false);$("#loginPass").value="";$("#tsheet").removeAttribute("src");showLogin();toast("Abgemeldet.");});
-if(authMode()==="team")enterTeam();else if(authed())enter();else showLogin();
+var WANT_INTERN=(location.hash==="#intern");
+if(authMode()==="team")enterTeam();else if(authed()&&!WANT_INTERN)enter();else{showLogin();if(WANT_INTERN){var it=document.querySelector('[data-lgtab="intern"]');if(it)it.click();}}
 })();
 </script>
 </body>
