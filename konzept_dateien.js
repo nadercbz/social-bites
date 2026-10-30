@@ -208,7 +208,7 @@
   function entsperren(pw){
     var st=el.querySelector(".kzf-st");st.textContent="Prüfe Passphrase, das dauert einen Moment …";
     return deriveKey(pw).then(function(k){S.key=k;return fetch(pfad()+"index.enc").then(function(r){if(!r.ok)throw new Error("Dateiliste fehlt auf dem Server");return r.arrayBuffer();}).then(dec);})
-      .then(function(b){S.man=JSON.parse(new TextDecoder().decode(b));setPw(pw);st.textContent="";zeigen();})
+      .then(function(b){S.man=JSON.parse(new TextDecoder().decode(b));setPw(pw);st.textContent="";zeigen();if(S.wahl){var w=S.man.dateien.filter(function(x){return x.name.indexOf(S.wahl)>=0;})[0];if(w)oeffnen(w);}})
       .catch(function(e){S.key=null;st.textContent="";lock(e&&e.name==="OperationError"?"Passphrase stimmt nicht.":("Ging nicht: "+(e&&e.message||e)));});
   }
 
@@ -281,9 +281,9 @@
     if(a==="katzip"){var k=b.getAttribute("data-k");return zipLaden(S.man.dateien.filter(function(x){return x.kat===k;}),S.name.replace(/\s+/g,"_")+"_"+k.replace(/[^\wäöüÄÖÜß]+/g,"_")+".zip",b);}
   }
 
-  window.KzFiles={open:function(id,name){
+  window.KzFiles={open:function(id,name,wahl){
     if(el)close();
-    S={id:id,name:name||id,key:null,man:null,cur:null,urls:[],cache:{}};
+    S={id:id,name:name||id,key:null,man:null,cur:null,urls:[],cache:{},wahl:wahl||null};
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder)){alert("Dieser Browser kann die Dateien nicht entschlüsseln (Verschlüsselung braucht https oder localhost).");return;}
     shell();el.addEventListener("click",onClick);
     var pw=getPw();if(pw)entsperren(pw);else lock("");
