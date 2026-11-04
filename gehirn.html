@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http://127.0.0.1:8203; font-src 'self'; connect-src 'self' https://social-bites-board.bitey-cloud.workers.dev http://127.0.0.1:8203; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Wissensgehirn · Social Bites</title>
+<meta name="description" content="Das Wissensgehirn von Social Bites: Social Media und Hook Wissen, gefüttert über Links.">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/inter-tight.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/schibsted-grotesk.woff2" crossorigin>
+<link rel="stylesheet" href="gehirn/gehirn.css">
+</head>
+<body>
+
+<div id="boot" role="status">Gehirn lädt.</div>
+
+<section id="login" hidden>
+  <form id="loginForm" autocomplete="off">
+    <img src="mouth.webp" alt="" width="38" height="73" data-logo-fixed>
+    <h1>Wissens&shy;gehirn</h1>
+    <p id="loginText">Einmal anmelden, danach bleibt das Gehirn auf diesem Gerät offen.</p>
+    <label id="loginNameWrap">Wer bist du?
+      <input id="loginName" type="text" maxlength="40" placeholder="Dein Name" autocomplete="name" enterkeyhint="next">
+      <span class="pick" id="loginPick"><button type="button" data-name="Nader">Nader</button><button type="button" data-name="Tommy">Tommy</button></span>
+    </label>
+    <label id="loginPassWrap">Team Passphrase
+      <input id="loginPass" type="password" autocomplete="current-password" placeholder="Dieselbe wie im Akquise-Board" enterkeyhint="go">
+    </label>
+    <p id="loginErr" role="alert"></p>
+    <button id="loginGo" type="submit">Gehirn öffnen</button>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header id="kopf">
+    <div id="marke">
+      <img id="mund" src="mouth.webp" alt="" width="22" height="42" data-logo-fixed>
+      <div>
+        <h1>Wissensgehirn</h1>
+        <p id="stand" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <form id="fuettern" autocomplete="off">
+      <label class="sr" for="einwurf">Link einfügen</label>
+      <textarea id="einwurf" rows="1" placeholder="Link einfügen oder hierher ziehen" enterkeyhint="send" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+      <label class="sr" for="einwurfRegal">In welches Regal</label>
+      <select id="einwurfRegal"></select>
+      <button id="fuetternBtn" type="submit">Füttern</button>
+    </form>
+
+    <div id="kopfRechts">
+      <span id="sync" role="status" aria-live="polite"></span>
+      <button class="tb nur-gross" id="btnBriefing" type="button" title="Die aktuelle Auswahl als Text kopieren, zum Beispiel für eine KI">Briefing<span class="lang">kopieren</span></button>
+      <button class="tb ico" type="button" data-theme-toggle></button>
+      <button class="tb nur-gross" id="btnIch" type="button" title="Abmelden"></button>
+    </div>
+  </header>
+
+  <div id="leser" role="status" hidden></div>
+
+  <div id="haupt">
+    <nav id="regale" aria-label="Regale"></nav>
+
+    <main id="inhalt">
+      <div id="filter">
+        <label class="sr" for="suche">Suchen</label>
+        <input id="suche" type="search" placeholder="Suchen, auch in Originaltexten" enterkeyhint="search">
+        <button class="tb nur-klein" id="btnFilter" type="button" aria-expanded="false" aria-controls="filterMehr">Filter</button>
+        <div id="filterMehr">
+          <label class="sr" for="fTyp">Hook Typ</label><select id="fTyp"></select>
+          <label class="sr" for="fPlattform">Plattform</label><select id="fPlattform"></select>
+          <label class="sr" for="fQuelle">Herkunft</label><select id="fQuelle"></select>
+          <label class="sr" for="fSort">Sortierung</label><select id="fSort">
+            <option value="neu">Neueste zuerst</option>
+            <option value="geaendert">Zuletzt geändert</option>
+            <option value="views">Meiste Views</option>
+            <option value="az">A bis Z</option>
+          </select>
+          <button class="tb nur-klein" id="btnBriefing2" type="button">Briefing kopieren</button>
+          <button class="tb nur-klein" id="btnIch2" type="button">Abmelden</button>
+        </div>
+        <div id="ansicht" role="group" aria-label="Ansicht">
+          <button type="button" data-v="karten" aria-pressed="true">Karten</button>
+          <button type="button" data-v="tabelle" aria-pressed="false">Tabelle</button>
+        </div>
+      </div>
+      <div id="liste" tabindex="-1"></div>
+    </main>
+
+    <aside id="detail" aria-label="Eintrag" hidden></aside>
+  </div>
+</div>
+
+<div id="abwurf" aria-hidden="true" hidden>
+  <div id="abwurfMund"><img src="mouth.webp" alt="" data-logo-fixed></div>
+  <b>Rein damit.</b>
+  <span>Loslassen, das Gehirn frisst den Link.</span>
+</div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p id="noscript">Das Wissensgehirn braucht JavaScript.</p></noscript>
+
+<script src="gehirn/gehirn.js" defer></script>
+</body>
+</html>
