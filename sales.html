@@ -320,9 +320,9 @@
   .sv input{min-height:28px;width:180px;padding:3px 10px;font-size:13px;flex:none;}
   .fr{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
   .filters .fr input[type=search]{flex:1;min-width:150px;min-height:34px;font-size:14px;}
-  .filters .fr select{min-height:34px;font-size:13.5px;max-width:160px;}
+  .filters .fr select{min-height:34px;font-size:13.5px;max-width:132px;}
   .fr .rng{font-size:13px;}
-  .fr .rng input{width:84px;}
+  .fr .rng input{width:72px;}
   .dd{position:relative;flex:none;}
   .dd>summary{list-style:none;cursor:pointer;min-height:34px;display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:12px;border:1px solid var(--g-glass-line,var(--line-2));background:var(--g-field,var(--card));font-weight:650;font-size:13.5px;white-space:nowrap;box-shadow:inset 0 1px 2px rgba(35,35,33,.06);}
   .dd>summary::-webkit-details-marker{display:none;}
@@ -360,7 +360,7 @@
   .pl-empty{margin:0 18px 10px;padding:9px 13px;border-radius:12px;border:1px dashed var(--line-2);font-size:13.5px;color:var(--mute);flex:none;}
 
   /* Board: ein durchgehender Pfeil über alle Phasen */
-  .board{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(205px,1fr)) minmax(172px,.82fr);overflow-x:auto;overflow-y:hidden;padding:0 18px 12px;}
+  .board{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(200px,1fr)) minmax(172px,.82fr);overflow-x:auto;overflow-y:hidden;padding:0 18px 12px;}
   .stage{display:flex;flex-direction:column;min-height:0;min-width:0;}
   .s1{--st:color-mix(in srgb,var(--accent) 14%,var(--g-solid,#fff));--st-ink:var(--ink);}
   .s2{--st:color-mix(in srgb,var(--accent) 26%,var(--g-solid,#fff));--st-ink:var(--ink);}
@@ -493,6 +493,7 @@
   .dt b{font-size:19px;}
   .dt span{font-size:9px;}
   table.lt td{padding:7px 10px;}
+  table.ll td:nth-child(n+3):nth-child(-n+7){white-space:nowrap;}
   table.lt select,table.lt input{min-height:30px;font-size:13px;padding:2px 26px 2px 8px;max-width:150px;font-weight:600;}
   table.lt input{width:92px;padding-right:8px;}
   table.lt .ac{align-items:center;}
@@ -502,12 +503,17 @@
   dialog.det{width:min(1160px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;margin:0 0 0 auto;overflow:hidden;}
   html.sbg dialog.det{border-radius:22px 0 0 22px !important;}
   dialog.det[open]{animation:detIn .22s var(--ease);}
-  @keyframes detIn{from{transform:translateX(36px);opacity:.4;}to{transform:none;opacity:1;}}
+  @keyframes detIn{from{transform:translateX(36px);}to{transform:none;}}
   .det .bar{flex:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;padding:12px 16px 10px;align-items:start;background:none !important;-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:0 !important;box-shadow:none;}
+  html.sbg :is(.mx,.sv,.dst,.cmp-t,.pl-bar){scrollbar-width:none;}
   .det .bar .det-t{display:grid;gap:5px;min-width:0;}
   .det .bar #detH{font-weight:760;font-size:21px;letter-spacing:-.035em;line-height:1.1;}
   #detSub{display:flex;gap:4px;flex-wrap:wrap;}
   #detAct{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center;}
+  #detAct .acts-b{display:contents;}
+  .det-q{display:inline-flex;gap:3px;margin-right:4px;}
+  .det-q .qi{width:32px;height:32px;border-radius:50%;background:var(--g-soft,var(--paper-2));color:var(--ink);font-size:14px;}
+  .det-q .qi:hover{background:var(--ink);color:var(--paper);}
   #detAct .x{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--g-soft,var(--paper-2));color:var(--ink);cursor:pointer;font-size:15px;padding:0;margin-left:2px;}
   #detAct .x:hover{background:var(--ink);color:var(--paper);}
   html.sbg #detAct .win{color:var(--ok) !important;}
@@ -540,7 +546,7 @@
   .df2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
   .df2 label{display:grid;gap:3px;font-size:12px;color:var(--mute);}
   .df2 .wide{grid-column:1/-1;}
-  .det input.note,.det select.note{width:100%;min-height:34px;padding:4px 9px;font-size:13.5px;font-weight:550;border-radius:8px;}
+  .det input.note,.det select.note{width:100%;min-height:34px;padding:4px 9px;font-size:13.5px;font-weight:550;border-radius:8px;color:var(--ink);}
   html.sbg .det :is(input.note,.cmp textarea,.tx textarea){background:var(--g-soft) !important;border:1px solid var(--line-2) !important;box-shadow:none;}
   html.sbg .det :is(input.note,.cmp textarea,.tx textarea):focus{background:var(--g-solid) !important;border-color:var(--accent) !important;box-shadow:0 0 0 3px rgba(242,106,33,.16) !important;}
   .dfr{display:flex;gap:6px;align-items:center;}
@@ -649,15 +655,22 @@
     .rp-g{grid-template-columns:minmax(0,1fr);}
   }
   @media (max-width:1000px){
-    .det .body{display:block;overflow:auto;}
-    .det .col{overflow:visible;padding-bottom:12px;}
-    .det .col+.col{border-left:0;border-top:1px solid var(--line);}
+    /* Unterwegs zuerst Deal, dann Eintragen und Verlauf, Details danach */
+    .det .body{display:flex;flex-direction:column;gap:10px;overflow:auto;padding:10px 12px 28px;}
+    .det .col{display:contents;}
+    #detL>.box:first-child{order:1;}
+    #detM>.cmp{order:2;}
+    #detM>.pin{order:3;}
+    #detM>.tl-h{order:4;}
+    #detM>.tl{order:5;}
+    #detL>*:not(:first-child){order:6;}
   }
   @media (max-width:760px){
     .app{flex-direction:column;}
     .wk{height:calc(100dvh - 58px - env(safe-area-inset-bottom,0px));flex:none;width:100%;}
     .nav{position:fixed;left:0;right:0;bottom:0;width:100% !important;height:calc(58px + env(safe-area-inset-bottom,0px));flex-direction:row;padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}
     .nav::-webkit-scrollbar{display:none;}
+    html.sbg :is(.nav,.board,.fr){scrollbar-width:none;}
     .nav-h,.nav-f,.nav-g{display:none !important;}
     #views{display:flex;gap:2px;}
     .nav-i{flex-direction:column;justify-content:center;gap:3px;width:auto;min-width:62px;padding:5px 6px;font-size:10.5px;margin:0;}
@@ -702,9 +715,8 @@
     .det .bar #detH{font-size:18px;}
     #detAct{display:contents;}
     #detAct .x{grid-column:2;grid-row:1;margin:0;}
-    #detAct .acts-b{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;}
+    #detAct .acts-b{grid-column:1/-1;grid-row:2;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
     #detSt{padding:0 12px 8px;}
-    .det .col{padding:10px 12px 14px;}
     .rb{grid-template-columns:88px minmax(0,1fr) auto;gap:7px;}
     .fg{grid-template-columns:1fr;}
     .fg .half{grid-column:auto;}
@@ -1167,7 +1179,7 @@ function route(){
 function linkBtn(href,label,cls){return '<a class="btn sm'+(cls?" "+cls:"")+'" href="'+esc(href)+'" target="_blank" rel="noopener"><span class="dot"></span><span>'+esc(label)+' ↗</span></a>';}
 function stat(t,v,s){return '<div class="stat"><span class="mono">'+esc(t)+'</span><b>'+esc(v)+'</b>'+(s?'<small style="color:var(--mute);font-size:12.5px">'+esc(s)+'</small>':"")+'</div>';}
 function hostOf(u){return String(u).replace(/^https?:\/\/(www\.)?/,"").split(/[/?#]/)[0];}
-function docLink(tabid){return linkBtn(DATA.doc_url+"?tab="+tabid,"Im Google Doc");}
+function docLink(tabid){return tabid?linkBtn(DATA.doc_url+"?tab="+tabid,"Im Google Doc"):"";}
 function statusPill(q){var s=status(q);return '<span class="pill '+(s==="aktiv"?"ok":s==="laeuft"?"or":s==="pause"?"warn":"")+'">'+esc(STL[s])+'</span>';}
 function zahlenText(q){
   var l=letzte(q);
@@ -1249,6 +1261,19 @@ function bListe(b){
   var tag=b.nummeriert?"ol":"ul";
   return '<section class="box2"><h3>'+esc(b.titel)+'</h3><'+tag+'>'+b.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</'+tag+'></section>';
 }
+function bScrape(){
+  var Z=DATA.zielbranchen;if(!Z)return "";
+  var ges=Z.segmente.reduce(function(n,g){return n+g.arten.length;},0);
+  var h='<section class="box2"><h3>Drei Wege, die Betriebe zu sammeln</h3><ol>'+
+    '<li><b>Automatisch und kostenlos.</b> Das Akquise-Board holt alle '+ges+' Unterbranchen jede Woche aus OpenStreetMap (Berlin), gibt jedem Betrieb einen Score und zeigt sie unter der jeweiligen Branche.</li>'+
+    '<li><b>Von Hand.</b> Auf den vier Seiten der Zielgruppen steht pro Unterbranche ein Link für Google Maps, Gelbe Seiten, Instagram und offene Stellen.</li>'+
+    '<li><b>Mit eigenem Scraper.</b> Die CSV unten enthält alle Suchbegriffe und Links, damit füttert man jedes Werkzeug, das Suchbegriffe annimmt.</li></ol>'+
+    '<div class="slinks"><button class="btn sm inv" type="button" data-intern="t-akquise"><span class="dot"></span><span>Akquise-Board öffnen →</span></button></div></section>';
+  h+='<section class="box2"><h3>Suchbegriffe als CSV</h3><p>Semikolon getrennt, öffnet direkt in Excel. Enthält keine Firmendaten, nur Suchbegriffe, Links und die OpenStreetMap Tags.</p><div class="slinks">'+
+    '<button class="btn sm inv" type="button" data-csvzb="alle"><span class="dot"></span><span>Alle '+ges+' Unterbranchen</span></button>'+
+    Z.segmente.map(function(g){return '<button class="btn sm" type="button" data-csvzb="'+esc(g.id)+'"><span class="dot"></span><span>'+esc(g.titel)+' ('+g.arten.length+')</span></button>';}).join("")+'</div></section>';
+  return h;
+}
 function bPartner(){
   var P=DATA.partner;
   var h='<div class="twoc"><section class="box2"><h3>Du baust</h3><div class="zchips">'+P.ziel.map(function(z){return '<span><b>'+esc(z[0])+'</b>'+esc(z[1])+'</span>';}).join("")+'</div><p class="small">Provision laut Handbuch: 10 % nach Monat 1 oder 200 bis 300 €.</p></section>'+
@@ -1289,6 +1314,7 @@ function block(b,k){
     case "matrix":return bMatrix(b);
     case "kopie":return bKopie(b);
     case "liste":return bListe(b);
+    case "scrape":return bScrape();
     case "partner":return bPartner();
     case "modelle":return bModelle();
     case "sheet":return bSheet();
@@ -1421,7 +1447,7 @@ document.addEventListener("click",function(e){
   if(!pop.hidden&&!pop.contains(t)&&!t.closest("#mailBtn")&&!t.closest("[data-plus]"))mailAuf(false);
   if(t.closest("#mailBtn")){mailAuf(pop.hidden);return;}
   if(t.closest("#navTg")){var sd=$("#side"),o=sd.classList.toggle("nav-auf");$("#navTg").setAttribute("aria-expanded",o);return;}
-  var el=t.closest("[data-kanal],[data-go],[data-plus],[data-copy],[data-intern],[data-msgdel],[data-sichern],[data-laden],[data-ad],[data-csvsheet],[data-csvdb],[data-perfdel]");
+  var el=t.closest("[data-kanal],[data-go],[data-plus],[data-copy],[data-intern],[data-msgdel],[data-sichern],[data-laden],[data-ad],[data-csvsheet],[data-csvdb],[data-csvzb],[data-perfdel]");
   if(!el)return;
   if(el.hasAttribute("data-kanal")){
     var id=el.getAttribute("data-kanal");
@@ -1443,6 +1469,11 @@ document.addEventListener("click",function(e){
   if(el.hasAttribute("data-laden")){$("#ladeDatei").click();return;}
   if(el.hasAttribute("data-ad")){var w=el.getAttribute("data-ad"),dd=heute(),a=S.ads[dd]||[],ix=a.indexOf(w);if(ix>-1)a.splice(ix,1);else a.push(w);if(a.length)S.ads[dd]=a;else delete S.ads[dd];save();render();return;}
   if(el.hasAttribute("data-csvsheet")){dl("social-bites-partner-sheet.csv","﻿"+DATA.partner.sheet.map(function(f){return '"'+f+'"';}).join(";")+"\n","text/csv;charset=utf-8");toast("Vorlage geladen");return;}
+  if(el.hasAttribute("data-csvzb")){
+    var zid=el.getAttribute("data-csvzb"),zr=[["Zielgruppe","Unterbranche","Suchbegriff","Google Maps","Gelbe Seiten","Instagram","Stellen","OSM Tags","Namens Muster","Content Idee"]];
+    DATA.zielbranchen.segmente.forEach(function(g){if(zid!=="alle"&&g.id!==zid)return;g.arten.forEach(function(a){zr.push([g.voll,a.n,a.q+" Berlin",a.maps,a.gelbe,a.insta,a.stellen,a.osm.join(" "),a.rx,a.content]);});});
+    dl("social-bites-zielbranchen-"+zid+".csv","\ufeff"+zr.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(";");}).join("\n"),"text/csv;charset=utf-8");toast("CSV geladen");return;
+  }
   if(el.hasAttribute("data-csvdb")){
     var rows=[["Name","Link","Kanal","Art","Status","Beschreibung","Aufrufe","Anfragen","Leads","Stand"]];
     dbListe().forEach(function(q){var l=letzte(q);rows.push([q.name,q.url,kanalNamen(q),q.konto?"Account":"Recherche",q.konto?STL[status(q)]:"",q.was||"",l?l.a:"",l?l.n:"",l?l.l:"",l?deD(l.d):""]);});
