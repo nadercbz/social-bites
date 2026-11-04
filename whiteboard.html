@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http://127.0.0.1:8203; media-src 'self' blob: https: http://127.0.0.1:8203; font-src 'self'; connect-src 'self' https://social-bites-board.bitey-cloud.workers.dev wss://social-bites-board.bitey-cloud.workers.dev http://127.0.0.1:8203 ws://127.0.0.1:8203; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Whiteboard · Social Bites</title>
+<meta name="description" content="Das interne Whiteboard von Social Bites zum Brainstormen, für Calls und Moodboards.">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/inter-tight.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/schibsted-grotesk.woff2" crossorigin>
+<link rel="stylesheet" href="whiteboard/board.css">
+</head>
+<body>
+
+<div id="boot" role="status">Whiteboard lädt.</div>
+
+<section id="login" hidden>
+  <form id="loginForm" autocomplete="off">
+    <img src="mouth.webp" alt="" width="64" height="64" data-logo-fixed>
+    <h1>Whiteboard</h1>
+    <p id="loginText">Einmal anmelden, danach bleibt das Board auf diesem Gerät offen.</p>
+    <label id="loginNameWrap">Wer bist du?
+      <input id="loginName" type="text" maxlength="40" placeholder="Dein Name" autocomplete="name" enterkeyhint="next">
+      <span class="pick" id="loginPick"><button type="button" data-name="Nader">Nader</button><button type="button" data-name="Tommy">Tommy</button></span>
+    </label>
+    <label id="loginPassWrap">Team Passphrase
+      <input id="loginPass" type="password" autocomplete="current-password" placeholder="Dieselbe wie im Akquise-Board" enterkeyhint="go">
+    </label>
+    <p id="loginErr" role="alert"></p>
+    <button id="loginGo" type="submit">Board öffnen</button>
+  </form>
+</section>
+
+<main id="stage" hidden>
+  <div id="canvas" tabindex="-1" aria-label="Whiteboard Fläche">
+    <div id="world">
+      <svg id="lines" aria-hidden="true"></svg>
+      <div id="cards"></div>
+      <div id="over"></div>
+    </div>
+    <div id="marquee" hidden></div>
+    <div id="empty" hidden></div>
+  </div>
+
+  <header id="top">
+    <nav id="crumbs" aria-label="Pfad"></nav>
+    <div id="topRight">
+      <span id="sync" role="status" aria-live="polite"></span>
+      <div id="peers" aria-label="Gerade im Board"></div>
+      <button class="tb" id="btnCall" type="button" title="Neues Board für einen Call"></button>
+      <button class="tb ico" id="btnLink" type="button" title="Link zu diesem Board kopieren" aria-label="Link kopieren"></button>
+      <button class="tb ico" id="btnSearch" type="button" title="Suchen (⌘K)" aria-label="Suchen"></button>
+      <button class="tb ico theme" type="button" data-theme-toggle></button>
+      <button class="tb ico" id="btnMenu" type="button" title="Mehr" aria-label="Mehr" aria-haspopup="menu"></button>
+    </div>
+  </header>
+
+  <aside id="tools" aria-label="Karten hinzufügen"></aside>
+
+  <div id="ctx" role="toolbar" aria-label="Auswahl bearbeiten" hidden></div>
+  <div id="fmt" role="toolbar" aria-label="Text formatieren" hidden></div>
+
+  <div id="dock">
+    <button class="tb ico" id="btnUndo" type="button" title="Rückgängig (⌘Z)" aria-label="Rückgängig"></button>
+    <button class="tb ico" id="btnRedo" type="button" title="Wiederholen (⇧⌘Z)" aria-label="Wiederholen"></button>
+    <span class="sep"></span>
+    <button class="tb ico" id="btnHand" type="button" title="Hand: Fläche schieben (H oder Leertaste)" aria-label="Hand" aria-pressed="false"></button>
+    <button class="tb ico" id="btnZoomOut" type="button" title="Kleiner (⌘ minus)" aria-label="Kleiner"></button>
+    <button class="tb" id="btnZoom" type="button" title="Auf 100 Prozent"></button>
+    <button class="tb ico" id="btnZoomIn" type="button" title="Größer (⌘ plus)" aria-label="Größer"></button>
+    <button class="tb ico" id="btnFit" type="button" title="Alles zeigen (F)" aria-label="Alles zeigen"></button>
+    <span class="sep"></span>
+    <button class="tb ico" id="btnTrash" type="button" title="Papierkorb" aria-label="Papierkorb"></button>
+  </div>
+</main>
+
+<aside id="drawer" aria-label="Papierkorb" hidden></aside>
+<div id="pop" hidden></div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<input id="filePick" type="file" hidden multiple>
+<noscript><p id="noscript">Das Whiteboard braucht JavaScript.</p></noscript>
+
+<script src="whiteboard/core.js" defer></script>
+<script src="whiteboard/cards.js" defer></script>
+<script src="whiteboard/canvas.js" defer></script>
+<script src="whiteboard/ui.js" defer></script>
+</body>
+</html>
