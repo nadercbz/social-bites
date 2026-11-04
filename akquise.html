@@ -779,8 +779,8 @@ try{if(window.self!==window.top)document.documentElement.classList.add("embedded
 var $=function(s){return document.querySelector(s);};
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
-function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-var toastT;function toast(t,undo){var el=$("#toast"),host=$("#dlg").open?$("#dlg"):$("#det").open?$("#det"):document.body;if(el.parentNode!==host)host.appendChild(el);el.textContent=t;if(undo){var b=document.createElement("button");b.type="button";b.textContent="Rückgängig";b.addEventListener("click",function(){el.classList.remove("on");undo();});el.appendChild(b);}el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("on");},undo?6000:2200);}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){if(k==="sb-akq-manual"){ST_FAIL=true;toast("");}}}
+var toastT;function toast(t,undo,lbl){if(ST_FAIL){t="Browser-Speicher voll: Diese Änderung ist nicht gesichert.";undo=backupDl;lbl="Sicherung laden";}var el=$("#toast"),host=$("#dlg").open?$("#dlg"):$("#det").open?$("#det"):document.body;if(el.parentNode!==host)host.appendChild(el);el.textContent=t;if(undo){var b=document.createElement("button");b.type="button";b.textContent=lbl||"Rückgängig";b.addEventListener("click",function(){el.classList.remove("on");undo();});el.appendChild(b);}el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("on");},undo?6000:2200);}
 function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){toast(msg||"Kopiert");},function(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg||"Kopiert");}catch(e){toast("Kopieren ging nicht");}ta.remove();});}
 function fmtD(iso){if(!iso)return "";var p=String(iso).slice(0,10).split("-");return p.length===3?(+p[2])+"."+(+p[1])+"."+p[0]:iso;}
 function days(iso){if(!iso)return null;return Math.round((new Date(String(iso).slice(0,10)+"T00:00:00")-new Date(new Date().toDateString()))/864e5);}
@@ -1013,7 +1013,18 @@ function backupIn(file){
 var ST=load("sb-akq-state",{}),PREF=load("sb-akq-prefs",{who:"Nader",view:"heute"}),FIL=load("sb-akq-filter",{br:[],kiez:"",sig:"",art:"",min:30,q:"",stat:"offen"});
 var DATA=null,LEADS=[],EVS=[],view=(location.hash.slice(1)||"pipeline"),sortK="score",sortD=-1,shown=60,openTx={};
 function S(id){return ST[id]||(ST[id]={s:"neu",note:"",hist:[]});}
-function saveST(){store("sb-akq-state",ST);}
+/* Alle Seiten unter nadercbz.github.io teilen sich rund 5 MB, die Spielstände belegen fast alles.
+   Darum keine leeren Einträge speichern, und wenn das Speichern scheitert, sagt das Board es deutlich. */
+var ST_FAIL=false;
+function stKurz(q){var out={};Object.keys(q).forEach(function(id){var o=q[id];if(o.s==="neu"&&!o.note&&!(o.hist&&o.hist.length)&&!(o.log&&o.log.length)&&!o.at&&!o.wert&&!o.next&&!o.nd&&!o.close&&o.prob==null&&!o.grund)return;out[id]=o;});return out;}
+function saveST(){
+  var raw=JSON.stringify(stKurz(ST));
+  try{localStorage.setItem("sb-akq-state",raw);ST_FAIL=false;}
+  catch(e){
+    try{localStorage.removeItem("sb-akq-state-vor-crm");localStorage.setItem("sb-akq-state",raw);ST_FAIL=false;}
+    catch(e2){ST_FAIL=true;toast("");}
+  }
+}
 function setStatus(id,s){var o=S(id);if(o.s===s)return;o.s=s;o.at=new Date().toISOString();(o.hist=o.hist||[]).push([o.at,s]);snap(id);saveST();}
 
 /* ---------- Daten laden: lokal Klartext, sonst verschlüsselt ---------- */
@@ -1063,7 +1074,7 @@ async function boot(){
 /* ---------- Start ---------- */
 function start(){
   /* Einmalige Kopie des bisherigen Stands, bevor die neue Oberfläche zum ersten Mal schreibt */
-  try{var raw=localStorage.getItem("sb-akq-state");if(raw&&raw.length>2&&!localStorage.getItem("sb-akq-state-vor-crm"))localStorage.setItem("sb-akq-state-vor-crm",raw);}catch(e){}
+  try{var raw=localStorage.getItem("sb-akq-state");if(raw&&raw.length>2&&!localStorage.getItem("sb-akq-state-vor-crm"))localStorage.setItem("sb-akq-state-vor-crm",JSON.stringify(stKurz(JSON.parse(raw))));}catch(e){}
   MANUAL=load("sb-akq-manual",[]);
   LEADS=(DATA.leads||[]).concat(MANUAL);
   EVS=(DATA.events||[]);
@@ -1076,6 +1087,7 @@ function start(){
   if(!/Mac/.test(navigator.platform||""))$("#gsk").textContent="Strg K";
   loadJobs();
   snapAll();
+  saveST();
   var alt=0,m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(DATA.stand||"");
   if(m)alt=-days(m[3]+"-"+m[2].padStart(2,"0")+"-"+m[1].padStart(2,"0"));
   var se=$("#stand");se.textContent=(DATA.stand?"Stand "+DATA.stand:"")+" · "+fmtN(LEADS.length)+" Leads";
