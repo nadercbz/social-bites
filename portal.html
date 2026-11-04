@@ -489,6 +489,56 @@
     #tside .nav-b[aria-current="page"]{background:var(--accent-tint);border:1px solid var(--ink);}
   }
   @media (prefers-reduced-motion:reduce){#team .shell,.sb-pill{transition:none;}}
+  /* Reiter Intern nur fürs Team */
+  .lg-tabs [hidden]{display:none;}
+  /* Dashboard als Bausteine und Konfiguration */
+  .dash{margin-top:14px;align-items:stretch;}
+  .dash>.d-w{position:relative;min-width:0;display:flex;}
+  .dash>.d-w>*{flex:1;min-width:0;}
+  .dash>.d-w.dw-2{grid-column:span 2;}
+  .dash>.d-w.dw-3{grid-column:1/-1;}
+  @media (max-width:640px){.dash>.d-w.dw-2{grid-column:1/-1;}}
+  .tile-data dl{display:grid;gap:6px;margin:auto 0 0;}
+  .tile-data dl div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:6px;}
+  .tile-data dt{color:var(--mute);font-size:14px;}
+  .tile-data dd{margin:0;font-weight:800;font-size:15px;text-align:right;}
+  .tile-data .none{color:var(--mute);font-size:14px;margin:auto 0 0;}
+  .d-live{display:flex;flex-direction:column;gap:10px;padding:14px;}
+  .d-live header{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .d-live h2{margin:0;font-size:18px;}
+  .d-live iframe{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--card);}
+  .d-ph{display:grid;place-items:center;min-height:120px;padding:18px;text-align:center;font-weight:800;border:1px dashed var(--line-2,var(--line));border-radius:14px;background:var(--card);}
+  .dash.is-edit>.d-w{cursor:grab;padding-top:44px;border-radius:16px;outline:2px dashed color-mix(in srgb,var(--ink) 30%,transparent);outline-offset:0;}
+  .dash.is-edit>.d-w>:not(.d-ctl){pointer-events:none;}
+  .dash.is-edit>.d-w.is-over{outline-color:var(--accent);outline-style:solid;}
+  .dash.is-edit>.d-w.is-drag{opacity:.4;}
+  .d-ctl{position:absolute;inset:6px 6px auto 6px;display:flex;align-items:center;gap:4px;flex:none !important;height:32px;}
+  .d-ctl .grip{margin-right:auto;font-weight:800;color:var(--mute);padding:0 6px;user-select:none;}
+  .k-mini{appearance:none;display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:700 14px/1 var(--display,inherit);cursor:pointer;}
+  .k-mini:hover,.k-mini:focus-visible{border-color:var(--accent);outline:none;}
+  .k-mini[disabled]{opacity:.35;cursor:default;}
+  .k-mini.is-off{color:var(--mute);text-decoration:line-through;}
+  select.k-mini{appearance:auto;padding:0 4px;max-width:130px;}
+  .k-tabs{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap;}
+  .k-tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .k-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr));gap:14px;align-items:start;}
+  .k-group{min-width:0;}
+  @media (max-width:560px){.k-row{flex-wrap:wrap;}.k-name{flex-basis:calc(100% - 30px);}.d-ctl select.k-mini{max-width:84px;}}
+  .k-group{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;}
+  .k-ghead{display:flex;align-items:center;gap:4px;}
+  .k-ghead input{flex:1;min-width:0;height:34px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:800 15px/1 var(--display,inherit);}
+  .k-list{display:grid;gap:4px;min-height:34px;}
+  .k-list.is-over{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px;}
+  .k-row{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 8px;border:1px solid var(--line);border-radius:10px;background:var(--paper);cursor:grab;}
+  .k-row.is-hid .k-name{color:var(--mute);text-decoration:line-through;}
+  .k-row.is-drag{opacity:.4;}
+  .k-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;font-size:14.5px;}
+  .k-empty{margin:0;padding:8px;color:var(--mute);font-size:14px;}
+  .k-cat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 14px;display:grid;gap:10px;}
+  .k-cat h2{margin:0;font-size:18px;}
+  .k-cat input{height:38px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:600 15px/1 var(--display,inherit);width:100%;}
+  .k-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:210px;overflow:auto;}
+  .k-acts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
 </style>
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="glass.css"><script>document.documentElement.classList.add("sbg")</script>
@@ -509,7 +559,7 @@
   </div>
   <div class="lg-form-wrap">
     <form class="lg-form" id="loginForm" novalidate>
-      <div class="seg lg-tabs" role="tablist" aria-label="Zugang"><button type="button" role="tab" data-lgtab="kunde" aria-pressed="true">Kundenportal</button><button type="button" role="tab" data-lgtab="intern" aria-pressed="false">Intern</button><button type="button" role="tab" data-lgtab="crew" aria-pressed="false">Crew</button></div>
+      <div class="seg lg-tabs" role="tablist" aria-label="Zugang"><button type="button" role="tab" data-lgtab="kunde" aria-pressed="true">Kundenportal</button><button type="button" role="tab" data-lgtab="intern" aria-pressed="false" hidden>Intern</button><button type="button" role="tab" data-lgtab="crew" aria-pressed="false">Crew</button></div>
       <p class="mono hot" id="lgKicker">Kundenportal</p>
       <h2 id="lgTitle">Einloggen</h2>
       <label for="loginUser">Benutzername</label>
@@ -1068,6 +1118,7 @@ var KIT=[
 var KITCOL=[["Key White","#FEFEFE"],["Charcoal","#232321"],["Key Orange","#F26A21"],["Mint Green","#E3EAE0"],["Deep Orange","#C4490F"],["Orange Tint","#FDE3D2"],["Stone","#6C6F68"]];
 var TCUR="t-start", sheetTools=false, sheetGid=null;
 var TIC={
+  "t-konfig":'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
   "t-start":'<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/>',
   "t-rechner":'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
   "t-akquise":'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12h.01"/>',
@@ -1119,7 +1170,7 @@ function tNav(){
   $("#team").classList.toggle("sb-c",coll);
   var ext=function(href,label){return '<a class="nav-b" href="'+href+'" target="_blank" rel="noopener" title="'+esc(label)+'">'+tIc("ext")+'<span class="lb">'+esc(label)+'</span></a>';};
   $("#tside").innerHTML='<div class="sb-hd"><button class="sb-logo" type="button" data-sbtoggle aria-label="Seitenleiste ausklappen"><img src="mouth.webp" alt=""></button><span class="sb-name">Social Bites</span><button class="sb-tg" type="button" data-sbtoggle aria-label="Seitenleiste einklappen" aria-expanded="'+(!coll)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><path d="M9.5 5v14"/><path d="m16 10-2 2 2 2"/></svg></button></div>'+
-    '<div class="sb-nav"><span class="sb-pill" aria-hidden="true"></span>'+TNAV.map(function(g){
+    '<div class="sb-nav"><span class="sb-pill" aria-hidden="true"></span>'+navView().concat([["System",[["t-konfig","Konfiguration"]]]]).map(function(g){
       return '<div class="sb-sec" role="group" aria-label="'+esc(g[0])+'"><p class="side-h mono">'+esc(g[0])+'</p>'+g[1].map(function(it){return '<button class="nav-b" type="button" data-tview="'+it[0]+'" title="'+esc(it[1])+'">'+tIc(it[0])+'<span class="lb">'+esc(it[1])+'</span></button>';}).join("")+'</div>';
     }).join("")+'</div>'+
     '<div class="sb-ft">'+ext("index.html","Website")+ext(SHEET_URL,"Social Bites OS in Google")+ext(driveUrl(DRIVE_ROOT),"Drive-Ordner")+'<div class="sb-user"><span class="avatar" aria-hidden="true">SB</span><span class="lb2"><b>Social Bites</b><small>Team, intern</small></span></div></div>';
@@ -1147,6 +1198,7 @@ document.addEventListener("click",function(e){
 /* Module im Team-Bereich: Cockpit Skyline, Labor, Ablauf-Builder. Beim Seitenwechsel wird das vorige sauber abgebaut. */
 var tDispose=null;
 function tMount(v){
+  kWire();
   if(tDispose){try{tDispose();}catch(e){}tDispose=null;}
   try{
     if(v==="t-labor"&&window.SBLabor&&$("#labHost")){var r=SBLabor.mount($("#labHost"));tDispose=r.dispose;}
@@ -1167,7 +1219,7 @@ function showSheet(o){
 }
 function tGo(v,quiet){
   var os=OS_TABS.filter(function(o){return o.v===v;})[0];
-  if(!os&&["t-start","t-rechner","t-akquise","t-sales","t-onboarding","t-influencer","t-wissen","t-mitbewerber","t-agency","t-kunden","t-buero","t-crew","t-partner","t-playbook","t-leistungen","t-whiteboard","t-product","t-gehirn","t-trends","t-galerie","t-konzepte","t-reihenfolge","t-social","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien","t-context"].indexOf(v)<0)v="t-start";
+  if(!os&&["t-start","t-rechner","t-akquise","t-sales","t-onboarding","t-influencer","t-wissen","t-mitbewerber","t-agency","t-kunden","t-buero","t-crew","t-partner","t-playbook","t-leistungen","t-whiteboard","t-product","t-gehirn","t-trends","t-galerie","t-konzepte","t-reihenfolge","t-social","t-aufgaben","t-kalender","t-callsheet","t-release","t-labor","t-builder","t-brandbook","t-brandkit","t-dateien","t-context","t-konfig"].indexOf(v)<0)v="t-start";
   TCUR=v;
   document.querySelectorAll("#tside [data-tview]").forEach(function(b){if(b.getAttribute("data-tview")===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   requestAnimationFrame(movePill);
@@ -1178,6 +1230,7 @@ function tGo(v,quiet){
     h=head("Social Bites OS",esc(os.t),esc(os.d),'<div class="acts"><label class="toggle"><input type="checkbox" id="ttools"'+(sheetTools?" checked":"")+'> Werkzeugleiste</label><a class="btn sm" href="'+SHEET_URL+"#gid="+os.gid+'" target="_blank" rel="noopener"><span class="dot"></span><span>In Google Sheets öffnen ↗</span></a></div>');
     showSheet(os);
   } else if(v==="t-start") h=tStart();
+  else if(v==="t-konfig") h=tKonfig();
   else if(v==="t-brandbook") h=head("Marke","Brand Book","Logo, Farben, Schrift, Sprache und Bildsprache, dazu Videos und Skripte. Das Brand Book wächst mit jedem neuen Video. Zum Weitergeben an alle, die für uns gestalten.",'<div class="acts"><a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="brandbook.html" title="Social Bites Brand Book"></iframe>';
   else if(v==="t-rechner") h=head("Team","Preisrechner","Vor Ort mit dem Kunden rechnen: Bausteine reinziehen, Mengen und Preise anpassen, fertig ist die Übersicht. Für den Kunden im Präsentationsmodus zeigen.",'<div class="acts"><a class="btn sm inv" href="rechner.html" target="_blank" rel="noopener"><span class="dot"></span><span>Vollbild für den Kunden ↗</span></a></div>')+'<iframe class="tframe" src="rechner.html" title="Social Bites Preisrechner"></iframe>';
   else if(v==="t-playbook") h=head("Team","Abläufe (Playbook)","Vom Ja bis zur fertigen Produktion: Bites Opening, Bites for Gastro und Bites for Brands. Schritt für Schritt mit Checklisten, Terminen und Ablage. Haken und Notizen bleiben in deinem Browser.",'<div class="acts"><a class="btn sm" href="playbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>In neuem Tab öffnen ↗</span></a></div>')+'<iframe class="tframe" src="playbook.html" title="Social Bites Playbook"></iframe>';
@@ -1220,50 +1273,83 @@ function tGo(v,quiet){
     if(acts)acts.insertAdjacentHTML("afterbegin",'<button class="btn sm inv" type="button" data-big="'+esc(bsrc)+'" data-bigt="'+esc((el.querySelector("h1")||{}).textContent||"")+'"><span class="dot"></span><span>Großansicht</span></button>');}
   $("#team").classList.toggle("fr",!!bsrc);
   var tt=$("#ttools");if(tt)tt.addEventListener("change",function(){sheetTools=tt.checked;showSheet(os);});
-  document.title=(os?os.t:({"t-start":"Start","t-rechner":"Preisrechner","t-kunden":"Kunden & Finanzen","t-buero":"Büro & Mitarbeiter","t-crew":"Crew Dashboard","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-sales":"Sales Dashboard","t-onboarding":"Onboarding","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-mitbewerber":"Mitbewerber","t-agency":"Agency Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-whiteboard":"Whiteboard","t-product":"Product Dashboard","t-gehirn":"Wissensgehirn","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-reihenfolge":"Konzept Reihenfolge","t-social":"Social Media","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien","t-context":"Context"})[v])+" · Social Bites Team";
+  document.title=(os?os.t:({"t-start":"Start","t-konfig":"Konfiguration","t-rechner":"Preisrechner","t-kunden":"Kunden & Finanzen","t-buero":"Büro & Mitarbeiter","t-crew":"Crew Dashboard","t-partner":"Partnerprogramm","t-akquise":"Akquise-Board","t-sales":"Sales Dashboard","t-onboarding":"Onboarding","t-influencer":"Influencer-Datenbank","t-wissen":"Kampagnen Master Sheet","t-mitbewerber":"Mitbewerber","t-agency":"Agency Master Sheet","t-playbook":"Abläufe","t-leistungen":"Leistungen","t-whiteboard":"Whiteboard","t-product":"Product Dashboard","t-gehirn":"Wissensgehirn","t-trends":"Trend-Indicator","t-galerie":"Galerie","t-konzepte":"Konzepte","t-reihenfolge":"Konzept Reihenfolge","t-social":"Social Media","t-aufgaben":"Aufgaben","t-kalender":"Kalender","t-callsheet":"Call Sheet","t-release":"Model Release","t-labor":"Labor","t-builder":"Ablauf-Builder","t-brandbook":"Brand Book","t-brandkit":"Brand-Kit","t-dateien":"Dateien","t-context":"Context"})[v])+" · Social Bites Team";
   try{history.replaceState(null,"","#"+v);}catch(e){}
   if(!quiet){window.scrollTo(0,0);}
 }
-function tStart(){
-  var tile=function(v,label,title,txt,cls){return '<button class="tile'+(cls?" "+cls:"")+'" type="button" data-tview="'+v+'"><span class="mono">'+label+'</span><b>'+title+'</b><span>'+txt+'</span></button>';};
-  return head("Team-Bereich","Alles von Social Bites an einem Ort.","Social Bites OS, Marke und Ablage. Die Tabellen kommen live aus Google Sheets und speichern jede Änderung sofort.")+
- 	  (window.SB_COCKPIT?'<section class="card cockpit-sky"><h2>Cockpit: Wann ist was los in Berlin</h2><p class="muted">Jeder Würfel ist ein Tag, die Höhe zeigt, wie viele Events aus der Akquise Datenbank an dem Tag starten. So siehst du, wann viel los ist und wann sich ein Pitch an Veranstalter lohnt. Stand '+esc(window.SB_COCKPIT.stand||"")+'.</p><div id="skyCockpit"></div></section>':'')+
-    '<div class="tiles" style="margin-top:14px">'+
-      tile("os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or")+
-      tile("os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.")+
-      tile("t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink")+
-      tile("t-akquise","Vertrieb","Akquise-Board","Neue Kunden und Events in Berlin, täglich frisch, mit Konzept-PDFs.","t-or")+
-      tile("t-sales","Vertrieb","Sales Dashboard","Alle Kanäle, Accounts und Quellen aus dem Sales Handbuch, mit Nachrichten von heute.","t-ink")+
-      tile("t-onboarding","Vertrieb","Onboarding","Vom Ja zum Start in fünf Minuten: Nachricht, Startübersicht, Zeitplan und To-dos.","t-or")+
-      tile("t-influencer","Vertrieb","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre und Branche.","t-or")+
-      tile("t-wissen","Wissen","Kampagnen Master Sheet","Marketing Wissen in Kapiteln, mit Briefing für jeden Mitarbeiter.","t-ink")+
-      tile("t-mitbewerber","Markt","Mitbewerber","67 Agenturen in unserer Nische, mit Referenzkunden und Preisen.","t-or")+
-      tile("t-agency","Markt","Agency Master Sheet","Neueste Posts und Aktivität der Agenturen, mit Lernseite.","t-or")+
-      tile("t-context","Wissen","Context","Bauanleitung für neue Konzepte und Referenz Bam Bird.","t-ink")+
-      tile("t-kunden","Team","Kunden & Finanzen","Kundenstamm, offene Rechnungen, Mahnungen, Einnahmen und Ausgaben mit Belegen vom Handy.")+
-      tile("t-crew","Team","Crew Dashboard","Freelancer und Cutter: Anmeldungen, Aufträge, Zeiten, Rechnungen.","t-or")+
-      tile("t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or")+
-      tile("t-buero","Team","Büro & Mitarbeiter","28 Agenten in 8 Räumen, mit Skill-Set und Organigramm.","t-or")+
-      tile("t-playbook","Abläufe","Playbook","Bites Opening, Gastro und Brands, Schritt für Schritt.")+
-      tile("t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.")+
-      tile("os-pipeline","Social Bites OS","Pipeline","Kunden und Partner bis zum Auftrag.")+
-      tile("t-whiteboard","Kreativ","Whiteboard","Brainstormen und Calls mitschreiben, live zu zweit, Claude schreibt mit.","t-or")+
-      tile("t-product","Kreativ","Product Dashboard","Je Kunde: was geht, was nicht, feste Formate, bis zu 100 Video Ideen.","t-or")+
-      tile("t-gehirn","Wissen","Wissensgehirn","Links reinziehen, das Gehirn lernt: Hooks, Formate, Social Media Wissen.","t-or")+
-      tile("t-trends","Kreativ","Trend-Indicator","Was diese Woche in Food und Gastro viral geht.","t-or")+
-      tile("t-galerie","Kreativ","Galerie","Moodboards und Entwürfe, gerade: T-Shirt mit Biss.")+
-      tile("t-social","Social Media","Karussell Posts","15 fertige Posts mit je 5 Slides, Captions und Download.","t-or")+
-      tile("t-konzepte","Kreativ","Konzepte","Eigene Konzepte von A bis Z, die wir später Kunden verkaufen.","t-ink")+
-      tile("t-aufgaben","Planung","Aufgaben","Product, Sales, Intern: alles in einer Tabelle.","t-ink")+
-      tile("t-kalender","Planung","Kalender","Geplante Beiträge pro Person, Drag and Drop.","t-or")+
-      tile("t-callsheet","Produktion","Call Sheet","Drehtag planen: Zeitplan, Crew, Ort. Als PDF drucken.","t-or")+
-      tile("t-release","Produktion","Model Release","Einwilligung für Bild und Video, mit Unterschrift am Bildschirm.","t-ink")+
-      tile("t-labor","Labor","Labor","Den Ablauf für einen Kunden als 3D Maschine zusammenbauen.","t-or")+
-      tile("t-builder","Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer als Zeitachse.","t-ink")+
-      tile("t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.")+
-      tile("t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.")+
-    '</div>'+
-    '<section class="card" style="margin-top:14px"><h2>Schnellzugriff</h2><div class="quick">'+
+/* Konfiguration (Nader, 04.11.2026): Menü links und Dashboard selbst sortieren, Elemente und Widgets hinzufügen oder entfernen.
+   Gespeichert nur in diesem Browser, localStorage "sb-team-config-v1". Ohne Eintrag gilt die Standardordnung aus TNAV und TILES. */
+var TILES=[
+  ["os-start","Social Bites OS","Cockpit","Kennzahlen und Sprünge in alle Tabellen.","t-or"],
+  ["os-aufgaben","Social Bites OS","Aufgaben","Wer macht was bis wann.",""],
+  ["t-rechner","Vor Ort","Preisrechner","Bausteine reinziehen, Preis für den Kunden live berechnen.","t-ink"],
+  ["t-akquise","Vertrieb","Akquise-Board","Neue Kunden und Events in Berlin, täglich frisch, mit Konzept-PDFs.","t-or"],
+  ["t-sales","Vertrieb","Sales Dashboard","Alle Kanäle, Accounts und Quellen aus dem Sales Handbuch, mit Nachrichten von heute.","t-ink"],
+  ["t-onboarding","Vertrieb","Onboarding","Vom Ja zum Start in fünf Minuten: Nachricht, Startübersicht, Zeitplan und To-dos.","t-or"],
+  ["t-influencer","Vertrieb","Influencer-Datenbank","Creator in Deutschland, filterbar nach Stadt, Genre und Branche.","t-or"],
+  ["t-wissen","Wissen","Kampagnen Master Sheet","Marketing Wissen in Kapiteln, mit Briefing für jeden Mitarbeiter.","t-ink"],
+  ["t-mitbewerber","Markt","Mitbewerber","67 Agenturen in unserer Nische, mit Referenzkunden und Preisen.","t-or"],
+  ["t-agency","Markt","Agency Master Sheet","Neueste Posts und Aktivität der Agenturen, mit Lernseite.","t-or"],
+  ["t-context","Wissen","Context","Bauanleitung für neue Konzepte und Referenz Bam Bird.","t-ink"],
+  ["t-kunden","Team","Kunden & Finanzen","Kundenstamm, offene Rechnungen, Mahnungen, Einnahmen und Ausgaben mit Belegen vom Handy.",""],
+  ["t-crew","Team","Crew Dashboard","Freelancer und Cutter: Anmeldungen, Aufträge, Zeiten, Rechnungen.","t-or"],
+  ["t-partner","Wachstum","Partnerprogramm","Partner, Vermittlungen, Provision und Pool.","t-or"],
+  ["t-buero","Team","Büro & Mitarbeiter","28 Agenten in 8 Räumen, mit Skill-Set und Organigramm.","t-or"],
+  ["t-playbook","Abläufe","Playbook","Bites Opening, Gastro und Brands, Schritt für Schritt.",""],
+  ["t-brandbook","Marke","Brand Book","Logo, Farben, Schrift, Sprache, Bildsprache.",""],
+  ["os-pipeline","Social Bites OS","Pipeline","Kunden und Partner bis zum Auftrag.",""],
+  ["t-whiteboard","Kreativ","Whiteboard","Brainstormen und Calls mitschreiben, live zu zweit, Claude schreibt mit.","t-or"],
+  ["t-product","Kreativ","Product Dashboard","Je Kunde: was geht, was nicht, feste Formate, bis zu 100 Video Ideen.","t-or"],
+  ["t-gehirn","Wissen","Wissensgehirn","Links reinziehen, das Gehirn lernt: Hooks, Formate, Social Media Wissen.","t-or"],
+  ["t-trends","Kreativ","Trend-Indicator","Was diese Woche in Food und Gastro viral geht.","t-or"],
+  ["t-galerie","Kreativ","Galerie","Moodboards und Entwürfe, gerade: T-Shirt mit Biss.",""],
+  ["t-social","Social Media","Karussell Posts","15 fertige Posts mit je 5 Slides, Captions und Download.","t-or"],
+  ["t-konzepte","Kreativ","Konzepte","Eigene Konzepte von A bis Z, die wir später Kunden verkaufen.","t-ink"],
+  ["t-aufgaben","Planung","Aufgaben","Product, Sales, Intern: alles in einer Tabelle.","t-ink"],
+  ["t-kalender","Planung","Kalender","Geplante Beiträge pro Person, Drag and Drop.","t-or"],
+  ["t-callsheet","Produktion","Call Sheet","Drehtag planen: Zeitplan, Crew, Ort. Als PDF drucken.","t-or"],
+  ["t-release","Produktion","Model Release","Einwilligung für Bild und Video, mit Unterschrift am Bildschirm.","t-ink"],
+  ["t-labor","Labor","Labor","Den Ablauf für einen Kunden als 3D Maschine zusammenbauen.","t-or"],
+  ["t-builder","Labor","Ablauf-Builder","Aufgaben, Abhängigkeiten und Dauer als Zeitachse.","t-ink"],
+  ["t-leistungen","Team","Leistungen","Was wir machen, auf einer Seite, ohne Preise.",""],
+  ["t-dateien","Ablage","Dateien im Drive","Alle Ordner, hochladen und herunterladen.",""]
+];
+var CFG_KEY="sb-team-config-v1",dashEdit=false,konfTab="menu",konfQ="";
+var LIVE={"t-brandbook":"brandbook.html","t-rechner":"rechner.html","t-playbook":"playbook.html","t-leistungen":"leistungen.html","t-akquise":"akquise.html","t-sales":"sales.html","t-onboarding":"onboarding.html","t-influencer":"influencer.html","t-wissen":"wissen.html","t-agency":"agency.html","t-mitbewerber":"mitbewerber.html","t-kunden":"kunden.html","t-whiteboard":"whiteboard.html","t-product":"product.html","t-gehirn":"gehirn.html","t-trends":"trends.html","t-social":"socialmedia.html","t-galerie":"galerie.html","t-crew":"crew.html","t-buero":"buero.html","t-partner":"partner-team.html","t-aufgaben":"planer.html?tab=aufgaben","t-kalender":"planer.html?tab=kalender","t-callsheet":"callsheet.html","t-release":"modelrelease.html"};
+function lsj(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function lsArr(k){var v=lsj(k,[]);return Array.isArray(v)?v:Object.keys(v||{}).map(function(x){return v[x];});}
+function numv(x){var n=parseFloat(String(x==null?"":x).replace(/\./g,"").replace(",","."));if(typeof x==="number")n=x;return isNaN(n)?0:n;}
+var DATA_W={
+  "d-kunden":{v:"t-kunden",t:"Kunden & Rechnungen",f:function(){var b=lsArr("sb-belege").filter(function(x){return x.typ!=="angebot";}),op=b.filter(function(x){return x.status==="offen";}),heute=iso(TODAY);return [["Kunden",lsArr("sb-kunden").length],["Rechnungen offen",op.length],["Summe offen",eur0(Math.round(op.reduce(function(a,x){return a+Math.max(0,numv(x.brutto)-numv(x.teil));},0)))],["Überfällig",op.filter(function(x){return x.faellig&&x.faellig<heute;}).length]];}},
+  "d-akquise":{v:"t-akquise",t:"Akquise Pipeline",f:function(){var st=lsj("sb-akq-state",{}),c={};Object.keys(st).forEach(function(k){var s=st[k]&&st[k].s;if(s)c[s]=(c[s]||0)+1;});return [["vorgemerkt","Vorgemerkt"],["kontaktiert","Kontaktiert"],["gespraech","Gespräch"],["angebot","Angebot"],["gewonnen","Gewonnen"]].map(function(x){return [x[1],c[x[0]]||0];});}},
+  "d-kalender":{v:"t-kalender",t:"Nächste Termine",list:1,f:function(w){var h=iso(TODAY);return lsArr("sb-kalender-v1").filter(function(e){return e&&e.d>=h;}).sort(function(a,b){return (a.d+(a.h||"")).localeCompare(b.d+(b.h||""));}).slice(0,w.n||4).map(function(e){return [e.t||"Termin",fmtS(parseIso(e.d))+(e.h?" · "+e.h:"")];});}},
+  "d-partner":{v:"t-partner",t:"Partnerprogramm",f:function(){var s=lsj("sb-partner-v1",{});return [["Partner",(s.partners||[]).length],["Vermittlungen",(s.deals||[]).length]];}},
+  "d-konzepte":{v:"t-konzepte",t:"Eigene Konzept Ideen",f:function(){var s=lsj("sb-konzepte-v1",{});return [["Ideen",(s.extra||[]).length]];}}
+};
+function cfgLoad(){var c=lsj(CFG_KEY,null);return c&&typeof c==="object"?c:{};}
+function cfgSave(c){try{localStorage.setItem(CFG_KEY,JSON.stringify(c));}catch(e){toast("Speichern hat nicht geklappt.");}}
+function navNames(){var m={};TNAV.forEach(function(g){g[1].forEach(function(it){if(!m[it[0]])m[it[0]]={t:it[1],g:g[0]};});});return m;}
+/* Volle Menüordnung inklusive Ausgeblendeter. Neue Menüpunkte aus dem Code tauchen automatisch in ihrer Gruppe auf. */
+function navFull(){
+  var c=cfgLoad(),m=navNames(),seen={},out=(c.nav||[]).map(function(g){return {n:g.n,i:(g.i||[]).filter(function(v){if(!m[v]||seen[v])return false;seen[v]=1;return true;})};});
+  if(!c.nav){TNAV.forEach(function(g){out.push({n:g[0],i:g[1].map(function(x){return x[0];}).filter(function(v){if(seen[v])return false;seen[v]=1;return true;})});});return out;}
+  Object.keys(m).forEach(function(v){if(seen[v])return;var g=out.filter(function(x){return x.n===m[v].g;})[0];if(!g){g={n:m[v].g,i:[]};out.push(g);}g.i.push(v);});
+  return out;
+}
+function navView(){var c=cfgLoad();if(!c.nav&&!(c.hide||[]).length)return TNAV;var m=navNames(),hid=c.hide||[];return navFull().map(function(g){return [g.n,g.i.filter(function(v){return hid.indexOf(v)<0;}).map(function(v){return [v,m[v].t];})];}).filter(function(g){return g[1].length;});}
+function navSave(full,hide){var c=cfgLoad();c.nav=full;if(hide)c.hide=hide;cfgSave(c);tNav();}
+function defDash(){return [{k:"cockpit",s:3}].concat(TILES.map(function(t){return {k:"tile",v:t[0],s:1};}),[{k:"quick",s:3},{k:"safe",s:3}]);}
+function dashGet(){var c=cfgLoad();return Array.isArray(c.dash)?c.dash:defDash();}
+function dashSave(d){var c=cfgLoad();c.dash=d;cfgSave(c);}
+function viewName(v){var m=navNames();return m[v]?m[v].t:v;}
+function wName(w){
+  if(w.k==="cockpit")return "Cockpit Berlin";if(w.k==="quick")return "Schnellzugriff";if(w.k==="safe")return "Hinweis Sicherheit";
+  if(w.k==="data")return DATA_W[w.id]?DATA_W[w.id].t:"Zahlen";if(w.k==="live")return "Live: "+viewName(w.v);
+  return viewName(w.v);
+}
+function wInner(w,edit){
+  if(w.k==="cockpit"){var ck=(window.SB_COCKPIT?'<section class="card cockpit-sky"><h2>Cockpit: Wann ist was los in Berlin</h2><p class="muted">Jeder Würfel ist ein Tag, die Höhe zeigt, wie viele Events aus der Akquise Datenbank an dem Tag starten. So siehst du, wann viel los ist und wann sich ein Pitch an Veranstalter lohnt. Stand '+esc(window.SB_COCKPIT.stand||"")+'.</p><div id="skyCockpit"></div></section>':'');return edit?'<div class="d-ph">Cockpit Berlin</div>':(ck||'<div class="d-ph">Cockpit Daten fehlen</div>');}
+  if(w.k==="quick")return '<section class="card"><h2>Schnellzugriff</h2><div class="quick">'+
       '<a class="btn sm" href="index.html" target="_blank" rel="noopener"><span class="dot"></span><span>Website ↗</span></a>'+
       '<a class="btn sm" href="playbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Playbook ↗</span></a>'+
       '<a class="btn sm" href="leistungen.html" target="_blank" rel="noopener"><span class="dot"></span><span>Leistungen ↗</span></a>'+
@@ -1273,8 +1359,97 @@ function tStart(){
       '<a class="btn sm" href="brandbook.html" target="_blank" rel="noopener"><span class="dot"></span><span>Brand Book ↗</span></a>'+
       '<a class="btn sm" href="'+SHEET_URL+'" target="_blank" rel="noopener"><span class="dot"></span><span>Social Bites OS in Google ↗</span></a>'+
       '<a class="btn sm" href="'+driveUrl(DRIVE_ROOT)+'" target="_blank" rel="noopener"><span class="dot"></span><span>Drive-Ordner ↗</span></a>'+
-    '</div></section>'+
-    '<div class="safe-note" style="margin-top:14px"><b>Wie sicher ist das hier?</b><p>Der Login hält Neugierige draußen, ist aber kein echter Schutz, denn die Seite liegt öffentlich auf GitHub. Darum stehen hier keine Kundendaten im Code. Tabellen und Dateien kommen direkt von Google und sind nur für Konten sichtbar, mit denen ihr sie geteilt habt. Wer was sieht, regelt ihr also im Google Sheet und im Drive über "Teilen".</p></div>';
+    '</div></section>';
+  if(w.k==="safe")return '<div class="safe-note"><b>Wie sicher ist das hier?</b><p>Der Login hält Neugierige draußen, ist aber kein echter Schutz, denn die Seite liegt öffentlich auf GitHub. Darum stehen hier keine Kundendaten im Code. Tabellen und Dateien kommen direkt von Google und sind nur für Konten sichtbar, mit denen ihr sie geteilt habt. Wer was sieht, regelt ihr also im Google Sheet und im Drive über "Teilen".</p></div>';
+  if(w.k==="data"){var D=DATA_W[w.id];if(!D)return '<div class="d-ph">Unbekanntes Widget</div>';var r=[];try{r=D.f(w)||[];}catch(e){}
+    return '<button class="tile tile-data" type="button" data-tview="'+D.v+'"><span class="mono">Zahlen aus diesem Browser</span><b>'+esc(D.t)+'</b>'+(r.length?'<dl>'+r.map(function(x){return '<div><dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd></div>';}).join("")+'</dl>':'<p class="none">Noch nichts eingetragen.</p>')+'</button>';}
+  if(w.k==="live"){if(edit)return '<div class="d-ph">Live Ansicht: '+esc(viewName(w.v))+'</div>';var os=OS_TABS.filter(function(o){return o.v===w.v;})[0],src=os?sheetSrc(os.gid):LIVE[w.v];
+    return '<section class="card d-live"><header><h2>'+esc(viewName(w.v))+'</h2><button class="btn sm" type="button" data-tview="'+esc(w.v)+'"><span class="dot"></span><span>Öffnen</span></button></header><iframe src="'+esc(src||"")+'" title="'+esc(viewName(w.v))+'" loading="lazy" style="height:'+(w.h||420)+'px"></iframe></section>';}
+  var t=TILES.filter(function(x){return x[0]===w.v;})[0],m=navNames()[w.v];if(!t)t=[w.v,m?m.g:"Bereich",viewName(w.v),"Direkt öffnen.",""];
+  return '<button class="tile'+(t[4]?" "+t[4]:"")+'" type="button" data-tview="'+esc(t[0])+'"><span class="mono">'+esc(t[1])+'</span><b>'+esc(t[2])+'</b><span>'+esc(t[3])+'</span></button>';
+}
+function wCtl(w,i,n){
+  var sz=[[1,"Klein"],[2,"Mittel"],[3,"Breit"]].map(function(s){return '<option value="'+s[0]+'"'+((w.s||1)===s[0]?" selected":"")+'>'+s[1]+'</option>';}).join("");
+  var ex="";
+  if(w.k==="live")ex='<select class="k-mini" data-dset="h" aria-label="Höhe">'+[[280,"Niedrig"],[420,"Normal"],[640,"Hoch"]].map(function(s){return '<option value="'+s[0]+'"'+((w.h||420)===s[0]?" selected":"")+'>'+s[1]+'</option>';}).join("")+'</select>';
+  if(w.k==="data"&&DATA_W[w.id]&&DATA_W[w.id].list)ex='<select class="k-mini" data-dset="n" aria-label="Zeilen">'+[3,4,6,8].map(function(s){return '<option value="'+s+'"'+((w.n||4)===s?" selected":"")+'>'+s+' Zeilen</option>';}).join("")+'</select>';
+  return '<div class="d-ctl"><span class="grip" aria-hidden="true" title="Ziehen zum Sortieren">⠿</span><button class="k-mini" type="button" data-d="prev" aria-label="'+esc(wName(w))+' nach vorn"'+(i?"":" disabled")+'>←</button><button class="k-mini" type="button" data-d="next" aria-label="'+esc(wName(w))+' nach hinten"'+(i<n-1?"":" disabled")+'>→</button>'+ex+'<select class="k-mini" data-dset="s" aria-label="Größe von '+esc(wName(w))+'">'+sz+'</select><button class="k-mini" type="button" data-d="del" aria-label="'+esc(wName(w))+' entfernen">×</button></div>';
+}
+function dashHtml(edit){
+  var d=dashGet();
+  return '<div class="tiles dash'+(edit?" is-edit":"")+'" id="dash">'+(d.length?d.map(function(w,i){return '<div class="d-w dw-'+(w.s||1)+'" data-i="'+i+'"'+(edit?' draggable="true"':"")+'>'+(edit?wCtl(w,i,d.length):"")+wInner(w,edit)+'</div>';}).join(""):'<div class="d-ph dw-3" style="grid-column:1/-1">Das Dashboard ist leer. Über Anpassen fügst du Elemente hinzu.</div>')+'</div>';
+}
+function catalog(){
+  var q=konfQ.toLowerCase(),d=dashGet(),has=function(k,key,val){return d.some(function(w){return w.k===k&&w[key]===val;});},chip=function(a,l,on){return '<button class="k-mini" type="button" data-dadd="'+esc(a)+'"'+(on?" disabled":"")+'>+ '+esc(l)+'</button>';},out=[];
+  [["cockpit","Cockpit Berlin"],["quick","Schnellzugriff"],["safe","Hinweis Sicherheit"]].forEach(function(x){out.push([x[1],chip(x[0],x[1],d.some(function(w){return w.k===x[0];}))]);});
+  Object.keys(DATA_W).forEach(function(id){out.push([DATA_W[id].t,chip("data:"+id,"Zahlen: "+DATA_W[id].t,has("data","id",id))]);});
+  var m=navNames();Object.keys(m).forEach(function(v){out.push([m[v].t,chip("tile:"+v,"Kachel: "+m[v].t,has("tile","v",v))]);if(LIVE[v]||OS_TABS.some(function(o){return o.v===v;}))out.push([m[v].t,chip("live:"+v,"Live: "+m[v].t,has("live","v",v))]);});
+  return out.filter(function(x){return !q||x[0].toLowerCase().indexOf(q)>-1;}).map(function(x){return x[1];}).join("")||'<p class="k-empty">Nichts gefunden.</p>';
+}
+function catalogBox(){return '<section class="k-cat"><h2>Element hinzufügen</h2><input type="search" id="kQ" placeholder="Menüpunkt suchen" aria-label="Menüpunkt suchen" value="'+esc(konfQ)+'"><div class="k-chips" id="kChips">'+catalog()+'</div></section>';}
+function tStart(){
+  return head("Team-Bereich","Alles von Social Bites an einem Ort.","Social Bites OS, Marke und Ablage. Die Tabellen kommen live aus Google Sheets und speichern jede Änderung sofort.",'<div class="acts"><button class="btn sm'+(dashEdit?" inv":"")+'" type="button" data-dash-edit><span class="dot"></span><span>'+(dashEdit?"Fertig":"Dashboard anpassen")+'</span></button></div>')+(dashEdit?catalogBox():"")+dashHtml(dashEdit);
+}
+function tKonfig(){
+  var c=cfgLoad(),hid=c.hide||[],full=navFull(),m=navNames(),gs=full.map(function(g){return g.n;});
+  var menu='<div class="k-grid" id="kNav">'+full.map(function(g,gi){
+    return '<section class="k-group" data-g="'+gi+'"><div class="k-ghead"><input value="'+esc(g.n)+'" data-gname aria-label="Name der Gruppe"><button class="k-mini" type="button" data-n="gup" aria-label="Gruppe '+esc(g.n)+' nach oben"'+(gi?"":" disabled")+'>↑</button><button class="k-mini" type="button" data-n="gdown" aria-label="Gruppe '+esc(g.n)+' nach unten"'+(gi<full.length-1?"":" disabled")+'>↓</button><button class="k-mini" type="button" data-n="gdel" aria-label="Gruppe '+esc(g.n)+' löschen"'+(g.i.length?" disabled":"")+'>×</button></div><div class="k-list" data-list="'+gi+'">'+
+    (g.i.length?g.i.map(function(v,i){var off=hid.indexOf(v)>-1;return '<div class="k-row'+(off?" is-hid":"")+'" draggable="true" data-v="'+esc(v)+'"><span class="grip" aria-hidden="true">⠿</span><span class="k-name">'+esc(m[v].t)+'</span><button class="k-mini" type="button" data-n="up" aria-label="'+esc(m[v].t)+' nach oben"'+(i?"":" disabled")+'>↑</button><button class="k-mini" type="button" data-n="down" aria-label="'+esc(m[v].t)+' nach unten"'+(i<g.i.length-1?"":" disabled")+'>↓</button><select class="k-mini" data-n-move aria-label="'+esc(m[v].t)+' in Gruppe verschieben">'+gs.map(function(n,x){return '<option value="'+x+'"'+(x===gi?" selected":"")+'>'+esc(n)+'</option>';}).join("")+'</select><button class="k-mini'+(off?" is-off":"")+'" type="button" data-n="eye" aria-pressed="'+off+'" aria-label="'+esc(m[v].t)+(off?" einblenden":" ausblenden")+'">'+(off?"Aus":"An")+'</button></div>';}).join(""):'<p class="k-empty">Leer. Punkte hierher ziehen.</p>')+'</div></section>';
+  }).join("")+'</div><div class="k-acts"><button class="btn sm" type="button" data-n="gadd"><span class="dot"></span><span>Neue Gruppe</span></button><button class="btn sm" type="button" data-n="reset"><span class="dot"></span><span>Menü zurücksetzen</span></button></div>';
+  var dash=catalogBox()+dashHtml(true)+'<div class="k-acts"><button class="btn sm" type="button" data-d="reset"><span class="dot"></span><span>Dashboard zurücksetzen</span></button><button class="btn sm inv" type="button" data-tview="t-start"><span class="dot"></span><span>Dashboard ansehen</span></button></div>';
+  return head("System","Konfiguration","Menü links und Dashboard so sortieren, wie du arbeitest. Gilt für diesen Browser, die Inhalte der Bereiche bleiben unverändert.")+
+    '<div class="k-tabs"><button class="k-mini" type="button" data-ktab="menu" aria-pressed="'+(konfTab==="menu")+'">Menü links</button><button class="k-mini" type="button" data-ktab="dash" aria-pressed="'+(konfTab==="dash")+'">Dashboard</button></div>'+(konfTab==="menu"?menu:dash);
+}
+/* Neu zeichnen, ohne die Seite nach oben zu springen */
+function kRedraw(){var y=window.scrollY;tGo(TCUR,true);window.scrollTo(0,y);}
+function dashMove(i,j){var d=dashGet();if(j<0||j>=d.length||i===j)return;var x=d.splice(i,1)[0];d.splice(j,0,x);dashSave(d);kRedraw();}
+var kDrag=null;
+function kWire(){
+  var tv=$("#tview");if(tv.dataset.kwired)return;tv.dataset.kwired="1";
+  tv.addEventListener("click",function(e){
+    var de=e.target.closest("[data-dash-edit]");if(de){dashEdit=!dashEdit;konfQ="";kRedraw();return;}
+    var kt=e.target.closest("[data-ktab]");if(kt){konfTab=kt.getAttribute("data-ktab");kRedraw();return;}
+    var add=e.target.closest("[data-dadd]");if(add){var a=add.getAttribute("data-dadd").split(":"),dd=dashGet(),w=a[0]==="data"?{k:"data",id:a[1],s:1}:a[0]==="tile"?{k:"tile",v:a[1],s:1}:a[0]==="live"?{k:"live",v:a[1],s:2,h:420}:{k:a[0],s:3};dd.push(w);dashSave(dd);kRedraw();toast(wName(w)+" hinzugefügt.");return;}
+    var db=e.target.closest("[data-d]");
+    if(db){var act=db.getAttribute("data-d");
+      if(act==="reset"){if(window.confirm("Dashboard wieder in die Standardordnung setzen?")){var c0=cfgLoad();delete c0.dash;cfgSave(c0);kRedraw();}return;}
+      var wr=db.closest(".d-w");if(!wr)return;var i=+wr.getAttribute("data-i");
+      if(act==="prev")dashMove(i,i-1);else if(act==="next")dashMove(i,i+1);else if(act==="del"){var d1=dashGet();d1.splice(i,1);dashSave(d1);kRedraw();}
+      return;}
+    var nb=e.target.closest("[data-n]");
+    if(nb){var na=nb.getAttribute("data-n"),full=navFull(),c=cfgLoad(),hid=c.hide||[];
+      if(na==="reset"){if(window.confirm("Menü wieder in die Standardordnung setzen?")){delete c.nav;delete c.hide;cfgSave(c);tNav();kRedraw();}return;}
+      if(na==="gadd"){var nn=window.prompt("Wie heißt die neue Gruppe?");if(!nn)return;full.push({n:nn.trim()||"Neue Gruppe",i:[]});navSave(full);kRedraw();return;}
+      var gEl=nb.closest("[data-g]"),gi=gEl?+gEl.getAttribute("data-g"):-1;
+      if(na==="gup"||na==="gdown"){var gj=gi+(na==="gup"?-1:1),gx=full.splice(gi,1)[0];full.splice(gj,0,gx);navSave(full);kRedraw();return;}
+      if(na==="gdel"){full.splice(gi,1);navSave(full);kRedraw();return;}
+      var v=nb.closest("[data-v]").getAttribute("data-v"),g=full[gi],ix=g.i.indexOf(v);
+      if(na==="up"||na==="down"){var j=ix+(na==="up"?-1:1);g.i.splice(ix,1);g.i.splice(j,0,v);navSave(full);kRedraw();return;}
+      if(na==="eye"){var hi=hid.indexOf(v);if(hi>-1)hid.splice(hi,1);else hid.push(v);navSave(full,hid);kRedraw();return;}
+    }
+  });
+  tv.addEventListener("change",function(e){
+    var s=e.target.closest("[data-dset]");if(s){var i=+s.closest(".d-w").getAttribute("data-i"),d=dashGet();d[i][s.getAttribute("data-dset")]=+s.value;dashSave(d);kRedraw();return;}
+    var mv=e.target.closest("[data-n-move]");if(mv){var full=navFull(),gi=+mv.closest("[data-g]").getAttribute("data-g"),v=mv.closest("[data-v]").getAttribute("data-v"),to=+mv.value;full[gi].i.splice(full[gi].i.indexOf(v),1);full[to].i.push(v);navSave(full);kRedraw();return;}
+    var gn=e.target.closest("[data-gname]");if(gn){var f2=navFull();f2[+gn.closest("[data-g]").getAttribute("data-g")].n=gn.value.trim()||"Gruppe";navSave(f2);kRedraw();}
+  });
+  tv.addEventListener("input",function(e){if(e.target.id==="kQ"){konfQ=e.target.value;var ch=$("#kChips");if(ch)ch.innerHTML=catalog();}});
+  tv.addEventListener("dragstart",function(e){
+    var w=e.target.closest&&e.target.closest(".dash.is-edit>.d-w"),r=e.target.closest&&e.target.closest(".k-row");
+    if(w)kDrag={t:"w",i:+w.getAttribute("data-i"),el:w};else if(r)kDrag={t:"n",v:r.getAttribute("data-v"),g:+r.closest("[data-g]").getAttribute("data-g"),el:r};else return;
+    kDrag.el.classList.add("is-drag");try{e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","sb");}catch(x){}
+  });
+  tv.addEventListener("dragend",function(){if(kDrag&&kDrag.el)kDrag.el.classList.remove("is-drag");kDrag=null;tv.querySelectorAll(".is-over").forEach(function(x){x.classList.remove("is-over");});});
+  tv.addEventListener("dragover",function(e){
+    if(!kDrag)return;var t=kDrag.t==="w"?e.target.closest(".dash.is-edit>.d-w"):e.target.closest(".k-list");if(!t)return;e.preventDefault();
+    tv.querySelectorAll(".is-over").forEach(function(x){if(x!==t)x.classList.remove("is-over");});t.classList.add("is-over");
+  });
+  tv.addEventListener("drop",function(e){
+    if(!kDrag)return;e.preventDefault();var kd=kDrag;kDrag=null;
+    if(kd.t==="w"){var t=e.target.closest(".dash.is-edit>.d-w");if(t)dashMove(kd.i,+t.getAttribute("data-i"));return;}
+    var l=e.target.closest(".k-list");if(!l)return;var to=+l.getAttribute("data-list"),full=navFull(),row=e.target.closest(".k-row"),gf=full[kd.g];
+    gf.i.splice(gf.i.indexOf(kd.v),1);var at=row?full[to].i.indexOf(row.getAttribute("data-v")):full[to].i.length;if(at<0)at=full[to].i.length;full[to].i.splice(at,0,kd.v);navSave(full);kRedraw();
+  });
 }
 function tKit(){
   var dl=KIT.map(function(k){return '<div class="dlc"><div class="th '+(k[3]||"")+'"><img src="'+k[0]+'" alt="" loading="lazy"></div><div class="tx"><b>'+esc(k[1])+'</b><small>'+esc(k[2])+'</small><a class="btn sm" href="'+k[0]+'" download><span class="dot"></span><span>Laden</span></a></div></div>';}).join("");
@@ -1404,6 +1579,7 @@ document.addEventListener("input",function(e){
   var st=kzLoad();st.notes[t.getAttribute("data-kznote")]=t.value;kzSave(st);
 });
 function enterTeam(){
+  try{localStorage.setItem("sb-team-device","1");}catch(e){}
   $("#login").hidden=true;$("#app").hidden=true;$("#team").hidden=false;
   if(!$("#tside").children.length)tNav();
   var h=(location.hash||"").slice(1);
@@ -1421,6 +1597,9 @@ $("#tview").addEventListener("click",function(e){
 });
 $("#tlogout").addEventListener("click",function(){setAuth(false);$("#loginPass").value="";$("#tsheet").removeAttribute("src");showLogin();toast("Abgemeldet.");});
 var WANT_INTERN=(location.hash==="#intern");
+/* Der Reiter Intern ist für normale Kunden unsichtbar: nur über den direkten Link #intern oder auf einem Gerät, auf dem sich das Team schon eingeloggt hat. */
+function teamDevice(){try{return localStorage.getItem("sb-team-device")==="1"||!!localStorage.getItem(TKEY);}catch(e){return false;}}
+if(WANT_INTERN||teamDevice()){var itb=document.querySelector('[data-lgtab="intern"]');if(itb)itb.hidden=false;}
 if(authMode()==="team")enterTeam();else if(authed()&&!WANT_INTERN)enter();else{showLogin();if(WANT_INTERN){var it=document.querySelector('[data-lgtab="intern"]');if(it)it.click();}}
 })();
 </script>

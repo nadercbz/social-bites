@@ -322,7 +322,7 @@
     .ptl-rail{position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:var(--line-2,rgba(35,35,33,.25));}
     .ptl-rail i{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(var(--lp,0));}
     .ptl-step{position:relative;flex:0 0 31vw;height:100%;}
-    .ptl-dot{position:absolute;left:0;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--paper-2);transform:scale(var(--d,0));z-index:2;}
+    .ptl-dot{position:absolute;left:0;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--paper);transform:scale(var(--d,0));z-index:2;}
     .ptl-half{position:absolute;left:0;right:0;height:50%;display:flex;flex-direction:column;}
     .ptl-top{top:0;justify-content:flex-end;padding-top:clamp(88px,12vh,120px);}
     .ptl-bot{top:50%;justify-content:flex-start;padding-bottom:clamp(30px,5vh,56px);}
@@ -424,7 +424,7 @@
   .win-scrub::after{content:"";position:absolute;left:0;right:0;top:20%;height:30%;border-radius:3px;background:var(--ink);}
 
   /* Ablauf */
-  .process{background:var(--grain),var(--paper-2);padding:clamp(80px,10vw,130px) 0 clamp(60px,8vw,100px);}
+  .process{background:var(--grain),var(--paper);padding:clamp(80px,10vw,130px) 0 clamp(60px,8vw,100px);}
   .process .big-h{text-align:left;padding:0 var(--gutter);display:flex;flex-wrap:wrap;align-items:center;gap:.16em;}
   .process .big-h img{height:.86em;width:auto;transform:rotate(-8deg);}
   .cards{
@@ -885,7 +885,7 @@
   .anf-step{border:0;margin:0;padding:0;min-width:0;display:grid;gap:14px;}
   .anf-step legend{padding:0;margin:0 0 4px;}
   .anf h2{margin:0;font-weight:850;font-size:clamp(32px,4.4vw,54px);letter-spacing:-.055em;line-height:.95;}
-  .anf-sub{margin:-6px 0 0;color:var(--mute);font-size:15px;}
+  .anf-sub{margin:4px 0 0;color:var(--mute);font-size:15px;}
   .anf-q{margin:8px 0 0;font-weight:800;font-size:19px;letter-spacing:-.03em;}
   .anf-chips{display:flex;flex-wrap:wrap;gap:8px;}
   .anf-chips label{position:relative;cursor:pointer;}
@@ -1077,6 +1077,70 @@
   @media (max-width:700px){.sr-lb-nav{display:none;}}
   @media (prefers-reduced-motion:reduce){.sr-t{opacity:1;transform:none;transition:none;}.sr-bg,.sr-bar,.sr-lb-bg{transition:none;}}
   /* SHOWROOM END */
+
+  /* Kunden Block zwischen Lineal und Haltung: Logo antippen oder drüberfahren, Zahlen wechseln. Nur belegte Zahlen. Zitate nur mit Freigabe des Kunden (PROOF_STIMMEN). */
+  .proof{padding:clamp(40px,6vw,88px) var(--gutter) 0;}
+  .proof-box{--pb:#232321;--pt:#FEFEFE;--pm:#C9C7BF;position:relative;max-width:1080px;margin:0 auto;padding:clamp(22px,3.4vw,44px);border-radius:24px;background:radial-gradient(420px circle at var(--mx,20%) var(--my,0%),rgba(242,106,33,.22),transparent 70%),var(--pb);color:var(--pt);overflow:hidden;}
+  .proof-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;}
+  .proof-head h2{margin:0;font-size:clamp(24px,3vw,40px);line-height:1;letter-spacing:-.04em;color:var(--pt);}
+  .proof-head .pill,.proof-side .pill{background:transparent;border-color:rgba(254,254,254,.45);color:var(--pt);}
+  .proof-logos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:clamp(20px,2.6vw,32px) 0;border-bottom:1px solid rgba(254,254,254,.18);}
+  .proof-logo{position:relative;display:grid;place-items:center;height:76px;padding:0 6px;background:none;border:0;color:var(--pt);cursor:pointer;opacity:.5;transition:opacity .3s ease,transform .45s var(--ease);}
+  .proof-logo i{display:block;max-width:100%;background:currentColor;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;}
+  .proof-logo::after{content:"";position:absolute;left:12%;right:12%;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--accent);transform:scaleX(0);transition:transform .45s var(--ease);}
+  .proof-logo:hover,.proof-logo:focus-visible{opacity:1;transform:translateY(-3px) scale(1.06);outline:none;}
+  .proof-logo.is-on{opacity:1;}
+  .proof-logo.is-on::after,.proof-logo:focus-visible::after{transform:scaleX(1);}
+  .proof-p{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(18px,3vw,44px);align-items:center;min-height:clamp(150px,15vw,190px);}
+  .proof-p[hidden]{display:none;}
+  .proof-kpis{display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,44px);}
+  .proof-kpi{display:grid;gap:8px;min-width:0;animation:proofUp .6s var(--ease) both;}
+  .proof-kpi+.proof-kpi{animation-delay:.08s;}
+  .proof-kpi b{font-family:var(--head);font-weight:700;font-size:clamp(46px,7vw,92px);line-height:.9;letter-spacing:-.05em;color:var(--accent);}
+  .proof-kpi span{font-weight:600;font-size:15px;line-height:1.25;color:var(--pm);max-width:22ch;}
+  .proof-side{display:grid;gap:12px;justify-items:start;animation:proofUp .6s var(--ease) .12s both;}
+  .proof-txt{margin:0;font-weight:600;font-size:clamp(15px,1.3vw,18px);line-height:1.35;color:var(--pt);}
+  .proof-stimme:empty{display:none;}
+  .proof-stimme blockquote{margin:0;font-weight:600;line-height:1.35;color:var(--pt);}
+  .proof-stimme cite{display:block;margin-top:6px;font:500 12px/1.3 var(--mono);color:var(--pm);}
+  @keyframes proofUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @media (max-width:760px){
+    .proof-logos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(96px,1fr);overflow-x:auto;scrollbar-width:none;margin-inline:calc(clamp(22px,3.4vw,44px)*-1);padding-inline:clamp(22px,3.4vw,44px);}
+    .proof-logos::-webkit-scrollbar{display:none;}
+    .proof-logo{height:64px;}
+    .proof-p{grid-template-columns:1fr;min-height:0;}
+  }
+  @media (prefers-reduced-motion:reduce){.proof-kpi,.proof-side{animation:none;}.proof-logo{transition:none;}}
+
+  /* Hero: zwei Knöpfe nebeneinander, zusammen mittig */
+  .hero-cta{flex-wrap:wrap;align-items:center;gap:10px 12px;}
+  .hero-cta .hero-cta-2{font-size:clamp(16px,1.3vw,19px);padding:14px 24px;border-radius:999px;}
+  @media (max-width:420px){.hero-cta{flex-wrap:nowrap;}.hero-cta .btn.shiny,.hero-cta .hero-cta-2{font-size:14.5px;padding:13px 15px;gap:7px;white-space:nowrap;}}
+
+  /* Kopfzeile: Anfrage senden sitzt auf einer Höhe mit Hintergrund, Sprache, Hell und Dunkel, Portal */
+  #cta-fixed{top:var(--head-mid,45px);right:10px;transform:translateY(-50%);}
+  .head-actions{padding-right:calc(var(--cta-w,165px) + 18px);}
+  .head-actions .portal-link,.head-actions .theme-btn,.head-actions .menu-btn{flex:none;}
+  .portal-link[hidden],.mnav a[hidden]{display:none;}
+  @media (max-width:900px){.head-actions{padding-right:0;}#cta-fixed{right:58px;}}
+
+  /* Projekte auf dem Handy: jede Überschrift steht direkt über ihren Videos, statt alle Überschriften zuerst */
+  @media (max-width:900px){
+    .pmod{display:flex;flex-direction:column;gap:0;width:100%;min-width:0;}
+    .pmod .pm-side,.pmod .p-media{display:contents;}
+    .pmod .p-kicker{order:0;margin-bottom:14px;}
+    .pmod .pm-item{order:var(--o,1);margin-top:clamp(44px,12vw,72px);padding-top:18px;}
+    .pmod .p-kicker + .pm-item{margin-top:0;}
+    .pmod .pm-name{font-size:clamp(34px,10vw,50px);}
+    .pmod .pm-desc{margin-bottom:6px;}
+    .pmod .panel{order:var(--o,2);margin-top:18px;}
+    .pmod .panel.hero-panel,.pmod .panel.mk1{justify-content:center;}
+    .pmod .panel.mock.mk3,.pmod .panel.mock.mk4{flex-wrap:nowrap;justify-content:flex-start;align-items:flex-start;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-inline:calc(var(--gutter)*-1);padding:4px var(--gutter) 26px;scroll-padding-inline:var(--gutter);width:calc(100% + var(--gutter)*2);max-width:none;contain:inline-size;box-sizing:border-box;}
+    .pmod .panel.mock.mk3::-webkit-scrollbar,.pmod .panel.mock.mk4::-webkit-scrollbar{display:none;}
+    .pmod .panel.mock.mk3 .pm-3d,.pmod .panel.mock.mk4 .pm-3d{flex:none;scroll-snap-align:start;}
+    .pmod .panel.mock.mk3 .pm-frame,.pmod .panel.mock.mk4 .pm-frame{width:min(56vw,230px);}
+    .pmod .panel[data-pm="mmaah"] + .panel[data-pm="mmaah"]{margin-top:0;}
+  }
 </style>
 <link rel="stylesheet" href="theme.css">
 <script src="bgswitch.js" defer></script>
@@ -1102,7 +1166,7 @@
     <div class="lang" id="lang"><button class="theme-btn lang-btn" type="button" id="lang-cur" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="Sprache wählen">DE</button><ul class="lang-menu" id="lang-menu" role="menu"></ul></div>
     <button class="theme-btn" type="button" data-theme-toggle></button>
     <a class="portal-link" href="portal.html"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span>Kundenportal</span></a>
-    <a class="portal-link intern-link" href="portal.html#intern" rel="nofollow"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="5.5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.8 14c.5-2.7 2.5-4.2 5.2-4.2s4.7 1.5 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Intern</span></a>
+    <a class="portal-link intern-link" href="portal.html#intern" rel="nofollow" data-intern-link hidden><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="5.5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.8 14c.5-2.7 2.5-4.2 5.2-4.2s4.7 1.5 5.2 4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Intern</span></a>
     <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
   <div class="progress" aria-hidden="true"></div>
@@ -1119,7 +1183,7 @@
   <a href="konzepte.html"><small>07</small>Konzepte</a>
   <a href="#anfrage" data-anfrage><small>08</small>Projekt starten</a>
   <a href="portal.html"><small>09</small>Kundenportal</a>
-  <a href="portal.html#intern" rel="nofollow"><small>10</small>Intern</a>
+  <a href="portal.html#intern" rel="nofollow" data-intern-link hidden><small>10</small>Intern</a>
   <div class="mnav-set" id="mnav-set"></div>
   <p class="mono">Social Bites · Berlin</p>
 </nav>
@@ -1135,7 +1199,7 @@
       <span class="row">Content <button class="tile hero-tile" type="button" id="pitch-open" aria-label="Pitch-Video abspielen"><video data-src="media/tile_mood.mp4?v=1" poster="media/tile_mood.webp?v=1" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="ht-play" aria-hidden="true">&#9654;</span></button> den</span>
       <span class="row">keiner wegscrollt</span>
     </h1>
-    <div class="hero-cta"><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></div>
+    <div class="hero-cta"><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a><a class="btn hero-cta-2" href="#arbeiten"><span>Projekte ansehen</span><i class="dot"></i></a></div>
     <div class="hero-foot">
       <p class="hero-sub">Social Media für Unternehmer, Marken und Gastro aus Berlin.<br><span class="hot">Über 500 Millionen organische Views auf TikTok und Instagram.</span></p>
       <div class="trust">
@@ -1161,8 +1225,8 @@
 
       <article class="pmod">
         <div class="pm-side">
-          <div class="p-kicker mono"><i></i>01 / 03 · Zalando × Nike · Burger King · Aldi Nord · Spreequell</div>
-        <div class="pm-item" data-k="zalando-x-nike">
+          <div class="p-kicker mono"><i></i>01 / 02 · Zalando × Nike · Burger King · Aldi Nord · Spreequell</div>
+        <div class="pm-item" data-k="zalando-x-nike" style="--o:1">
           <h3 class="pm-name">Zalando × Nike<span class="pm-stat"><b>67.400</b> Views auf TikTok</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p>
@@ -1170,7 +1234,7 @@
             <div class="p-actions"><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
           </div></div>
         </div>
-        <div class="pm-item" data-k="burger-king">
+        <div class="pm-item" data-k="burger-king" style="--o:3">
           <h3 class="pm-name">Burger King<span class="pm-stat"><b>4,7 Mio</b> Views auf TikTok</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Ein Trend, eine Crew, ein Restaurant. Tanz-Video mitten im Burger King, gedreht für den TikTok-Kanal von Burger King Deutschland.</p>
@@ -1178,7 +1242,7 @@
             <div class="p-actions"><a class="p-link" href="https://www.tiktok.com/@burgerkingde/video/7212568313107434758" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div>
           </div></div>
         </div>
-        <div class="pm-item" data-k="aldi-nord">
+        <div class="pm-item" data-k="aldi-nord" style="--o:5">
           <h3 class="pm-name">Aldi Nord<span class="pm-stat"><b>26.800</b> Views auf Instagram</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Kurzer Creator-Clip für Aldi Nord. POV vor der Gamescom: im Sturzflug noch schnell zu Aldi.</p>
@@ -1186,7 +1250,7 @@
             <div class="p-actions"><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
           </div></div>
         </div>
-        <div class="pm-item" data-k="spreequell">
+        <div class="pm-item" data-k="spreequell" style="--o:7">
           <h3 class="pm-name">Spreequell<span class="pm-stat"><b>173.000</b> Views auf Instagram</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p>
@@ -1196,20 +1260,20 @@
         </div>
         </div>
         <div class="p-media">
-          <div data-pm="zalando-x-nike" class="panel hero-panel" style="--pbg:#1B1715;--pdot:#7A3A14"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Zalando × Nike</h4><p class="pm-who-stat"><b>67.400</b> Views auf TikTok</p><p class="pm-who-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p><div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span><span class="pill">Nachtdreh</span></div><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div></div>
-          <div data-pm="burger-king" class="panel mock mk1" style="--pbg:#8A200B;--pdot:#B8360F">
+          <div data-pm="zalando-x-nike" class="panel hero-panel" style="--o:2;--pbg:#1B1715;--pdot:#7A3A14"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="zalando_nike" aria-label="Zalando × Nike: Video mit Ton abspielen (0:50)"><video data-src="media/ref_zalando_nike_loop.mp4" poster="media/ref_zalando_nike.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:50</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Zalando × Nike</h4><p class="pm-who-stat"><b>67.400</b> Views auf TikTok</p><p class="pm-who-desc">Nachtdreh in Rot und Schwarz. Fashion-Film für Zalando und Nike, von der Neon-Treppe bis auf die Straße.</p><div class="p-chips"><span class="pill">TikTok</span><span class="pill">Fashion</span><span class="pill">Nachtdreh</span></div><a class="p-link" href="https://www.tiktok.com/@aleynakuzh/video/7560384846766411030" target="_blank" rel="noopener">Original auf TikTok<span aria-hidden="true">&#8599;</span></a></div></div>
+          <div data-pm="burger-king" class="panel mock mk1" style="--o:4;--pbg:#8A200B;--pdot:#B8360F">
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone solo ref" type="button" data-play="burgerking" aria-label="Burger King: Video mit Ton abspielen (0:27)"><video data-src="media/ref_burgerking_loop.mp4" poster="media/ref_burgerking.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button></div></div></div>
             <span class="cap mono">Burger King · TikTok</span>
           </div>
-          <div data-pm="aldi-nord" class="panel hero-panel" style="--pbg:#0B3F8F;--pdot:#2F6FCB"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="aldi" aria-label="Aldi Nord: Video mit Ton abspielen (0:05)"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:05</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Aldi Nord</h4><p class="pm-who-stat"><b>26.800</b> Views auf Instagram</p><p class="pm-who-desc">Kurzer Creator-Clip für Aldi Nord. POV vor der Gamescom: im Sturzflug noch schnell zu Aldi.</p><div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span><span class="pill">POV-Hook</span></div><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div></div>
-          <div data-pm="spreequell" class="panel hero-panel" style="--pbg:#0A5F70;--pdot:#1798B0"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Spreequell</h4><p class="pm-who-stat"><b>173.000</b> Views auf Instagram</p><p class="pm-who-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p><div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span><span class="pill">Creator-Tour</span></div><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div></div>
+          <div data-pm="aldi-nord" class="panel hero-panel" style="--o:6;--pbg:#0B3F8F;--pdot:#2F6FCB"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="aldi" aria-label="Aldi Nord: Video mit Ton abspielen (0:05)"><video data-src="media/ref_aldi_loop.mp4" poster="media/ref_aldi.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:05</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Aldi Nord</h4><p class="pm-who-stat"><b>26.800</b> Views auf Instagram</p><p class="pm-who-desc">Kurzer Creator-Clip für Aldi Nord. POV vor der Gamescom: im Sturzflug noch schnell zu Aldi.</p><div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span><span class="pill">POV-Hook</span></div><a class="p-link" href="https://www.instagram.com/p/ChfHx-UlQm7/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div></div>
+          <div data-pm="spreequell" class="panel hero-panel" style="--o:8;--pbg:#0A5F70;--pdot:#1798B0"><div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="spreequell" aria-label="Spreequell: Video mit Ton abspielen (0:25)"><video data-src="media/ref_spreequell_loop.mp4" poster="media/ref_spreequell.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:25</span></button></div></div></div><div class="pm-who"><p class="mono pm-who-k">Kunde</p><h4>Spreequell</h4><p class="pm-who-stat"><b>173.000</b> Views auf Instagram</p><p class="pm-who-desc">Eine Flasche Spreequell auf Tour durch Berlin. Aus der Spree über U-Bahn und Döner bis aufs Hochhaus.</p><div class="p-chips"><span class="pill">Instagram</span><span class="pill">Creator</span><span class="pill">Creator-Tour</span></div><a class="p-link" href="https://www.instagram.com/reel/CwVHT8jNNu4/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div></div>
         </div>
       </article>
 
       <article class="pmod">
         <div class="pm-side">
-          <div class="p-kicker mono"><i></i>02 / 03 · The Pizzary · Mian Market</div>
-        <div class="pm-item" data-k="the-pizzary">
+          <div class="p-kicker mono"><i></i>02 / 02 · The Pizzary · Mian Market · Mmaah</div>
+        <div class="pm-item" data-k="the-pizzary" style="--o:1">
           <h3 class="pm-name">The Pizzary<span class="pm-stat"><b>500</b> Gratis-Pizzen zur Neueröffnung</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Neueröffnung von null auf Schlange vor der Tür. Umbau als Serie, Food-Reels jeden Tag, und am Opening 500 Pizzen gratis. Im Netz angekündigt, vor Ort eingelöst.</p><p class="pm-stat2"><b>28.08.</b> Opening-Tag, wochenlang angeteasert</p>
@@ -1217,7 +1281,7 @@
             
           </div></div>
         </div>
-        <div class="pm-item" data-k="mian-market">
+        <div class="pm-item" data-k="mian-market" style="--o:3">
           <h3 class="pm-name">Mian Market<span class="pm-stat"><b>3</b> Reels in der Auswahl</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Reels für den Mian Market: Produkte, Atmosphäre und der Laden in kurzen, direkten Clips.</p>
@@ -1225,27 +1289,7 @@
             <div class="p-actions"><a class="p-link" href="https://www.instagram.com/p/DHlOsjptVjE/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
           </div></div>
         </div>
-        </div>
-        <div class="p-media">
-          <div data-pm="the-pizzary" class="panel mock mk3" style="--pbg:#4B1C7C;--pdot:#7633B5">
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:53</span></button></div></div></div>
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="pizzary3_1" aria-label="The Pizzary: Video mit Ton abspielen (0:07)"><video data-src="media/ref_pizzary3_1_loop.mp4" poster="media/ref_pizzary3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:07</span></button></div></div></div>
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="pizzary3_2" aria-label="The Pizzary: Video mit Ton abspielen (0:10)"><video data-src="media/ref_pizzary3_2_loop.mp4" poster="media/ref_pizzary3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:10</span></button></div></div></div>
-            <span class="cap mono">Opening · Food · Reels</span>
-          </div>
-          <div data-pm="mian-market" class="panel mock mk3" style="--pbg:#0E5C3B;--pdot:#1C8B5A">
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_market" aria-label="Mian Market: Video mit Ton abspielen (0:04)"><video data-src="media/ref_mian_market_loop.mp4" poster="media/ref_mian_market.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:04</span></button></div></div></div>
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_1" aria-label="Mian Market: Video mit Ton abspielen (0:09)"><video data-src="media/ref_mian_1_loop.mp4" poster="media/ref_mian_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:09</span></button></div></div></div>
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_3" aria-label="Mian Market: Video mit Ton abspielen (0:27)"><video data-src="media/ref_mian_3_loop.mp4" poster="media/ref_mian_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button></div></div></div>
-            <span class="cap mono">Mian Market · Reels</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="pmod">
-        <div class="pm-side">
-          <div class="p-kicker mono"><i></i>03 / 03 · Mmaah · Spreegold</div>
-        <div class="pm-item" data-k="mmaah">
+        <div class="pm-item" data-k="mmaah" style="--o:5">
           <h3 class="pm-name">Mmaah<span class="pm-stat"><b>76.100</b> Views auf Instagram</span></h3>
           <div class="pm-more"><div>
             <p class="pm-desc">Food-Challenge bei Mmaah KBBQ: Schaffst du beide, zahlst du nix. Ein Reel, das Hunger macht und zum Mitmachen einlädt.</p>
@@ -1253,33 +1297,33 @@
             <div class="p-actions"><a class="p-link" href="https://www.instagram.com/reel/CwBDHYYsfEn/" target="_blank" rel="noopener">Original auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
           </div></div>
         </div>
-        <div class="pm-item" data-k="spreegold">
-          <h3 class="pm-name">Spreegold<span class="pm-stat"><b>0:28</b> Kurzvideo für Spreegold</span></h3>
-          <div class="pm-more"><div>
-            <p class="pm-desc">Kurzvideo für das Restaurant Spreegold.</p>
-            <div class="p-chips"><span class="pill">Instagram</span><span class="pill">Restaurant</span></div>
-            <div class="p-actions"><a class="p-link" href="https://www.instagram.com/spreegold.berlin/" target="_blank" rel="noopener">Spreegold auf Instagram<span aria-hidden="true">&#8599;</span></a></div>
-          </div></div>
-        </div>
         </div>
         <div class="p-media">
-          <div data-pm="mmaah" class="panel mock mk4" style="--pbg:#7F0B14;--pdot:#B51B27">
+          <div data-pm="the-pizzary" class="panel mock mk3" style="--o:2;--pbg:#4B1C7C;--pdot:#7633B5">
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="step_pizzary" aria-label="The Pizzary: Video mit Ton abspielen (0:53)"><video data-src="media/ref_step_pizzary_loop.mp4" poster="media/ref_step_pizzary.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:53</span></button></div></div></div>
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="pizzary3_1" aria-label="The Pizzary: Video mit Ton abspielen (0:07)"><video data-src="media/ref_pizzary3_1_loop.mp4" poster="media/ref_pizzary3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:07</span></button></div></div></div>
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="pizzary3_2" aria-label="The Pizzary: Video mit Ton abspielen (0:10)"><video data-src="media/ref_pizzary3_2_loop.mp4" poster="media/ref_pizzary3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:10</span></button></div></div></div>
+            <span class="cap mono">Opening · Food · Reels</span>
+          </div>
+          <div data-pm="mian-market" class="panel mock mk3" style="--o:4;--pbg:#0E5C3B;--pdot:#1C8B5A">
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_market" aria-label="Mian Market: Video mit Ton abspielen (0:04)"><video data-src="media/ref_mian_market_loop.mp4" poster="media/ref_mian_market.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:04</span></button></div></div></div>
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_1" aria-label="Mian Market: Video mit Ton abspielen (0:09)"><video data-src="media/ref_mian_1_loop.mp4" poster="media/ref_mian_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:09</span></button></div></div></div>
+            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mian_3" aria-label="Mian Market: Video mit Ton abspielen (0:27)"><video data-src="media/ref_mian_3_loop.mp4" poster="media/ref_mian_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:27</span></button></div></div></div>
+            <span class="cap mono">Mian Market · Reels</span>
+          </div>
+          <div data-pm="mmaah" class="panel mock mk4" style="--o:6;--pbg:#7F0B14;--pdot:#B51B27">
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah" aria-label="Mmaah KBBQ Challenge: Video mit Ton abspielen (0:36)"><video data-src="media/ref_mmaah_loop.mp4" poster="media/ref_mmaah.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:36</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_1" aria-label="Mmaah Reel 1: Video mit Ton abspielen (0:30)"><video data-src="media/ref_mmaah3_1_loop.mp4" poster="media/ref_mmaah3_1.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:30</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_2" aria-label="Mmaah Reel 2: Video mit Ton abspielen (0:29)"><video data-src="media/ref_mmaah3_2_loop.mp4" poster="media/ref_mmaah3_2.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:29</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_3" aria-label="Mmaah Reel 3: Video mit Ton abspielen (0:22)"><video data-src="media/ref_mmaah3_3_loop.mp4" poster="media/ref_mmaah3_3.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:22</span></button></div></div></div>
             <span class="cap mono">Mmaah · KBBQ und Reels 1 bis 3</span>
           </div>
-          <div data-pm="mmaah" class="panel mock mk4" style="--pbg:#7F0B14;--pdot:#B51B27">
+          <div data-pm="mmaah" class="panel mock mk4" style="--o:6;--pbg:#7F0B14;--pdot:#B51B27">
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_4" aria-label="Mmaah Reel 4: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_4_loop.mp4" poster="media/ref_mmaah3_4.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_5" aria-label="Mmaah Reel 5: Video mit Ton abspielen (0:19)"><video data-src="media/ref_mmaah3_5_loop.mp4" poster="media/ref_mmaah3_5.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:19</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_6" aria-label="Mmaah Reel 6: Video mit Ton abspielen (0:14)"><video data-src="media/ref_mmaah3_6_loop.mp4" poster="media/ref_mmaah3_6.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:14</span></button></div></div></div>
             <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone ref" type="button" data-play="mmaah3_7" aria-label="Mmaah Reel 7: Video mit Ton abspielen (0:13)"><video data-src="media/ref_mmaah3_7_loop.mp4" poster="media/ref_mmaah3_7.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:13</span></button></div></div></div>
             <span class="cap mono">Mmaah · Reels 4 bis 7</span>
-          </div>
-          <div data-pm="spreegold" class="panel mock mk1" style="--pbg:#8A6508;--pdot:#C99A12">
-            <div class="pm-3d"><div class="pm-frame"><i class="pm-btn b1"></i><i class="pm-btn b2"></i><i class="pm-btn b3"></i><div class="pm-screen"><span class="pm-island"></span><button class="phone solo ref" type="button" data-play="spreegold" aria-label="Spreegold: Video mit Ton abspielen (0:28)"><video data-src="media/ref_spreegold_loop.mp4" poster="media/ref_spreegold.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="play mono" aria-hidden="true">&#9654; 0:28</span></button></div></div></div>
-            <span class="cap mono">Spreegold · Kurzvideo</span>
           </div>
         </div>
       </article>
@@ -1298,6 +1342,14 @@
     <div class="ruler-labs mono"><span>0S</span><span>1S</span><span>2S</span><span>3S</span><span>4S</span><span>5S</span><span>6S</span><span>7S</span><span>8S</span><span>9S</span><span>10S</span><span>11S</span><span>12S</span><span>13S</span><span>14S</span><span>15S</span></div>
     <p class="ruler-note mono">15 Sekunden. Drei Sekunden entscheiden.</p>
   </div>
+
+  <section class="proof" id="kunden-zahlen" aria-labelledby="proof-h">
+    <div class="proof-box" id="proof">
+      <div class="proof-head"><span class="pill">Kunden &bull; Zahlen</span><h2 id="proof-h">Was dabei rauskommt.</h2></div>
+      <div class="proof-logos" role="tablist" aria-label="Kunden"><button class="proof-logo is-on" type="button" role="tab" id="pt-pizzary" aria-controls="pp-pizzary" aria-selected="true" aria-label="The Pizzary"><i style="width:60px;height:34px;-webkit-mask-image:url(media/clients/pizzary.webp);mask-image:url(media/clients/pizzary.webp)"></i></button><button class="proof-logo" type="button" role="tab" id="pt-mmaah" aria-controls="pp-mmaah" aria-selected="false" aria-label="Mmaah" tabindex="-1"><i style="width:111px;height:26px;-webkit-mask-image:url(media/clients/mmaah.webp);mask-image:url(media/clients/mmaah.webp)"></i></button><button class="proof-logo" type="button" role="tab" id="pt-spreegold" aria-controls="pp-spreegold" aria-selected="false" aria-label="Spreegold" tabindex="-1"><i style="width:97px;height:26px;-webkit-mask-image:url(media/clients/spreegold.webp);mask-image:url(media/clients/spreegold.webp)"></i></button><button class="proof-logo" type="button" role="tab" id="pt-burgerking" aria-controls="pp-burgerking" aria-selected="false" aria-label="Burger King" tabindex="-1"><i style="width:40px;height:44px;-webkit-mask-image:url(media/clients/burgerking.webp);mask-image:url(media/clients/burgerking.webp)"></i></button><button class="proof-logo" type="button" role="tab" id="pt-spreequell" aria-controls="pp-spreequell" aria-selected="false" aria-label="Spreequell" tabindex="-1"><i style="width:79px;height:26px;-webkit-mask-image:url(media/clients/spreequell.webp);mask-image:url(media/clients/spreequell.webp)"></i></button></div>
+      <div class="proof-panels"><article class="proof-p is-on" role="tabpanel" id="pp-pizzary" aria-labelledby="pt-pizzary"><div class="proof-kpis"><div class="proof-kpi"><b>500</b><span>Gratis-Pizzen zur Neueröffnung</span></div><div class="proof-kpi"><b>28.08.</b><span>Opening-Tag, wochenlang angeteasert</span></div></div><div class="proof-side"><span class="pill">Opening und Event</span><p class="proof-txt">Neueröffnung von null auf Schlange vor der Tür. Im Netz angekündigt, vor Ort eingelöst.</p><div class="proof-stimme" data-stimme="pizzary"></div></div></article><article class="proof-p" role="tabpanel" id="pp-mmaah" aria-labelledby="pt-mmaah" hidden><div class="proof-kpis"><div class="proof-kpi"><b>76.100</b><span>Views auf Instagram</span></div><div class="proof-kpi"><b>8</b><span>Reels in der Auswahl</span></div></div><div class="proof-side"><span class="pill">Social Media</span><p class="proof-txt">Food-Challenge bei Mmaah KBBQ: Schaffst du beide, zahlst du nix.</p><div class="proof-stimme" data-stimme="mmaah"></div></div></article><article class="proof-p" role="tabpanel" id="pp-spreegold" aria-labelledby="pt-spreegold" hidden><div class="proof-kpis"><div class="proof-kpi"><b>0:28</b><span>Kurzvideo für Spreegold</span></div></div><div class="proof-side"><span class="pill">Social Media</span><p class="proof-txt">Kurzvideo für das Restaurant Spreegold.</p><div class="proof-stimme" data-stimme="spreegold"></div></div></article><article class="proof-p" role="tabpanel" id="pp-burgerking" aria-labelledby="pt-burgerking" hidden><div class="proof-kpis"><div class="proof-kpi"><b>4,7 Mio</b><span>Views auf TikTok</span></div></div><div class="proof-side"><span class="pill">Social Media</span><p class="proof-txt">Tanz-Video mitten im Burger King, gedreht für den TikTok-Kanal von Burger King Deutschland.</p><div class="proof-stimme" data-stimme="burgerking"></div></div></article><article class="proof-p" role="tabpanel" id="pp-spreequell" aria-labelledby="pt-spreequell" hidden><div class="proof-kpis"><div class="proof-kpi"><b>173.000</b><span>Views auf Instagram</span></div></div><div class="proof-side"><span class="pill">Kampagne</span><p class="proof-txt">Eine Flasche Spreequell auf Tour durch Berlin.</p><div class="proof-stimme" data-stimme="spreequell"></div></div></article></div>
+    </div>
+  </section>
 
   <section class="wirk" id="wirkung" aria-labelledby="wirk-h">
     <div class="sec-pill rv"><span class="pill">Unsere &bull; Haltung</span></div>
@@ -1408,8 +1460,8 @@
   <section class="pf" id="portfolio" aria-labelledby="pf-h">
     <div class="sec-pill"><span class="pill">Film &bull; Foto &bull; Musik</span></div>
     <h2 class="big-h" id="pf-h">Commercials &amp; Musikvideos.</h2>
-    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube und Influencer-Kooperationen. Das bringt unser Kollektiv mit an den Tisch.</p>
-    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a><a class="pf-tab" href="#pf-influencer">Influencer &amp; Artists<sup>9</sup></a></nav>
+    <p class="pf-lead">Commercials, Musikvideos mit zusammen <b>17,8 Mio Views</b> auf YouTube. Das bringt unser Kollektiv mit an den Tisch.</p>
+    <nav class="pf-tabs" aria-label="Portfolio-Kategorien"><a class="pf-tab" href="#pf-werbung">Commercials<sup>11</sup></a><a class="pf-tab" href="#pf-musik">Musikvideos<sup>10</sup></a></nav>
     <div class="pf-rows">
       <div class="pf-row" id="pf-werbung">
         <div class="pf-row-h"><div><h3>Commercials</h3><span class="mono">3 Filme · 1 Clip · 7 Fotos</span></div><div class="pf-arrows"><button class="pf-prev" type="button" aria-label="Commercials: zurück">&larr;</button><button class="pf-next" type="button" aria-label="Commercials: weiter">&rarr;</button></div></div>
@@ -1442,6 +1494,8 @@
           <button class="pf-card pf-photo" type="button" style="aspect-ratio:900/600" data-full="media/pf/mv_tunnel_xl.webp" data-cap="Tänzerin in einem Tunnel, Still aus einem Musikvideo" aria-label="Foto vergrößern: Tänzerin in einem Tunnel, Still aus einem Musikvideo"><img src="media/pf/mv_tunnel.webp" alt="Tänzerin in einem Tunnel, Still aus einem Musikvideo" width="900" height="600" loading="lazy" decoding="async"></button>
         </div>
       </div>
+      <!-- Influencer & Artists erstmal raus (Nader, 04.11.2026). Zum Zurückholen nur das template entfernen und den Tab in .pf-tabs ergänzen. -->
+      <template id="pf-influencer-aus">
       <div class="pf-row" id="pf-influencer">
         <div class="pf-row-h"><div><h3>Influencer &amp; Artists</h3><span class="mono">6 Creator, echte Instagram-Beiträge</span></div></div>
         <div class="hg" id="hg" aria-label="Influencer und Artists, Karten anklicken, hochziehen oder mit den Pfeiltasten wechseln">
@@ -1453,6 +1507,7 @@
         <noscript><p class="inf-kunden mono"><a href="https://www.instagram.com/reel/DciN5T0s5Mx/">Naomi</a> · <a href="https://www.instagram.com/reel/Dc6J2pAMf_1/">kiditna</a> · <a href="https://www.instagram.com/p/DHQLjXisbE4/">Lindsay</a> · <a href="https://www.instagram.com/p/DHO8gRqu9Q8/">Yassin Halal</a> · <a href="https://www.instagram.com/p/DHaULS3sAlf/">Hao</a> · <a href="https://www.instagram.com/reel/Dcq7-aLIXsg/">Nina mampft</a></p></noscript>
         <p class="inf-kunden mono">Beiträge der Kunden: <a href="https://www.instagram.com/reel/DcqKoKQsoFN/" target="_blank" rel="noopener">The Pizzary, Opening Event &#8599;</a> <a href="https://www.instagram.com/p/DHQPuwWNdzI/" target="_blank" rel="noopener">Mian Market &#8599;</a></p>
       </div>
+      </template>
     </div>
     <p class="wirk-cta"><span>Das könnte dein nächstes Projekt sein.</span><a class="btn shiny" href="#anfrage" data-anfrage><span>Projekt starten</span><i class="dot"></i></a></p>
     <p class="pf-note mono">Views laut YouTube, Stand 07.10.2026. Die Musikvideos laufen auf den Kanälen der Artists.</p>
@@ -2335,6 +2390,59 @@
   pd.addEventListener('cancel', function(){ var v = pst.querySelector('video'); if (v) v.pause(); });
   d.getElementById('pitchd-cta').addEventListener('click', pitchClose);
   // Kundenstimmen: nur echte Zitate eintragen, solange die Liste leer ist, bleibt der Abschnitt unsichtbar
+  /* Kunden Block: Logos schalten die Zahlen. Zitate nur mit schriftlicher Freigabe des Kunden eintragen, {pizzary:{text:'',name:'',rolle:''}} */
+  var PROOF_STIMMEN = {};
+  (function(){
+    var box = d.getElementById('proof'); if (!box) return;
+    var tabs = [].slice.call(box.querySelectorAll('.proof-logo')), cur = 0, tmr = null, over = false, seen = false;
+    var still = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    Object.keys(PROOF_STIMMEN).forEach(function(k){
+      var el = box.querySelector('[data-stimme="' + k + '"]'), s = PROOF_STIMMEN[k]; if (!el) return;
+      var q = d.createElement('blockquote'); q.textContent = '\u201E' + s.text + '\u201C';
+      var c = d.createElement('cite'); c.textContent = s.name + (s.rolle ? ', ' + s.rolle : '');
+      el.appendChild(q); el.appendChild(c);
+    });
+    function show(i, focus){
+      cur = (i + tabs.length) % tabs.length;
+      tabs.forEach(function(t, n){
+        var on = n === cur, p = d.getElementById(t.getAttribute('aria-controls'));
+        t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+        p.hidden = !on; p.classList.toggle('is-on', on);
+      });
+      var row = tabs[cur].parentNode;
+      if (row.scrollWidth > row.clientWidth) row.scrollLeft = tabs[cur].offsetLeft - (row.clientWidth - tabs[cur].offsetWidth) / 2;
+      if (focus) tabs[cur].focus();
+    }
+    function tick(){ clearInterval(tmr); tmr = null; if (!still && seen && !over && !d.hidden) tmr = setInterval(function(){ show(cur + 1); }, 4500); }
+    tabs.forEach(function(t, i){
+      t.addEventListener('click', function(){ show(i); });
+      t.addEventListener('mouseenter', function(){ show(i); });
+      t.addEventListener('focus', function(){ if (cur !== i) show(i); });
+      t.addEventListener('keydown', function(e){
+        if (e.key === 'ArrowRight') { e.preventDefault(); show(cur + 1, true); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); show(cur - 1, true); }
+      });
+    });
+    box.addEventListener('pointermove', function(e){ var r = box.getBoundingClientRect(); box.style.setProperty('--mx', (e.clientX - r.left) + 'px'); box.style.setProperty('--my', (e.clientY - r.top) + 'px'); }, {passive:true});
+    box.addEventListener('mouseenter', function(){ over = true; tick(); });
+    box.addEventListener('mouseleave', function(){ over = false; tick(); });
+    d.addEventListener('visibilitychange', tick);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ seen = es[0].isIntersecting; tick(); }).observe(box);
+  })();
+
+  /* Anfrage senden: Höhe und Breite folgen der Kopfzeile, auch bei langen Übersetzungen */
+  (function(){
+    var c = d.getElementById('cta-fixed'), a = d.querySelector('.head-actions'), r = d.documentElement; if (!c || !a) return;
+    function fit(){
+      var y = a.getBoundingClientRect(), head = a.closest('.site-head');
+      if (head && head.classList.contains('is-hidden')) { r.style.setProperty('--cta-w', c.offsetWidth + 'px'); return; }
+      r.style.setProperty('--head-mid', Math.round(y.top + y.height / 2) + 'px');
+      r.style.setProperty('--cta-w', c.offsetWidth + 'px');
+    }
+    fit(); window.addEventListener('resize', fit); window.addEventListener('load', fit);
+    if ('ResizeObserver' in window) { var ro = new ResizeObserver(fit); ro.observe(c); ro.observe(a); }
+  })();
+
   var TESTIMONIALS = [];  // {text:'...', name:'Vorname Nachname', rolle:'Laden, Ort'}
   if (TESTIMONIALS.length) {
     d.getElementById('testi-grid').innerHTML = TESTIMONIALS.map(function(t){ return '<figure class="testi-card"><blockquote>&bdquo;' + t.text + '&ldquo;</blockquote><cite>' + t.name + (t.rolle ? ' &middot; ' + t.rolle : '') + '</cite></figure>'; }).join('');

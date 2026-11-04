@@ -75,6 +75,13 @@
       document.body.appendChild(b);
     }
     apply();
+    // Intern ist für normale Besucher unsichtbar. Sichtbar nur, wenn sich auf diesem Gerät schon jemand vom Team eingeloggt hat.
+    try {
+      if (localStorage.getItem("sb-team-device") === "1" || localStorage.getItem("sb-portal-auth") === "team" || localStorage.getItem("sb-team-zugang")) {
+        var il = document.querySelectorAll("[data-intern-link]");
+        for (var n = 0; n < il.length; n++) il[n].hidden = false;
+      }
+    } catch (e) {}
     if (window.MutationObserver) {
       var pend = false;
       new MutationObserver(function () {

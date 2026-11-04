@@ -89,6 +89,10 @@
 :root[data-theme="dark"] .anf-f input,
 :root[data-theme="dark"] .anf-f textarea,
 :root[data-theme="dark"] .pkd-facts div{background:var(--card);}
+/* Schrift auf Orange bleibt im Dunkeln dunkel, sonst nur Kontrast 2,6 */
+:root[data-theme="dark"] :is(.pills .pill:first-child,.play,.win-play,.cv-play,.pf-play,.player-x,.pfd-x,.tag.off,.anf-done .big){color:#232321;}
+:root[data-theme="dark"] .anf-chips span{color:#F3ECDD;border-color:rgba(243,236,221,.55);}
+:root[data-theme="dark"] .anf-chips input:checked + span{background:#F3ECDD;color:#232321;border-color:#F3ECDD;}
 
 /* ===== Partnerprogramm ===== */
 :root[data-theme="dark"] .kpi.dk,
@@ -128,3 +132,21 @@
 :root[data-theme="dark"] :is(.lc,.mrow,.kz,.ic,.kc,.pk,.card,.kap):is(:hover,.on,[open]){box-shadow:none !important;border-color:transparent !important;}
 :root[data-theme="dark"] .bcard[aria-current="true"]{box-shadow:none !important;border-color:transparent !important;}
 :root[data-theme="dark"] .pm-frame{box-shadow:none !important;}
+
+/* ===== Lesbarkeit im Dark Mode (Nader, 04.11.2026), geprüft mit Kontrast Messung über alle Seiten =====
+   Orange Flächen: Schrift bleibt dunkel. Im Hellen dunkle Flächen: bleiben dunkel, Schrift hell. */
+:root[data-theme="dark"] :is(.lg-art,.flow.or,header.cover,div.claim[style*="--accent"],.sample[style*="--accent"],figure.lt.o,.kpi.or){--ink:#232321;--mute:#232321;--line:rgba(35,35,33,.35);color:#232321;}
+:root[data-theme="dark"] .kpi.or{background:var(--accent);}
+:root[data-theme="dark"] .ratio span[style*="--accent"],
+:root[data-theme="dark"] .pill[style*="--accent"],
+:root[data-theme="dark"] .ropen{color:#232321;}
+:root[data-theme="dark"] :is(#sum.sum,#inbox.inbox,.pk.vid.ink,.sk-phil div,div.claim:not([style])){--ink:#2A2422;--paper:#F3ECDD;--mute:#C9C0AE;background:#2A2422;color:#F3ECDD;}
+:root[data-theme="dark"] #inbox.inbox :is(li,small,label,.mono){color:#F3ECDD;}
+:root[data-theme="dark"] .pk.vid.ink .s{color:#E8DFCE;}
+:root[data-theme="dark"] .pill.ink{background:#F3ECDD;color:#232321;border-color:#F3ECDD;}
+:root[data-theme="dark"] .ausbau p.note,
+:root[data-theme="dark"] .pool p{color:#F3ECDD;}
+:root[data-theme="dark"] .btn.danger{color:#FF9C90;}
+:root[data-theme="dark"] .pool p{color:#F3ECDD !important;}
+:root[data-theme="dark"] #inbox.inbox .btn,:root[data-theme="dark"] #inbox.inbox .btn span{color:#F3ECDD;}
+:root[data-theme="dark"] :is(.r-set,.r-kasse,.r-maschinen) .ropen{color:#fff;}
