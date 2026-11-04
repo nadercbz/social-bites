@@ -121,6 +121,10 @@
   .u-drop .btn svg,.u-add .btn svg{width:17px;height:17px;flex:none;}
   .u-cam{display:none!important;}
   .touch .u-cam{display:inline-flex!important;}
+  .u-fine-t{display:none;}
+  .touch .u-fine-t{display:block;}
+  .touch .u-fine-d{display:none;}
+  .tl-s{display:none;}
   .over{border-color:var(--accent)!important;background:var(--accent-tint)!important;}
   .ucolsw{display:none;margin-bottom:12px;}
   .ucols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;}
@@ -159,8 +163,8 @@
   body.udrag{user-select:none;-webkit-user-select:none;cursor:grabbing;}
   body.udrag *{cursor:grabbing!important;}
   .ufiles{display:grid;gap:8px;}
-  .ufile{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;}
-  .ufile .ut{width:60px;height:60px;}
+  .ufile{display:flex;align-items:center;gap:10px;background:var(--g-field,var(--paper-2));border:1px solid var(--line-2);border-radius:12px;padding:8px;color:var(--ink);}
+  .ufile .ut{width:60px;height:60px;background:var(--paper-2);}
   .ufile .fn{flex:1;min-width:0;font-weight:650;font-size:14px;overflow-wrap:anywhere;}
   .ufile .fn small{display:block;color:var(--mute);font-weight:500;font-size:12.5px;}
   .u-box{display:grid;gap:10px;border:1.5px dashed var(--line-2);border-radius:14px;padding:10px;transition:border-color .2s ease,background-color .2s ease;}
@@ -178,6 +182,9 @@
     .uc{padding-left:10px;}
     .u-drop{padding:16px 12px;}
     .u-drop .acts .btn{flex:1 1 150px;justify-content:center;}
+    .u-drop .acts .btn.u-cam{flex:1 1 100%;padding:14px 16px;font-size:16px;}
+    .tl-l{display:none;}
+    .tl-s{display:inline;}
     .ucol{padding:10px;}
   }
 
@@ -326,7 +333,7 @@
   <div class="seg" role="group" aria-label="Bereich" id="tabs">
     <button type="button" data-tab="kunden" aria-pressed="true">Kunden <span class="n" id="nK">0</span></button>
     <button type="button" data-tab="belege" aria-pressed="false">Belege <span class="n" id="nB">0</span></button>
-    <button type="button" data-tab="buch" aria-pressed="false">Einnahmen &amp; Ausgaben <span class="n" id="nU">0</span></button>
+    <button type="button" data-tab="buch" aria-pressed="false"><span class="tl-l">Einnahmen &amp; Ausgaben</span><span class="tl-s">Buchungen</span> <span class="n" id="nU">0</span></button>
   </div>
   <div class="acts">
     <button class="btn or" type="button" id="newK"><span class="dot"></span><span>+ Kunde<span class="lbl"> anlegen</span></span></button>
@@ -358,7 +365,8 @@
     <div id="uHint"></div>
     <div class="u-drop" id="uDrop">
       <b>Belege ablegen</b>
-      <span class="fine">Fotos oder PDFs hier hineinziehen, auch mehrere auf einmal. Landen sie auf einer Spalte, werden sie dort als Einnahme oder Ausgabe angelegt, sonst als Ausgabe. Am Handy direkt fotografieren, das Foto wird kleingerechnet und bleibt in diesem Browser.</span>
+      <span class="fine u-fine-d">Fotos oder PDFs hier hineinziehen, auch mehrere auf einmal. Landen sie auf einer Spalte, werden sie dort als Einnahme oder Ausgabe angelegt, sonst als Ausgabe. Das Foto wird kleingerechnet und bleibt in diesem Browser.</span>
+      <span class="fine u-fine-t">Beleg direkt mit der Kamera aufnehmen oder aus der Galerie und den Dateien wählen. Das Foto wird kleingerechnet und bleibt in diesem Browser.</span>
       <div class="acts">
         <button class="btn or u-cam" type="button" id="uCamBtn"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.2" r="3.4"/></svg><span>Beleg fotografieren</span></button>
         <button class="btn" type="button" id="uPickBtn"><span class="dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg><span>Dateien wählen</span></button>
@@ -561,7 +569,7 @@ var KK="sb-kunden",BK="sb-belege",FK="sb-rechner-firma";
 var K=load(KK,[]),B=load(BK,[]),FIRMA=load(FK,{});
 function saveK(){store(KK,K);}
 function saveB(){store(BK,B);}
-window.addEventListener("storage",function(e){if(e.key===KK){K=load(KK,[]);renderK();}if(e.key===BK){B=load(BK,[]);renderB();renderK();}if(e.key===FK)FIRMA=load(FK,{});});
+window.addEventListener("storage",function(e){if(e.key===KK){K=load(KK,[]);renderK();}if(e.key===BK){B=load(BK,[]);renderB();renderK();renderU();}if(e.key===FK)FIRMA=load(FK,{});});
 
 /* Formular-Schritte. Feld: [key, label, typ, optionen, voll, platzhalter] */
 var STATUS=[["lead","Lead","or"],["gespraech","Im Gespräch","warn"],["angebot","Angebot raus","warn"],["kunde","Kunde","ok"],["pause","Pausiert",""],["verloren","Verloren",""]];
@@ -1096,6 +1104,7 @@ function drawTo(b,side,cover,q){
 }
 function prepFile(f){
   var name=f.name||"Beleg",isPdf=f.type==="application/pdf"||/\.pdf$/i.test(name),isImg=/^image\//.test(f.type)||/\.(jpe?g|png|webp|gif|heic|heif)$/i.test(name);
+  if(/svg/i.test(f.type)||/\.svg$/i.test(name))return Promise.reject(new Error("SVG legen wir nicht ab, bitte als Foto oder PDF"));
   if(isPdf){
     if(f.size>12*1048576)return Promise.reject(new Error("PDF über 12 MB, bitte kleiner exportieren"));
     return Promise.resolve({blob:f,type:"application/pdf",thumb:null,name:name});
@@ -1172,12 +1181,12 @@ function cardU(u){
   var sub=fmtD(u.datum)+(u.titel&&u.partei?" · "+esc(u.partei):"");
   return '<div class="uc" data-uid="'+esc(u.id)+'"><button class="uh" type="button" aria-label="Zum Verschieben in die andere Spalte ziehen" title="Ziehen: in die andere Spalte verschieben">'+IC.grip+'</button>'+th+
     '<button class="ub" type="button" data-uedit="'+esc(u.id)+'"><span class="t">'+esc(u.titel||u.partei||"Ohne Beschreibung")+'</span><span class="s">'+sub+' · '+esc(u.nr)+'</span>'+(pills?'<span class="p">'+pills+'</span>':"")+'</button>'+
-    '<div class="us"><span class="amt">'+(num(u.betrag)?eur(u.betrag):"–")+'</span><button class="isw" type="button" data-uswap="'+esc(u.id)+'" title="'+(ein?"Zu den Ausgaben verschieben":"Zu den Einnahmen verschieben")+'" aria-label="'+(ein?"Zu den Ausgaben verschieben":"Zu den Einnahmen verschieben")+'">⇄</button></div></div>';
+    '<div class="us"><span class="amt">'+(num(u.betrag)?eur(u.betrag):"offen")+'</span><button class="isw" type="button" data-uswap="'+esc(u.id)+'" title="'+(ein?"Zu den Ausgaben verschieben":"Zu den Einnahmen verschieben")+'" aria-label="'+(ein?"Zu den Ausgaben verschieben":"Zu den Einnahmen verschieben")+'">⇄</button></div></div>';
 }
 function drawCol(t,list){
   var items=list.filter(function(u){return u.typ===t;}),ein=t==="ein";
   var h='<div class="ucol-h"><h3>'+(ein?"Einnahmen":"Ausgaben")+'<span class="n">'+items.length+'</span></h3><div class="sum">'+eur(sumOf(items,t))+'<small>netto '+eur(netOf(items,t))+'</small></div></div>';
-  h+=items.length?items.map(cardU).join(""):'<div class="empty">'+(U.length?"Hier ist nichts in diesem Filter.":(ein?"Noch keine Einnahmen.":"Noch keine Ausgaben."))+'<span>'+(ein?"Beleg oder Foto auf diese Spalte ziehen, oder „+ Einnahme“ drücken. Bezahlte Rechnungen aus dem Rechnungsbuch kommen mit einem Klick hierher.":"Beleg oder Foto auf diese Spalte ziehen, oder „+ Ausgabe“ drücken.")+'</span></div>';
+  h+=items.length?items.map(cardU).join(""):'<div class="empty">'+(U.some(function(u){return u.typ===t;})?"Hier ist nichts in diesem Filter.":(ein?"Noch keine Einnahmen.":"Noch keine Ausgaben."))+'<span>'+(ein?"Beleg oder Foto auf diese Spalte ziehen, oder „+ Einnahme“ drücken. Bezahlte Rechnungen aus dem Rechnungsbuch kommen mit einem Klick hierher.":"Beleg oder Foto auf diese Spalte ziehen, oder „+ Ausgabe“ drücken.")+'</span></div>';
   $("#uc_"+t).innerHTML=h;
 }
 function renderU(flashId){
@@ -1223,7 +1232,7 @@ function uOpen(id,o){
   o=o||{};var ex=id?uById(id):null;
   uIsNew=!ex;
   uDraft=ex?JSON.parse(JSON.stringify(ex)):newU(o.typ||"aus");
-  uDraft.betragS=num(uDraft.betrag)?String(uDraft.betrag).replace(".",","):"";
+  uDraft.betragS=num(uDraft.betrag)?dec(uDraft.betrag):"";
   uAdded=[];uRemoved=[];uSaved=false;
   $("#uDel").hidden=uIsNew;
   drawUForm();drawUFiles();openD($("#uDlg"));
@@ -1485,7 +1494,7 @@ async function buildZip(){
       var rec=await getFile(fs[j].id);
       if(!rec||!rec.blob){miss++;continue;}
       var data=new Uint8Array(await rec.blob.arrayBuffer());
-      items.push({name:(u.datum||"ohne-datum")+"_"+(u.typ==="ein"?"Einnahme":"Ausgabe")+"_"+u.nr+"_"+asc(u.partei||u.titel||"Beleg").slice(0,32)+"_"+dec(u.betrag).replace(",","-")+"EUR"+(fs.length>1?"_"+(j+1):"")+"."+extOf(fs[j]),data:data});
+      items.push({name:(u.datum||"ohne-datum")+"_"+(u.typ==="ein"?"Einnahme":"Ausgabe")+"_"+u.nr+"_"+asc(u.partei||u.titel||"Beleg").slice(0,32)+(num(u.betrag)?"_"+dec(u.betrag).replace(",","-")+"EUR":"_ohne-Betrag")+(fs.length>1?"_"+(j+1):"")+"."+extOf(fs[j]),data:data});
     }
   }
   return {blob:makeZip(items),count:items.length-1,miss:miss,entries:list.length};
@@ -1504,7 +1513,7 @@ async function buildBackup(withFiles){
 }
 function updateBackupInfo(){
   var n=U.length,days=lastBackupDays(),p=$("#uExpInfo");
-  if(p)p.textContent="Buchungen: "+n+", Zeitraum im Export: "+perLabel()+". "+(days===null?"Bisher nicht gesichert.":"Letzte Sicherung vor "+days+" Tagen.");
+  if(p)p.textContent="Buchungen: "+n+", Zeitraum im Export: "+perLabel()+". "+(days===null?"Bisher nicht gesichert.":days===0?"Heute gesichert.":"Letzte Sicherung vor "+days+(days===1?" Tag.":" Tagen."));
 }
 
 /* Klicks */
@@ -1525,7 +1534,7 @@ document.addEventListener("click",function(e){
 });
 $("#newK").addEventListener("click",function(){openK(null,0);});
 $("#newB").addEventListener("click",function(){openB(null);});
-$("#dataBtn").addEventListener("click",function(){openD($("#dDlg"));});
+$("#dataBtn").addEventListener("click",function(){updateBackupInfo();openD($("#dDlg"));});
 $("#kq").addEventListener("input",renderK);
 $("#bq").addEventListener("input",renderB);
 
