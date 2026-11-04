@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<script src="theme.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onboarding · Social Bites</title>
+<meta name="description" content="Internes Onboarding von Social Bites: vom Ja zum Start in fünf Minuten.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FEFEFE">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/inter-tight.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/crew/schibsted-grotesk.woff2" crossorigin>
+<style>
+  /* Onboarding: fünf Schritte vom Ja zum Start. Alle Klassen tragen das Präfix ob, weil theme.css und glass.css viele kurze Namen belegen.
+     Inhalte aus dem Sheet "Nader x Tommy OS", Tab ONBOARD, stehen unten im Skript in FRAGEN, GESPRAECH, VORBEREITUNG, BRANCHEN, INFLUENCER, INTERN.
+     Termine stammen aus dem Playbook (Onboarding/index.html). Kundendaten liegen nur im Browser (localStorage sb-onboarding-v1), nie im Code. */
+  @font-face{font-family:"Inter Tight";src:url(fonts/crew/inter-tight.woff2) format("woff2");font-weight:100 900;font-display:swap;}
+  @font-face{font-family:"Schibsted Grotesk";src:url(fonts/crew/schibsted-grotesk.woff2) format("woff2");font-weight:400 900;font-display:swap;}
+  :root{
+    --paper:#FEFEFE;--paper-2:#E3EAE0;--card:#FFFFFF;--ink:#232321;--mute:#6C6F68;
+    --line:rgba(35,35,33,.14);--line-2:rgba(35,35,33,.3);
+    --accent:#F26A21;--accent-ink:#C4490F;--accent-tint:#FDE3D2;--ok:#1F7A4D;--bad:#B42318;
+    --display:"Inter Tight",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --body:"Schibsted Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --pad:clamp(14px,2.4vw,30px);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font:500 15px/1.45 var(--body);-webkit-font-smoothing:antialiased;}
+  button,input,textarea,select{font:inherit;color:inherit;}
+  button{cursor:pointer;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+  h1,h2,h3,p{margin:0;}
+  [hidden]{display:none !important;}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:14px;line-height:1.1;text-decoration:none;white-space:nowrap;}
+  .btn.inv{background:#232321;color:#FEFEFE;}
+  .btn.sm{min-height:34px;padding:7px 13px;font-size:13px;}
+  .btn.lg{min-height:48px;padding:12px 22px;font-size:15px;}
+  .btn:disabled{opacity:.45;cursor:default;}
+  .ob-link{border:0;background:none;padding:0;color:var(--mute);font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2);}
+  .ob-link:hover{color:var(--ink);}
+  .ob-eyebrow{font-size:11px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;color:var(--mute);}
+
+  html.sbg .ob-new input,html.sbg .ob-addchip{border-radius:999px !important;}
+
+  /* Start */
+  .ob-home{max-width:1040px;margin:0 auto;padding:clamp(26px,5vw,60px) var(--pad) 48px;}
+  .ob-hero h1{font:700 clamp(38px,6.2vw,72px)/.94 var(--display);letter-spacing:-.045em;margin:10px 0 14px;max-width:13em;}
+  .ob-hero h1 em{font-style:normal;color:var(--accent);}
+  .ob-hero p{color:var(--mute);font-size:17px;max-width:36em;}
+  .ob-new{display:flex;gap:8px;margin-top:24px;max-width:560px;}
+  .ob-new input{flex:1;min-width:0;height:54px;padding:0 20px;font-size:17px;font-weight:550;border-radius:999px !important;}
+  .ob-new .btn{height:54px;padding:0 24px;font-size:15px;}
+  .ob-note{margin-top:10px;font-size:13px;color:var(--mute);}
+  .ob-sec{margin-top:clamp(30px,5vw,48px);}
+  .ob-sec>.ob-eyebrow{display:block;margin-bottom:10px;}
+  .ob-rows{display:grid;gap:8px;}
+  .ob-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto minmax(0,1.3fr);align-items:center;gap:14px;width:100%;text-align:left;padding:14px 18px;border-radius:18px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-glass,var(--card));box-shadow:var(--g-shadow,none);-webkit-backdrop-filter:var(--g-blur,none);backdrop-filter:var(--g-blur,none);transition:transform .25s var(--ease),box-shadow .25s ease;}
+  .ob-row:hover{transform:translateY(-1px);box-shadow:var(--g-shadow-lg,none);}
+  .ob-row b{font:650 17px/1.15 var(--display);letter-spacing:-.025em;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ob-row small{display:block;font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ob-row .late{color:var(--bad);font-weight:600;}
+  .ob-dots{display:inline-flex;gap:4px;}
+  .ob-dots i{width:10px;height:10px;border-radius:50%;background:var(--g-soft,var(--line));box-shadow:inset 0 0 0 1px var(--line);}
+  .ob-dots i.on{background:var(--accent);box-shadow:none;}
+  .ob-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .ob-rule{padding:18px 20px;border-radius:20px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-glass,var(--card));}
+  .ob-rule b{font:650 19px/1.1 var(--display);letter-spacing:-.03em;display:block;margin-bottom:6px;}
+  .ob-rule p{font-size:14px;color:var(--mute);}
+  .ob-foot{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:28px;font-size:13px;color:var(--mute);}
+
+  /* Kopf eines Kunden */
+  .ob-top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px var(--pad);background:var(--g-glass-2,rgba(255,255,255,.85));-webkit-backdrop-filter:var(--g-blur,blur(16px));backdrop-filter:var(--g-blur,blur(16px));border-bottom:1px solid var(--g-glass-line,var(--line));}
+  .ob-back{flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:17px;line-height:1;}
+  .ob-name{flex:0 1 210px;min-width:0;font:650 16px/1.1 var(--display);letter-spacing:-.025em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ob-steps{display:flex;gap:2px;margin:0 auto;padding:3px;border-radius:999px;background:var(--g-soft,rgba(35,35,33,.05));}
+  .ob-step{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px 0 5px;border:0;border-radius:999px;background:transparent;color:var(--mute);font-weight:600;font-size:13.5px;white-space:nowrap;transition:background-color .2s ease,color .2s ease;}
+  .ob-step i{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;font-style:normal;font-size:12px;font-weight:700;background:var(--card);color:var(--ink);}
+  .ob-step.done i{background:var(--accent);color:#232321;}
+  .ob-step[aria-current="step"]{background:#232321;color:#FEFEFE;}
+  :root[data-theme="dark"] .ob-step[aria-current="step"]{background:#F3ECDD;color:#151211;}
+  .ob-step[aria-current="step"] i{background:#FEFEFE;color:#232321;}
+  :root[data-theme="dark"] .ob-step[aria-current="step"] i{background:#151211;color:#FEFEFE;}
+  .ob-step:hover:not([aria-current="step"]){color:var(--ink);}
+
+  /* Arbeitsfläche */
+  .ob-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,420px);gap:clamp(18px,2.6vw,36px);max-width:1240px;margin:0 auto;padding:clamp(16px,2.4vw,28px) var(--pad) 48px;align-items:start;}
+  .ob-card{padding:clamp(18px,2.6vw,30px);border-radius:26px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-glass,var(--card));box-shadow:var(--g-shadow,none),var(--g-hi,none);-webkit-backdrop-filter:var(--g-blur,none);backdrop-filter:var(--g-blur,none);animation:ob-in .3s var(--ease);}
+  @keyframes ob-in{from{transform:translateY(6px);}to{transform:none;}}
+  .ob-card>h1{font:700 clamp(28px,3.6vw,40px)/1 var(--display);letter-spacing:-.04em;margin:8px 0 6px;}
+  .ob-card>.ob-sub{color:var(--mute);font-size:15px;margin-bottom:22px;}
+  .ob-fields{display:grid;gap:18px;}
+  .ob-f{display:grid;gap:7px;min-width:0;}
+  .ob-l{font-weight:620;font-size:14.5px;line-height:1.3;}
+  .ob-h{font-size:12.5px;color:var(--mute);line-height:1.35;}
+  .ob-f input,.ob-f textarea,.ob-f select{width:100%;padding:11px 14px;font-size:16px;font-weight:500;border-radius:14px;border:1px solid var(--line);background:var(--card);}
+  .ob-f textarea{resize:none;overflow:hidden;line-height:1.4;min-height:48px;display:block;}
+  .ob-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px;}
+  .ob-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .ob-chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .ob-chip{display:inline-flex;align-items:center;min-height:36px;padding:7px 14px;border-radius:999px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-glass-2,var(--card));box-shadow:0 1px 2px rgba(35,35,33,.05);font-size:14px;font-weight:550;line-height:1.15;text-align:left;transition:background-color .15s ease,color .15s ease;}
+  .ob-chip:hover{background:var(--card);}
+  .ob-chip[aria-pressed="true"]{background:#232321;border-color:#232321;color:#FEFEFE;}
+  :root[data-theme="dark"] .ob-chip[aria-pressed="true"]{background:#F3ECDD;border-color:#F3ECDD;color:#151211;}
+  .ob-chip.hot[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#232321;}
+  .ob-addchip{width:150px !important;min-height:36px;padding:6px 14px !important;font-size:14px !important;border-radius:999px !important;}
+  .ob-more{border-top:1px solid var(--line);padding-top:14px;}
+  .ob-more summary{cursor:pointer;font-weight:620;font-size:14px;color:var(--mute);list-style:none;display:flex;align-items:center;gap:8px;}
+  .ob-more summary::-webkit-details-marker{display:none;}
+  .ob-more summary::before{content:"+";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--g-soft,var(--line));font-size:14px;line-height:1;}
+  .ob-more[open] summary::before{content:"−";}
+  .ob-more .ob-fields{margin-top:14px;}
+  .ob-tip{padding:11px 14px;border-radius:14px;background:var(--accent-tint);color:#232321;font-size:13.5px;line-height:1.38;}
+  :root[data-theme="dark"] .ob-tip{background:rgba(242,106,33,.16);color:var(--ink);}
+  .ob-num{display:flex;align-items:center;border-radius:14px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-field,var(--card));height:46px;}
+  .ob-num button{flex:none;width:40px;height:100%;border:0;background:none;font-size:18px;font-weight:500;color:var(--mute);}
+  .ob-num button:hover{color:var(--ink);}
+  .ob-num input{flex:1;min-width:0;width:100%;padding:0 !important;text-align:center;border:0 !important;background:none !important;box-shadow:none !important;font-weight:650;font-size:17px;-moz-appearance:textfield;appearance:textfield;}
+  .ob-num input::-webkit-outer-spin-button,.ob-num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .ob-price{display:grid;grid-template-columns:minmax(0,180px) auto;gap:10px;align-items:center;}
+  .ob-seg{display:inline-flex;justify-self:start;width:max-content;padding:3px;border-radius:999px;background:var(--g-soft,rgba(35,35,33,.05));gap:2px;max-width:100%;}
+  .ob-seg button{border:0;background:none;min-height:34px;padding:6px 13px;border-radius:999px;font-weight:600;font-size:13.5px;color:var(--mute);white-space:nowrap;}
+  .ob-seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(35,35,33,.1);}
+  :root[data-theme="dark"] .ob-seg button[aria-pressed="true"]{background:rgba(255,245,235,.14);}
+  .ob-zug{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  .ob-zugb{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:7px 8px 7px 14px;border-radius:14px;border:1px solid var(--g-glass-line,var(--line));background:var(--g-glass-2,var(--card));font-size:14px;font-weight:550;text-align:left;}
+  .ob-zugb span{flex:none;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:650;background:var(--accent-tint);color:#8F3208;}
+  .ob-zugb[data-s="da"] span{background:#DDF1E4;color:#1F7A4D;}
+  .ob-zugb[data-s="nein"]{color:var(--mute);}
+  .ob-zugb[data-s="nein"] span{background:var(--g-soft,var(--line));color:var(--mute);}
+  .ob-given{display:grid;gap:7px;margin:0;padding:0;list-style:none;font-size:14px;}
+  .ob-given li{padding-left:16px;position:relative;}
+  .ob-given li::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;border-radius:50%;background:var(--accent);}
+  .ob-nav{display:flex;align-items:center;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line);}
+  .ob-miss{flex:1;min-width:0;font-size:13px;color:var(--mute);line-height:1.3;}
+  .ob-miss b{color:var(--accent-ink);font-weight:650;}
+
+  /* Schritt 5 */
+  .ob-block{padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px;}
+  .ob-block:first-of-type{padding-top:0;border-top:0;}
+  .ob-blockh{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .ob-blockh h2{font:650 19px/1.1 var(--display);letter-spacing:-.03em;margin:0;}
+  .ob-check{display:grid;gap:2px;}
+  .ob-checkb{display:grid;grid-template-columns:22px minmax(0,1fr);gap:9px;align-items:start;width:100%;text-align:left;padding:7px 4px;border:0;background:none;border-radius:10px;font-size:14.5px;font-weight:550;line-height:1.3;}
+  .ob-checkb:hover{background:var(--g-soft,var(--line));}
+  .ob-checkb i{width:20px;height:20px;margin-top:1px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line-2);color:transparent;}
+  .ob-checkb.ok i{background:var(--accent);box-shadow:none;color:#232321;}
+  .ob-checkb small{display:block;font-size:12.5px;font-weight:500;color:var(--accent-ink);}
+  .ob-terms{display:grid;gap:0;}
+  .ob-term{display:grid;grid-template-columns:22px 142px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:14.5px;font-weight:550;}
+  .ob-term:last-child{border-bottom:0;}
+  .ob-term input[type="checkbox"]{width:18px;height:18px;margin:0;accent-color:#F26A21;}
+  .ob-term input[type="date"]{width:100%;padding:6px 8px;font-size:13.5px;font-weight:550;border-radius:10px;border:1px solid var(--line);background:var(--card);}
+  .ob-term.done span{color:var(--mute);text-decoration:line-through;}
+  .ob-term.late input[type="date"]{color:var(--bad);}
+  .ob-who{font-size:11.5px;font-weight:650;color:var(--mute);white-space:nowrap;}
+  .ob-msg{width:100%;min-height:160px;padding:13px 15px;font-size:14.5px;line-height:1.45;border-radius:14px;border:1px solid var(--line);background:var(--card);resize:none;overflow:hidden;display:block;}
+  .ob-acts{display:flex;flex-wrap:wrap;gap:6px;}
+  .ob-todos{display:grid;gap:0;}
+  .ob-todo{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.3;}
+  .ob-todo:last-child{border-bottom:0;}
+  .ob-todo input{width:18px;height:18px;margin:0;accent-color:#F26A21;}
+  .ob-todo.done span{color:var(--mute);text-decoration:line-through;}
+
+  /* Rechte Spalte: Startübersicht live */
+  .ob-rail{position:sticky;top:72px;display:grid;gap:10px;}
+  .ob-railh{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .ob-docwrap{border-radius:16px;overflow:hidden;background:#fff;box-shadow:var(--g-shadow-lg,0 20px 40px -24px rgba(0,0,0,.35));}
+  .ob-doc{--ink:#232321;box-sizing:border-box;width:794px;min-height:1122px;padding:42px 48px 34px;background:#fff;color:#232321;font:500 13.5px/1.42 var(--body);display:flex;flex-direction:column;gap:19px;zoom:var(--z,1);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .ob-d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
+  .ob-d-head img{height:46px;width:auto;display:block;}
+  .ob-d-kick{font-size:10.5px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;color:#C4490F;}
+  .ob-d-head .r{text-align:right;color:#6C6F68;font-size:12px;}
+  .ob-d-h1{font:700 46px/.96 var(--display);letter-spacing:-.04em;}
+  .ob-d-sub{color:#6C6F68;font-size:14px;margin-top:7px;}
+  .ob-d-goal{background:#FDE3D2;border-radius:18px;padding:20px 24px;display:grid;gap:9px;}
+  .ob-d-goal p{font:650 22px/1.18 var(--display);letter-spacing:-.025em;}
+  .ob-d-goal small{font-size:13px;line-height:1.35;color:#4A3A2E;}
+  .ob-d-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;}
+  .ob-d-sec{display:grid;gap:6px;align-content:start;}
+  .ob-d-sec+.ob-d-sec{margin-top:0;}
+  .ob-d-stack{display:grid;gap:16px;align-content:start;}
+  .ob-d-big{font:650 21px/1.15 var(--display);letter-spacing:-.025em;}
+  .ob-d-ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;}
+  .ob-d-ul li{position:relative;padding-left:13px;}
+  .ob-d-ul li::before{content:"";position:absolute;left:0;top:.52em;width:6px;height:6px;border-radius:50%;background:#F26A21;}
+  .ob-d-rows{display:grid;}
+  .ob-d-row{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:12px;padding:5px 0;border-bottom:1px solid rgba(35,35,33,.1);}
+  .ob-d-row b{font-weight:650;}
+  .ob-d-row span:last-child{font-size:12px;color:#6C6F68;}
+  .ob-d-foot{margin-top:auto;background:#232321;color:#FEFEFE;border-radius:18px;padding:16px 22px;display:flex;justify-content:space-between;gap:18px;font-size:13px;line-height:1.35;}
+  .ob-d-foot b{font:650 17px/1.15 var(--display);letter-spacing:-.02em;display:block;}
+  .ob-d-foot .r{text-align:right;}
+  .ob-d-miss{color:#A9ABA5;font-style:normal;font-weight:500;}
+
+  /* Spickzettel */
+  .ob-panel{position:fixed;top:0;right:0;bottom:0;z-index:60;width:min(560px,100vw);display:flex;flex-direction:column;background:var(--g-solid,var(--card));border-left:1px solid var(--line);box-shadow:-30px 0 70px -40px rgba(35,25,15,.5);transform:translateX(102%);visibility:hidden;transition:transform .32s var(--ease),visibility .32s;}
+  .ob-panel.on{transform:none;visibility:visible;}
+  .ob-panelh{padding:16px 18px 12px;display:grid;gap:12px;border-bottom:1px solid var(--line);}
+  .ob-panelh .t{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .ob-panelh h2{font:700 24px/1 var(--display);letter-spacing:-.04em;margin:0;}
+  .ob-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px;}
+  .ob-tabs::-webkit-scrollbar{display:none;}
+  .ob-tabs button{flex:none;border:0;background:none;padding:7px 11px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--mute);}
+  .ob-tabs button[aria-selected="true"]{background:#232321;color:#FEFEFE;}
+  :root[data-theme="dark"] .ob-tabs button[aria-selected="true"]{background:#F3ECDD;color:#151211;}
+  .ob-panelb{flex:1;overflow-y:auto;padding:16px 18px 40px;display:grid;gap:14px;align-content:start;font-size:14.5px;}
+  .ob-search{width:100%;padding:10px 16px;font-size:15px;border-radius:999px;border:1px solid var(--line);background:var(--card);}
+  .ob-qa{padding-bottom:12px;border-bottom:1px solid var(--line);display:grid;gap:4px;}
+  .ob-qa b{font-weight:650;}
+  .ob-qa p{color:var(--ink);opacity:.82;line-height:1.42;}
+  .ob-sheeth{font:650 17px/1.15 var(--display);letter-spacing:-.025em;margin-top:6px;}
+  .ob-time{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .ob-time>span{font-size:12.5px;font-weight:650;color:var(--accent-ink);}
+  .ob-time b{display:block;font-weight:650;margin-bottom:3px;}
+  .ob-time ul,.ob-ul{margin:0;padding:0 0 0 16px;display:grid;gap:3px;color:var(--ink);}
+  .ob-time li,.ob-ul li{opacity:.86;}
+  .ob-prep{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .ob-prep b{font-weight:650;}
+  .ob-bra{padding:12px 14px;border-radius:14px;border:1px solid var(--line);display:grid;gap:3px;}
+  .ob-bra.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-tint);}
+  .ob-bra b{font-weight:650;}
+  .ob-bra small{font-size:13px;color:var(--mute);line-height:1.35;}
+
+  .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:90;transform:translate(-50%,14px);opacity:0;pointer-events:none;padding:10px 18px;border-radius:999px;background:#232321;color:#FEFEFE;font-size:14px;font-weight:550;transition:opacity .2s ease,transform .25s var(--ease);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;}
+  .toast.on{opacity:1;transform:translate(-50%,0);}
+
+  #obPrev{width:min(460px,94vw);padding:0;border:0;}
+  #obPrev .ob-prevh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;}
+  #obPrint{display:none;}
+
+  /* Mobil: eine Spalte, Schritte als Punkte, Vorschau im Fenster */
+  .ob-mobilebar{display:none;}
+  @media (max-width:1020px){
+    .ob-main{grid-template-columns:minmax(0,1fr);padding-bottom:calc(92px + env(safe-area-inset-bottom));}
+    .ob-rail{display:none;}
+    .ob-mobilebar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;gap:8px;padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));background:var(--g-glass-2,rgba(255,255,255,.9));-webkit-backdrop-filter:var(--g-blur,blur(16px));backdrop-filter:var(--g-blur,blur(16px));border-top:1px solid var(--g-glass-line,var(--line));}
+    .ob-mobilebar .btn{flex:1;}
+    .ob-mobilebar .btn.inv{flex:1.6;}
+    .sb-tt{bottom:calc(84px + env(safe-area-inset-bottom)) !important;}
+    .ob-nav .btn{display:none;}
+    .ob-nav{margin-top:16px;padding-top:14px;}
+  }
+  @media (max-width:760px){
+    .ob-top{flex-wrap:wrap;row-gap:8px;}
+    .ob-name{flex:1;}
+    .ob-steps{order:3;width:100%;margin:0;justify-content:space-between;}
+    .ob-step{padding:0 5px;gap:0;flex:none;}
+    .ob-step span{display:none;}
+    .ob-step[aria-current="step"]{padding:0 12px 0 5px;gap:7px;}
+    .ob-step[aria-current="step"] span{display:inline;}
+    .ob-row{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;}
+    .ob-row .col-paket{display:none;}
+    .ob-row .col-next{grid-column:1 / -1;}
+    .ob-rules{grid-template-columns:minmax(0,1fr);}
+    .ob-new{flex-direction:column;}
+    .ob-new input,.ob-new .btn{flex:none;width:100%;}
+    .ob-two{grid-template-columns:minmax(0,1fr);}
+    .ob-zug{grid-template-columns:minmax(0,1fr);}
+    .ob-term{grid-template-columns:22px 128px minmax(0,1fr);}
+    .ob-term .ob-who{display:none;}
+    .ob-todo{grid-template-columns:22px minmax(0,1fr);}
+    .ob-todo .ob-todoa{grid-column:2;justify-self:start;}
+    .ob-prep{grid-template-columns:minmax(0,1fr);gap:2px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+
+  /* Druck: nur die Startübersicht, eine Seite A4 */
+  @media print{
+    @page{size:A4;margin:0;}
+    html,body{background:#fff !important;}
+    #app,.toast,.ob-panel,.sb-tt,#obPrev{display:none !important;}
+    #obPrint{display:block !important;}
+    #obPrint .ob-doc{zoom:var(--pz,1);width:calc(210mm / var(--pz,1));min-height:calc(296mm / var(--pz,1));}
+  }
+</style>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="glass.css"><script>document.documentElement.classList.add("sbg")</script>
+</head>
+<body>
+<div id="app"></div>
+<aside class="ob-panel" id="obPanel" aria-label="Spickzettel" aria-hidden="true"></aside>
+<dialog id="obPrev" aria-label="Vorschau Startübersicht"></dialog>
+<div id="obPrint" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="obFile" accept="application/json,.json" hidden>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Inhalte ---------- */
+var KEY="sb-onboarding-v1",KK="sb-kunden";
+var TEAM={Nader:"0176 22733831",Tommy:"0176 80256378"};
+
+/* Sheet Tab ONBOARD, Abschnitt 3: interne Branchenblätter. "andere" und "ph" (Beispiel für die Richtung) sind Ergänzungen. */
+var BRANCHEN={
+  restaurant:{n:"Restaurant & Café",q:"Für welchen Besuchsanlass sollen mehr Gäste kommen?",f:["Küchenserie","Mitarbeiterempfehlung","Was bekommst du für X Euro?"],h:"Reservierung oder Besuch eines konkreten Angebots",ph:"z. B. Gezielt Formate für Lunch, Feierabend und besondere Abende entwickeln.",menu:"Speisekarte und Preise"},
+  hotel:{n:"Hotel",q:"Welche Gäste und Aufenthaltsanlässe haben Priorität?",f:["Aufenthalt aus Gästesicht","Zimmergeschichte","Lokale Tipps"],h:"Buchung oder qualifizierte Anfrage",ph:"z. B. Den Aufenthalt aus Sicht der Gäste zeigen, verbunden mit lokalen Tipps.",menu:"Zimmer, Angebote und Preise"},
+  handwerk:{n:"Handwerk",q:"Welche Aufträge wollt ihr gewinnen und welche Zweifel haben Kunden?",f:["Projektablauf","Kundenfragen","Dokumentierte Ergebnisse"],h:"Qualifizierte Anfrage",ph:"z. B. Zusätzlich erklären, wie die Zusammenarbeit abläuft und welche Sorgen ihr dem Kunden abnehmt.",menu:"Leistungen und Referenzen"},
+  immobilien:{n:"Immobilien",q:"Geht es um Objektvermarktung oder Eigentümergewinnung?",f:["Objektgeschichte","Gebietseinblicke","Prozessfragen"],h:"Besichtigung oder Eigentümergespräch",ph:"z. B. Objekte als Geschichte erzählen und das Gebiet persönlich zeigen.",menu:"Aktuelle Objekte"},
+  fitness:{n:"Fitness",q:"Was hält passende Interessenten vom Einstieg ab?",f:["Erstbesuch","Trainerfragen","Einblicke ins Training"],h:"Gebuchtes und wahrgenommenes Probetraining",ph:"z. B. Die Hürde vor dem ersten Besuch nehmen und das Training von innen zeigen.",menu:"Kurse und Preise"},
+  software:{n:"Software",q:"Welches konkrete Problem löst das Produkt für welche Nutzer?",f:["Problem Lösung Demo","Anwendungsgeschichte"],h:"Qualifizierte Demo Anfrage",ph:"z. B. Ein Problem pro Video zeigen und direkt die Lösung im Produkt.",menu:"Produktinfos und Demo Zugang"},
+  andere:{n:"Andere",q:"Welches Problem löst ihr und für wen?",f:["Produkt erklärt","Kundenfragen","Blick hinter die Kulissen"],h:"Qualifizierte Anfrage",ph:"z. B. Was ihr besser könnt als andere, sichtbar und verständlich zeigen.",menu:"Angebot und Preise"}
+};
+var ZIELE=["Mehr Gäste","Mehr Anfragen","Mehr Buchungen","Bewerbungen","Bekanntheit"];
+var BILD=["Inhaber","Team","Produkt und Hände","Creator"];
+var ANLASS=["Eröffnung","Menüstart","Event","Anderer Anlass"];
+var EXTRAS=["Posting","Community","Ads","Fotos","Influencer","Google Profil"];
+var VERTRAG=["Leistung und Umfang","Zahlung","Laufzeit und Kündigung","Nutzungsrechte","Vertraulichkeit","Exklusivität"];
+var REFS=["Zalando × Nike","Burger King","Aldi Nord","Spreequell","The Pizzary","Mian Market","Mmaah","Spreegold"];
+var PAKETE={gastro:"Bites for Gastro",opening:"Bites Opening",brands:"Bites for Brands",pilot:"Bezahlter Pilot"};
+
+/* Abstände aus dem Playbook (Onboarding/index.html). Bites Opening rechnet rückwärts vom Opening, die anderen ab dem Start. wer: z zusammen, k Kunde, w wir */
+var PLAN={
+  gastro:[[0,"Kick-off im Laden","z"],[5,"Monatsplan zur Freigabe","k"],[10,"Drehtag","z"],[12,"Erste Videos zur Freigabe","k"],[14,"Erster Beitrag live","w"],[28,"Monatsgespräch mit Review","z"]],
+  opening:[[-53,"Kick-off und Konzept","z"],[-49,"Konzept zur Freigabe","k"],[-46,"Drehtag 1: Teaser, Bauphase, Crew","z"],[-42,"Teaser Phase startet","w"],[-14,"Drehtag 2: Food und Menü","z"],[-10,"Food Videos zur Freigabe","k"],[-1,"Pre-Opening für Creator und Presse","z"],[0,"Opening","z"],[21,"Abschlussgespräch mit Review","z"]],
+  brands:[[0,"Kick-off mit allen Beteiligten","z"],[10,"PPM mit Marke und Agentur","z"],[14,"Drehtag","z"],[21,"Rohschnitt zur Freigabe","k"],[31,"Finale Freigabe","k"],[39,"Launch","w"],[69,"Report und Abschlussgespräch","z"]],
+  pilot:[[0,"Kick-off","z"],[5,"Plan zur Freigabe","k"],[10,"Drehtag","z"],[12,"Erste Videos zur Freigabe","k"],[14,"Erster Beitrag live","w"],[28,"Auswertung und Entscheidung","z"]]
+};
+
+var ZUG=[
+  ["insta","Instagram","Instagram: Partnerzugang in der Meta Business Suite"],
+  ["tiktok","TikTok","TikTok: Zugang per Einladung"],
+  ["google","Google Profil","Google Profil: uns als Manager einladen"],
+  ["logo","Logo und CI","Logo als Datei, am besten PNG oder SVG"],
+  ["menu","Angebot und Preise",""],
+  ["fotos","Fotos und Videos","Vorhandene Fotos und Videos"]
+];
+
+/* Die Regel aus dem Video von Hannes Zwetschke plus Abschnitt 5 im Sheet */
+var GEBEN=["Kurze Absprachen laufen über WhatsApp, Freigaben und Entscheidungen halten wir schriftlich fest.","Freigaben kommen gebündelt von einer festen Person.","Status kommt von uns, bevor der Kunde fragen muss.","Bei einem Problem nennen wir sofort Auswirkung, Lösung und neuen Termin.","Jeder Monat endet mit einer Entscheidung: weiterführen, verändern oder beenden."];
+
+/* Die fünf Ziele aus dem Sheet (Zeile 4): wann ein Kunde perfekt onboarded ist. s = Schritt, in dem es entsteht */
+var CHECK=[
+  {s:0,t:"Unternehmen verstanden",need:[["name","Kundenname"],["branche","Branche"],["ziel3m","Ziel in drei Monaten"],["zielkunde","Welche Kunden"]]},
+  {s:1,t:"Sinnvollen Start erklärt",need:[["richtung","Richtung"],["formate","Startformate"]]},
+  {s:1,t:"Mit passendem Beispiel belegt",need:[["referenz","Referenz"]]},
+  {s:3,t:"Zusammenarbeit übersichtlich und planbar",need:[["kontakt","Ansprechperson"],["erreichbar","Telefon oder Mail"],["lead","Betreuung bei uns"]]},
+  {s:2,t:"Kunde weiß, was er bekommt, was es kostet und woran ihr Fortschritt erkennt",need:[["paket","Paket"],["umfang","Umfang"],["preis","Preis"],["mess","Messgröße"]]}
+];
+
+var SCHRITTE=["Verstehen","Start","Rahmen","Team","Los"];
+
+/* Sheet Tab ONBOARD, Abschnitt 2 */
+var FRAGEN=[
+["Was macht ihr genau?","Wir entwickeln und produzieren wiederkehrende Kurzvideo-Formate für Unternehmen. Je nach gebuchtem Umfang gehören Strategie, Planung, Dreh, Schnitt und Auswertung dazu. Weitere Leistungen weisen wir separat aus."],
+["Was unterscheidet euch?","Für eure Aufgabe sind besonders unsere Erfahrung mit [passender Bereich], unsere [sichtbare Stärke] und unser klarer Produktionsablauf relevant. Ich zeige euch das an einem konkreten Beispiel."],
+["Wie würdet ihr bei uns vorgehen?","Wir klären zuerst Zielgruppe, Kaufmotive und typische Zweifel. Daraus entwickeln wir passende Formate und einen klaren Weg zur Anfrage oder Buchung. Für euch wären unsere ersten beiden Ansätze …"],
+["Welche ähnlichen Kunden habt ihr?","Bei [Kunde] bestand die Aufgabe darin, […]. Unser Beitrag war […]. Das ist für euch vergleichbar, weil […]."],
+["Ihr habt noch keine Erfahrung in unserer Branche?","In genau eurer Teilbranche haben wir bisher keine Referenz. Vergleichbare Erfahrung haben wir bei […]. Für euren Einstieg würden wir die Besonderheiten gezielt recherchieren und mit einem klar begrenzten Test starten."],
+["Könnt ihr uns viral machen?","Wir entwickeln Inhalte mit starken Einstiegen und testen unterschiedliche Formate. Einen viralen Treffer können wir nicht verbindlich zusagen. Wir legen zusätzlich fest, welche Zielgruppe und welche Handlung für euch wichtig sind."],
+["Wie viele Videos brauchen wir?","Die Menge ergibt sich daraus, welche Formate wir testen und regelmäßig fortführen möchten. Wir schlagen euch einen konkreten Umfang vor und erklären, was die einzelnen Formate zum Ziel beitragen."],
+["Wann sehen wir Ergebnisse?","Produktion und erste Veröffentlichung können wir terminieren. Danach sammeln wir Reaktionen und vergleichen mehrere Inhalte. Für die Bewertung legen wir konkrete Review-Termine fest."],
+["Wie messt ihr Erfolg?","Wir betrachten Inhaltsleistung und geschäftliche Wirkung. Für euch wären beispielsweise qualifizierte Anfragen oder Reservierungen relevant. Wir vereinbaren die Datenquellen und erklären, was sich tatsächlich zuordnen lässt."],
+["Was passiert, wenn es schlecht läuft?","Wir prüfen Themen, Einstiege, Zuschauerbindung und den Weg zur Handlung. Im Review halten wir fest, was wir gelernt haben und welchen begründeten Test wir als Nächstes durchführen."],
+["Müssen wir vor die Kamera?","Wir können auch mit Produkten, Demonstrationen, Händen, Stimmen oder Mitarbeitern arbeiten. Wir wählen einen Ansatz, den ihr glaubwürdig und dauerhaft umsetzen könnt."],
+["Wie viel Arbeit haben wir damit?","Ihr braucht eine feste Ansprechperson, Vorbereitung für die vereinbarten Drehs und gebündelte Freigaben. Die benötigten Zeitfenster schreiben wir konkret in euren Ablauf."],
+["Wie viele Änderungen sind inklusive?","Im Angebot stehen Anzahl und Umfang der Feedbackrunden. Eigene Fehler korrigieren wir. Neue Konzepte oder zusätzliche Drehs stimmen wir gesondert ab."],
+["Warum kostet das so viel?","Der Preis enthält [tatsächlich enthaltene Leistungen]. Ich schlüssle euch auf, welche Planung, Produktion, Abstimmung und Auswertung darin steckt."],
+["Ein anderer Anbieter ist günstiger.","Wir können die Angebote anhand desselben Umfangs vergleichen: Drehtage, Inhalte, Versionen, Korrekturen, Betreuung und Rechte. Bei einem kleineren Budget können wir den Leistungsumfang passend reduzieren."],
+["Können wir erst testen?","Wir können einen begrenzten bezahlten Pilot mit klaren Leistungen und einer anschließenden Auswertung anbieten."],
+["Arbeitet ihr für unsere Wettbewerber?","Das klären wir transparent vor Beginn. Falls ihr Exklusivität benötigt, besprechen wir Gebiet, Branche, Dauer und die Auswirkungen auf das Angebot."],
+["Was gehört uns danach?","Ihr erhaltet die vereinbarten finalen Dateien mit den festgelegten Nutzungsrechten. Rohmaterial, Projektdateien, Musik und Creator-Material regeln wir ausdrücklich."],
+["Wie fangen wir an?","Nach Beauftragung bekommt ihr euren Ansprechpartner, den zentralen Projektzugang und den Kick-off-Termin. Danach stimmen wir die erste Planung und den Dreh ab."]
+];
+var GESPRAECH=[
+["0 bis 5 Min","Anlass und Ablauf abstimmen",["Was hat euch dazu gebracht, gerade jetzt mit einer Agentur zu sprechen?"]],
+["5 bis 20 Min","Ziele, bisherige Erfahrungen und Hindernisse verstehen",["Was müsste in drei Monaten anders sein, damit ihr die Zusammenarbeit als sinnvoll bewertet?","Welche Angebote oder Standorte haben aktuell Priorität?","Welche Kunden möchtet ihr häufiger erreichen?","Wie entstehen momentan eure Anfragen oder Buchungen?","Was habt ihr bereits ausprobiert und was hat euch enttäuscht?","Welche Fragen oder Zweifel haben Kunden vor dem Kauf?"]],
+["20 bis 30 Min","Deine Beobachtungen und erste Empfehlung besprechen",[]],
+["30 bis 38 Min","Referenzen, Leistungsumfang, Kundenaufwand und Preis erklären",["Welcher Rahmen ist für die Betreuung und gegebenenfalls zusätzliche Werbung vorgesehen?","Wie viel Mitarbeit ist bei euch realistisch möglich?","Wer entscheidet mit und wer gibt später Inhalte frei?"]],
+["38 bis 45 Min","Offene Punkte und einen konkreten nächsten Schritt festhalten",[]]
+];
+var VORBEREITUNG=[
+["Unternehmen verstehen","Was verkauft der Kunde, an wen, in welcher Region?"],
+["Geschäftsziel vermuten","Mehr Gäste, Anfragen, Bewerbungen, Buchungen oder Bekanntheit?"],
+["Auftritt prüfen","Drei konkrete Beobachtungen zu Website und bisherigen Inhalten"],
+["Wettbewerb ansehen","Drei relevante Wettbewerber und auffällige Unterschiede"],
+["Ideen vorbereiten","Zwei passende Formate mit einem konkreten Video-Einstieg"],
+["Referenz auswählen","Das vergleichbarste Projekt und euer tatsächlicher Beitrag"],
+["Offene Punkte notieren","Was musst du erfahren, bevor du eine Empfehlung abgeben kannst?"]
+];
+
+/* ---------- Helfer ---------- */
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast("Speichern im Browser geht hier nicht");}}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function slug(s){return String(s||"Kunde").trim().replace(/&/g,"und").replace(/[\/\\:*?"<>|]/g,"").replace(/\s+/g,"_")||"Kunde";}
+var toastT;function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove("on");},2400);}
+function copy(t,msg){
+  function fb(){var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg||"Kopiert");}catch(e){toast("Kopieren ging nicht");}ta.remove();}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){toast(msg||"Kopiert");},fb);else fb();
+}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function parse(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+function add(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
+function work(d){var x=new Date(d.getTime());while(x.getDay()===0||x.getDay()===6)x=add(x,1);return x;}
+function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
+var WD=["So","Mo","Di","Mi","Do","Fr","Sa"];
+function fmt(s){var d=parse(s);return d?WD[d.getDay()]+" "+String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+".":"";}
+function fmtL(s){var d=parse(s);return d?String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear():"";}
+function eur(n){var x=+String(n||"").replace(/\./g,"").replace(",",".");if(!isFinite(x)||!x)return String(n||"");return x.toLocaleString("de-DE",{maximumFractionDigits:2})+" €";}
+function list(a){a=(a||[]).filter(Boolean);if(a.length<2)return a.join("");return a.slice(0,-1).join(", ")+" und "+a[a.length-1];}
+function first(s){return String(s||"").trim().split(/\s+/)[0]||"";}
+function digits(s){var d=String(s||"").replace(/[^\d+]/g,"");if(!d)return "";if(d.indexOf("+")===0)return d.slice(1);if(d.indexOf("00")===0)return d.slice(2);if(d.indexOf("0")===0)return "49"+d.slice(1);return d;}
+
+/* ---------- Daten ---------- */
+var ALL=load(KEY,[]),K=null,STEP=0,SHEET="fragen",QUERY="",saveT;
+var dirty=false;
+function flush(){clearTimeout(saveT);if(dirty){store(KEY,ALL);dirty=false;}}
+function save(){if(K)K.updated=new Date().toISOString();dirty=true;clearTimeout(saveT);saveT=setTimeout(flush,150);}
+function saveNow(){dirty=true;flush();}
+window.addEventListener("pagehide",flush);
+window.addEventListener("storage",function(e){if(e.key!==KEY)return;ALL=load(KEY,[]);if(K){K=byId(K.id);if(!K){location.hash="";}}route();});
+function byId(id){return ALL.filter(function(x){return x.id===id;})[0]||null;}
+function blank(name){
+  return {id:uid("o"),name:name||"",status:"offen",created:new Date().toISOString(),updated:new Date().toISOString(),
+    branche:"",ziel3m:"",bfrage:"",ziele:[],zielkunde:"",warum:"",kanal:"",probiert:"",zweifel:"",
+    richtung:"",formate:[],bild:[],influencer:"ohne",anlass:"",referenz:"",refWarum:"",
+    paket:"",videos:"",drehtage:"",korrektur:2,extras:[],preis:"",preisart:"monat",laufzeit:"",mess:"",vertrag:[],unterschrieben:false,rechnung:false,
+    kontakt:"",tel:"",mail:"",form:"du",freigabe:"",lead:"",mitarbeit:"",zug:{insta:"fehlt",tiktok:"fehlt",google:"fehlt",logo:"fehlt",menu:"fehlt",fotos:"fehlt"},drive:"",
+    start:iso(work(add(today(),1))),opening:"",ov:{},done:{},todo:{},msgMode:"",msg:{},sent:false};
+}
+function kunden(){return load(KK,[]);}
+function findKunde(name){var n=String(name||"").trim().toLowerCase();return kunden().filter(function(k){return String(k.name||"").trim().toLowerCase()===n;})[0]||null;}
+/* Was im Kundenstamm schon steht, wird nicht noch einmal gefragt */
+function fromKunde(o){
+  var k=findKunde(o.name);if(!k)return o;
+  o.kid=k.id;o.kontakt=k.kontakt||"";o.tel=k.tel||"";o.mail=k.mail||"";o.form=k.form==="sie"?"sie":"du";o.freigabe=k.freigabe||"";o.drive=k.drive||"";
+  if(k.typ==="opening"||k.typ==="gastro"||k.typ==="brands")o.paket=k.typ;
+  if(k.opening)o.opening=k.opening;
+  if(k.start&&parse(k.start)&&parse(k.start)>=today())o.start=k.start;
+  o.vomStamm=true;return o;
+}
+/* Beim Abschluss landet der Kunde im Kundenstamm, leere Felder werden ergänzt, nichts überschrieben */
+function toKunde(status){
+  var L=kunden(),n=K.name.trim().toLowerCase(),k=L.filter(function(x){return String(x.name||"").trim().toLowerCase()===n;})[0],now=new Date().toISOString(),isNew=!k;
+  if(!k){var m=0;L.forEach(function(x){var r=/(\d+)$/.exec(x.nr||"");if(r)m=Math.max(m,+r[1]);});k={id:uid("k"),nr:"K-"+String(m+1).padStart(3,"0"),created:now,land:"Deutschland",pay:"14",quelle:"Über Social Bites gewonnen"};L.push(k);}
+  function set(key,v){if(v&&!k[key])k[key]=v;}
+  k.name=k.name||K.name.trim();if(status==="kunde"||!k.status)k.status=status;
+  k.typ=K.paket==="pilot"?(k.typ||"sonst"):(K.paket||k.typ||"sonst");
+  set("kontakt",K.kontakt);set("form",K.form);set("tel",K.tel);set("mail",K.mail);set("freigabe",K.freigabe);set("drive",K.drive);
+  set("paket",PAKETE[K.paket]);set("start",K.paket==="opening"?"":K.start);set("opening",K.opening);set("budget",K.preis?eur(K.preis)+(K.preisart==="monat"?" im Monat":""):"");
+  set("notiz",K.ziel3m?"Ziel: "+K.ziel3m:"");k.updated=now;store(KK,L);K.kid=k.id;return isNew;
+}
+function val(k,key){
+  if(key==="formate")return k.formate&&k.formate.length;
+  if(key==="erreichbar")return k.tel||k.mail;
+  if(key==="umfang")return k.videos||k.drehtage;
+  return k[key];
+}
+function missing(k,c){return c.need.filter(function(n){return !val(k,n[0]);}).map(function(n){return n[1];});}
+function stepNeeds(k,s){return CHECK.filter(function(c){return c.s===s;}).reduce(function(a,c){return a.concat(missing(k,c));},[]);}
+function stepDone(k,s){return s===4?!!k.sent:stepNeeds(k,s).length===0;}
+function doneCount(k){var n=0;for(var i=0;i<5;i++)if(stepDone(k,i))n++;return n;}
+
+/* Termine aus dem Playbook, einzelne Daten lassen sich überschreiben */
+function termine(k){
+  var pk=k.paket||"gastro",plan=PLAN[pk],t0=today(),rows=[],isOp=pk==="opening",a=parse(isOp?k.opening:k.start);
+  if(!a)a=isOp?add(t0,70):work(add(t0,1));
+  plan.forEach(function(r,i){
+    var d=add(a,r[0]);if(r[1]!=="Opening")d=work(d);
+    rows.push({key:pk+i,label:r[1],who:r[2],d:iso(d)});
+  });
+  if(isOp){
+    var kick=rows[0];
+    rows=rows.filter(function(r){return parse(r.d)>=t0||k.done[r.key]||k.ov[r.key];});
+    if(rows.indexOf(kick)<0){kick.d=iso(work(add(t0,1)));rows.unshift(kick);}
+  }
+  rows.forEach(function(r){if(k.ov[r.key])r.d=k.ov[r.key];r.done=!!k.done[r.key];r.late=!r.done&&parse(r.d)<t0;});
+  return rows.sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:0;});
+}
+function nextTermin(k){return termine(k).filter(function(r){return !r.done;})[0]||null;}
+function todos(k){
+  var L=[
+    {k:"vertrag",t:"Vertrag und erste Rechnung raus",l:"Preisrechner",a:"rechner"},
+    {k:"drive",t:"Drive Ordner anlegen, 00_Vom Kunden teilen",l:"Drive",go:"t-dateien"},
+    {k:"gruppe",t:"WhatsApp Gruppe „Social Bites × "+(k.name||"Kunde")+"“ anlegen"},
+    {k:"check",t:"Selbst rausfinden: 3 Beobachtungen, 3 Wettbewerber, Profil Check",l:"Mitbewerber",go:"t-mitbewerber"},
+    {k:"product",t:"Product Dashboard: was läuft, bis zu 100 Video Ideen",l:"Auftrag für Claude",a:"claude"},
+    {k:"strategie",t:"Strategie auf einer Seite, Content und Drehplan",l:"Call Sheet",go:"t-callsheet"},
+    {k:"crew",t:"Cutter mit einheitlichem Briefing, Kapazität und Vertretung geprüft",l:"Crew",go:"t-crew"},
+    {k:"release",t:"Einwilligungen für den Dreh",l:"Model Release",go:"t-release"}
+  ];
+  if(k.influencer==="mit")L.splice(5,0,{k:"creator",t:"Creator prüfen, Kosten und Rechte klären, Werbekennzeichnung vorbereiten",l:"Influencer",go:"t-influencer"});
+  return L;
+}
+function goPortal(v){if(window.parent!==window)window.parent.postMessage({sbGo:v},location.origin);else window.open("portal.html#"+v,"_blank","noopener");}
+
+/* ---------- Texte für den Kunden ---------- */
+function T(du,sie,k){return (k||K).form==="sie"?sie:du;}
+function brauchen(k){
+  return ZUG.filter(function(z){return (k.zug||{})[z[0]]==="fehlt";}).map(function(z){
+    if(z[0]==="menu")return (BRANCHEN[k.branche]||BRANCHEN.andere).menu;
+    return z[2];
+  });
+}
+function umfang(k){
+  var a=[],m=k.preisart==="monat";
+  if(k.videos)a.push(k.videos+(+k.videos===1?" Video":" Videos")+(m?" im Monat":""));
+  if(k.drehtage)a.push(k.drehtage+(+k.drehtage===1?" Drehtag":" Drehtage")+(m?" im Monat":""));
+  if(k.korrektur!==""&&k.korrektur!=null)a.push(k.korrektur+(+k.korrektur===1?" Korrekturrunde":" Korrekturrunden")+" pro Video");
+  (k.extras||[]).forEach(function(x){a.push(x);});
+  if(k.laufzeit)a.push(k.laufzeit==="Einmalig"?"Einmaliges Projekt":"Laufzeit "+k.laufzeit);
+  return a;
+}
+function preisText(k){
+  if(!k.preis)return "";
+  return eur(k.preis)+(k.preisart==="monat"?" im Monat":" gesamt")+", zzgl. 19 % MwSt.";
+}
+function zahlung(k){return k.preisart==="monat"?"Monatsrechnung, Zahlungsziel 14 Tage.":"50 % bei Auftrag, 50 % nach Abschluss, Zahlungsziel 14 Tage.";}
+function offen(k){
+  var a=[];
+  if(!k.paket)a.push("welches Paket passt");
+  if(!k.preis)a.push("der Rahmen für Betreuung und Werbung");
+  if(!k.freigabe&&!k.kontakt)a.push("wer Inhalte freigibt");
+  if(!k.mitarbeit)a.push("wie viel Mitarbeit realistisch ist");
+  if(!k.zielkunde)a.push(T("welche Kunden du häufiger erreichen willst","welche Kunden Sie häufiger erreichen möchten",k));
+  return a;
+}
+function nachricht(k,mode){
+  var f=k.form==="sie",n=first(k.kontakt),L=k.lead||"Social Bites",rows=termine(k).filter(function(r){return !r.done;}),out=[];
+  var gruss=f?(k.kontakt?"Guten Tag "+k.kontakt.trim()+",":"Guten Tag,"):(n?"Hi "+n+",":"Hi,");
+  var need=brauchen(k),tel=TEAM[k.lead]||"";
+  out.push(gruss,"");
+  if(mode==="danke"){
+    out.push((f?"vielen Dank für das Gespräch. Hier das Wichtigste auf einen Blick.":"danke für das Gespräch. Hier das Wichtigste auf einen Blick."),"");
+    if(k.ziel3m)out.push((f?"Ihr Ziel: ":"Dein Ziel: ")+k.ziel3m);
+    var emp=[];if(k.richtung)emp.push(k.richtung.replace(/[.\s]+$/,"")+".");if(k.formate&&k.formate.length)emp.push("Starten würden wir mit "+list(k.formate)+".");
+    if(emp.length)out.push("Unsere Empfehlung: "+emp.join(" "));
+    var off=offen(k);if(off.length)out.push("Noch offen: "+list(off)+".");
+    if(k.unterschrieben){
+      var lief=rows.filter(function(r){return r.who!=="z";})[0];
+      if(lief)out.push("Das liefern wir: "+lief.label+" bis "+fmtL(lief.d)+".");
+      if(rows[0])out.push("Nächster Termin: "+fmtL(rows[0].d)+", "+rows[0].label+".");
+    }else{
+      /* Playbook: Angebot kommt in 3 Werktagen */
+      var ang=work(add(today(),3)),bespr=work(add(ang,1));
+      out.push("Das liefern wir: das Angebot bis "+fmtL(iso(ang))+".");
+      out.push("Nächster Termin: "+fmtL(iso(bespr))+", wir gehen das Angebot zusammen durch. Dann "+(f?"entscheiden Sie":"entscheidest du")+", ob wir so starten.");
+    }
+    if(need.length){out.push("",(f?"Das brauchen wir von Ihnen:":"Das brauchen wir von dir:"));need.forEach(function(x){out.push("· "+x);});}
+    out.push("",(f?"Passt das so? Kurz bestätigen oder ergänzen reicht, Sie müssen nichts neu ausfüllen.":"Passt das so? Kurz bestätigen oder ergänzen reicht, du musst nichts neu ausfüllen."),"");
+  }else{
+    out.push((f?"willkommen bei Social Bites. Schön, dass wir zusammen loslegen.":"willkommen bei Social Bites. Schön, dass wir zusammen loslegen."),"");
+    if(k.ziel3m)out.push((f?"Ihr Ziel haben wir so verstanden: ":"Dein Ziel haben wir so verstanden: ")+k.ziel3m,(f?"Passt das so? Kurz bestätigen oder ergänzen reicht.":"Passt das so? Kurz bestätigen oder ergänzen reicht."),"");
+    if(rows.length){out.push("So geht es weiter:");rows.forEach(function(r){out.push("· "+fmt(r.d)+" "+r.label);});out.push("");}
+    if(need.length){
+      out.push((f?"Von Ihnen brauchen wir nur noch:":"Von dir brauchen wir nur noch:"));need.forEach(function(x){out.push("· "+x);});
+      if(k.drive)out.push((f?"Dateien bitte hier ablegen: ":"Dateien einfach hier ablegen: ")+k.drive);
+      if(need.some(function(x){return /Zugang|einladen/.test(x);}))out.push("Zugänge bitte nur per Einladung, nie als Passwort im Chat.");
+      out.push("");
+    }
+    if(k.lead)out.push((f?"Ihre feste Ansprechperson bin ich":"Deine feste Ansprechperson bin ich")+(tel?", erreichbar unter "+tel:"")+". "+(f?"Sie hören von mir, bevor Sie nachfragen müssen.":"Du hörst von mir, bevor du nachfragen musst."),"");
+    out.push((f?"Ihre Startübersicht auf einer Seite hängt an.":"Deine Startübersicht auf einer Seite hängt an."),"");
+  }
+  out.push("Beste Grüße",L);
+  return out.join("\n");
+}
+function msgMode(k){return k.msgMode||(k.unterschrieben?"willkommen":"danke");}
+function msgText(k){var m=msgMode(k);return (k.msg&&k.msg[m]!=null)?k.msg[m]:nachricht(k,m);}
+function betreff(k){return msgMode(k)==="danke"?"Unser Gespräch: Zusammenfassung und nächster Schritt":"Willkommen bei Social Bites: So geht es weiter";}
+
+/* Startübersicht auf einer Seite A4. "Strategie auf einer Seite" und "Willkommen und Startübersicht" aus dem Sheet in einem Blatt. */
+function docHTML(k,preview){
+  var f=k.form==="sie",miss=function(t){return preview?'<i class="ob-d-miss">'+esc(t)+'</i>':"";},B=BRANCHEN[k.branche],rows=termine(k),need=brauchen(k),um=umfang(k),pr=preisText(k);
+  var h='<article class="ob-doc">';
+  h+='<div class="ob-d-head"><img src="logo_social_bites.webp" alt="Social Bites" data-logo-fixed><div class="r"><div class="ob-d-kick">Startübersicht</div>'+esc(fmtL(iso(today())))+'</div></div>';
+  h+='<div><div class="ob-d-h1">'+(k.name?esc(k.name):miss("Kundenname"))+'</div><div class="ob-d-sub">'+esc([PAKETE[k.paket],(k.paket==="opening"?(k.opening?"Opening "+fmtL(k.opening):""):(k.start?"Start "+fmtL(k.start):""))].filter(Boolean).join(" · "))+'</div></div>';
+  h+='<div class="ob-d-goal"><div class="ob-d-kick">'+(f?"Ihr Ziel":"Dein Ziel")+'</div><p>'+(k.ziel3m?esc(k.ziel3m):miss("Was in drei Monaten anders sein soll"))+'</p>';
+  if(k.zielkunde)h+='<small><b>Wen wir erreichen wollen:</b> '+esc(k.zielkunde)+'</small>';
+  if(k.mess)h+='<small><b>Woran wir Fortschritt erkennen:</b> '+esc(k.mess)+'</small>';
+  h+='</div>';
+  h+='<div class="ob-d-two"><div class="ob-d-stack"><div class="ob-d-sec"><div class="ob-d-kick">Unsere Richtung</div><div>'+(k.richtung?esc(k.richtung):miss("Richtung in einem Satz"))+'</div></div>';
+  h+='<div class="ob-d-sec"><div class="ob-d-kick">Damit starten wir</div>'+((k.formate&&k.formate.length)?'<ul class="ob-d-ul">'+k.formate.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':miss("Zwei Formate"))+'</div>';
+  if(k.bild&&k.bild.length)h+='<div class="ob-d-sec"><div class="ob-d-kick">Im Bild</div><div>'+esc(list(k.bild))+'</div></div>';
+  h+='</div><div class="ob-d-stack"><div class="ob-d-sec"><div class="ob-d-kick">'+(f?"Das bekommen Sie":"Das bekommst du")+'</div>'+(um.length?'<ul class="ob-d-ul">'+um.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':miss("Umfang"))+'</div>';
+  h+='<div class="ob-d-sec"><div class="ob-d-kick">Das kostet es</div>'+(pr?'<div class="ob-d-big">'+esc(pr)+'</div><div>'+esc(zahlung(k))+((k.influencer==="mit"||(k.extras||[]).indexOf("Ads")>=0)?" Werbebudget und Creator Kosten weisen wir getrennt aus.":"")+'</div>':miss("Preis"))+'</div></div></div>';
+  h+='<div class="ob-d-sec"><div class="ob-d-kick">So geht es weiter</div><div class="ob-d-rows">'+rows.map(function(r){return '<div class="ob-d-row"><b>'+esc(fmt(r.d))+'</b><span>'+esc(r.label)+'</span><span>'+(r.who==="k"?(f?"Ihre Freigabe":"Deine Freigabe"):r.who==="w"?"Wir":"Zusammen")+'</span></div>';}).join("")+'</div></div>';
+  h+='<div class="ob-d-two"><div class="ob-d-sec"><div class="ob-d-kick">'+(f?"Das brauchen wir von Ihnen":"Das brauchen wir von dir")+'</div>'+(need.length?'<ul class="ob-d-ul">'+need.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':'<div>Nichts mehr, alles da.</div>')+'</div>';
+  h+='<div class="ob-d-sec"><div class="ob-d-kick">So arbeiten wir</div><ul class="ob-d-ul">'+[
+    "Kurze Absprachen laufen über WhatsApp, Freigaben und Entscheidungen halten wir schriftlich fest.",
+    f?"Sie hören von uns, bevor Sie fragen müssen.":"Du hörst von uns, bevor du fragen musst.",
+    "Bei einem Problem nennen wir sofort Auswirkung, Lösung und neuen Termin.",
+    "Jeder Monat endet mit einer klaren Entscheidung: weiterführen, verändern oder beenden."
+  ].map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div></div>';
+  h+='<div class="ob-d-foot"><div><span>'+(f?"Ihre feste Ansprechperson":"Deine feste Ansprechperson")+'</span><b>'+(k.lead?esc(k.lead)+(TEAM[k.lead]?" · "+esc(TEAM[k.lead]):""):'Social Bites')+'</b></div><div class="r"><span>'+(k.freigabe||k.kontakt?"Freigaben bei "+(f?"Ihnen":"euch"):"")+'</span><b>'+esc(k.freigabe||k.kontakt||"")+'</b></div></div>';
+  return h+'</article>';
+}
+
+/* ---------- Bausteine fürs Formular ---------- */
+function fT(key,label,o){o=o||{};return '<label class="ob-f"><span class="ob-l">'+esc(label)+'</span>'+(o.hint?'<span class="ob-h">'+esc(o.hint)+'</span>':"")+'<input type="'+(o.type||"text")+'" data-f="'+key+'" value="'+esc(K[key]==null?"":K[key])+'" placeholder="'+esc(o.ph||"")+'"'+(o.list?' list="'+o.list+'"':"")+(o.mode?' inputmode="'+o.mode+'"':"")+' autocomplete="off"></label>';}
+function fA(key,label,o){o=o||{};return '<label class="ob-f"><span class="ob-l">'+esc(label)+'</span>'+(o.hint?'<span class="ob-h">'+esc(o.hint)+'</span>':"")+'<textarea data-f="'+key+'" rows="1" placeholder="'+esc(o.ph||"")+'">'+esc(K[key]||"")+'</textarea></label>';}
+function fC(key,label,items,o){
+  o=o||{};var v=K[key],multi=Array.isArray(v);
+  var h='<div class="ob-f"><span class="ob-l">'+esc(label)+'</span>'+(o.hint?'<span class="ob-h">'+esc(o.hint)+'</span>':"")+'<div class="ob-chips" role="group" aria-label="'+esc(label)+'">';
+  var all=items.slice();if(multi)(v||[]).forEach(function(x){if(all.indexOf(x)<0&&!(o.map&&o.map[x]))all.push(x);});
+  all.forEach(function(x){var val=Array.isArray(x)?x[0]:x,txt=Array.isArray(x)?x[1]:x,on=multi?(v||[]).indexOf(val)>=0:v===val;
+    h+='<button type="button" class="ob-chip" data-chip="'+key+'" data-v="'+esc(val)+'" aria-pressed="'+on+'">'+esc(txt)+'</button>';});
+  if(o.add)h+='<input class="ob-addchip" data-addchip="'+key+'" placeholder="'+esc(o.add)+'" aria-label="'+esc(o.add)+'">';
+  return h+'</div></div>';
+}
+function fN(key,label){var v=K[key]==null?"":K[key];return '<div class="ob-f"><span class="ob-l">'+esc(label)+'</span><div class="ob-num"><button type="button" data-num="'+key+'" data-d="-1" aria-label="'+esc(label)+' weniger">−</button><input type="number" min="0" data-f="'+key+'" value="'+esc(v)+'" placeholder="0" inputmode="numeric" aria-label="'+esc(label)+'"><button type="button" data-num="'+key+'" data-d="1" aria-label="'+esc(label)+' mehr">+</button></div></div>';}
+function seg(key,items){return '<div class="ob-seg" role="group">'+items.map(function(x){return '<button type="button" data-seg="'+key+'" data-v="'+x[0]+'" aria-pressed="'+(K[key]===x[0])+'">'+esc(x[1])+'</button>';}).join("")+'</div>';}
+
+function termsHTML(){return termine(K).map(function(r){return '<div class="ob-term'+(r.done?" done":"")+(r.late?" late":"")+'"><input type="checkbox" data-done="'+r.key+'"'+(r.done?" checked":"")+' aria-label="'+esc(r.label)+' erledigt"><input type="date" data-term="'+r.key+'" value="'+r.d+'" aria-label="Datum '+esc(r.label)+'"><span>'+esc(r.label)+'</span><em class="ob-who" style="font-style:normal">'+({z:"Zusammen",k:"Kunde",w:"Wir"})[r.who]+'</em></div>';}).join("");}
+
+/* ---------- Die fünf Schritte ---------- */
+var FORM=[
+  function(){ var B=BRANCHEN[K.branche];
+    return '<p class="ob-eyebrow">Schritt 1 von 5, rund 1 Minute</p><h1>Was soll sich ändern?</h1><p class="ob-sub">Ziel: Ihr habt das Unternehmen verstanden. Frag nur, was allein der Kunde weiß.</p><div class="ob-fields">'+
+      fT("name","Wer ist der Kunde?",{ph:"Name des Ladens oder der Marke",list:"obKunden"})+
+      (K.vomStamm?'<p class="ob-h">Aus dem Kundenstamm übernommen. Kontakt und Paket sind schon eingetragen.</p>':"")+
+      fC("branche","Branche",Object.keys(BRANCHEN).map(function(k){return [k,BRANCHEN[k].n];}))+
+      fA("ziel3m","Was müsste in drei Monaten anders sein, damit ihr die Zusammenarbeit als sinnvoll bewertet?",{ph:"In den Worten des Kunden"})+
+      (B?fA("bfrage",B.q,{hint:"Die erste strategische Frage für "+B.n+"."}):"")+
+      fC("ziele","Worum geht es vor allem?",ZIELE)+
+      fA("zielkunde","Welche Kunden möchtet ihr häufiger erreichen?")+
+      '<details class="ob-more"'+((K.warum||K.kanal||K.probiert||K.zweifel)?" open":"")+'><summary>Wenn noch Zeit ist</summary><div class="ob-fields">'+
+        fA("warum","Was hat euch dazu gebracht, gerade jetzt mit einer Agentur zu sprechen?")+
+        fA("kanal","Wie entstehen momentan eure Anfragen oder Buchungen?")+
+        fA("probiert","Was habt ihr bereits ausprobiert und was hat euch enttäuscht?")+
+        fA("zweifel","Welche Fragen oder Zweifel haben Kunden vor dem Kauf?",{hint:"Wiederkehrende Fragen werden später zu Content."})+
+      '</div></details></div>';
+  },
+  function(){ var B=BRANCHEN[K.branche]||BRANCHEN.andere;
+    return '<p class="ob-eyebrow">Schritt 2 von 5, rund 1 Minute</p><h1>Womit starten wir?</h1><p class="ob-sub">Ziel: Ihr erklärt einen sinnvollen Start und belegt ihn mit einem Beispiel. Die Richtung geben wir vor.</p><div class="ob-fields">'+
+      fA("richtung","Unsere Richtung in einem Satz",{ph:B.ph})+
+      fC("formate","Zwei Formate zum Start",B.f,{add:"Eigenes Format",hint:"Passend zu "+B.n+"."})+
+      fC("bild","Wer ist im Bild?",BILD,{hint:"Niemand muss vor die Kamera. Wir wählen, was glaubwürdig und dauerhaft machbar ist."})+
+      '<div class="ob-f"><span class="ob-l">Influencer zum Start?</span>'+seg("influencer",[["ohne","Ohne"],["mit","Mit"]])+'</div>'+
+      (K.influencer==="mit"?fC("anlass","Welcher Anlass?",ANLASS)+'<p class="ob-tip">Agenturhonorar, Creator Kosten und Werbebudget stehen im Angebot getrennt. Veröffentlichung, Anzeigennutzung und Werbekennzeichnung vorher vereinbaren.</p>':"")+
+      '<div class="ob-two">'+fT("referenz","Passende Referenz",{list:"obRefs",ph:"Projekt wählen",hint:"Nur intern, fürs Gespräch."})+fT("refWarum","Unser Beitrag, vergleichbar weil",{ph:"In einem Satz",hint:"Nur was wir wirklich gemacht haben."})+'</div></div>';
+  },
+  function(){ var B=BRANCHEN[K.branche];
+    var tpl=K.paket==="opening"?"Bites Opening rechnet rückwärts vom Opening-Tag.":K.paket==="brands"?"Marken haben oft eigene Fristen, Termine im letzten Schritt anpassen.":K.paket==="pilot"?"Begrenzter Test mit klaren Leistungen und anschließender Auswertung.":"";
+    return '<p class="ob-eyebrow">Schritt 3 von 5, rund 1 Minute</p><h1>Was bekommt der Kunde?</h1><p class="ob-sub">Ziel: Der Kunde weiß, was er bekommt, was es kostet und woran ihr Fortschritt erkennt.</p><div class="ob-fields">'+
+      fC("paket","Paket",Object.keys(PAKETE).map(function(k){return [k,PAKETE[k]];}),{hint:tpl})+
+      '<div class="ob-three">'+fN("videos","Videos")+fN("drehtage","Drehtage")+fN("korrektur","Korrekturrunden")+'</div>'+
+      fC("extras","Dazu",EXTRAS,{hint:"Was nicht drinsteht, weisen wir separat aus."})+
+      '<div class="ob-f"><span class="ob-l">Preis, netto</span><div class="ob-price"><input data-f="preis" value="'+esc(K.preis)+'" placeholder="0 €" inputmode="decimal" aria-label="Preis netto">'+seg("preisart",[["monat","im Monat"],["einmal","einmalig"]])+'</div><button type="button" class="ob-link" data-act="rechner" style="justify-self:start">Im Preisrechner ausrechnen</button></div>'+
+      fC("laufzeit","Laufzeit",["Einmalig","3 Monate","6 Monate","12 Monate"])+
+      fT("mess","Woran erkennen wir Fortschritt?",{ph:B?B.h:"Die Handlung, die für den Kunden zählt",hint:"Eine Handlung, die fürs Geschäft zählt. Keinen viralen Treffer versprechen."})+
+      fC("vertrag","Im Vertrag geklärt",VERTRAG)+
+      '<div class="ob-chips"><button type="button" class="ob-chip hot" data-flag="unterschrieben" aria-pressed="'+!!K.unterschrieben+'">Unterschrieben</button><button type="button" class="ob-chip hot" data-flag="rechnung" aria-pressed="'+!!K.rechnung+'">Rechnung 1 raus</button></div></div>';
+  },
+  function(){
+    return '<p class="ob-eyebrow">Schritt 4 von 5, rund 1 Minute</p><h1>Wer macht was?</h1><p class="ob-sub">Ziel: Die Zusammenarbeit ist übersichtlich und planbar. Maximal zwei Personen beim Kunden.</p><div class="ob-fields">'+
+      '<div class="ob-two">'+fT("kontakt","Feste Ansprechperson",{ph:"Vor- und Nachname"})+'<div class="ob-f"><span class="ob-l">Ansprache</span>'+seg("form",[["du","Du"],["sie","Sie"]])+'</div>'+
+      fT("tel","Telefon",{type:"tel",ph:"Für WhatsApp"})+fT("mail","E-Mail",{type:"email"})+'</div>'+
+      fT("freigabe","Wer gibt Inhalte frei?",{ph:"Leer lassen, wenn es dieselbe Person ist"})+
+      fC("lead","Wer betreut bei uns?",Object.keys(TEAM))+
+      fC("mitarbeit","Wie viel Mitarbeit ist realistisch möglich?",["Wenig","Mittel","Viel"])+
+      '<div class="ob-f"><span class="ob-l">Das brauchen wir vom Kunden</span><span class="ob-h">Tippen wechselt zwischen Fehlt, Da und Entfällt. Was fehlt, steht automatisch in der Nachricht.</span><div class="ob-zug">'+ZUG.map(function(z){var s=K.zug[z[0]]||"fehlt";return '<button type="button" class="ob-zugb" data-zug="'+z[0]+'" data-s="'+s+'">'+esc(z[1])+'<span>'+({fehlt:"Fehlt",da:"Da",nein:"Entfällt"})[s]+'</span></button>';}).join("")+'</div></div>'+
+      '<p class="ob-tip">Zugänge nur als Partner oder Manager einladen lassen. Passwörter nie in Chat, Sheet oder Drive.</p>'+
+      fT("drive","Drive Ordner für den Kunden",{type:"url",ph:"Link, optional"})+
+      '<details class="ob-more"><summary>Das geben wir vor, das fragen wir nicht</summary><div class="ob-fields"><ul class="ob-given">'+GEBEN.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul></div></details></div>';
+  },
+  function(){
+    var op=K.paket==="opening",m=msgMode(K),edited=K.msg&&K.msg[m]!=null,short=op&&K.opening&&(parse(K.opening)-today())/864e5<42;
+    var h='<p class="ob-eyebrow">Schritt 5 von 5, rund 1 Minute</p><h1>Alles raus.</h1><p class="ob-sub">Kurz prüfen, Nachricht raus, fertig.</p><div class="ob-fields">';
+    h+='<div class="ob-block"><div class="ob-blockh"><h2>Perfekt onboarded?</h2></div><div class="ob-check">'+CHECK.map(function(c){var ms=missing(K,c),ok=!ms.length;return '<button type="button" class="ob-checkb'+(ok?" ok":"")+'" data-goto="'+c.s+'"><i>✓</i><span>'+esc(c.t)+(ok?"":'<small>Fehlt: '+esc(list(ms))+'</small>')+'</span></button>';}).join("")+'</div></div>';
+    h+='<div class="ob-block"><div class="ob-blockh"><h2>Termine</h2><button type="button" class="btn sm" data-act="ics">Alle in den Kalender</button></div>';
+    h+='<label class="ob-f"><span class="ob-l">'+(op?"Opening-Tag":"Start der Zusammenarbeit")+'</span><input type="date" data-f="'+(op?"opening":"start")+'" value="'+esc(op?K.opening:K.start)+'" style="max-width:190px"></label>';
+    if(short)h+='<p class="ob-tip">Weniger als 6 Wochen bis zum Opening. Paket kleiner schnüren, Teaser Phase kürzen und das offen ansprechen.</p>';
+    if(op&&!K.opening)h+='<p class="ob-tip">Trag den Opening-Tag ein, dann stimmen alle Termine.</p>';
+    h+='<div class="ob-terms" id="obTerms">'+termsHTML()+'</div></div>';
+    h+='<div class="ob-block"><div class="ob-blockh"><h2>Nachricht an den Kunden</h2>'+'<div class="ob-seg" role="group"><button type="button" data-mode="danke" aria-pressed="'+(m==="danke")+'">Nach dem Gespräch</button><button type="button" data-mode="willkommen" aria-pressed="'+(m==="willkommen")+'">Willkommen</button></div></div>';
+    h+='<p class="ob-h">'+(m==="danke"?"Innerhalb von einem Arbeitstag raus: Ziel, Richtung, was offen ist, was wir liefern, was wir brauchen, nächster Termin.":"Direkt nach der Zusage. Der Kunde bestätigt oder ergänzt nur noch, er füllt nichts neu aus.")+'</p>';
+    h+='<textarea class="ob-msg" id="obMsg" aria-label="Nachricht an den Kunden">'+esc(msgText(K))+'</textarea>';
+    h+='<div class="ob-acts"><button type="button" class="btn inv" data-act="wa">WhatsApp öffnen</button><button type="button" class="btn" data-act="mail">Mail öffnen</button><button type="button" class="btn" data-act="copy">Kopieren</button><button type="button" class="btn" data-act="pdf">Startübersicht als PDF</button>'+(edited?'<button type="button" class="ob-link" data-act="msgreset" style="margin-left:6px">Text neu erzeugen</button>':"")+'</div></div>';
+    h+='<div class="ob-block"><div class="ob-blockh"><h2>Unsere To-dos</h2></div><div class="ob-todos">'+todos(K).map(function(t){var on=!!K.todo[t.k];return '<div class="ob-todo'+(on?" done":"")+'"><input type="checkbox" data-todo="'+t.k+'"'+(on?" checked":"")+' aria-label="'+esc(t.t)+'"><span>'+esc(t.t)+'</span>'+(t.l?'<button type="button" class="btn sm ob-todoa" '+(t.go?'data-go="'+t.go+'"':'data-act="'+t.a+'"')+'>'+esc(t.l)+'</button>':"")+'</div>';}).join("")+'</div></div>';
+    return h+'</div>';
+  }
+];
+
+/* ---------- Ansichten ---------- */
+function route(){
+  var m=/k=([\w]+)(?:&s=(\d))?/.exec(location.hash||"");
+  var o=m?byId(m[1]):null;
+  if(o){K=o;STEP=m[2]?Math.min(4,+m[2]):(K.status==="laeuft"?4:nextStep(K));drawDetail();}
+  else{K=null;drawHome();}
+  window.scrollTo(0,0);
+}
+function open(id,s){location.hash="k="+id+(s!=null?"&s="+s:"");}
+function kundenDatalist(){return '<datalist id="obKunden">'+kunden().map(function(k){return '<option value="'+esc(k.name)+'">';}).join("")+'</datalist><datalist id="obRefs">'+REFS.map(function(x){return '<option value="'+esc(x)+'">';}).join("")+'</datalist>';}
+
+function drawHome(){
+  document.title="Onboarding · Social Bites";
+  var L=ALL.slice().sort(function(a,b){return String(b.updated).localeCompare(String(a.updated));});
+  var off=L.filter(function(x){return x.status!=="laeuft";}),run=L.filter(function(x){return x.status==="laeuft";}),h='<main class="ob-home"><section class="ob-hero"><p class="ob-eyebrow">Onboarding</p><h1>Vom Ja zum Start in <em>fünf Minuten.</em></h1><p>Schreib mit, während ihr redet. Am Ende sind Nachricht, Startübersicht und Zeitplan fertig.</p>'+
+    '<form class="ob-new" id="obNew"><input id="obNewName" list="obKunden" placeholder="Wie heißt der Kunde?" autocomplete="off" aria-label="Name des Kunden"><button class="btn inv" type="submit">Loslegen</button></form>'+
+    '<p class="ob-note"><button type="button" class="ob-link" data-act="sheet">Spickzettel fürs Gespräch</button>'+(ALL.length?"":' &nbsp;·&nbsp; <button type="button" class="ob-link" data-act="demo">Beispiel ansehen</button>')+'</p></section>';
+  function row(k){
+    var nx=nextTermin(k),c=doneCount(k),dots='<span class="ob-dots" aria-label="'+c+' von 5 klar">'+[0,1,2,3,4].map(function(i){return '<i class="'+(stepDone(k,i)?"on":"")+'"></i>';}).join("")+'</span>';
+    var tt=todos(k),dn=tt.filter(function(t){return k.todo[t.k];}).length;
+    return '<button type="button" class="ob-row" data-open="'+k.id+'"><span><b>'+esc(k.name||"Ohne Namen")+'</b><small>'+esc((BRANCHEN[k.branche]||{}).n||"Branche offen")+'</small></span>'+
+      '<span class="col-paket"><small>'+esc(PAKETE[k.paket]||"Paket offen")+'</small><small>'+esc(k.lead?"Betreut von "+k.lead:"Betreuung offen")+'</small></span>'+dots+
+      '<span class="col-next">'+(k.status==="laeuft"?(nx?'<small class="'+(nx.late?"late":"")+'">'+esc(fmt(nx.d))+" "+esc(nx.label)+'</small>':'<small>Alle Termine erledigt</small>')+'<small>To-dos '+dn+' von '+tt.length+'</small>':'<small>'+(c===5?"Bereit zum Abschließen":"Weiter bei "+SCHRITTE[nextStep(k)])+'</small>')+'</span></button>';
+  }
+  if(off.length)h+='<section class="ob-sec"><span class="ob-eyebrow">Im Onboarding</span><div class="ob-rows">'+off.map(row).join("")+'</div></section>';
+  if(run.length)h+='<section class="ob-sec"><span class="ob-eyebrow">Läuft, erste 30 Tage</span><div class="ob-rows">'+run.map(row).join("")+'</div></section>';
+  h+='<section class="ob-sec"><span class="ob-eyebrow">Die Regel</span><div class="ob-rules">'+
+    '<div class="ob-rule"><b>Fragen</b><p>Nur was allein der Kunde weiß: Ziel, Zielkunden, Freigabe, Mitarbeit, Termin.</p></div>'+
+    '<div class="ob-rule"><b>Selbst rausfinden</b><p>Website, Kanäle, Wettbewerb, Öffnungszeiten. Das ist unsere Arbeit, nicht seine.</p></div>'+
+    '<div class="ob-rule"><b>Vorgeben</b><p>Ablauf, Kommunikation, Korrekturrunden, Rechte. Wir sind die Experten.</p></div>'+
+    '</div></section>';
+  h+='<div class="ob-foot"><span>Nur in diesem Browser gespeichert.</span><button type="button" class="ob-link" data-act="export">Sichern</button><button type="button" class="ob-link" data-act="import">Sicherung einspielen</button>'+(ALL.length?'<button type="button" class="ob-link" data-act="demo">Beispiel ansehen</button>':"")+'<button type="button" class="ob-link" data-go="t-playbook">Ganzer Ablauf im Playbook</button></div></main>'+kundenDatalist();
+  $("#app").innerHTML=h;
+}
+function nextStep(k){for(var i=0;i<5;i++)if(!stepDone(k,i))return i;return 4;}
+
+function drawDetail(){
+  document.title=(K.name||"Kunde")+" · Onboarding";
+  var h='<header class="ob-top"><button type="button" class="ob-back" data-act="home" aria-label="Zurück zur Übersicht">←</button><div class="ob-name" id="obTopName"></div><nav class="ob-steps" id="obSteps" aria-label="Schritte"></nav><button type="button" class="btn sm" data-act="sheet">Spickzettel</button></header>'+
+    '<main class="ob-main"><section class="ob-card" id="obForm"></section><aside class="ob-rail" aria-label="Startübersicht für den Kunden"><div class="ob-railh"><span class="ob-eyebrow">Das bekommt der Kunde</span><button type="button" class="btn sm" data-act="pdf">PDF</button></div><div class="ob-docwrap" id="obDocWrap"></div></aside></main>'+
+    '<div class="ob-mobilebar"><button type="button" class="btn" data-act="prev">Zurück</button><button type="button" class="btn" data-act="preview">Vorschau</button><button type="button" class="btn inv" data-act="next" id="obMobNext">Weiter</button></div>'+kundenDatalist();
+  $("#app").innerHTML=h;
+  drawForm();
+  soft();
+}
+function grow(ta){ta.style.height="auto";ta.style.height=(ta.scrollHeight+2)+"px";}
+function drawForm(focusSel){
+  var el=$("#obForm");if(!el)return;
+  var nav='<div class="ob-nav"><div class="ob-miss" id="obMiss"></div>'+(STEP>0?'<button type="button" class="btn" data-act="prev">Zurück</button>':"")+'<button type="button" class="btn inv" data-act="next">'+(STEP<4?"Weiter":(K.status==="laeuft"?"Fertig":"Onboarding abschließen"))+'</button></div>';
+  el.innerHTML=FORM[STEP]()+nav;
+  $$("textarea[data-f],#obMsg",el).forEach(grow);
+  if(focusSel){var f=el.querySelector(focusSel);if(f)f.focus({preventScroll:true});}
+}
+function fitDoc(){var w=$("#obDocWrap");if(w&&w.clientWidth)w.style.setProperty("--z",String(w.clientWidth/794));var p=$("#obPrevWrap");if(p&&p.clientWidth)p.style.setProperty("--z",String(p.clientWidth/794));}
+window.addEventListener("resize",fitDoc);
+/* Alles außer dem Formular selbst neu zeichnen, damit der Cursor im Feld bleibt */
+function soft(){
+  if(!K)return;
+  var n=$("#obTopName");if(n)n.textContent=K.name||"Neuer Kunde";
+  var s=$("#obSteps");if(s)s.innerHTML=SCHRITTE.map(function(t,i){return '<button type="button" class="ob-step'+(stepDone(K,i)?" done":"")+'" data-goto="'+i+'"'+(i===STEP?' aria-current="step"':"")+'><i>'+(stepDone(K,i)&&i!==STEP?"✓":i+1)+'</i><span>'+t+'</span></button>';}).join("");
+  var w=$("#obDocWrap");if(w){var y=w.scrollTop;w.innerHTML=docHTML(K,true);w.scrollTop=y;}
+  fitDoc();
+  var m=$("#obMiss");if(m){var ms=STEP<4?stepNeeds(K,STEP):[];m.innerHTML=STEP===4?'<button type="button" class="ob-link" data-act="del">Löschen</button>':(ms.length?'Fehlt noch: <b>'+esc(list(ms))+'</b>. Geht auch später.':"Alles da.");}
+  var ta=$("#obMsg");if(ta&&document.activeElement!==ta){ta.value=msgText(K);grow(ta);}
+  var mb=$("#obMobNext");if(mb){mb.textContent=STEP<4?"Weiter":(K.status==="laeuft"?"Fertig":"Abschließen");}
+  var pb=$(".ob-mobilebar [data-act='prev']");if(pb)pb.disabled=STEP===0;
+}
+function goStep(i){
+  i=Math.max(0,Math.min(4,i));STEP=i;saveNow();
+  try{history.replaceState(null,"","#k="+K.id+"&s="+i);}catch(e){}
+  drawForm();soft();window.scrollTo(0,0);
+}
+function finish(){
+  if(!String(K.name||"").trim()){goStep(0);toast("Erst den Namen eintragen");return;}
+  var isNew=toKunde("kunde");K.status="laeuft";K.todo=K.todo||{};K.updated=new Date().toISOString();saveNow();
+  location.hash="";toast(isNew?"„"+K.name+"“ steht jetzt im Kundenstamm":"Kundenstamm aktualisiert");
+}
+
+/* ---------- Ausgabe ---------- */
+function printDoc(){
+  if(!K)return;K.sent=true;saveNow();soft();
+  var P=$("#obPrint");P.innerHTML=docHTML(K,false);
+  /* Lange Texte: passend verkleinern, damit es immer genau eine Seite A4 bleibt */
+  var D=$(".ob-doc",P);P.style.cssText="display:block;position:absolute;left:-9999px;top:0;";D.style.cssText="zoom:1;width:794px;min-height:0;";
+  var h=D.offsetHeight;P.style.cssText="";D.style.cssText="";P.style.setProperty("--pz",h>1116?String(Math.floor(1116/h*1000)/1000):"1");
+  var t=document.title;document.title="Startuebersicht_"+slug(K.name);
+  setTimeout(function(){window.print();document.title=t;},60);
+}
+function ics(){
+  var stamp=new Date().toISOString().replace(/[-:]|\.\d+/g,""),L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Social Bites//Onboarding//DE"];
+  termine(K).forEach(function(r){var d=r.d.replace(/-/g,""),e=iso(add(parse(r.d),1)).replace(/-/g,"");
+    L.push("BEGIN:VEVENT","UID:"+K.id+r.key+"@social-bites","DTSTAMP:"+stamp,"DTSTART;VALUE=DATE:"+d,"DTEND;VALUE=DATE:"+e,"SUMMARY:"+(K.name||"Kunde").replace(/[,;]/g," ")+": "+r.label.replace(/[,;]/g," "),"END:VEVENT");});
+  L.push("END:VCALENDAR");
+  dl(new Blob([L.join("\r\n")],{type:"text/calendar"}),"Termine_"+slug(K.name)+".ics");toast("Termine als Kalenderdatei geladen");
+}
+function dl(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},2000);}
+function claude(){
+  var B=BRANCHEN[K.branche],kd=findKunde(K.name)||{},t=["Baue das Product Dashboard für "+(K.name||"den Kunden")+".","Regeln und Schema stehen in Product/auftrag_vorlage.md.",""];
+  [["Branche",B&&B.n],["Instagram",kd.insta],["TikTok",kd.tiktok],["Website",kd.web],["Ziel in drei Monaten",K.ziel3m],["Strategische Frage",B&&K.bfrage?B.q+" "+K.bfrage:""],["Zielkunden",K.zielkunde],["So entstehen Anfragen heute",K.kanal],["Schon probiert",K.probiert],["Zweifel vor dem Kauf",K.zweifel],["Richtung",K.richtung],["Startformate",list(K.formate)],["Im Bild",list(K.bild)],["Messgröße",K.mess]].forEach(function(x){if(x[1])t.push(x[0]+": "+x[1]);});
+  copy(t.join("\n"),"Auftrag kopiert, in Claude einfügen");
+}
+function demo(){
+  var o=blank("Teig & Tomate (Beispiel)");
+  o.branche="restaurant";o.ziel3m="Unter der Woche mittags spürbar mehr Reservierungen.";o.bfrage="Lunch und Feierabend, am Wochenende sind wir voll.";o.ziele=["Mehr Gäste"];o.zielkunde="Leute aus den Büros in der Nachbarschaft";
+  o.richtung="Gezielt Formate für Lunch und Feierabend entwickeln.";o.formate=["Küchenserie","Was bekommst du für X Euro?"];o.bild=["Team","Produkt und Hände"];o.referenz="The Pizzary";o.refWarum="Neapolitanische Pizza, gleiche Zielgruppe";
+  o.paket="gastro";o.videos=8;o.drehtage=1;o.extras=["Posting"];o.laufzeit="3 Monate";o.mess=BRANCHEN.restaurant.h;o.vertrag=["Leistung und Umfang","Zahlung"];
+  o.kontakt="Sarah Beispiel";o.lead="Nader";o.mitarbeit="Mittel";o.zug.logo="da";o.zug.fotos="nein";
+  ALL.unshift(o);saveNow();open(o.id,0);
+}
+
+/* ---------- Spickzettel ---------- */
+var TABS=[["fragen","Kundenfragen"],["gespraech","Gespräch"],["vorb","Vorbereitung"],["branche","Branchen"],["infl","Influencer"],["intern","Intern"]];
+function sheetBody(){
+  if(SHEET==="fragen"){
+    var q=QUERY.trim().toLowerCase(),L=FRAGEN.filter(function(x){return !q||(x[0]+" "+x[1]).toLowerCase().indexOf(q)>=0;});
+    return L.length?L.map(function(x){return '<div class="ob-qa"><b>'+esc(x[0])+'</b><p>'+esc(x[1])+'</p></div>';}).join(""):'<p class="ob-h">Keine Antwort gefunden.</p>';
+  }
+  if(SHEET==="gespraech")return '<p class="ob-h">Erstgespräch in 45 Minuten. Schreib direkt im Onboarding mit, dann wird nichts doppelt gefragt.</p>'+GESPRAECH.map(function(g){return '<div class="ob-time"><span>'+esc(g[0])+'</span><div><b>'+esc(g[1])+'</b>'+(g[2].length?'<ul>'+g[2].map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>':"")+'</div></div>';}).join("")+'<a class="ob-link" href="https://blog.hubspot.com/sales/discovery-call-questions" target="_blank" rel="noopener">Mehr Fragen bei HubSpot</a>';
+  if(SHEET==="vorb")return VORBEREITUNG.map(function(v){return '<div class="ob-prep"><b>'+esc(v[0])+'</b><span>'+esc(v[1])+'</span></div>';}).join("")+
+    '<h3 class="ob-sheeth">So klingt eine Beobachtung</h3><div class="ob-qa"><b>Restaurant</b><p>Euer Essen sieht hochwertig aus. In euren bisherigen Inhalten wird aber noch wenig deutlich, für welchen Anlass Gäste zu euch kommen sollen. Ich würde deshalb gezielt Formate für Lunch, Feierabend und besondere Abende entwickeln.</p></div><div class="ob-qa"><b>Handwerk</b><p>Ihr zeigt fertige Projekte. Ich würde zusätzlich erklären, wie eine Zusammenarbeit mit euch abläuft und welche typischen Sorgen ihr dem Kunden abnehmt.</p></div>';
+  if(SHEET==="branche")return Object.keys(BRANCHEN).filter(function(k){return k!=="andere";}).map(function(k){var b=BRANCHEN[k];return '<div class="ob-bra'+(K&&K.branche===k?" on":"")+'"><b>'+esc(b.n)+'</b><span>'+esc(b.q)+'</span><small>Formate: '+esc(b.f.join(", "))+'</small><small>Handlung, die zählt: '+esc(b.h)+'</small></div>';}).join("");
+  if(SHEET==="infl")return '<div class="ob-qa"><b>Ohne Influencer</b><p>Wir beginnen mit eigenen Formaten: Produkte, Menschen, häufige Kundenfragen, konkrete Besuchs- oder Kaufanlässe. Wir produzieren die vereinbarten Inhalte und entwickeln sie anhand von Reaktionen und Geschäftsdaten weiter.</p></div>'+
+    '<div class="ob-qa"><b>Mit Influencern</b><p>Ergänzt einen passenden Anlass, zum Beispiel Eröffnung, Menüstart oder Event.</p><ol class="ob-ul"><li>Ziel und Gesamtbudget bestimmen.</li><li>Passende Creator recherchieren und prüfen.</li><li>Inhalte, Termine, Kosten und Nutzungsrechte vereinbaren.</li><li>Briefing und Umsetzung koordinieren.</li><li>Ergebnisse anhand vorher vereinbarter Messmöglichkeiten auswerten.</li></ol></div>'+
+    '<div class="ob-qa"><b>Woran wir auswählen</b><p>Regionale und inhaltliche Passung, Zielgruppendaten, Qualität, Interaktion und Verfügbarkeit.</p></div>'+
+    '<div class="ob-qa"><b>Influencer oder UGC?</b><p>Bei einer Influencer-Kooperation kann die Veröffentlichung beim Creator Teil der Leistung sein. Bei einer reinen UGC-Produktion erhalten wir zunächst Inhalte. Veröffentlichung und Anzeigenverwendung müssen jeweils vereinbart werden.</p></div>'+
+    '<div class="ob-qa"><b>Immer getrennt im Angebot</b><p>Agenturhonorar, Creator-Kosten und Werbebudget. Die Werbekennzeichnung gehört in die Vorbereitung, dafür gibt es den offiziellen Leitfaden der Medienanstalten.</p></div><button type="button" class="ob-link" style="justify-self:start" data-go="t-influencer">Zur Influencer-Datenbank</button>';
+  return '<h3 class="ob-sheeth" style="margin-top:0">Wer wofür steht</h3><ul class="ob-ul"><li>Die Betreuung verantwortet Kundenziel, Konzept, Kommunikation und finale Abnahme.</li><li>Cutter bekommen ein einheitliches Briefing.</li><li>Jedes Video wird vor Übergabe geprüft: Inhalt, Schreibweise, Ton, Markenwirkung, vereinbarte Vorgaben.</li><li>Zusatzwünsche bekommen einen klaren Umfang und gegebenenfalls einen neuen Preis.</li><li>Kapazität und Vertretung vor jeder Zusage prüfen.</li><li>Für Ads, Influencer und Community ist geklärt, wer es tatsächlich umsetzt.</li><li>Beim Retainer müssen Planung, Betreuung und Auswertung in der Kalkulation stecken, sonst fehlt die Zeit für das, was wir versprechen.</li></ul>'+
+    '<h3 class="ob-sheeth">Positive Überraschungen</h3><ul class="ob-ul"><li>Im Erstgespräch zwei Ideen zeigen, die er direkt mit seinem Unternehmen verbindet.</li><li>Vor dem Dreh genau erklären, was Mitarbeiter und Location vorbereiten müssen.</li><li>Kurze Statusmeldung, bevor der Kunde nachfragt.</li><li>Wiederkehrende Kundenfragen sammeln und daraus neue Inhalte entwickeln.</li><li>Im Monatsreview eine konkrete Entscheidung empfehlen: weiterführen, verändern, beenden.</li><li>Bei einem Problem sofort Auswirkung, Lösung und neuen Termin nennen.</li></ul>'+
+    '<h3 class="ob-sheeth">Unterlagen und wofür</h3>'+[["Kurze Agenturpräsentation","Erklärt unseren Ansatz und zeigt passende Belege"],["Vorbereitungsblatt zum Kunden","Macht die Recherche systematisch"],["Zwei bis drei Referenzblätter","Belastbare Antworten auf Erfahrungsfragen"],["Verständliche Angebotsvorlage","Klärt Leistungen, Gesamtkosten und Mitwirkung"],["Willkommen und Startübersicht","Gibt direkt nach Auftrag Orientierung"],["Strategie auf einer Seite","Hält Ziel, Zielgruppe, Botschaft, Formate und Messung zusammen"],["Content- und Drehplan","Macht die Umsetzung planbar"],["Freigabeansicht","Verhindert verstreutes und widersprüchliches Feedback"],["Monatsreview","Zeigt, was wir gelernt haben und wie wir weiterarbeiten"]].map(function(u){return '<div class="ob-prep"><b>'+esc(u[0])+'</b><span>'+esc(u[1])+'</span></div>';}).join("")+
+    '<h3 class="ob-sheeth">Das sieht der Kunde jederzeit</h3><ul class="ob-ul"><li>Wer ihn betreut.</li><li>Was gerade produziert wird.</li><li>Welche Freigabe von ihm benötigt wird.</li><li>Wann die nächste Lieferung erfolgt.</li><li>Wo Entwürfe und finale Dateien liegen.</li><li>Was im letzten Review entschieden wurde.</li></ul>';
+}
+function drawSheet(){
+  var p=$("#obPanel");
+  var y=$(".ob-panelb",p);var top=y?y.scrollTop:0;
+  p.innerHTML='<div class="ob-panelh"><div class="t"><h2>Spickzettel</h2><button type="button" class="ob-back" data-act="sheetclose" aria-label="Schließen">×</button></div><div class="ob-tabs" role="tablist">'+TABS.map(function(t){return '<button type="button" role="tab" data-tab="'+t[0]+'" aria-selected="'+(SHEET===t[0])+'">'+t[1]+'</button>';}).join("")+'</div>'+(SHEET==="fragen"?'<input class="ob-search" id="obSearch" type="search" placeholder="Was fragt der Kunde?" aria-label="Kundenfrage suchen" value="'+esc(QUERY)+'">':"")+'</div><div class="ob-panelb" id="obPanelB">'+sheetBody()+'</div>';
+  $(".ob-panelb",p).scrollTop=top;
+}
+function toggleSheet(on){var p=$("#obPanel");if(on){drawSheet();p.classList.add("on");p.setAttribute("aria-hidden","false");}else{p.classList.remove("on");p.setAttribute("aria-hidden","true");}}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener("submit",function(e){
+  if(e.target.id==="obNew"){e.preventDefault();var n=$("#obNewName").value.trim();if(!n){$("#obNewName").focus();toast("Erst den Namen eintragen");return;}
+    var ex=ALL.filter(function(x){return String(x.name).trim().toLowerCase()===n.toLowerCase();})[0];if(ex){open(ex.id);return;}
+    var o=fromKunde(blank(n));ALL.unshift(o);saveNow();open(o.id,0);}
+});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(t.id==="obSearch"){QUERY=t.value;$("#obPanelB").innerHTML=sheetBody();return;}
+  if(t.id==="obMsg"){K.msg=K.msg||{};K.msg[msgMode(K)]=t.value;grow(t);save();return;}
+  if(t.dataset&&t.dataset.term){K.ov[t.dataset.term]=t.value;save();soft();return;}
+  if(!t.dataset||!t.dataset.f||!K)return;
+  var key=t.dataset.f;K[key]=t.value;if(t.tagName==="TEXTAREA")grow(t);save();soft();
+});
+document.addEventListener("change",function(e){
+  var t=e.target;if(!K)return;
+  if(t.dataset.f==="name"&&!K.kid){var had=K.vomStamm;fromKundeSoft();if(K.vomStamm&&!had)drawForm();}
+  if(t.dataset.f==="start"||t.dataset.f==="opening"){K.ov={};save();var ts=$("#obTerms");if(ts)ts.innerHTML=termsHTML();soft();return;}
+  if(t.dataset.done){K.done[t.dataset.done]=t.checked;save();t.closest(".ob-term").classList.toggle("done",t.checked);soft();return;}
+  if(t.dataset.todo){K.todo[t.dataset.todo]=t.checked;save();t.closest(".ob-todo").classList.toggle("done",t.checked);}
+});
+function fromKundeSoft(){var keep=K.name;var k=findKunde(keep);if(!k)return;if(!K.kontakt&&!K.tel&&!K.mail&&!K.paket){fromKunde(K);save();}}
+document.addEventListener("keydown",function(e){
+  var t=e.target;
+  if((e.metaKey||e.ctrlKey)&&e.key==="Enter"&&K){e.preventDefault();if(STEP<4)goStep(STEP+1);return;}
+  if(e.key==="Escape"&&$("#obPanel").classList.contains("on")){toggleSheet(false);return;}
+  if(e.key==="Enter"&&t.dataset&&t.dataset.addchip){e.preventDefault();var v=t.value.trim();if(!v)return;var key=t.dataset.addchip;K[key]=K[key]||[];if(K[key].indexOf(v)<0)K[key].push(v);save();drawForm('[data-addchip="'+key+'"]');soft();return;}
+  if(e.key==="Enter"&&t.tagName==="INPUT"&&t.dataset&&t.dataset.f&&t.type!=="date"){e.preventDefault();var a=$$("#obForm input[data-f]:not([type=date]),#obForm textarea[data-f]"),i=a.indexOf(t);if(i>=0&&a[i+1])a[i+1].focus();else if(STEP<4)goStep(STEP+1);return;}
+  if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(t.tagName)){e.preventDefault();toggleSheet(true);}
+});
+document.addEventListener("click",function(e){
+  var b=e.target.closest("button,a");if(!b)return;var d=b.dataset;
+  if(d.open){open(d.open);return;}
+  if(d.tab){SHEET=d.tab;drawSheet();return;}
+  if(d.go){goPortal(d.go);return;}
+  if(d.act&&ACT[d.act]){ACT[d.act](b);return;}
+  if(!K)return;
+  if(d.goto!=null&&d.goto!==""){goStep(+d.goto);return;}
+  if(d.chip){var key=d.chip,v=d.v;
+    if(Array.isArray(K[key])){var i=K[key].indexOf(v);if(i>=0)K[key].splice(i,1);else K[key].push(v);}
+    else{K[key]=K[key]===v?"":v;}
+    if(key==="branche"&&K.branche&&!K.mess)K.mess=BRANCHEN[K.branche].h;
+    save();
+    if(key==="branche"||key==="paket"||key==="anlass"){var y=window.scrollY;drawForm();window.scrollTo(0,y);}
+    else if(Array.isArray(K[key])){var on=K[key].indexOf(v)>=0;b.setAttribute("aria-pressed",String(on));if(!on&&BRANCHEN&&key==="formate"){var y2=window.scrollY;drawForm();window.scrollTo(0,y2);}}
+    else{$$('[data-chip="'+key+'"]').forEach(function(x){x.setAttribute("aria-pressed",String(K[key]===x.dataset.v));});}
+    soft();return;}
+  if(d.seg){K[d.seg]=d.v;save();var y3=window.scrollY;drawForm();window.scrollTo(0,y3);soft();return;}
+  if(d.flag){K[d.flag]=!K[d.flag];b.setAttribute("aria-pressed",String(K[d.flag]));save();soft();return;}
+  if(d.num){var n=(+K[d.num]||0)+(+d.d);K[d.num]=Math.max(0,n);var inp=$('input[data-f="'+d.num+'"]');if(inp)inp.value=K[d.num];save();soft();return;}
+  if(d.zug){var cur=K.zug[d.zug]||"fehlt",nx=cur==="fehlt"?"da":cur==="da"?"nein":"fehlt";K.zug[d.zug]=nx;b.dataset.s=nx;$("span",b).textContent=({fehlt:"Fehlt",da:"Da",nein:"Entfällt"})[nx];save();soft();return;}
+  if(d.mode){K.msgMode=d.mode;save();var y4=window.scrollY;drawForm();window.scrollTo(0,y4);soft();return;}
+});
+var ACT={
+  home:function(){saveNow();location.hash="";},
+  sheet:function(){toggleSheet(!$("#obPanel").classList.contains("on"));},
+  sheetclose:function(){toggleSheet(false);},
+  demo:demo,
+  prev:function(){if(STEP>0)goStep(STEP-1);},
+  next:function(){if(STEP<4)goStep(STEP+1);else finish();},
+  pdf:printDoc,
+  ics:ics,
+  claude:claude,
+  preview:function(){var dl=$("#obPrev");dl.innerHTML='<div class="ob-prevh"><span class="ob-eyebrow">Das bekommt der Kunde</span><button type="button" class="ob-back" data-act="previewclose" aria-label="Schließen">×</button></div><div id="obPrevWrap" class="ob-docwrap" style="border-radius:0 0 22px 22px">'+docHTML(K,true)+'</div>';dl.showModal();fitDoc();},
+  previewclose:function(){$("#obPrev").close();},
+  rechner:function(){if(!String(K.name||"").trim()){toast("Erst den Namen eintragen");return;}toKunde("gespraech");saveNow();window.open("rechner.html?kunde="+encodeURIComponent(K.kid),"_blank","noopener");},
+  wa:function(){K.sent=true;saveNow();soft();var nr=digits(K.tel);window.open("https://wa.me/"+nr+"?text="+encodeURIComponent($("#obMsg").value),"_blank","noopener");},
+  mail:function(){K.sent=true;saveNow();soft();location.href="mailto:"+encodeURIComponent(K.mail||"")+"?subject="+encodeURIComponent(betreff(K))+"&body="+encodeURIComponent($("#obMsg").value);},
+  copy:function(){K.sent=true;saveNow();soft();copy($("#obMsg").value,"Nachricht kopiert");},
+  msgreset:function(){delete K.msg[msgMode(K)];save();var y=window.scrollY;drawForm();window.scrollTo(0,y);soft();},
+  del:function(){if(!confirm("„"+(K.name||"Dieses Onboarding")+"“ wirklich löschen? Der Kundenstamm bleibt unberührt."))return;var id=K.id;ALL=ALL.filter(function(x){return x.id!==id;});K=null;saveNow();location.hash="";toast("Gelöscht");},
+  export:function(){dl(new Blob([JSON.stringify({art:"sb-onboarding",stand:new Date().toISOString(),daten:ALL},null,1)],{type:"application/json"}),"Social-Bites-Onboarding_"+iso(today())+".json");toast("Sicherung geladen");},
+  import:function(){$("#obFile").click();}
+};
+$("#obFile").addEventListener("change",function(){
+  var f=this.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{var j=JSON.parse(r.result),L=Array.isArray(j)?j:j.daten;if(!Array.isArray(L))throw 0;var n=0;
+      L.forEach(function(o){if(!o||!o.id)return;var e=byId(o.id);if(!e){ALL.push(o);n++;}else if(String(o.updated)>String(e.updated)){ALL[ALL.indexOf(e)]=o;n++;}});
+      saveNow();route();toast(n+" Einträge übernommen");}catch(e){toast("Die Datei passt nicht");}};
+  r.readAsText(f);this.value="";
+});
+window.addEventListener("hashchange",route);
+window.addEventListener("afterprint",function(){$("#obPrint").innerHTML="";});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(K)$$("textarea[data-f],#obMsg").forEach(grow);});
+route();
+})();
+</script>
+</body>
+</html>
