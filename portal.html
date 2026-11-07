@@ -755,7 +755,7 @@ function authMode(){try{return localStorage.getItem(AUTH)||sessionStorage.getIte
 function authed(){return authMode()==="1";}
 function setAuth(v){try{if(v){localStorage.setItem(AUTH,v);sessionStorage.setItem(AUTH,v);}else{localStorage.removeItem(AUTH);sessionStorage.removeItem(AUTH);}}catch(e){}authed.mem=v||"";}
 /* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
-var TEAM_HASHES=["070520c35d97261064793b9b6292db974b36146349abb5965a15e2f26350d7fa","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5"];  /* nader (neu seit 30.10.2026), tommy. Weitere Mitarbeiter: Prüfsumme von "benutzer:passwort" (klein geschrieben) hier anhängen */
+var TEAM_HASHES=["070520c35d97261064793b9b6292db974b36146349abb5965a15e2f26350d7fa","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* nader (neu seit 30.10.2026), tommy, Testzugang socialbites (wieder an seit 07.11.2026 auf Naders Wunsch). Weitere Mitarbeiter: Prüfsumme von "benutzer:passwort" (klein geschrieben) hier anhängen */
 function isTeam(u,p){
   try{
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
@@ -779,7 +779,7 @@ document.querySelectorAll("[data-lgtab]").forEach(function(b){b.addEventListener
 /* Team-Zugang merken (nur in diesem Browser, localStorage). Im Code steht weiterhin kein Passwort, nur die Prüfsummen. */
 var TKEY="sb-team-zugang";
 /* Testphase: der Knopf setzt Benutzer und Passwort der Testphase ein (Nader, 09.10.2026). Zum Abschalten TEST_ZUGANG auf null setzen, dann gilt nur noch der gemerkte Zugang. */
-var TEST_ZUGANG=null;  /* Testzugang abgeschaltet am 30.10.2026, weil die Seite öffentlich ist */
+var TEST_ZUGANG={u:"socialbites",p:"00000"};  /* Testzugang wieder an seit 07.11.2026 (Nader). Zum Abschalten null setzen und die Prüfsumme eb2e98... aus TEAM_HASHES entfernen */
 function teamSaved(){try{var o=JSON.parse(localStorage.getItem(TKEY));return o&&o.u&&o.p?o:null;}catch(e){return null;}}
 function teamAccess(){return teamSaved()||TEST_ZUGANG;}
 $("#loginForm").addEventListener("submit",function(e){
