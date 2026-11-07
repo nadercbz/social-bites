@@ -38,6 +38,7 @@
     --dots:radial-gradient(rgba(35,35,33,.16) 1px,transparent 1.3px);
   }
   *,*::before,*::after{box-sizing:border-box;}
+  .sb-embed #login{visibility:hidden;}  /* in social-bites.de/intern zeigt die Seite dort den Login */
   [hidden]{display:none!important;}
   html{background:var(--paper);-webkit-text-size-adjust:100%;}
   body{margin:0;background:var(--grain),var(--paper);color:var(--ink);font-family:var(--display);font-weight:500;font-size:16px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip;}
@@ -1602,7 +1603,21 @@ var WANT_INTERN=(location.hash==="#intern");
 /* Der Reiter Intern ist für normale Kunden unsichtbar: nur über den direkten Link #intern oder auf einem Gerät, auf dem sich das Team schon eingeloggt hat. */
 function teamDevice(){try{return localStorage.getItem("sb-team-device")==="1"||!!localStorage.getItem(TKEY);}catch(e){return false;}}
 if(WANT_INTERN||teamDevice()){var itb=document.querySelector('[data-lgtab="intern"]');if(itb)itb.hidden=false;}
-if(authMode()==="team")enterTeam();else if(authed()&&!WANT_INTERN)enter();else{showLogin();if(WANT_INTERN){var it=document.querySelector('[data-lgtab="intern"]');if(it)it.click();}}
+/* Eingebettet in social-bites.de/intern: die Seite dort prüft den Login und übergibt ihn per postMessage. Nur von diesen Adressen, Prüfung der Prüfsumme trotzdem hier. */
+var SB_PARENTS=["https://social-bites.de","https://www.social-bites.de","https://social-bites.com","https://www.social-bites.com","https://social-bites.pages.dev",location.origin];
+var SB_EMBED=window.parent!==window;
+function sbParentOk(o){return SB_PARENTS.indexOf(o)>-1||/^https:\/\/[\w-]+\.social-bites\.pages\.dev$/.test(o);}
+function toParent(s){if(!SB_EMBED)return;SB_PARENTS.forEach(function(o){try{window.parent.postMessage({sbIntern:s},o);}catch(e){}});}
+if(SB_EMBED){
+  document.documentElement.classList.add("sb-embed");
+  window.addEventListener("message",function(e){
+    if(e.source!==window.parent||!sbParentOk(e.origin)||!e.data||!e.data.sbLogin)return;
+    var u=String(e.data.sbLogin.u||"").trim().toLowerCase(),p=String(e.data.sbLogin.p||"");
+    isTeam(u,p).then(function(ok){if(ok){setAuth("team");enterTeam();toParent("drin");}else toParent("raus");});
+  });
+  ["#logout","#tlogout"].forEach(function(s){var b=$(s);if(b)b.addEventListener("click",function(){toParent("raus");});});
+}
+if(authMode()==="team"){enterTeam();toParent("drin");}else if(SB_EMBED){showLogin();toParent("bereit");}else if(authed()&&!WANT_INTERN)enter();else{showLogin();if(WANT_INTERN){var it=document.querySelector('[data-lgtab="intern"]');if(it)it.click();}}
 })();
 </script>
 </body>
