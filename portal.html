@@ -756,7 +756,7 @@ function authMode(){try{return localStorage.getItem(AUTH)||sessionStorage.getIte
 function authed(){return authMode()==="1";}
 function setAuth(v){try{if(v){localStorage.setItem(AUTH,v);sessionStorage.setItem(AUTH,v);}else{localStorage.removeItem(AUTH);sessionStorage.removeItem(AUTH);}}catch(e){}authed.mem=v||"";}
 /* Team-Zugang: nur SHA-256-Prüfsummen von "benutzer:passwort" stehen im Code (Benutzername klein geschrieben) */
-var TEAM_HASHES=["070520c35d97261064793b9b6292db974b36146349abb5965a15e2f26350d7fa","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* nader (neu seit 30.10.2026), tommy, Testzugang socialbites (wieder an seit 07.11.2026 auf Naders Wunsch). Weitere Mitarbeiter: Prüfsumme von "benutzer:passwort" (klein geschrieben) hier anhängen */
+var TEAM_HASHES=["eb6eb871fc4c95b7f485c853742f3af6966a342d146992a98dfb355d3b29b431","070520c35d97261064793b9b6292db974b36146349abb5965a15e2f26350d7fa","07981fe786d92bb6667573372688ddc439700bef5ea8a81f8506b0aa780a5ae5","eb2e983a97df512f18da6424cc1cbe69586dce0b0ed6dcb0b8cf88c26f7523ab"];  /* nader (neu seit 30.10.2026), tommy, Testzugang socialbites (wieder an seit 07.11.2026 auf Naders Wunsch). Weitere Mitarbeiter: Prüfsumme von "benutzer:passwort" (klein geschrieben) hier anhängen */
 function isTeam(u,p){
   try{
     if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.resolve(false);
