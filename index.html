@@ -2294,7 +2294,7 @@
       }
       ttFrom = from || null;
       srLive.forEach(function(v){ v.pause(); });
-      ttEl.querySelector('.sr-tt-box').innerHTML = '<iframe src="https://www.tiktok.com/player/v1/' + id + '?autoplay=1&music_info=1&description=1" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="TikTok"></iframe>';
+      ttEl.querySelector('.sr-tt-box').innerHTML = '<iframe src="https://www.tiktok.com/embed/v2/' + id + '" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="TikTok"></iframe>';
       ttEl.hidden = false;
       try { ttEl.querySelector('.sr-x').focus({preventScroll: true}); } catch (err) {}
     }
